@@ -23,8 +23,8 @@ import { DropShadowFilter } from '@pixi/filter-drop-shadow';
 // Create a sprite that will render using the ooo-renderer instead of
 // default batching mechanism in PixiJS.
 //
-// O allows the OooRenderer to redirect the filter/mask mechanism
-// if used.
+// createOooable prevents premature flushing when filtered. It does not
+// need to be used but is recommended for maximizing performance.
 function createOooSprite(textureOrUrl) {
     const sprite = createOooable(typeof textureOrUrl === 'string' 
         ? PIXI.Sprite.from(textureOrUrl) 
