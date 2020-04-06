@@ -17,16 +17,16 @@ The following example will setup a built-in preset of the out-of-order renderer:
 
 ```js
 import * as PIXI from 'pixi.js;
-import { Oooable, OooRendererPluginFactory } from 'pixi-ooo-renderer';
+import { createOooable, OooRendererPluginFactory } from 'pixi-ooo-renderer';
 import { DropShadowFilter } from '@pixi/filter-drop-shadow';
 
 // Create a sprite that will render using the ooo-renderer instead of
 // default batching mechanism in PixiJS.
 //
-// OooMixin allows the OooRenderer to redirect the filter/mask mechanism
+// O allows the OooRenderer to redirect the filter/mask mechanism
 // if used.
 function createOooSprite(textureOrUrl) {
-    const sprite = Oooable(typeof textureOrUrl === 'string' 
+    const sprite = createOooable(typeof textureOrUrl === 'string' 
         ? PIXI.Sprite.from(textureOrUrl) 
         : new PIXI.Sprite(textureOrUrl));
 
@@ -47,15 +47,11 @@ const app = new PIXI.Application({ /* options */ });
 
 app.stage.addChild(createOooSprite('./assets/foo.png'));
 
-// If you used Pixi's default batch renderer, then foo.png and bar.png
-// wouldn't get batched. That is because of a sprite with filters comes
-// in-between.
-//
-// The OooRenderer modifies the filter system to clear the depth buffer
-// on the screen after the sprite is rendered.
+// This won't prevent 1st and 3rd sprite from getting batched because
+// it is placed at (100, 350), far away.
 const spriteWithFilters = createOooSprite('./assets/foobar.png');
 spriteWithFilters.filters = [new DropShadowFilter()];
-spriteWithFilters.position.set(100, 350);// away from sprite 1 and 3
+spriteWithFilters.position.set(100, 350);
 app.stage.addChild(spriteWithFilters);
 
 app.stage.addChild(createOooSprite('./assets/bar.png));
