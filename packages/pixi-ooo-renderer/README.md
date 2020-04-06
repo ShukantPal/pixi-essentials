@@ -1,12 +1,13 @@
 # [WIP][Experimental] Out-of-Order Renderer for PixiJS Scene Graphs
 
-This special renderer can improve batching efficiency by using a spatial
-hash.
+* This special renderer can improve batching efficiency by using a spatial
+hash to smartly re-order your display-objects renders to minimize draw
+calls.
 
-`OooRenderer` also does not need to prematurely flush when a filtered or masked
+* `OooRenderer` also does not need to prematurely flush when a filtered or masked
 display-object is rendered, unlike Pixi's in-built batch renderer. You can enable
 this by calling `Oooable` on your display-object or extending `OooRenderable`. This
-modifies the `render()` pass to be ooo-compatible.
+modifies the `render()` pass to be OOO-compatible.
 
 ## Basic Usage
 
