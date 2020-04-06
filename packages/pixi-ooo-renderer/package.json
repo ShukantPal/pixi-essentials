@@ -36,6 +36,7 @@
     "url": "https://github.com/SukantPal/pixi-essentials/issues"
   },
   "devDependencies": {
-    "pixi.js": "^5.2.1"
+    "pixi.js": "^5.2.1",
+    "pixi-spatial-hash": "1.0.0"
   }
 }
