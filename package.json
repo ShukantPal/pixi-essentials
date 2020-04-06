@@ -1,0 +1,36 @@
+{
+  "name": "pixi-essentials",
+  "version": "1.0.0",
+  "description": "Essential plugins for PixiJS applications",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SukantPal/pixi-essentials.git"
+  },
+  "keywords": [
+    "pixi.js",
+    "pixi",
+    "webgl",
+    "plugins",
+    "renderer"
+  ],
+  "author": "Shukant K. Pal <shukantpal@outlook.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SukantPal/pixi-essentials/issues"
+  },
+  "homepage": "https://github.com/SukantPal/pixi-essentials#readme",
+  "devDependencies": {
+    "@pixi/eslint-config": "^1.0.1",
+    "@typescript-eslint/eslint-plugin": "^2.26.0",
+    "@typescript-eslint/parser": "^2.26.0",
+    "eslint": "^6.8.0",
+    "lerna": "^3.20.2",
+    "mocha": "^7.1.1",
+    "rollup": "^2.3.3",
+    "typescript": "^3.8.3"
+  }
+}

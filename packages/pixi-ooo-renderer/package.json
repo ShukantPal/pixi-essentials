@@ -1,0 +1,41 @@
+{
+  "name": "pixi-ooo-renderer",
+  "version": "0.0.0",
+  "description": "Out-of-order rendering facility for PixiJS scene graphs",
+  "keywords": [
+    "pixi.js",
+    "pixi",
+    "plugins",
+    "renderer",
+    "out-of-order-rendering",
+    "depth-testing",
+    "depth-buffer",
+    "depth-rendering"
+  ],
+  "author": "Shukant Pal <shukantpal@outlook.com>",
+  "homepage": "https://github.com/SukantPal/pixi-essentials/tree/master/packages/pixi-ooo-renderer#readme",
+  "license": "MIT",
+  "main": "lib/pixi-ooo-renderer.cjs",
+  "module": "lib/pixi-ooo-renderer.mjs",
+  "bundle": "dist/pixi-ooo-renderer.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SukantPal/pixi-essentials.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/SukantPal/pixi-essentials/issues"
+  },
+  "devDependencies": {
+    "pixi.js": "^5.2.1"
+  }
+}
