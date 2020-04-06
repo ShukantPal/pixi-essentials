@@ -1,19 +1,19 @@
 # [WIP][Experimental] Out-of-Order Renderer for PixiJS Scene Graphs
 
-* This special renderer can improve batching efficiency by using a spatial
-hash to smartly re-order your display-objects renders to minimize draw
-calls.
+This packages provides an out-of-order batch renderer, which:
 
-* `OooRenderer` also does not need to prematurely flush when a filtered or masked
-display-object is rendered, unlike Pixi's in-built batch renderer. You can enable
-this by calling `Oooable` on your display-object or extending `OooRenderable`. This
-modifies the `render()` pass to be OOO-compatible.
+* can improve batching efficiency by smartly re-ordering your display-object renders
+to minimize draw calls. This can be done because display-objects that do not intersect
+in world space do not need to be rendered in-order.
+
+* does not need to prematurely flush when a filtered or masked
+display-object is encountered, unlike Pixi's in-built batch renderer. Instead of doing
+a full-flush, this renderer will only flush the display objects that intersect with
+the filtered/masked one.
 
 ## Basic Usage
 
-The following example will setup the built-in preset of `OooRenderer` and demonstrate
-how it can batch the 1st and 3rd sprite together even with a filtered sprite between
-them in the rendering list:
+The following example will setup a built-in preset of the out-of-order renderer:
 
 ```js
 import * as PIXI from 'pixi.js;
@@ -55,6 +55,7 @@ app.stage.addChild(createOooSprite('./assets/foo.png'));
 // on the screen after the sprite is rendered.
 const spriteWithFilters = createOooSprite('./assets/foobar.png');
 spriteWithFilters.filters = [new DropShadowFilter()];
+spriteWithFilters.position.set(100, 350);// away from sprite 1 and 3
 app.stage.addChild(spriteWithFilters);
 
 app.stage.addChild(createOooSprite('./assets/bar.png));
