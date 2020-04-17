@@ -1,6 +1,6 @@
 {
   "name": "@pixi-essentials/object-pool",
-  "version": "0.0.0",
+  "version": "0.0.1-alpha.0",
   "description": "Custom-tailored object pool for PixiJS-based applications",
   "keywords": [
     "pixi.js",
@@ -37,11 +37,11 @@
     "url": "https://github.com/SukantPal/pixi-essentials/issues"
   },
   "peerDependencies": {
-    "@pixi/ticker": "5.2.1",
-    "@pixi/settings": "5.2.1"
+    "@pixi/settings": "5.2.1",
+    "@pixi/ticker": "5.2.1"
   },
   "devDependencies": {
-    "@pixi/ticker": "5.2.1",
-    "@microsoft/api-extractor": "7.7.13"
+    "@microsoft/api-extractor": "7.7.13",
+    "@pixi/ticker": "5.2.1"
   }
 }
