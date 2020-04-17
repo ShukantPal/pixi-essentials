@@ -26,7 +26,7 @@ export class ObjectPoolFactory
     /**
      * @param {Class} Type
      */
-    build(Type: typeof Object): ObjectPool<any>
+    static build(Type: typeof Object): ObjectPool<any>
     {
         let pool = poolMap.get(Type);
 

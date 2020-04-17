@@ -142,7 +142,10 @@ async function main()
 
             const file = path.join(basePath, bundle);
             // const external =  standalone ? null : Object.keys(namespaces);
-            const globals = standalone ? null : namespaces;
+            const globals = {
+                '@pixi/ticker': 'PIXI',
+                'pixi.js': 'PIXI',
+            };
             const ns = namespaces[pkg.name];
             const name = pkg.name.replace(/[^a-z]+/g, '_');
             let footer;

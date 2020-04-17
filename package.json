@@ -5,6 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build:compile": "rollup -c",
+    "build:types": "lerna run compile",
+    "build": "npm run build:compile; npm run build:types",
+    "prepublishOnly": "npm run build",
     "test": "mocha"
   },
   "repository": {

@@ -1,6 +1,6 @@
 {
   "name": "@pixi-essentials/object-pool",
-  "version": "0.0.1-alpha.0",
+  "version": "0.0.1-alpha.3",
   "description": "Custom-tailored object pool for PixiJS-based applications",
   "keywords": [
     "pixi.js",
@@ -20,10 +20,12 @@
   "bundle": "dist/pixi-object-pool.js",
   "directories": {
     "lib": "lib",
-    "test": "__tests__"
+    "test": "test",
+    "dist": "dist"
   },
   "files": [
-    "lib"
+    "lib",
+    "dist"
   ],
   "repository": {
     "type": "git",
@@ -43,5 +45,6 @@
   "devDependencies": {
     "@microsoft/api-extractor": "7.7.13",
     "@pixi/ticker": "5.2.1"
-  }
+  },
+  "gitHead": "104ab46612eb8d95bde256620b0cd989ec341e96"
 }

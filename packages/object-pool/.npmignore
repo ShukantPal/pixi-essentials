@@ -1,0 +1,7 @@
+node_modules
+src
+compile
+test
+api-extractor.json
+README.md
+tsconfig.json

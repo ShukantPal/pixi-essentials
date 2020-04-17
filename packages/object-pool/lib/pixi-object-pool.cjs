@@ -1,11 +1,15 @@
 /*!
- * pixi-object-pool - v0.0.0
- * Compiled Fri, 17 Apr 2020 20:43:18 UTC
+ * @pixi-essentials/object-pool - v0.0.1-alpha.2
+ * Compiled Fri, 17 Apr 2020 21:52:50 UTC
  *
- * pixi-object-pool is licensed under the MIT License.
+ * @pixi-essentials/object-pool is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
  */
-import { Ticker, UPDATE_PRIORITY } from '@pixi/ticker';
+'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+var ticker = require('@pixi/ticker');
 
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved.
@@ -43,10 +47,11 @@ function __extends(d, b) {
  *
  * @template T
  * @class
+ * @public
  */
 var ObjectPool = /** @class */ (function () {
     /**
-     * @param options
+     * @param {IObjectPoolOptions} options
      */
     function ObjectPool(options) {
         if (options === void 0) { options = {}; }
@@ -131,10 +136,10 @@ var ObjectPool = /** @class */ (function () {
      *
      * @param {Ticker}[ticker=Ticker.shared]
      */
-    ObjectPool.prototype.install = function (ticker) {
+    ObjectPool.prototype.install = function (ticker$1) {
         var _this = this;
-        if (ticker === void 0) { ticker = Ticker.shared; }
-        ticker.add(function () {
+        if (ticker$1 === void 0) { ticker$1 = ticker.Ticker.shared; }
+        ticker$1.add(function () {
             _this._currentDemand *= _this.decayRatio;
             _this._currentDemand += (1 - _this.decayRatio) * _this._flowRate;
             _this._flowRate = 0;
@@ -150,7 +155,7 @@ var ObjectPool = /** @class */ (function () {
                 _this._pool.length = currentDemand;
                 _this._poolSize = _this._pool.length;
             }
-        }, null, UPDATE_PRIORITY.UTILITY);
+        }, null, ticker.UPDATE_PRIORITY.UTILITY);
     };
     return ObjectPool;
 }());
@@ -161,6 +166,7 @@ var poolMap = new Map();
  * a given type and reuse it on further builds.
  *
  * @class
+ * @public
  * @example
  * ```js
  * import { ObjectPool, ObjectPoolFactory } from 'pixi-object-pool';
@@ -201,5 +207,6 @@ var ObjectPoolFactory = /** @class */ (function () {
     return ObjectPoolFactory;
 }());
 
-export { ObjectPool, ObjectPoolFactory };
-//# sourceMappingURL=pixi-object-pool.mjs.map
+exports.ObjectPool = ObjectPool;
+exports.ObjectPoolFactory = ObjectPoolFactory;
+//# sourceMappingURL=pixi-object-pool.cjs.map
