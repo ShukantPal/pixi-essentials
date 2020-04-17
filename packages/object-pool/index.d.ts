@@ -24,7 +24,10 @@ export declare abstract class ObjectPool<T extends typeof Object> {
     decayRatio: number;
     protected _pool: Array<T>;
     protected _poolSize: number;
+    protected _borrowRate: number;
+    protected _returnRate: number;
     protected _flowRate: number;
+    protected _history: number;
     protected _currentDemand: number;
     /**
      * @param {IObjectPoolOptions} options
@@ -80,7 +83,7 @@ export declare class ObjectPoolFactory {
     /**
      * @param {Class} Type
      */
-    build(Type: typeof Object): ObjectPool<any>;
+    static build(Type: typeof Object): ObjectPool<any>;
 }
 
 export { }

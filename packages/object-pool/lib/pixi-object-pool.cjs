@@ -1,6 +1,6 @@
 /*!
- * @pixi-essentials/object-pool - v0.0.1-alpha.2
- * Compiled Fri, 17 Apr 2020 21:52:50 UTC
+ * @pixi-essentials/object-pool - v0.0.1-alpha.6
+ * Compiled Fri, 17 Apr 2020 22:33:41 UTC
  *
  * @pixi-essentials/object-pool is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -71,6 +71,20 @@ var ObjectPool = /** @class */ (function () {
          */
         this._poolSize = 0;
         /**
+         * Rate at which object is borrowed.
+         *
+         * @member {number}
+         * @protected
+         */
+        this._borrowRate = 0;
+        /**
+         * Rate at which object is returned.
+         *
+         * @member {number}
+         * @protected
+         */
+        this._returnRate = 0;
+        /**
          * Rate at which objects are flowing out of the pool.
          *
          * @member {number}
@@ -95,6 +109,7 @@ var ObjectPool = /** @class */ (function () {
          * @member {number}
          */
         this.decayRatio = options.decayRatio || 0.99;
+        this._history = 0;
         if (!options.noInstall) {
             this.install();
         }
@@ -112,6 +127,7 @@ var ObjectPool = /** @class */ (function () {
      * @returns {T}
      */
     ObjectPool.prototype.borrowObject = function () {
+        ++this._borrowRate;
         ++this._flowRate;
         if (this._poolSize > 0) {
             return this._pool[--this._poolSize];
@@ -124,6 +140,7 @@ var ObjectPool = /** @class */ (function () {
      * @param {T} object
      */
     ObjectPool.prototype.returnObject = function (object) {
+        ++this._returnRate;
         --this._flowRate;
         if (this._poolSize === this._pool.length) {
             this._pool.length *= this.capacityRatio;
@@ -141,8 +158,15 @@ var ObjectPool = /** @class */ (function () {
         if (ticker$1 === void 0) { ticker$1 = ticker.Ticker.shared; }
         ticker$1.add(function () {
             _this._currentDemand *= _this.decayRatio;
-            _this._currentDemand += (1 - _this.decayRatio) * _this._flowRate;
+            _this._currentDemand += (1 - _this.decayRatio) * _this._borrowRate;
+            if (_this._history === 0) {
+                _this._currentDemand = _this._borrowRate;
+            }
+            ++_this._history;
+            _this._currentDemand = Math.ceil(_this._currentDemand);
             _this._flowRate = 0;
+            _this._borrowRate = 0;
+            _this._returnRate = 0;
             var poolSize = _this._poolSize;
             var poolCapacity = _this._pool.length;
             // If the pool is small enough, it shouldn't really matter
@@ -186,7 +210,7 @@ var ObjectPoolFactory = /** @class */ (function () {
     /**
      * @param {Class} Type
      */
-    ObjectPoolFactory.prototype.build = function (Type) {
+    ObjectPoolFactory.build = function (Type) {
         var pool = poolMap.get(Type);
         if (pool) {
             return pool;

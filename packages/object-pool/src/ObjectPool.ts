@@ -28,7 +28,11 @@ export abstract class ObjectPool<T extends typeof Object>
     protected _pool: Array<T>;
     protected _poolSize: number;
 
+    protected _borrowRate: number;
+    protected _returnRate: number;
     protected _flowRate: number;
+
+    protected _history: number;
 
     protected _currentDemand: number;
 
@@ -53,6 +57,22 @@ export abstract class ObjectPool<T extends typeof Object>
          * @protected
          */
         this._poolSize = 0;
+
+        /**
+         * Rate at which object is borrowed.
+         *
+         * @member {number}
+         * @protected
+         */
+        this._borrowRate = 0;
+
+        /**
+         * Rate at which object is returned.
+         *
+         * @member {number}
+         * @protected
+         */
+        this._returnRate = 0;
 
         /**
          * Rate at which objects are flowing out of the pool.
@@ -83,6 +103,8 @@ export abstract class ObjectPool<T extends typeof Object>
          */
         this.decayRatio = options.decayRatio || 0.99;
 
+        this._history = 0;
+
         if (!options.noInstall)
         {
             this.install();
@@ -112,6 +134,7 @@ export abstract class ObjectPool<T extends typeof Object>
      */
     borrowObject(): T
     {
+        ++this._borrowRate;
         ++this._flowRate;
 
         if (this._poolSize > 0)
@@ -129,6 +152,7 @@ export abstract class ObjectPool<T extends typeof Object>
      */
     returnObject(object: T): void
     {
+        ++this._returnRate;
         --this._flowRate;
 
         if (this._poolSize === this._pool.length)
@@ -150,9 +174,19 @@ export abstract class ObjectPool<T extends typeof Object>
         ticker.add(() =>
         {
             this._currentDemand *= this.decayRatio;
-            this._currentDemand += (1 - this.decayRatio) * this._flowRate;
+            this._currentDemand += (1 - this.decayRatio) * this._borrowRate;
+
+            if (this._history === 0)
+            {
+                this._currentDemand = this._borrowRate;
+            }
+            ++this._history;
+
+            this._currentDemand = Math.ceil(this._currentDemand);
 
             this._flowRate = 0;
+            this._borrowRate = 0;
+            this._returnRate = 0;
 
             const poolSize = this._poolSize;
             const poolCapacity = this._pool.length;
