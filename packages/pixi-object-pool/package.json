@@ -1,5 +1,5 @@
 {
-  "name": "pixi-object-pool",
+  "name": "@pixi-essentials/object-pool",
   "version": "0.0.0",
   "description": "Custom-tailored object pool for PixiJS-based applications",
   "keywords": [
@@ -15,7 +15,9 @@
   "author": "Shukant Pal <shukantpal@outlook.com>",
   "homepage": "https://github.com/SukantPal/pixi-essentials/tree/master/packages/pixi-object-pool#readme",
   "license": "MIT",
-  "main": "lib/pixi-object-pool.js",
+  "main": "lib/pixi-object-pool.cjs",
+  "module": "lib/pixi-object-pool.mjs",
+  "bundle": "dist/pixi-object-pool.js",
   "directories": {
     "lib": "lib",
     "test": "__tests__"
@@ -28,9 +30,18 @@
     "url": "git+https://github.com/SukantPal/pixi-essentials.git"
   },
   "scripts": {
+    "compile": "rm -rf compile && tsc && api-extractor run",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "bugs": {
     "url": "https://github.com/SukantPal/pixi-essentials/issues"
+  },
+  "peerDependencies": {
+    "@pixi/ticker": "5.2.1",
+    "@pixi/settings": "5.2.1"
+  },
+  "devDependencies": {
+    "@pixi/ticker": "5.2.1",
+    "@microsoft/api-extractor": "7.7.13"
   }
 }

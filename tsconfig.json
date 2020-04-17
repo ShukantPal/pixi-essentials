@@ -1,0 +1,35 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "allowJs": true,
+        "sourceMap": true,
+        "removeComments": false,
+        "strict": true,
+        "noImplicitAny": false,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "strictNullChecks": false,
+        "esModuleInterop": true,
+        "moduleResolution": "node",
+        "baseUrl": "./",
+        "paths": {
+            "@pixi-essentials/*": [
+                "packages/*/src"
+            ],
+        },
+        "outDir": "./compile",
+        "declaration": true,
+        "declarationMap": true
+    },
+    "exclude": [
+        "node_modules",
+        "**/dist/**",
+        "**/lib/**",
+        "**/test/**",
+        "**/scripts/**",
+        "**/types/**",
+        "bundles/**/*.d.ts",
+        "rollup.config.js"
+    ]
+}

@@ -1,11 +1,11 @@
 # Object Pool
 
-This package implements a custom-tailored object pool for high frequency allocations. It dynamically adjusts the
-outstanding supply to match demand on a per-frame basis. This serves the following purposes:
+This package implements a custom-tailored object pool for high frequency allocations. It resizes
+itself when demand significantly changes. It can be used to:
 
-* minimizing memory usage while also reducing the number of new allocations per frame.
+* minimize memory usage _and_ the number of new allocations per frame
 
-* tracking leaks in objects that are supposed to be returned by the end of each animation frame.
+* track memory leaks in short-lived objects
 
 ## Usage
 
