@@ -10,6 +10,12 @@ following features:
 * **auto-GC**: The GC will reduce your pool to the reserve size after allocation demand goes down
 per-frame.
 
+### Analysis
+
+* https://codepen.io/sukantpal/pen/zYvBOVw: This chart shows the number of allocations per frame and the size & capacity of the object pool from which those allocations are done.
+
+<img src="https://i.ibb.co/Lz4c4rM/Screen-Shot-2020-04-17-at-6-48-19-PM.png"></img>
+
 ## Usage
 
 This package is [WIP] and the following is draft-only:
