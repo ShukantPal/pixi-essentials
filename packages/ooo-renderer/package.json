@@ -35,9 +35,11 @@
   "bugs": {
     "url": "https://github.com/SukantPal/pixi-essentials/issues"
   },
-  "devDependencies": {
+  "dependencies": {
     "pixi-spatial-hash": "1.0.0",
-    "pixi.js": "^5.2.1"
+    "pixi.js": "^5.2.1",
+    "@pixi-essentials/object-pool": "^0.0.1",
+    "pixi-batch-renderer": "^2.1.1"
   },
   "gitHead": "104ab46612eb8d95bde256620b0cd989ec341e96",
   "publishConfig": {

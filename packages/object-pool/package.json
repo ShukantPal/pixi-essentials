@@ -32,8 +32,7 @@
     "url": "git+https://github.com/SukantPal/pixi-essentials.git"
   },
   "scripts": {
-    "compile": "rm -rf compile && tsc && api-extractor run",
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "compile": "rm -rf compile && tsc && api-extractor run"
   },
   "bugs": {
     "url": "https://github.com/SukantPal/pixi-essentials/issues"
