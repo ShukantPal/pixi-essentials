@@ -1,6 +1,6 @@
 {
   "name": "@pixi-essentials/object-pool",
-  "version": "0.0.1-alpha.23",
+  "version": "0.0.1",
   "description": "Custom-tailored object pool for PixiJS-based applications",
   "keywords": [
     "pixi.js",
