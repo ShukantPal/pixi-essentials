@@ -25,7 +25,7 @@ limit of objects you need per frame.
 
 ## Usage
 
-```
+```ts
 import { ObjectPoolFactory } from 'pixi-object-pool';
 
 const rpool: ObjectPoolFactory = ObjectPoolFactory.build(PIXI.Rectangle);
