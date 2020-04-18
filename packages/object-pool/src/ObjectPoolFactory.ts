@@ -37,7 +37,7 @@ export class ObjectPoolFactory
 
         pool = new (class DefaultObjectPool extends ObjectPool<any>
         {
-            createObject(): any
+            create(): any
             {
                 return new Type();
             }

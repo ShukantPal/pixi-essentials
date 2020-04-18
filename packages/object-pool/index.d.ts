@@ -7,7 +7,7 @@ import { Ticker } from '@pixi/ticker';
 export declare interface IObjectPoolOptions {
     capacityRatio?: number;
     decayRatio?: number;
-    noInstall?: boolean;
+    reserve?: number;
 }
 
 /**
@@ -20,15 +20,18 @@ export declare interface IObjectPoolOptions {
  * @public
  */
 export declare abstract class ObjectPool<T extends typeof Object> {
-    capacityRatio: number;
-    decayRatio: number;
-    protected _pool: Array<T>;
-    protected _poolSize: number;
+    protected _freeList: Array<T>;
+    protected _freeCount: number;
+    protected _reserveCount: number;
     protected _borrowRate: number;
     protected _returnRate: number;
     protected _flowRate: number;
-    protected _history: number;
-    protected _currentDemand: number;
+    protected _borrowRateAverage: number;
+    protected _marginAverage: number;
+    private _capacityRatio;
+    private _decayRatio;
+    private _borrowRateAverageProvider;
+    private _marginAverageProvider;
     /**
      * @param {IObjectPoolOptions} options
      */
@@ -39,25 +42,51 @@ export declare abstract class ObjectPool<T extends typeof Object> {
      * @abstract
      * @returns {T}
      */
-    abstract createObject(): T;
+    abstract create(): T;
+    /**
+     * The number of objects that can be stored in the pool without allocating more space.
+     *
+     * @member {number}
+     */
+    protected get capacity(): number;
+    protected set capacity(cp: number);
     /**
      * Obtains an instance from this pool.
      *
      * @returns {T}
      */
-    borrowObject(): T;
+    allocate(): T;
     /**
      * Returns the object to the pool.
      *
      * @param {T} object
      */
-    returnObject(object: T): void;
+    release(object: T): void;
     /**
-     * Install the object pool callback on the shared ticker.
+     * Preallocates objects so that the pool size is at least `count`.
+     *
+     * @param {number} count
+     */
+    reserve(count: number): void;
+    /**
+     * Dereferences objects for the GC to collect and brings the pool size down to `count`.
+     *
+     * @param {number} count
+     */
+    limit(count: number): void;
+    /**
+     * Install the GC on the shared ticker.
      *
      * @param {Ticker}[ticker=Ticker.shared]
      */
-    install(ticker?: Ticker): void;
+    startGC(ticker?: Ticker): void;
+    /**
+     * Stops running the GC on the pool.
+     *
+     * @param {Ticker}[ticker=Ticker.shared]
+     */
+    stopGC(ticker?: Ticker): void;
+    private _gcTick;
 }
 
 /**

@@ -1,4 +1,5 @@
 import { Ticker, UPDATE_PRIORITY } from '@pixi/ticker';
+import { AverageProvider } from './AverageProvider';
 
 /**
  * @interface
@@ -8,7 +9,7 @@ export interface IObjectPoolOptions
 {
     capacityRatio?: number;
     decayRatio?: number;
-    noInstall?: boolean;
+    reserve?: number;
 }
 
 /**
@@ -22,19 +23,20 @@ export interface IObjectPoolOptions
  */
 export abstract class ObjectPool<T extends typeof Object>
 {
-    public capacityRatio: number;
-    public decayRatio: number;
-
-    protected _pool: Array<T>;
-    protected _poolSize: number;
+    protected _freeList: Array<T>;
+    protected _freeCount: number;
+    protected _reserveCount: number;
 
     protected _borrowRate: number;
     protected _returnRate: number;
     protected _flowRate: number;
+    protected _borrowRateAverage: number;
+    protected _marginAverage: number;
 
-    protected _history: number;
-
-    protected _currentDemand: number;
+    private _capacityRatio: number;
+    private _decayRatio: number;
+    private _borrowRateAverageProvider: AverageProvider;
+    private _marginAverageProvider: AverageProvider;
 
     /**
      * @param {IObjectPoolOptions} options
@@ -44,11 +46,10 @@ export abstract class ObjectPool<T extends typeof Object>
         /**
          * Supply pool of objects that can be used to immediately lend.
          *
-         * @template T
          * @member {Array<T>}
          * @protected
          */
-        this._pool = [];
+        this._freeList = [];
 
         /**
          * Number of objects in the pool. This is less than or equal to `_pool.length`.
@@ -56,59 +57,19 @@ export abstract class ObjectPool<T extends typeof Object>
          * @member {number}
          * @protected
          */
-        this._poolSize = 0;
+        this._freeCount = 0;
 
-        /**
-         * Rate at which object is borrowed.
-         *
-         * @member {number}
-         * @protected
-         */
         this._borrowRate = 0;
-
-        /**
-         * Rate at which object is returned.
-         *
-         * @member {number}
-         * @protected
-         */
         this._returnRate = 0;
-
-        /**
-         * Rate at which objects are flowing out of the pool.
-         *
-         * @member {number}
-         */
         this._flowRate = 0;
+        this._borrowRateAverage = 0;
 
-        /**
-         * Averaged flow rate, i.e. the demand of objects from this pool.
-         *
-         * @member {number}
-         */
-        this._currentDemand = 0;
-
-        /**
-         * Ratio to which pool capacity is grown when it becomes full. For example, if pool capacity
-         * is 100 and full, then its length will be set to 200 (if ratio = 2).
-         *
-         * @member {number}
-         */
-        this.capacityRatio = options.capacityRatio || 2;
-
-        /**
-         * Ratio used to exponentially average the flow rate. It should be between .95 and 1.
-         *
-         * @member {number}
-         */
-        this.decayRatio = options.decayRatio || 0.99;
-
-        this._history = 0;
-
-        if (!options.noInstall)
-        {
-            this.install();
-        }
+        this._reserveCount = options.reserve || 0;
+        this._capacityRatio = options.capacityRatio || 1.2;
+        this._decayRatio = options.decayRatio || 0.67;
+        this._marginAverage = 0;
+        this._borrowRateAverageProvider = new AverageProvider(128, this._decayRatio);
+        this._marginAverageProvider = new AverageProvider(128, this._decayRatio);
     }
 
     /**
@@ -117,7 +78,7 @@ export abstract class ObjectPool<T extends typeof Object>
      * @abstract
      * @returns {T}
      */
-    abstract createObject(): T;
+    abstract create(): T;
 
     // TODO: Support object destruction. It might not be so good for perf tho.
     // /**
@@ -128,21 +89,36 @@ export abstract class ObjectPool<T extends typeof Object>
     // abstract destroyObject(object: T): void;
 
     /**
+     * The number of objects that can be stored in the pool without allocating more space.
+     *
+     * @member {number}
+     */
+    protected get capacity(): number
+    {
+        return this._freeList.length;
+    }
+    protected set capacity(cp: number)
+    {
+        this._freeList.length = Math.ceil(cp);
+    }
+
+    /**
      * Obtains an instance from this pool.
      *
      * @returns {T}
      */
-    borrowObject(): T
+    allocate(): T
     {
         ++this._borrowRate;
+
         ++this._flowRate;
 
-        if (this._poolSize > 0)
+        if (this._freeCount > 0)
         {
-            return this._pool[--this._poolSize];
+            return this._freeList[--this._freeCount];
         }
 
-        return this.createObject();
+        return this.create();
     }
 
     /**
@@ -150,63 +126,115 @@ export abstract class ObjectPool<T extends typeof Object>
      *
      * @param {T} object
      */
-    returnObject(object: T): void
+    release(object: T): void
     {
         ++this._returnRate;
         --this._flowRate;
 
-        if (this._poolSize === this._pool.length)
+        if (this._freeCount === this.capacity)
         {
-            this._pool.length *= this.capacityRatio;
+            this.capacity *= this._capacityRatio;
         }
 
-        this._pool[this._poolSize] = object;
-        ++this._poolSize;
+        this._freeList[this._freeCount] = object;
+        ++this._freeCount;
     }
 
     /**
-     * Install the object pool callback on the shared ticker.
+     * Preallocates objects so that the pool size is at least `count`.
+     *
+     * @param {number} count
+     */
+    reserve(count: number): void
+    {
+        this._reserveCount = count;
+
+        if (this._freeCount < count)
+        {
+            const diff = this._freeCount - count;
+
+            for (let i = 0; i < diff; i++)
+            {
+                this._freeList[this._freeCount] = this.create();
+                ++this._freeCount;
+            }
+        }
+    }
+
+    /**
+     * Dereferences objects for the GC to collect and brings the pool size down to `count`.
+     *
+     * @param {number} count
+     */
+    limit(count: number): void
+    {
+        if (this._freeCount > count)
+        {
+            const oldCapacity = this.capacity;
+
+            if (oldCapacity > count * this._capacityRatio)
+            {
+                this.capacity = count * this._capacityRatio;
+            }
+
+            const excessBound = Math.min(this._freeCount, this.capacity);
+
+            for (let i = count; i < excessBound; i++)
+            {
+                this._freeList[i] = null;
+            }
+        }
+    }
+
+    /**
+     * Install the GC on the shared ticker.
      *
      * @param {Ticker}[ticker=Ticker.shared]
      */
-    install(ticker: Ticker = Ticker.shared): void
+    startGC(ticker: Ticker = Ticker.shared): void
     {
-        ticker.add(() =>
-        {
-            this._currentDemand *= this.decayRatio;
-            this._currentDemand += (1 - this.decayRatio) * this._borrowRate;
-
-            if (this._history === 0)
-            {
-                this._currentDemand = this._borrowRate;
-            }
-            ++this._history;
-
-            this._currentDemand = Math.ceil(this._currentDemand);
-
-            this._flowRate = 0;
-            this._borrowRate = 0;
-            this._returnRate = 0;
-
-            const poolSize = this._poolSize;
-            const poolCapacity = this._pool.length;
-
-            // If the pool is small enough, it shouldn't really matter
-            if (poolSize < 128 && this._currentDemand < 128 && poolCapacity < 128)
-            {
-                return;
-            }
-
-            const currentDemand = this._currentDemand < 0 ? 0 : this._currentDemand;
-
-            if (poolSize >= currentDemand * 2)
-            {
-                // Current demand is +ve, hence pool overflow unlikely
-                this._pool.length = currentDemand;
-                this._poolSize = this._pool.length;
-            }
-        },
-        null,
-        UPDATE_PRIORITY.UTILITY);
+        ticker.add(this._gcTick, null, UPDATE_PRIORITY.UTILITY);
     }
+
+    /**
+     * Stops running the GC on the pool.
+     *
+     * @param {Ticker}[ticker=Ticker.shared]
+     */
+    stopGC(ticker: Ticker = Ticker.shared): void
+    {
+        ticker.remove(this._gcTick);
+    }
+
+    private _gcTick = (): void =>
+    {
+        this._borrowRateAverage = this._borrowRateAverageProvider.next(this._borrowRate);
+        this._marginAverage = this._marginAverageProvider.next(this._freeCount - this._borrowRate);
+
+        const absDev = this._borrowRateAverageProvider.absDev();
+
+        this._flowRate = 0;
+        this._borrowRate = 0;
+        this._returnRate = 0;
+
+        const poolSize = this._freeCount;
+        const poolCapacity = this._freeList.length;
+
+        // If the pool is small enough, it shouldn't really matter
+        if (poolSize < 128 && this._borrowRateAverage < 128 && poolCapacity < 128)
+        {
+            return;
+        }
+
+        // If pool is say, 2x, larger than borrowing rate on average (adjusted for variance/abs-dev), then downsize.
+        const threshold = Math.max(this._borrowRateAverage * (this._capacityRatio - 1), this._reserveCount);
+
+        if (this._freeCount > threshold + absDev)
+        {
+            const newCap = threshold + absDev;
+
+            this.capacity = Math.min(this._freeList.length, Math.ceil(newCap));
+            this._freeCount = this._freeList.length;
+        }
+    };
 }

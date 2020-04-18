@@ -1,11 +1,14 @@
 # Object Pool
 
-This package implements a custom-tailored object pool for high frequency allocations. It resizes
-itself when demand significantly changes. It can be used to:
+This package implements a custom-tailored object pool for PixiJS applications. It provides the
+following features:
 
-* minimize memory usage _and_ the number of new allocations per frame
+* **reserve**: You can preallocate the pool size to have a set amount of objects.
 
-* track memory leaks in short-lived objects
+* **limit**: You can reduce the pool size after a lot of allocations.
+
+* **auto-GC**: The GC will reduce your pool to the reserve size after allocation demand goes down
+per-frame.
 
 ## Usage
 

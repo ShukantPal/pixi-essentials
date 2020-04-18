@@ -1,6 +1,6 @@
 /*!
- * @pixi-essentials/object-pool - v0.0.1-alpha.6
- * Compiled Fri, 17 Apr 2020 22:33:41 UTC
+ * @pixi-essentials/object-pool - v0.0.1-alpha.23
+ * Compiled Sat, 18 Apr 2020 16:37:59 UTC
  *
  * @pixi-essentials/object-pool is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -37,6 +37,62 @@ function __extends(d, b) {
 }
 
 /**
+ * Provides the exponential moving average of a sequence.
+ *
+ * Ignored because not directly exposed.
+ *
+ * @internal
+ * @ignore
+ * @class
+ */
+var AverageProvider = /** @class */ (function () {
+    /**
+     * @ignore
+     * @param {number} windowSize - no. of inputs used to calculate window
+     * @param {number} decayRatio - quantifies the weight of previous values (b/w 0 and 1)
+     */
+    function AverageProvider(windowSize, decayRatio) {
+        this._history = new Array(windowSize);
+        this._decayRatio = decayRatio;
+        this._currentIndex = 0;
+        for (var i = 0; i < windowSize; i++) {
+            this._history[i] = 0;
+        }
+    }
+    /**
+     * @ignore
+     * @param {number} input - the next value in the sequence
+     * @returns {number} - the moving average
+     */
+    AverageProvider.prototype.next = function (input) {
+        var _a = this, history = _a._history, decayRatio = _a._decayRatio;
+        var historyLength = history.length;
+        this._currentIndex = this._currentIndex < historyLength - 1 ? this._currentIndex + 1 : 0;
+        history[this._currentIndex] = input;
+        var weightedSum = 0;
+        var weight = 0;
+        for (var i = this._currentIndex + 1; i < historyLength; i++) {
+            weightedSum = (weightedSum + history[i]) * decayRatio;
+            weight = (weight + 1) * decayRatio;
+        }
+        for (var i = 0; i <= this._currentIndex; i++) {
+            weightedSum = (weightedSum + history[i]) * decayRatio;
+            weight = (weight + 1) * decayRatio;
+        }
+        this._average = weightedSum / weight;
+        return this._average;
+    };
+    AverageProvider.prototype.absDev = function () {
+        var errSum = 0;
+        for (var i = 0, j = this._history.length; i < j; i++) {
+            errSum += Math.abs(this._history[i] - this._average);
+        }
+        return errSum / this._history.length;
+    };
+    return AverageProvider;
+}());
+
+/**
  * `ObjectPool` provides the framework necessary for pooling minus the object instantiation
  * method. You can use `ObjectPoolFactory` for objects that can be created using a default
  * constructor.
@@ -50,132 +106,152 @@ var ObjectPool = /** @class */ (function () {
      * @param {IObjectPoolOptions} options
      */
     function ObjectPool(options) {
+        var _this = this;
         if (options === void 0) { options = {}; }
+        this._gcTick = function () {
+            _this._borrowRateAverage = _this._borrowRateAverageProvider.next(_this._borrowRate);
+            _this._marginAverage = _this._marginAverageProvider.next(_this._freeCount - _this._borrowRate);
+            var absDev = _this._borrowRateAverageProvider.absDev();
+            _this._flowRate = 0;
+            _this._borrowRate = 0;
+            _this._returnRate = 0;
+            var poolSize = _this._freeCount;
+            var poolCapacity = _this._freeList.length;
+            // If the pool is small enough, it shouldn't really matter
+            if (poolSize < 128 && _this._borrowRateAverage < 128 && poolCapacity < 128) {
+                return;
+            }
+            // If pool is say, 2x, larger than borrowing rate on average (adjusted for variance/abs-dev), then downsize.
+            var threshold = Math.max(_this._borrowRateAverage * (_this._capacityRatio - 1), _this._reserveCount);
+            if (_this._freeCount > threshold + absDev) {
+                var newCap = threshold + absDev;
+                _this.capacity = Math.min(_this._freeList.length, Math.ceil(newCap));
+                _this._freeCount = _this._freeList.length;
+            }
+        };
         /**
          * Supply pool of objects that can be used to immediately lend.
          *
-         * @template T
          * @member {Array<T>}
          * @protected
          */
-        this._pool = [];
+        this._freeList = [];
         /**
          * Number of objects in the pool. This is less than or equal to `_pool.length`.
          *
          * @member {number}
          * @protected
          */
-        this._poolSize = 0;
-        /**
-         * Rate at which object is borrowed.
-         *
-         * @member {number}
-         * @protected
-         */
+        this._freeCount = 0;
         this._borrowRate = 0;
-        /**
-         * Rate at which object is returned.
-         *
-         * @member {number}
-         * @protected
-         */
         this._returnRate = 0;
-        /**
-         * Rate at which objects are flowing out of the pool.
-         *
-         * @member {number}
-         */
         this._flowRate = 0;
-        /**
-         * Averaged flow rate, i.e. the demand of objects from this pool.
-         *
-         * @member {number}
-         */
-        this._currentDemand = 0;
-        /**
-         * Ratio to which pool capacity is grown when it becomes full. For example, if pool capacity
-         * is 100 and full, then its length will be set to 200 (if ratio = 2).
-         *
-         * @member {number}
-         */
-        this.capacityRatio = options.capacityRatio || 2;
-        /**
-         * Ratio used to exponentially average the flow rate. It should be between .95 and 1.
-         *
-         * @member {number}
-         */
-        this.decayRatio = options.decayRatio || 0.99;
-        this._history = 0;
-        if (!options.noInstall) {
-            this.install();
-        }
+        this._borrowRateAverage = 0;
+        this._reserveCount = options.reserve || 0;
+        this._capacityRatio = options.capacityRatio || 1.2;
+        this._decayRatio = options.decayRatio || 0.67;
+        this._marginAverage = 0;
+        this._borrowRateAverageProvider = new AverageProvider(128, this._decayRatio);
+        this._marginAverageProvider = new AverageProvider(128, this._decayRatio);
     }
-    // TODO: Support object destruction. It might not be so good for perf tho.
-    // /**
-    // * Destroys the object before discarding it.
-    // *
-    // * @param {T} object
-    //  */
-    // abstract destroyObject(object: T): void;
+    Object.defineProperty(ObjectPool.prototype, "capacity", {
+        // TODO: Support object destruction. It might not be so good for perf tho.
+        // /**
+        // * Destroys the object before discarding it.
+        // *
+        // * @param {T} object
+        //  */
+        // abstract destroyObject(object: T): void;
+        /**
+         * The number of objects that can be stored in the pool without allocating more space.
+         *
+         * @member {number}
+         */
+        get: function () {
+            return this._freeList.length;
+        },
+        set: function (cp) {
+            this._freeList.length = Math.ceil(cp);
+        },
+        enumerable: true,
+        configurable: true
+    });
     /**
      * Obtains an instance from this pool.
      *
      * @returns {T}
      */
-    ObjectPool.prototype.borrowObject = function () {
+    ObjectPool.prototype.allocate = function () {
         ++this._borrowRate;
         ++this._flowRate;
-        if (this._poolSize > 0) {
-            return this._pool[--this._poolSize];
+        if (this._freeCount > 0) {
+            return this._freeList[--this._freeCount];
         }
-        return this.createObject();
+        return this.create();
     };
     /**
      * Returns the object to the pool.
      *
      * @param {T} object
      */
-    ObjectPool.prototype.returnObject = function (object) {
+    ObjectPool.prototype.release = function (object) {
         ++this._returnRate;
         --this._flowRate;
-        if (this._poolSize === this._pool.length) {
-            this._pool.length *= this.capacityRatio;
+        if (this._freeCount === this.capacity) {
+            this.capacity *= this._capacityRatio;
         }
-        this._pool[this._poolSize] = object;
-        ++this._poolSize;
+        this._freeList[this._freeCount] = object;
+        ++this._freeCount;
     };
     /**
-     * Install the object pool callback on the shared ticker.
+     * Preallocates objects so that the pool size is at least `count`.
+     *
+     * @param {number} count
+     */
+    ObjectPool.prototype.reserve = function (count) {
+        this._reserveCount = count;
+        if (this._freeCount < count) {
+            var diff = this._freeCount - count;
+            for (var i = 0; i < diff; i++) {
+                this._freeList[this._freeCount] = this.create();
+                ++this._freeCount;
+            }
+        }
+    };
+    /**
+     * Dereferences objects for the GC to collect and brings the pool size down to `count`.
+     *
+     * @param {number} count
+     */
+    ObjectPool.prototype.limit = function (count) {
+        if (this._freeCount > count) {
+            var oldCapacity = this.capacity;
+            if (oldCapacity > count * this._capacityRatio) {
+                this.capacity = count * this._capacityRatio;
+            }
+            var excessBound = Math.min(this._freeCount, this.capacity);
+            for (var i = count; i < excessBound; i++) {
+                this._freeList[i] = null;
+            }
+        }
+    };
+    /**
+     * Install the GC on the shared ticker.
      *
      * @param {Ticker}[ticker=Ticker.shared]
      */
-    ObjectPool.prototype.install = function (ticker) {
-        var _this = this;
+    ObjectPool.prototype.startGC = function (ticker) {
         if (ticker === void 0) { ticker = Ticker.shared; }
-        ticker.add(function () {
-            _this._currentDemand *= _this.decayRatio;
-            _this._currentDemand += (1 - _this.decayRatio) * _this._borrowRate;
-            if (_this._history === 0) {
-                _this._currentDemand = _this._borrowRate;
-            }
-            ++_this._history;
-            _this._currentDemand = Math.ceil(_this._currentDemand);
-            _this._flowRate = 0;
-            _this._borrowRate = 0;
-            _this._returnRate = 0;
-            var poolSize = _this._poolSize;
-            var poolCapacity = _this._pool.length;
-            // If the pool is small enough, it shouldn't really matter
-            if (poolSize < 128 && _this._currentDemand < 128 && poolCapacity < 128) {
-                return;
-            }
-            var currentDemand = _this._currentDemand < 0 ? 0 : _this._currentDemand;
-            if (poolSize >= currentDemand * 2) {
-                // Current demand is +ve, hence pool overflow unlikely
-                _this._pool.length = currentDemand;
-                _this._poolSize = _this._pool.length;
-            }
-        }, null, UPDATE_PRIORITY.UTILITY);
+        ticker.add(this._gcTick, null, UPDATE_PRIORITY.UTILITY);
+    };
+    /**
+     * Stops running the GC on the pool.
+     *
+     * @param {Ticker}[ticker=Ticker.shared]
+     */
+    ObjectPool.prototype.stopGC = function (ticker) {
+        if (ticker === void 0) { ticker = Ticker.shared; }
+        ticker.remove(this._gcTick);
     };
     return ObjectPool;
 }());
@@ -216,7 +292,7 @@ var ObjectPoolFactory = /** @class */ (function () {
             function DefaultObjectPool() {
                 return _super !== null && _super.apply(this, arguments) || this;
             }
-            DefaultObjectPool.prototype.createObject = function () {
+            DefaultObjectPool.prototype.create = function () {
                 return new Type();
             };
             return DefaultObjectPool;
