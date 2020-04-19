@@ -11,6 +11,21 @@ display-object is encountered, unlike Pixi's in-built batch renderer. Instead of
 a full-flush, this renderer will only flush the display objects that intersect with
 the filtered/masked one.
 
+## How it works
+
+Each batched display-object is assigned a:
+
+* layer-ID: Overlapping display-objects must be be rendered in-order. The layer-ID is incremented whenever a display-objects
+happens to overlap another one before it.
+
+* batch-ID: Display-objects that have the same rendering dependencies (like textures or uniforms) have the same batch-ID.
+
+When the display-object is queued, it is placed in a bucket for its batch-ID. This bucket keeps display-objects sorted in
+order of their layer-ID.
+
+When the batch renderer is flushed, then buckets are merged to form batches. Merging is done such that layer-ID ordering is
+preserved and batch size is evenly distributed. Depending on the user's GPU, there is a "set" number of buckets per batch.
+
 ## Basic Usage
 
 The following example will setup a built-in preset of the out-of-order renderer:

@@ -14,7 +14,6 @@ export class BatchableEntity
     public displayObject: PIXI.DisplayObject;
     public layerID: number;
     public batchID: number;
-    public dependencies: BatchableEntity[];
 
     public next: BatchableEntity;
     public previous: BatchableEntity;
@@ -42,12 +41,6 @@ export class BatchableEntity
          * with the same `batchID`.
          */
         this.batchID = 0;
-
-        /**
-         * List of display-object directly below this one (one layer below).
-         * @member {PIXI.DisplayObject[]}
-         */
-        this.dependencies = [];
 
         /**
          * Next batchable entity in queue
@@ -108,7 +101,6 @@ export class BatchableEntity
         this.displayObject = null;
         this.layerID = 0;
         this.batchID = 0;
-        this.dependencies.length = 0;
 
         this.next = null;
         this.previous = null;

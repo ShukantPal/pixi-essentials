@@ -3,6 +3,7 @@ import { SpatialHash } from 'pixi-spatial-hash';
 import { BatchRenderer, IBatchRendererOptions } from 'pixi-batch-renderer';
 import { BatchableEntity, entityPool } from './BatchableEntity';
 import { IBatchHasher } from './IBatchHasher';
+import { BatchBucket } from './BatchBucket';
 
 /**
  * @public
@@ -27,16 +28,17 @@ export class OooRenderer extends BatchRenderer
     protected _hasher: IBatchHasher;
 
     protected _spatialHash: SpatialHash<BatchableEntity>;
-
-    // The batch list is implemented as a linked-list rather than an array because we don't
-    // need random access & we need to remove rendered nodes (out-of-order) unpredictably
-    protected _head: BatchableEntity;
-    protected _tail: BatchableEntity;
+    protected _batchBuckets: Map<number, BatchBucket>;
 
     constructor(renderer: PIXI.Renderer, options: IOooRendererOptions)
     {
         super(renderer, options);
 
+        /**
+         * The batch-ID generator
+         * @protected
+         * @member {IBatchHasher}
+         */
         this._hasher = options.batchHasher;
 
         /**
@@ -45,18 +47,6 @@ export class OooRenderer extends BatchRenderer
          * @member {PIXI.SpatialHash}
          */
         this._spatialHash = new SpatialHash(options.hashCell || 256);
-
-        /**
-         * Head of the batch queue. The head itself does not contain a queued display-object.
-         * @member {PIXI.ooo.BatchableEntity}
-         */
-        this._head = new BatchableEntity();
-
-        /**
-         * Tail of the batch queue.
-         * @member {PIXI.ooo.BatchableEntity}
-         */
-        this._tail = this._head;
     }
 
     /**
@@ -80,11 +70,12 @@ export class OooRenderer extends BatchRenderer
 
         entity.reset();
         entity.displayObject = displayObject;
-        entity.dependencies = Array.from(this._spatialHash.search(bounds));
+
+        const dependencies: BatchableEntity[] = Array.from(this._spatialHash.search(bounds));
 
         this._spatialHash.put(entity, bounds);
 
-        const deps = entity.dependencies;
+        const deps = dependencies;
         let depsMaxLayerID = -1;
 
         // Find the highest layerID overlapping with the display-object
@@ -99,16 +90,19 @@ export class OooRenderer extends BatchRenderer
         entity.layerID = depsMaxLayerID + 1;
         entity.batchID = this._hasher.batchID(displayObject);
 
-        // Append to the queue
-        entity.previous = this._tail;
-        this._tail.next = entity;
-        this._tail = entity;
+        let bucket = this._batchBuckets.get(entity.batchID);
+
+        if (!bucket)
+        {
+            bucket = new BatchBucket();
+            this._batchBuckets.set(entity.batchID, bucket);
+        }
+
+        bucket.put(entity);
     }
 
     flush(): void
     {
         const { _batchFactory: batchFactory, _geometryFactory: geometryFactory, _stateFunction: stateFunction } = this;
-
-        // We know what display-objects are going to be placed in the same batch (same batchID).
     }
 }
