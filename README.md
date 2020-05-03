@@ -7,3 +7,6 @@ an auto-GC mechanism that prevents the pool from staying too large relative to y
 
 * `@pixi-essentials/ooo-renderer`: This is an optimized batch renderer that can re-order display-object renders to increase
 batching efficiency. It uses the same API surface as [pixi-batch-renderer]{@link https://github.com/pixijs/pixi-batch-renderer}
+
+* `@pixi-essentials/plugin-g`: This is a plugin containing useful geometry manipulation utilities, The package also contains
+various types of useful geometries.
