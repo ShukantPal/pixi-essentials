@@ -1,0 +1,40 @@
+{
+  "name": "@pixi-essentials/instanced-renderer",
+  "version": "0.0.1-alpha.0",
+  "description": "PixiJS object renderer that uses instancing for drawing multiple geometries with the same style",
+  "keywords": [
+    "instanced",
+    "gpu-instancing",
+    "pixi.js",
+    "pixi",
+    "batch-renderer",
+    "sprite-renderer"
+  ],
+  "author": "Shukant Pal <shukantpal@outlook.com>",
+  "homepage": "https://github.com/SukantPal/pixi-essentials/tree/master/packages/instanced-renderer#readme",
+  "license": "MIT",
+  "main": "lib/instanced-renderer.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SukantPal/pixi-essentials.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/SukantPal/pixi-essentials/issues"
+  },
+  "peerDependencies": {
+    "@pixi/core": "^5.1.0"
+  },
+  "devDependencies": {
+    "@pixi/core": "^5.1.0"
+  }
+}
