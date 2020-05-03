@@ -1,4 +1,5 @@
 # Object Pool
+[![install size](https://packagephobia.now.sh/badge?p=@pixi-essentials/object-pool)](https://packagephobia.now.sh/result?p=@pixi-essentials/object-pool)
 
 This package implements a custom-tailored object pool for PixiJS applications. It provides the
 following features:
