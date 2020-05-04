@@ -1,4 +1,4 @@
-# `@pixi-essentials/instanced-renderer`
+# @pixi-essentials/instanced-renderer
 
 This packages implements an object renderer that uses instancing to draw the same "base" geometry
 with different "instanced attributes" like world-transforms.
