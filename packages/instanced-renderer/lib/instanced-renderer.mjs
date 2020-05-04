@@ -1,6 +1,6 @@
 /*!
  * @pixi-essentials/instanced-renderer - v0.0.1-alpha.0
- * Compiled Mon, 04 May 2020 16:01:19 UTC
+ * Compiled Mon, 04 May 2020 16:47:34 UTC
  *
  * @pixi-essentials/instanced-renderer is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -54,7 +54,7 @@ var InstancedRenderer = /** @class */ (function (_super) {
      */
     function InstancedRenderer(renderer, options) {
         var _this = _super.call(this, renderer) || this;
-        _this._instanceAttribViews = {};
+        _this._aBuffers = [];
         /**
          * Unique ID for this instance renderer.
          *
@@ -92,14 +92,6 @@ var InstancedRenderer = /** @class */ (function (_super) {
          */
         _this._state = options.state || State.for2d();
         /**
-         * The bytes used per instance/display-object.
-         *
-         * @protected
-         * @readonly
-         * @member {number}
-         */
-        _this._instanceSize = _this.calculateInstanceSizesAndViews();
-        /**
          * Object mapping (instanced) attribute IDs to their sizes in bytes.
          *
          * @protected
@@ -116,6 +108,14 @@ var InstancedRenderer = /** @class */ (function (_super) {
          * @member {Object<string, string>}
          */
         _this._instanceAttribViews = {};
+        /**
+         * The bytes used per instance/display-object.
+         *
+         * @protected
+         * @readonly
+         * @member {number}
+         */
+        _this._instanceSize = _this._calculateInstanceSizesAndViews();
         /**
          * Buffered display-objects
          *
@@ -158,7 +158,6 @@ var InstancedRenderer = /** @class */ (function (_super) {
         var instanceBuilder = this._instanceBuilder;
         var instanceSize = this._instanceSize;
         var instanceBuffer = this._getBuffer(this._objectCount * this._instanceSize);
-        this._instanceBuffer.data = instanceBuffer.rawBinaryData;
         // TODO: Optimize this by compiling a function that doesn't loop through each attribute
         // by rolling the loop
         for (var i = 0; i < this._objectCount; i++) {
@@ -166,6 +165,9 @@ var InstancedRenderer = /** @class */ (function (_super) {
             var object = this._objectBuffer[i];
             for (var attribID in this._instanceBuilder) {
                 var attribute = this._geometry.attributes[attribID];
+                if (!attribute.instance) {
+                    continue;
+                }
                 var attribSize = attribute.size;
                 var view = instanceBuffer[this._instanceAttribViews[attribID]];
                 var size = this._instanceAttribSizes[attribID];
@@ -182,11 +184,12 @@ var InstancedRenderer = /** @class */ (function (_super) {
                 rsize += size;
             }
         }
+        this._instanceBuffer.update(instanceBuffer.rawBinaryData);
         var renderer = this.renderer;
-        renderer.geometry.bind(this._geometry);
         renderer.shader.bind(this._shader);
+        renderer.geometry.bind(this._geometry);
         renderer.state.set(this._state);
-        renderer.geometry.draw(DRAW_MODES.TRIANGLE, undefined, undefined, this._objectCount);
+        renderer.geometry.draw(DRAW_MODES.TRIANGLES, undefined, undefined, this._objectCount);
         this._objectCount = 0;
     };
     /**
@@ -215,10 +218,10 @@ var InstancedRenderer = /** @class */ (function (_super) {
      * @private
      * @returns {number}
      */
-    InstancedRenderer.prototype.calculateInstanceSizesAndViews = function () {
+    InstancedRenderer.prototype._calculateInstanceSizesAndViews = function () {
         var totalSize = 0;
         for (var attribID in this._geometry.attributes) {
-            var attribute = this._geometry[attribID];
+            var attribute = this._geometry.attributes[attribID];
             if (!attribute.instance) {
                 continue;
             }
@@ -262,9 +265,11 @@ var InstancedRenderer = /** @class */ (function (_super) {
         this._instanceBuffer = new Buffer();
         var clonedGeometry = new Geometry();
         for (var attribID in this._geometry.attributes) {
-            var attribute = this._geometry[attribID];
+            var attribute = this._geometry.attributes[attribID];
             var instance = attribute.instance;
-            clonedGeometry.addAttribute(attribID, instance ? this._instanceBuffer : attribute.buffer, attribute.size, attribute.normalized, attribute.type, instance ? attribute.start : undefined, instance ? attribute.stride : undefined, attribute.instance);
+            console.log(attribID);
+            console.log(this._geometry.buffers[attribute.buffer]);
+            clonedGeometry.addAttribute(attribID, instance ? this._instanceBuffer : this._geometry.buffers[attribute.buffer], attribute.size, attribute.normalized, attribute.type, instance ? attribute.start : undefined, instance ? attribute.stride : undefined, attribute.instance);
         }
         this._geometry = clonedGeometry;
     };
@@ -301,5 +306,65 @@ var InstancedRenderer = /** @class */ (function (_super) {
  * }
  */
 
-export { InstancedRenderer };
+/**
+ * @class
+ * @example
+ * import { InstancedRendererPluginFactory } from '[at]pixi-essentials/instanced-renderer';
+ * import { Renderer, Shader, Geometry, TYPES } from 'pixi.js';
+ *
+ * const spriteRenderer = InstancedRendererPluginFactory.from({
+ *     instanceBuilder: {
+ *         aVertexPosition: "_vertexData"
+ *     },
+ *     geometry: new Geometry().
+ *         addAttribute("aVertexPosition", new Float32Array(
+ *             0, 0,
+ *             100, 0,
+ *             100, 100,
+ *             100, 100,
+ *             0, 100,
+ *             0, 0
+ *         ), 2, false, TYPES.FLOAT, 0, 0, true),
+ *     shader: new Shader(
+ *       `
+ * attribute vec2 aVertexPosition;
+ * uniform mat3 projectionMatrix;
+ *
+ * void main(void)
+ * {
+ *     gl_Position = vec4((projectionMatrix * vec3(aVertexPosition.xy, 1)).xy, 0, 1);
+ * }
+ * `,
+ * `
+ * void main(void)
+ * {
+ *     gl_FragColor = vec4(.5, 1, .2, 1);// some random color
+ * }
+ * `,
+ * {} // you can add uniforms
+ *     )
+ * });
+ */
+var InstancedRendererPluginFactory = /** @class */ (function () {
+    function InstancedRendererPluginFactory() {
+    }
+    /**
+     * Returns a plugin wrapping an instanced renderer that can be registered.
+     *
+     * @param {IInstancedRendererOptions} options
+     * @returns {PIXI.PluginConstructor}
+     */
+    InstancedRendererPluginFactory.from = function (options) {
+        return /** @class */ (function (_super) {
+            __extends(class_1, _super);
+            function class_1(renderer) {
+                return _super.call(this, renderer, options) || this;
+            }
+            return class_1;
+        }(InstancedRenderer));
+    };
+    return InstancedRendererPluginFactory;
+}());
+
+export { InstancedRenderer, InstancedRendererPluginFactory };
 //# sourceMappingURL=instanced-renderer.mjs.map
