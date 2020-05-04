@@ -1,5 +1,5 @@
 {
-  "name": "@pixi-essentials/plugin-g",
+  "name": "@pixi-essentials/system-g",
   "version": "0.0.1-alpha.0",
   "description": "PixiJS Plugin for advanced geometry manipulation",
   "keywords": [

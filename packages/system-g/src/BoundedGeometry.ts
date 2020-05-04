@@ -1,7 +1,8 @@
 import { Geometry } from '@pixi/core';
 import { Rectangle } from '@pixi/math';
+
 /**
- * {@class BoundedGeometry} is an abstraction for a geometry whose bounding box is
+ * {@code BoundedGeometry} is an abstraction for a geometry whose bounding box is
  * known in the local space.
  *
  * @class
