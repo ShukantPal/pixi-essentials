@@ -17,6 +17,8 @@
   "homepage": "https://github.com/SukantPal/pixi-essentials/tree/master/packages/plugin-g#readme",
   "license": "MIT",
   "main": "lib/plugin-g.cjs",
+  "module": "lib/plugin-g.mjs",
+  "bundle": "dist/plugin-g.js",
   "directories": {
     "lib": "lib",
     "test": "__tests__"

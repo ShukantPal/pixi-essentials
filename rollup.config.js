@@ -93,6 +93,7 @@ async function main()
         // Check for bundle folder
         const external = Object.keys(pkg.peerDependencies || []);
         const basePath = path.relative(__dirname, pkg.location);
+
         let input = path.join(basePath, 'src/index.ts');
 
         // TODO: remove check once all packages have been converted to typescript

@@ -13,7 +13,9 @@
   "author": "Shukant Pal <shukantpal@outlook.com>",
   "homepage": "https://github.com/SukantPal/pixi-essentials/tree/master/packages/instanced-renderer#readme",
   "license": "MIT",
-  "main": "lib/instanced-renderer.js",
+  "main": "lib/instanced-renderer.cjs",
+  "module": "lib/instanced-renderer.mjs",
+  "bundle": "dist/instanced-renderer.js",
   "directories": {
     "lib": "lib",
     "test": "__tests__"
@@ -33,8 +35,12 @@
   },
   "peerDependencies": {
     "@pixi/core": "^5.1.0",
+    "@pixi/constants": "^5.1.0",
+    "@pixi/utils": "^5.1.0"
   },
   "devDependencies": {
     "@pixi/core": "^5.1.0",
+    "@pixi/constants": "^5.1.0",
+    "@pixi/utils": "^5.1.0"
   }
 }
