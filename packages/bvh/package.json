@@ -1,0 +1,49 @@
+{
+  "name": "@pixi-essentials/bvh",
+  "version": "0.0.1-alpha.0",
+  "description": "Bounding volume hierarchy for 2D scene graphs",
+  "keywords": [
+    "2d",
+    "pixi.js",
+    "pixi",
+    "bvh",
+    "bounding-volume-hierarchy",
+    "ray-tracing",
+    "2d-ray-tracing"
+  ],
+  "author": "Shukant Pal <shukantpal@outlook.com>",
+  "homepage": "https://github.com/SukantPal/pixi-essentials/tree/master/packages/system-bvh#readme",
+  "license": "MIT",
+  "main": "lib/system-bvh.cjs",
+  "module": "lib/system-bvh.mjs",
+  "bundle": "dist/system-bvh.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SukantPal/pixi-essentials.git"
+  },
+  "scripts": {
+    "compile": "rm -rf compile && tsc && api-extractor run"
+  },
+  "bugs": {
+    "url": "https://github.com/SukantPal/pixi-essentials/issues"
+  },
+  "dependencies": {
+    "@pixi-essentials/object-pool": "0.0.1",
+    "@pixi-essentials/types": "0.0.1-alpha.0"
+  },
+  "peerDependencies": {
+    "@pixi/core": "^5.1.0",
+    "@pixi/math": "^5.1.0"
+  },
+  "devDependencies": {
+    "@pixi/core": "^5.1.0",
+    "@pixi/math": "^5.1.0"
+  }
+}

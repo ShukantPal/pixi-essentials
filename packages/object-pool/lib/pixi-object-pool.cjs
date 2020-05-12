@@ -1,6 +1,6 @@
 /*!
- * @pixi-essentials/object-pool - v0.0.1
- * Compiled Mon, 04 May 2020 16:47:34 UTC
+ * @pixi-essentials/object-pool - v0.0.2
+ * Compiled Tue, 12 May 2020 23:43:06 UTC
  *
  * @pixi-essentials/object-pool is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -194,6 +194,47 @@ var ObjectPool = /** @class */ (function () {
         return this.create();
     };
     /**
+     * Obtains an array of instances from this pool. This is faster than allocating multiple objects
+     * separately from this pool.
+     *
+     * @param {number | T[]} lengthOrArray - no. of objects to allocate OR the array itself into which
+     *      objects are inserted. The amount to allocate is inferred from the array's length.
+     * @returns {T[]} array of allocated objects
+     */
+    ObjectPool.prototype.allocateArray = function (lengthOrArray) {
+        var array;
+        var length;
+        if (Array.isArray(lengthOrArray)) {
+            array = lengthOrArray;
+            length = lengthOrArray.length;
+        }
+        else {
+            length = lengthOrArray;
+            array = new Array(length);
+        }
+        this._borrowRate += length;
+        this._flowRate += length;
+        var filled = 0;
+        // Allocate as many objects from the existing pool
+        if (this._freeCount > 0) {
+            var pool = this._freeList;
+            var poolFilled = Math.min(this._freeCount, length);
+            var poolSize = this._freeCount;
+            for (var i = 0; i < poolFilled; i++) {
+                array[filled] = pool[poolSize - 1];
+                ++filled;
+                --poolSize;
+            }
+            this._freeCount = poolSize;
+        }
+        // Construct the rest of the allocation
+        while (filled < length) {
+            array[filled] = this.create();
+            ++filled;
+        }
+        return array;
+    };
+    /**
      * Returns the object to the pool.
      *
      * @param {T} object
@@ -206,6 +247,24 @@ var ObjectPool = /** @class */ (function () {
         }
         this._freeList[this._freeCount] = object;
         ++this._freeCount;
+    };
+    /**
+     * Releases all of the objects in the passed array. These need not be allocated using `allocateArray`, however.
+     *
+     * @param {T[]} array
+     */
+    ObjectPool.prototype.releaseArray = function (array) {
+        this._returnRate += array.length;
+        this._flowRate -= array.length;
+        if (this._freeCount + array.length > this.capacity) {
+            // Ensure we have enough capacity to insert the release objects
+            this.capacity = Math.max(this.capacity * this._capacityRatio, this._freeCount + array.length);
+        }
+        // Place objects into pool list
+        for (var i = 0, j = array.length; i < j; i++) {
+            this._freeList[this._freeCount] = array[i];
+            ++this._freeCount;
+        }
     };
     /**
      * Preallocates objects so that the pool size is at least `count`.

@@ -1,0 +1,38 @@
+{
+  "name": "@pixi-essentials/types",
+  "version": "0.0.1-alpha.0",
+  "description": "Type definitions used throughout @pixi-essentials",
+  "keywords": [
+    "types",
+    "ts"
+  ],
+  "author": "Shukant Pal <shukantpal@outlook.com>",
+  "homepage": "https://github.com/SukantPal/pixi-essentials/tree/master/packages/types#readme",
+  "license": "MIT",
+  "main": "lib/types.cjs",
+  "module": "lib/types.mjs",
+  "bundle": "dist/types.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SukantPal/pixi-essentials.git"
+  },
+  "scripts": {
+    "compile": "rm -rf compile && tsc && api-extractor run"
+  },
+  "bugs": {
+    "url": "https://github.com/SukantPal/pixi-essentials/issues"
+  },
+  "peerDependencies": {
+    "@pixi/math": "^5.1.0"
+  },
+  "devDependencies": {
+    "@pixi/math": "^5.1.0"
+  }
+}

@@ -57,11 +57,26 @@ export declare abstract class ObjectPool<T extends typeof Object> {
      */
     allocate(): T;
     /**
+     * Obtains an array of instances from this pool. This is faster than allocating multiple objects
+     * separately from this pool.
+     *
+     * @param {number | T[]} lengthOrArray - no. of objects to allocate OR the array itself into which
+     *      objects are inserted. The amount to allocate is inferred from the array's length.
+     * @returns {T[]} array of allocated objects
+     */
+    allocateArray(lengthOrArray: number | T[]): T[];
+    /**
      * Returns the object to the pool.
      *
      * @param {T} object
      */
     release(object: T): void;
+    /**
+     * Releases all of the objects in the passed array. These need not be allocated using `allocateArray`, however.
+     *
+     * @param {T[]} array
+     */
+    releaseArray(array: T[]): void;
     /**
      * Preallocates objects so that the pool size is at least `count`.
      *
