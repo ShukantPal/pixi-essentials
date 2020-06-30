@@ -1,6 +1,6 @@
 /*!
  * @pixi-essentials/instanced-renderer - v0.0.1-alpha.1
- * Compiled Tue, 12 May 2020 23:43:06 UTC
+ * Compiled Tue, 30 Jun 2020 16:20:53 UTC
  *
  * @pixi-essentials/instanced-renderer is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license

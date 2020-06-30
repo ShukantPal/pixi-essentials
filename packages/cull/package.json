@@ -1,0 +1,35 @@
+{
+  "name": "@pixi-essentials/cull",
+  "version": "1.0.0",
+  "description": "Optimized recursive display-object culling for scene graphs",
+  "keywords": [
+    "cull",
+    "pixi.js"
+  ],
+  "author": "Shukant Pal <shukantpal@outlook.com>",
+  "homepage": "https://github.com/SukantPal/pixi-essentials/tree/master/packages/cull#readme",
+  "license": "MIT",
+  "main": "lib/cull.js",
+  "module": "lib/cull.ejs",
+  "bundle": "dist/cull.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SukantPal/pixi-essentials.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/SukantPal/pixi-essentials/issues"
+  },
+  "peerDependencies": {
+    "pixi.js": "^5.0.0"
+  }
+}
