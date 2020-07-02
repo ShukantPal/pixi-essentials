@@ -8,7 +8,7 @@
     "build:types": "lerna run compile",
     "build": "npm run build:compile; npm run build:types",
     "prepublishOnly": "npm run build",
-    "test": "mocha packages/**/test/*.js"
+    "test": "floss --path test/index.js --debug"
   },
   "repository": {
     "type": "git",
@@ -34,7 +34,10 @@
     "@pixi/eslint-config": "^1.0.1",
     "@typescript-eslint/eslint-plugin": "^2.26.0",
     "@typescript-eslint/parser": "^2.26.0",
+    "electron": "^9.0.5",
     "eslint": "^6.8.0",
+    "floss": "^3.0.0",
+    "jsdom": "^16.2.2",
     "lerna": "^3.20.2",
     "minimist": "^1.2.5",
     "mocha": "^7.1.1",
@@ -46,10 +49,11 @@
     "rollup-plugin-string": "^3.0.0",
     "rollup-plugin-terser": "^5.3.0",
     "rollup-plugin-typescript": "^1.0.1",
+    "sinon": "^9.0.2",
+    "sinon-chai": "^3.5.0",
     "typescript": "^3.8.3"
   },
   "dependencies": {
-    "chai": "^4.2.0",
-    "sinon": "^9.0.2"
+    "chai": "^4.2.0"
   }
 }
