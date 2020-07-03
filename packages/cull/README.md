@@ -1,4 +1,4 @@
-@pixi-essentials/cull
+# @pixi-essentials/cull
 
 This package provides an optimized, highly configurable culling mechanism.
 
