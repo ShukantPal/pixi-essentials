@@ -63,4 +63,28 @@ describe('SmartMaskMixin', function ()
 
         expect(parent.mask).to.equal(null);
     });
+
+    it('should update transforms if skipUpdate is false', function ()
+    {
+        const parent = new Container();
+        const mask = parent.addChild(new Graphics().drawRect(0, 0, 100, 100));
+        const child = new Graphics().drawRect(0, 0, 25, 25);
+
+        // Make child such that masking is required on parent
+        child.position.set(50);
+        child.scale.set(3);
+
+        parent.addChild(child);
+        parent.smartMask = mask;
+
+        parent.updateSmartMask();
+
+        // Without updating transforms, the mask should be null
+        expect(parent.mask).to.equal(null);
+
+        parent.updateSmartMask(true, false);
+
+        // After updating transforms, masking is needed
+        expect(parent.mask).to.equal(mask);
+    });
 });
