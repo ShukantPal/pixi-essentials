@@ -1,0 +1,43 @@
+{
+  "name": "@pixi-essentials/shader-preprocessor",
+  "version": "1.0.0",
+  "description": "Compile-time processing for shaders",
+  "keywords": [
+    "pixi.js",
+    "shaders",
+    "webgl-shader",
+    "webgl",
+    "preprocessing",
+    "compiling",
+    "macros"
+  ],
+  "author": "Shukant Pal <shukantpal@outlook.com>",
+  "homepage": "https://github.com/SukantPal/pixi-essentials/tree/master/packages/shader-preprocessor#readme",
+  "license": "MIT",
+  "main": "lib/shader-preprocessor.js",
+  "module": "lib/shader-preprocessor.ejs",
+  "bundle": "dist/shader-preprocessor.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SukantPal/pixi-essentials.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/SukantPal/pixi-essentials/issues"
+  },
+  "peerDependencies": {
+    "@pixi/core": "^5.0.0"
+  },
+  "devDependencies": {
+    "pixi.js": "^5.0.0"
+  }
+}
