@@ -6,6 +6,8 @@ import { Rectangle } from 'pixi.js';
  *
  * If your scene graph is not static, culling needs to be done before rendering. You
  * can run it on the `prerender` event fired by the renderer.
+ *
+ * @public
  */
 export declare class Cull {
     private _recursive;

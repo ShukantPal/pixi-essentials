@@ -1,6 +1,6 @@
 /*!
- * @pixi-essentials/cull - v1.0.1
- * Compiled Sun, 05 Jul 2020 15:17:15 UTC
+ * @pixi-essentials/cull - v1.0.2
+ * Compiled Sun, 05 Jul 2020 21:41:15 UTC
  *
  * @pixi-essentials/cull is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -17,6 +17,8 @@ var tempRect = new pixi_js.Rectangle();
  *
  * If your scene graph is not static, culling needs to be done before rendering. You
  * can run it on the `prerender` event fired by the renderer.
+ *
+ * @public
  */
 var Cull = /** @class */ (function () {
     /**
