@@ -1,6 +1,6 @@
 /*!
  * @pixi-essentials/cull - v1.0.1
- * Compiled Fri, 03 Jul 2020 18:37:42 UTC
+ * Compiled Sun, 05 Jul 2020 15:17:15 UTC
  *
  * @pixi-essentials/cull is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -133,9 +133,14 @@ var Cull = /** @class */ (function () {
             && bounds.left < rect.right
             && bounds.bottom > rect.top
             && bounds.top < rect.bottom;
-        // Only cull children if this display-object is unculled. It is expected that the bounds
-        // of children lie inside of its own.
-        if (displayObject[this._toggle]
+        var fullyVisible = bounds.left >= rect.left
+            && bounds.top >= rect.top
+            && bounds.right <= rect.right
+            && bounds.bottom >= rect.bottom;
+        // Only cull children if this display-object is fully-visible. It is expected that the bounds
+        // of children lie inside of its own. Hence, further culling is only required if the display-object
+        // intersects with the boundaries of "rect".
+        if (!fullyVisible
             && displayObject.children
             && displayObject.children.length) {
             var children = displayObject.children;

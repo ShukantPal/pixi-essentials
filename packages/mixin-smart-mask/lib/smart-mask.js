@@ -1,6 +1,6 @@
 /*!
  * @pixi-essentials/mixin-smart-mask - v1.0.0
- * Compiled Fri, 03 Jul 2020 18:37:42 UTC
+ * Compiled Sun, 05 Jul 2020 15:17:15 UTC
  *
  * @pixi-essentials/mixin-smart-mask is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -75,7 +75,6 @@ display.DisplayObject.prototype.updateSmartMask = function updateSmartMask(recur
         this.children = originalChildren;
         // copyFrom needed if Rectangle.EMPTY is returned
         unmaskedTargetBounds.copyFrom(tempBounds.getRectangle(unmaskedTargetBounds));
-        console.log(unmaskedTargetBounds.clone());
     }
     var children = this.children;
     if (children && children.length) {
@@ -87,7 +86,6 @@ display.DisplayObject.prototype.updateSmartMask = function updateSmartMask(recur
                     continue;
                 }
                 var childBounds = child.updateSmartMask(true, skipUpdate);
-                console.log(childBounds);
                 unmaskedTargetBounds.enlarge(childBounds);
                 rectanglePool.release(childBounds); // Recursive updates require the caller to release the returned rectangle
             }

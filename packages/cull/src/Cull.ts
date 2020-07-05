@@ -16,6 +16,8 @@ export interface ICullOptions
  *
  * If your scene graph is not static, culling needs to be done before rendering. You
  * can run it on the `prerender` event fired by the renderer.
+ *
+ * @public
  */
 export class Cull
 {
@@ -175,9 +177,15 @@ export class Cull
             && bounds.bottom > rect.top
             && bounds.top < rect.bottom;
 
-        // Only cull children if this display-object is unculled. It is expected that the bounds
-        // of children lie inside of its own.
-        if (displayObject[this._toggle]
+        const fullyVisible = bounds.left >= rect.left
+            && bounds.top >= rect.top
+            && bounds.right <= rect.right
+            && bounds.bottom >= rect.bottom;
+
+        // Only cull children if this display-object is fully-visible. It is expected that the bounds
+        // of children lie inside of its own. Hence, further culling is only required if the display-object
+        // intersects with the boundaries of "rect".
+        if (!fullyVisible
                 && (displayObject as Container).children
                 && (displayObject as Container).children.length)
         {
