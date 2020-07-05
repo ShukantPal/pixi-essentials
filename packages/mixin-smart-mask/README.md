@@ -8,7 +8,7 @@ display-object already lie inside the mask's bounds.
 In order for to use smart-masks, you must set masks on the `smartMask` property of display-objects instead; before each rendering
 frame, you must call `updateSmartMask` to re-evalulate which masks are essential for rendering correctly.
 
-```
+```js
 import * as PIXI from 'pixi.js';
 import '@pixi-essentials/mixin-smart-mask';
 
