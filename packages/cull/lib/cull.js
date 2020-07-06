@@ -1,6 +1,6 @@
 /*!
  * @pixi-essentials/cull - v1.0.2
- * Compiled Sun, 05 Jul 2020 21:41:15 UTC
+ * Compiled Mon, 06 Jul 2020 17:48:43 UTC
  *
  * @pixi-essentials/cull is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -94,6 +94,7 @@ var Cull = /** @class */ (function () {
     Cull.prototype.cull = function (rect, skipUpdate) {
         var _this = this;
         if (skipUpdate === void 0) { skipUpdate = false; }
+        this.uncull();
         this._targetList.forEach(function (target) {
             if (!skipUpdate) {
                 // Update the transforms of display-objects in this target's subtree

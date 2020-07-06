@@ -1,6 +1,6 @@
 {
   "name": "@pixi-essentials/cull",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Optimized recursive display-object culling for scene graphs",
   "keywords": [
     "cull",
@@ -18,7 +18,8 @@
   },
   "files": [
     "lib",
-    "dist"
+    "dist",
+    "index.d.ts"
   ],
   "repository": {
     "type": "git",

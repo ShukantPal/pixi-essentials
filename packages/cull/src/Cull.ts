@@ -115,6 +115,8 @@ export class Cull
      */
     cull(rect: Rectangle, skipUpdate = false): this
     {
+        this.uncull();
+
         this._targetList.forEach((target) =>
         {
             if (!skipUpdate)
