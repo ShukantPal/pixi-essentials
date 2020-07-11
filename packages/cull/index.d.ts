@@ -71,7 +71,9 @@ export declare class Cull {
 }
 
 /**
- * @internal
+ * The culling options for {@code Cull}
+ *
+ * @public
  */
 declare interface ICullOptions {
     recursive: boolean;

@@ -1,0 +1,42 @@
+{
+  "name": "@pixi-essentials/filter-fft",
+  "version": "1.0.0",
+  "description": "FFT filter based on the stockham algorithm",
+  "keywords": [
+    "fft",
+    "stockham",
+    "pixi.js",
+    "pixi",
+    "filter",
+    "pixi-filter"
+  ],
+  "author": "Shukant Pal <shukantpal@outlook.com>",
+  "homepage": "https://github.com/SukantPal/pixi-essentials/tree/master/packages/filter-fft#readme",
+  "license": "MIT",
+  "main": "lib/filter-fft.js",
+  "module": "lib/filter-fft.mjs",
+  "bundle": "lib/filter-fft.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SukantPal/pixi-essentials.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/SukantPal/pixi-essentials/issues"
+  },
+  "peerDependencies": {
+    "@pixi/core": "^5.0.0"
+  },
+  "devDependencies": {
+    "@pixi/core": "^5.0.0"
+  }
+}

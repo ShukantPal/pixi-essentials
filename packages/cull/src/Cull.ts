@@ -3,7 +3,9 @@ import { DisplayObject, Container, Rectangle } from 'pixi.js';
 const tempRect = new Rectangle();
 
 /**
- * @internal
+ * The culling options for {@code Cull}
+ *
+ * @public
  */
 export interface ICullOptions
 {

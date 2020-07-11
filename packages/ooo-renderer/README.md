@@ -1,73 +1,104 @@
-# [WIP][Experimental] Out-of-Order Renderer for PixiJS Scene Graphs
+# @pixi-essentials/ooo-renderer
 
-This packages provides an out-of-order batch renderer, which:
+This package implements a out-of-order rendering pipeline that improves batching efficiency in:
+* scene graphs that use multiple shaders
+* (not implemented) scene graphs heavily relying on filtering or masking
 
-* can improve batching efficiency by smartly re-ordering your display-object renders
-to minimize draw calls. This can be done because display-objects that do not intersect
-in world space do not need to be rendered in-order.
+## Concept
 
-* does not need to prematurely flush when a filtered or masked
-display-object is encountered, unlike Pixi's in-built batch renderer. Instead of doing
-a full-flush, this renderer will only flush the display objects that intersect with
-the filtered/masked one.
+The out-of-order renderer aims to dramatically increase batching efficiency in scene graphs that are drawn using multiple shaders. 
 
-## How it works
+The traditional batch shader preserves the drawing order of display-objects by flushing out the object-buffer whenever an object is 
+encountered that cannot be added to a batch. This results in very inefficient batching when objects drawn with different shaders are
+interleaved throughout the scene graph. This is because, after every few objects, the batch renderer must flush itself.
 
-Each batched display-object is assigned a:
+The out-of-order renderer fixes this problem by creating one universal object renderer that handles all the different shader pipelines
+for the scene graph. Instead of preserving  the drawing order, it preserves the local z-order of display-objects. Specifically, instead
+of drawing each object in the same order, it will only ensure an object B that is on top of another object A will always be drawn after object A.
+The z-orders of display-objects are inferred by intersecting their bounds with preceding object bounds. If object B intersects with a
+preceding object A, then its z-order will one more than that of object A. If an object intersects with multiple other objects, then its 
+z-order will always be one more than that of the maximum z-order in the intersections. If an object does not intersect at all, then its 
+z-order will be zero.
 
-* layer-ID: Overlapping display-objects must be be rendered in-order. The layer-ID is incremented whenever a display-objects
-happens to overlap another one before it.
+## Under the hood
 
-* batch-ID: Display-objects that have the same rendering dependencies (like textures or uniforms) have the same batch-ID.
+The out-of-order plugin maintains a list of display-object batches, which is updated on each `render` request. Each batch in one-pass by the
+underlying batch plugin.
 
-When the display-object is queued, it is placed in a bucket for its batch-ID. This bucket keeps display-objects sorted in
-order of their layer-ID.
+A display-object is put into the first same-plugin batch that occurs with or after all its z-dependencies. The z-dependencies are display-objects
+that are "underneath" (i.e. bounds intersect & the display-object below occurs before in the scene).
 
-When the batch renderer is flushed, then buckets are merged to form batches. Merging is done such that layer-ID ordering is
-preserved and batch size is evenly distributed. Depending on the user's GPU, there is a "set" number of buckets per batch.
+The benefit of this is that display-objects are rendered in an order that optimizes batching efficiency.
 
-## Basic Usage
+### Example
 
-The following example will setup a built-in preset of the out-of-order renderer:
+In the scene below, there are two types of objects: cards and text. The cards are `PIXI.Graphics` objects while the text is drawn using a special
+MSDF shader. Since each text object occurs after the card below, the default batch shader will never be able to group more than one card/text
+together.
+
+The out-of-order pipeline drastically optimizes this by rendering all the cards together, and then all the text together.
+
+<img src="https://i.ibb.co/Pr0K15n/Screen-Shot-2020-07-11-at-1-23-37-PM.png"></img>
+
+## Usage with multiple object renderers
+
+This basic example demonstrates how to integrate your own batch-renderer plugin and Pixi's built-in batching plugin to
+build an out-of-order pipeline:
 
 ```js
 import * as PIXI from 'pixi.js;
-import { createOooable, OooRendererPluginFactory } from 'pixi-ooo-renderer';
-import { DropShadowFilter } from '@pixi/filter-drop-shadow';
+import { OooRenderer } from '@pixi-essentials/ooo-renderer';
+import { BatchRendererPluginFactory } from 'pixi-batch-renderer';
+import { MSDFText } from './MSDFText';// HINT: This is the custom shaded display-object
 
-// Create a sprite that will render using the ooo-renderer instead of
-// default batching mechanism in PixiJS.
-//
-// createOooable prevents premature flushing when filtered. It does not
-// need to be used but is recommended for maximizing performance.
-function createOooSprite(textureOrUrl) {
-    const sprite = createOooable(typeof textureOrUrl === 'string' 
-        ? PIXI.Sprite.from(textureOrUrl) 
-        : new PIXI.Sprite(textureOrUrl));
+function registerMSDFShader()
+{
+    const msdfRendererPlugin = BatchRendererPluginFactory.from({
+        // HINT: You must generate the batch renderer plugin for the MSDF text
+    });
 
-    sprite.pluginName = 'ooo';
-    return sprite;
+    PIXI.Renderer.registerPlugin('textRenderer', msdfRendererPlugin);
+}
+function registerOooPipeline()
+{
+    const oooPipelinePlugin = OooRenderer;
+
+    PIXI.Renderer.registerPlugin('ooo', oooPipelinePlugin);
 }
 
-// Register out-of-order renderer plugin. The default preset was made
-// for rendering Sprite, Mesh, Graphics (PixiJS built-in display-object).
-//
-// For custom-tailored display objects, you can use the OooRendererPluginFactory
-// API to define your own rendering pipeline.
-PIXI.Renderer.registerPlugin('ooo', OooRendererPluginFactory.create({
-    preset: 'built-in'    
-}))
+registerMSDFShader();
+registerOooPipeline();
 
-const app = new PIXI.Application({ /* options */ });
+const app = new PIXI.Application({
+    width: 800,
+    height: 600
+});
+const stage = app.stage;
 
-app.stage.addChild(createOooSprite('./assets/foo.png'));
+document.body.appendChild(app.view);
 
-// This won't prevent 1st and 3rd sprite from getting batched because
-// it is placed at (100, 350), far away.
-const spriteWithFilters = createOooSprite('./assets/foobar.png');
-spriteWithFilters.filters = [new DropShadowFilter()];
-spriteWithFilters.position.set(100, 350);
-app.stage.addChild(spriteWithFilters);
+for (let i = 0; i < 4; i++)
+{
+    for (let j = 0; j < 3; j++)
+    {
+        const x = 160 * i;
+        const y = 200 * j;
 
-app.stage.addChild(createOooSprite('./assets/bar.png));
+        const cardBackground = new PIXI.Graphics()
+            .beginFill(0xff0000)
+            .drawRect(10, 10, 140, 180)
+            .endFill();
+        const text = new MSDFText("MSDF Text");
+        const container = new PIXI.Container();
+
+        container.addChild(cardBackground, text);
+        container.position.set(x, y);
+        text.position.set(70, 95);
+
+        stage.addChild(container);
+
+        cardBackground.pluginName = "ooo";
+        text.pluginName = "ooo";
+    }
+}
 ```

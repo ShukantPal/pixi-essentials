@@ -17,6 +17,8 @@ const EMPTY_ARRAY = [];
 /**
  * It enable smart-masking, set this property. Before rendering the scene graph, you must invoke
  * {@code updateSmartMask} on each display-object to enable masking.
+ *
+ * @type {PIXI.DisplayObject}
  */
 DisplayObject.prototype.smartMask = null;
 
@@ -27,6 +29,7 @@ DisplayObject.prototype.smartMask = null;
  * NOTE: Setting the smart-mask to null will not remove the mask on the display-object, if it has already
  * been enabled.
  *
+ * @method PIXI.DisplayObject#updateSmartMask
  * @param recursive - whether to update the smart-masks of the children as well. Traversing the scene
  *      graph on your own is less optimized due to bounds recalculations.
  * @param skipUpdate - whether to not recalculate the transforms of each display-object. This is false

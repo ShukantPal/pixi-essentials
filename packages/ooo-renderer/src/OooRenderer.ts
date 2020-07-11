@@ -1,108 +1,124 @@
-import * as PIXI from 'pixi.js';
+import { DisplayObject, Renderer, ObjectRenderer } from 'pixi.js';
 import { SpatialHash } from 'pixi-spatial-hash';
-import { BatchRenderer, IBatchRendererOptions } from 'pixi-batch-renderer';
-import { BatchableEntity, entityPool } from './BatchableEntity';
-import { IBatchHasher } from './IBatchHasher';
-import { BatchBucket } from './BatchBucket';
+import { OooElement } from './OooElement';
+import { ObjectPoolFactory } from '@pixi-essentials/object-pool';
+
+const elementPool = ObjectPoolFactory.build(OooElement as any);
 
 /**
  * @public
- * @interface
  */
-export interface IOooRendererOptions extends IBatchRendererOptions {
-    batchHasher: IBatchHasher;
-    hashCell?: number;
+export interface IOooRendererOptions {
+    blockSize: number;
+    pluginProvider: (displayObject: DisplayObject) => string;
 }
 
 /**
- * The out-of-order renderer can efficiently batch display-objects using a spatial
- * hash to keep track of z-ordering.
+ * The out-of-order rendering pipeline
  *
- * @namespace PIXI.ooo
- * @template <C extends PIXI.ooo.OooRenderClient>
- * @class
- * @augments PIXI.ObjectRenderer
+ * @public
  */
-export class OooRenderer extends BatchRenderer
+export class OooRenderer extends ObjectRenderer
 {
-    protected _hasher: IBatchHasher;
+    public spatialHash: SpatialHash<DisplayObject>;
+    public pluginProvider: (displayObject: DisplayObject) => string;
 
-    protected _spatialHash: SpatialHash<BatchableEntity>;
-    protected _batchBuckets: Map<number, BatchBucket>;
+    protected batchList: Array<{ pluginName: string; displayObjects: Array<DisplayObject> }>;
 
-    constructor(renderer: PIXI.Renderer, options: IOooRendererOptions)
+    constructor(renderer: Renderer, options: Partial<IOooRendererOptions> = {})
     {
-        super(renderer, options);
+        super(renderer);
 
         /**
-         * The batch-ID generator
-         * @protected
-         * @member {IBatchHasher}
+         * 2D spatial hash of the buffered display-objects. This updated on each render call on this object-renderer.
          */
-        this._hasher = options.batchHasher;
+        this.spatialHash = new SpatialHash<DisplayObject>(options.blockSize || 256);
 
         /**
-         * Spatial hash used to quickly find overlapping display-objects
-         * @protected
-         * @member {PIXI.SpatialHash}
+         * Provides the pipeline used to render an object. By default, the ooo-renderer will use the `pluginName` property
+         * to determine the pipeline.
          */
-        this._spatialHash = new SpatialHash(options.hashCell || 256);
+        this.pluginProvider = options.pluginProvider || ((displayObject: any): string => displayObject.pluginName);
+
+        /**
+         * The list of batches created for the buffered objects
+         */
+        this.batchList = [];
+    }
+
+    start(): void
+    {
+        this.spatialHash.clear();
+        this.batchList = [];
     }
 
     /**
      * @override
-     * @param {PIXI.DisplayObject} displayObject
      */
-    render(displayObject: PIXI.DisplayObject): void
+    render(displayObject: DisplayObject): void
     {
-        // Instead of super.render(), we do this locally instead.
-        this._bufferedVertices += this._vertexCountFor(displayObject);
+        const element: OooElement = elementPool.allocate();
+        const elementBounds = displayObject.getBounds(true);
+        const zDependencies: Array<OooElement> = this.spatialHash.search(elementBounds);
 
-        if (this._indexProperty)
+        element.displayObject = displayObject;
+        element.pluginName = this.pluginProvider(displayObject);
+        element.zIndex = zDependencies.length
+            ? zDependencies.reduce((maxIndex, zDep) => Math.max(maxIndex, zDep.zIndex), 0)
+            : 0;
+        element.zDependencies = zDependencies;
+
+        this.spatialHash.put(element, elementBounds);
+
+        // The minimum batch index needed to ensure this display-object is rendered after its z-dependencies. This
+        // is always less than the length of the batchList.
+        const minBatchIndex = zDependencies.length
+            ? zDependencies.reduce((minBatchIndex, zDep) => Math.max(minBatchIndex, zDep.batchIndex), 0)
+            : 0;
+
+        // Search for a batch for this display-object after minBatchIndex
+        for (let i = minBatchIndex, j = this.batchList.length; i < j; i++)
         {
-            this._bufferedIndices += (displayObject as any)[this._indexProperty]
-                ? ((displayObject as any)[this._indexProperty] as Array<any>).length
-                : (this._indexProperty as unknown) as number;
-        }
+            const batch = this.batchList[i];
+            const pluginName = batch.pluginName;
 
-        const entity: BatchableEntity = entityPool.allocate();
-        const bounds = entity.displayObject.getBounds(true, entity.bounds);
-
-        entity.reset();
-        entity.displayObject = displayObject;
-
-        const dependencies: BatchableEntity[] = Array.from(this._spatialHash.search(bounds));
-
-        this._spatialHash.put(entity, bounds);
-
-        const deps = dependencies;
-        let depsMaxLayerID = -1;
-
-        // Find the highest layerID overlapping with the display-object
-        for (let i = 0, j = deps.length; i < j; i++)
-        {
-            if (depsMaxLayerID < deps[i].layerID)
+            if (pluginName === element.pluginName)
             {
-                depsMaxLayerID = deps[i].layerID;
+                batch.displayObjects.push(displayObject);
+
+                return;
             }
         }
 
-        entity.layerID = depsMaxLayerID + 1;
-        entity.batchID = this._hasher.batchID(displayObject);
+        const batch = {
+            pluginName: element.pluginName,
+            displayObjects: [displayObject],
+        };
 
-        let bucket = this._batchBuckets.get(entity.batchID);
-
-        if (!bucket)
-        {
-            bucket = new BatchBucket();
-            this._batchBuckets.set(entity.batchID, bucket);
-        }
-
-        bucket.put(entity);
+        this.batchList.push(batch);
     }
 
+    /**
+     * @override
+     */
     flush(): void
     {
-        const { _batchFactory: batchFactory, _geometryFactory: geometryFactory, _stateFunction: stateFunction } = this;
+        const rendererPlugins = this.renderer.plugins;
+
+        for (let i = 0, j = this.batchList.length; i < j; i++)
+        {
+            const batch = this.batchList[i];
+            const displayObjects = batch.displayObjects;
+            const pluginRenderer: ObjectRenderer = rendererPlugins[batch.pluginName];
+
+            pluginRenderer.start();
+
+            for (let u = 0, v = displayObjects.length; u < v; u++)
+            {
+                pluginRenderer.render(displayObjects[u]);
+            }
+
+            pluginRenderer.stop();
+        }
     }
 }
