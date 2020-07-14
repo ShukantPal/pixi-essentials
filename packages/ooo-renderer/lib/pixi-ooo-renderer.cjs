@@ -1,6 +1,6 @@
 /*!
  * @pixi-essentials/ooo-renderer - v0.0.1-alpha.0
- * Compiled Sat, 11 Jul 2020 16:47:29 UTC
+ * Compiled Tue, 14 Jul 2020 17:57:17 UTC
  *
  * @pixi-essentials/ooo-renderer is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -44,7 +44,6 @@ function __extends(d, b) {
 
 var OooElement = /** @class */ (function () {
     function OooElement() {
-        this.zDependencies = [];
     }
     OooElement.prototype.getBounds = function () {
         return this.displayObject.getBounds(true);
@@ -53,6 +52,11 @@ var OooElement = /** @class */ (function () {
 }());
 
 var elementPool = objectPool.ObjectPoolFactory.build(OooElement);
+/**
+ * The out-of-order rendering pipeline
+ *
+ * @public
+ */
 var OooRenderer = /** @class */ (function (_super) {
     __extends(OooRenderer, _super);
     function OooRenderer(renderer, options) {
@@ -130,5 +134,24 @@ var OooRenderer = /** @class */ (function (_super) {
     return OooRenderer;
 }(pixi_js.ObjectRenderer));
 
+/**
+ * Plugin factory for the out-of-order pipeline
+ */
+var OooRendererPluginFactory = /** @class */ (function () {
+    function OooRendererPluginFactory() {
+    }
+    OooRendererPluginFactory.from = function (options) {
+        return /** @class */ (function (_super) {
+            __extends(class_1, _super);
+            function class_1(renderer) {
+                return _super.call(this, renderer, options) || this;
+            }
+            return class_1;
+        }(OooRenderer));
+    };
+    return OooRendererPluginFactory;
+}());
+
 exports.OooRenderer = OooRenderer;
+exports.OooRendererPluginFactory = OooRendererPluginFactory;
 //# sourceMappingURL=pixi-ooo-renderer.cjs.map
