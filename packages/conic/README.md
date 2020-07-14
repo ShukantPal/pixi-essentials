@@ -31,6 +31,6 @@ graphic.position.set(10, 10);
 The snippet creates a circular curve centered at (0.5, 0.5) of radius 0.5. Then, a graphic is used to display the curve in a rectangle (0, 0, 1, 1), upscaled
 at 100x resolution.
 
-The linear functionals & the produced curves can be seen here: https://www.desmos.com/calculator/x2fubla43s
+The linear functionals & the produced curves can be seen here: https://www.desmos.com/calculator/bbeizcgnhl
 
 <img src="https://i.ibb.co/8mQ9xTM/Screen-Shot-2020-07-14-at-2-30-36-PM.png"></img>
