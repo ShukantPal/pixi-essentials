@@ -8,7 +8,7 @@ and _m_ are tangents to the curve, while _k_ is the chord joining the points of 
 
 ## Usage
 
-```
+```ts
 import { Conic, ConicGraphic } from '@pixi-essentials/conic';
 
 const l = [1, 0, 0];
