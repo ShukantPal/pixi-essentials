@@ -1,6 +1,8 @@
 # @pixi-essentials
 
-This is a work-in-progress monorepo for several advanced ideas I want to materialize in the PixiJS ecosystem.
+:point_right: This project is a collection of essential packages for building performant, enterprise-level applications on top of the PixiJS library. It includes several optimization plugins, frequency-domain filters, display-object libraries, and mixins on the core API.
+
+## Brief
 
 * **@pixi-essentials/cull**: This is an optimized, recursive scene graph culling package. It sets the visibility objects based on
 whether they are outside of the screen or not.
