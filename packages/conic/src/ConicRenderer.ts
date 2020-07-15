@@ -9,7 +9,9 @@ import {
 import { TYPES } from '@pixi/constants';
 import { Renderer, Shader } from '@pixi/core';
 import conicVertexSrc from './conic-renderer.vert';
+import conicVertexFallbackSrc from './conic-renderer-fallback.vert';
 import conicFragmentSrc from './conic-renderer.frag';
+import conicFragmentFallbackSrc from './conic-renderer-fallback.frag';
 
 const ATTRIBUTE_WORLD_POSITION = new AttributeRedirect({
     source: 'worldPositionData',
@@ -44,7 +46,8 @@ const UNIFORM_M = new UniformRedirect({
     uniform: 'm',
 });
 
-const baseShaderFunction = new BatchShaderFactory(conicVertexSrc, conicFragmentSrc, {}).derive();
+const webGL1Shader = new BatchShaderFactory(conicVertexFallbackSrc, conicFragmentFallbackSrc, {}).derive();
+const webGL2Shader = new BatchShaderFactory(conicVertexSrc, conicFragmentSrc, {}).derive();
 
 const shaderFunction = (crendr: BatchRenderer): Shader =>
 {
@@ -56,7 +59,12 @@ const shaderFunction = (crendr: BatchRenderer): Shader =>
         contextSystem.extensions.standardDerivatives = renderer.gl.getExtension('OES_standard_derivatives');
     }
 
-    return baseShaderFunction(crendr);
+    if (contextSystem.webGLVersion === 1)
+    {
+        return webGL1Shader(crendr);
+    }
+
+    return webGL2Shader(crendr);
 };
 
 const conicRenderer = BatchRendererPluginFactory.from({
