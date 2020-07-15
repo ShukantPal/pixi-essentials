@@ -46,8 +46,8 @@ const UNIFORM_M = new UniformRedirect({
     uniform: 'm',
 });
 
-const webGL1Shader = new BatchShaderFactory(conicVertexFallbackSrc, conicFragmentFallbackSrc, {}).derive();
-const webGL2Shader = new BatchShaderFactory(conicVertexSrc, conicFragmentSrc, {}).derive();
+const webGL1Shader = new BatchShaderFactory(conicVertexFallbackSrc, conicFragmentFallbackSrc, { inside: true }).derive();
+const webGL2Shader = new BatchShaderFactory(conicVertexSrc, conicFragmentSrc, { inside: true }).derive();
 
 const shaderFunction = (crendr: BatchRenderer): Shader =>
 {

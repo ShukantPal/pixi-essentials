@@ -60,14 +60,14 @@ void main(void)
     }
     else
     {
-        color = vec4(0, 0, 0, 1);
+        color = vec4(0, 0, 0, 0);
     }
 
     if (antialias)
     {
         float weight = inside ? (1. - signedDistance) / 2. : (1. + signedDistance) / 2.;
         
-        color = weight * color + (1. - weight) * vec4(0, 0, 0, 1);
+        color = weight * color + (1. - weight) * vec4(0, 0, 0, 0);
     }
 
     fragmentColor = color;

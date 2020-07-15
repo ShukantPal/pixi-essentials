@@ -16,7 +16,7 @@ const tempMatrix = new Matrix();
  * the form _ax + by + c = 0_. _l_ and _m_ are the tangents to the curve, and _k_ is a chord connecting the points
  * of tangency.
  */
-export class ConicGraphic extends Container
+export class ConicDisplay extends Container
 {
     public shape: Conic;
 
@@ -33,7 +33,7 @@ export class ConicGraphic extends Container
     protected _transformID: number;
     protected _dirtyID: number;
 
-    constructor(conic = new Conic())
+    constructor(conic = new Conic(), texture: Texture)
     {
         super();
 
@@ -67,7 +67,7 @@ export class ConicGraphic extends Container
          */
         this.uvData = [];
 
-        this._texture = Texture.WHITE;
+        this._texture = texture || Texture.WHITE;
     }
 
     /**
@@ -106,6 +106,20 @@ export class ConicGraphic extends Container
         this.shape.setm(...line);
     }
 
+    get texture(): Texture
+    {
+        return this._texture;
+    }
+    set texture(tex: Texture)
+    {
+        this._texture = tex || Texture.WHITE;
+    }
+
+    _calculateBounds(): void
+    {
+        this._bounds.addVertexData(this.vertexData, 0, this.vertexData.length);
+    }
+
     _render(renderer: Renderer): void
     {
         if (!renderer.plugins.conic)
@@ -115,6 +129,22 @@ export class ConicGraphic extends Container
 
         renderer.batch.setObjectRenderer(renderer.plugins.conic);
         renderer.plugins.conic.render(this);
+    }
+
+    /**
+     * Draws the triangle formed by the control points of the shape.
+     */
+    drawControlPoints(): this
+    {
+        const controlPoints = this.shape.controlPoints;
+
+        this.drawTriangle(
+            controlPoints[0].x, controlPoints[0].y,
+            controlPoints[1].x, controlPoints[1].y,
+            controlPoints[2].x, controlPoints[2].y,
+        );
+
+        return this;
     }
 
     /**

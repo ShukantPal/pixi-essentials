@@ -1,6 +1,6 @@
 /*!
  * @pixi-essentials/conic - v1.0.0
- * Compiled Wed, 15 Jul 2020 18:01:24 UTC
+ * Compiled Wed, 15 Jul 2020 18:43:51 UTC
  *
  * @pixi-essentials/conic is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -19,12 +19,12 @@ var conicVertexSrc = "#version 300 es\n\n#define SHADER_NAME Conic-Renderer-Shad
 
 var conicVertexFallbackSrc = "#version 100\n#define SHADER_NAME Conic-Renderer-Fallback-Shader\n\nprecision mediump float;\n\nattribute vec2 aWorldPosition;\nattribute vec2 aTexturePosition;\nattribute float aMasterID;\nattribute float aUniformID;\n\nuniform mat3 projectionMatrix;\n\nvarying vec2 vWorldCoord;\nvarying vec2 vTextureCoord;\nvarying float vMasterID;\nvarying float vUniformID;\n\nvoid main(void)\n{\n    gl_Position = vec4((projectionMatrix * vec3(aWorldPosition, 1)).xy, 0, 1);\n\n    vWorldCoord = gl_Position.xy;\n    vTextureCoord = aTexturePosition;\n    vMasterID = aMasterID;\n    vUniformID = aUniformID;\n}";
 
-var conicFragmentSrc = "#version 300 es\n#define SHADER_NAME Conic-Renderer-Shader\n\nprecision mediump float;\n\nuniform sampler2D uSamplers[%texturesPerBatch%];\n\nin vec2 vWorldCoord;\nin vec2 vTextureCoord;\nin float vMasterID;\nin float vUniformID;\n\nout vec4 fragmentColor;\n\nuniform vec3 k[%uniformsPerBatch%];\nuniform vec3 l[%uniformsPerBatch%];\nuniform vec3 m[%uniformsPerBatch%];\nuniform bool inside;\n\nvoid main(void)\n{\n    vec3 kv, lv, mv;\n\n    for (int i = 0; i < %uniformsPerBatch%; i++)\n    {\n        if (float(i) > vUniformID - 0.5) \n        {\n            kv = k[i];\n            lv = l[i];\n            mv = m[i];\n            break;\n        }\n    }\n\n    float k_ = dot(vec3(vTextureCoord, 1), kv);\n    float l_ = dot(vec3(vTextureCoord, 1), lv);\n    float m_ = dot(vec3(vTextureCoord, 1), mv);\n\n    float cv = k_ * k_ - l_ * m_;\n\n    float cvdx = dFdx(cv);\n    float cvdy = dFdy(cv);\n    vec2 gradientTangent = vec2(cvdx, cvdy);\n\n    float signedDistance = cv / length(gradientTangent);\n    bool antialias = signedDistance > -1. && signedDistance < 1.;\n\n    vec4 color;\n\n    if ((inside && cv < 0.) || (!inside && cv >= 0.) || antialias)\n    {\n        for (int i = 0; i < %texturesPerBatch%; i++)\n        {\n            if (float(i) > vMasterID - 0.5)\n            {\n                color = texture(uSamplers[i], vTextureCoord);\n                break;\n            }\n        }\n    }\n    else\n    {\n        color = vec4(0, 0, 0, 1);\n    }\n\n    if (antialias)\n    {\n        float weight = inside ? (1. - signedDistance) / 2. : (1. + signedDistance) / 2.;\n        \n        color = weight * color + (1. - weight) * vec4(0, 0, 0, 1);\n    }\n\n    fragmentColor = color;\n}";
+var conicFragmentSrc = "#version 300 es\n#define SHADER_NAME Conic-Renderer-Shader\n\nprecision mediump float;\n\nuniform sampler2D uSamplers[%texturesPerBatch%];\n\nin vec2 vWorldCoord;\nin vec2 vTextureCoord;\nin float vMasterID;\nin float vUniformID;\n\nout vec4 fragmentColor;\n\nuniform vec3 k[%uniformsPerBatch%];\nuniform vec3 l[%uniformsPerBatch%];\nuniform vec3 m[%uniformsPerBatch%];\nuniform bool inside;\n\nvoid main(void)\n{\n    vec3 kv, lv, mv;\n\n    for (int i = 0; i < %uniformsPerBatch%; i++)\n    {\n        if (float(i) > vUniformID - 0.5) \n        {\n            kv = k[i];\n            lv = l[i];\n            mv = m[i];\n            break;\n        }\n    }\n\n    float k_ = dot(vec3(vTextureCoord, 1), kv);\n    float l_ = dot(vec3(vTextureCoord, 1), lv);\n    float m_ = dot(vec3(vTextureCoord, 1), mv);\n\n    float cv = k_ * k_ - l_ * m_;\n\n    float cvdx = dFdx(cv);\n    float cvdy = dFdy(cv);\n    vec2 gradientTangent = vec2(cvdx, cvdy);\n\n    float signedDistance = cv / length(gradientTangent);\n    bool antialias = signedDistance > -1. && signedDistance < 1.;\n\n    vec4 color;\n\n    if ((inside && cv < 0.) || (!inside && cv >= 0.) || antialias)\n    {\n        for (int i = 0; i < %texturesPerBatch%; i++)\n        {\n            if (float(i) > vMasterID - 0.5)\n            {\n                color = texture(uSamplers[i], vTextureCoord);\n                break;\n            }\n        }\n    }\n    else\n    {\n        color = vec4(0, 0, 0, 0);\n    }\n\n    if (antialias)\n    {\n        float weight = inside ? (1. - signedDistance) / 2. : (1. + signedDistance) / 2.;\n        \n        color = weight * color + (1. - weight) * vec4(0, 0, 0, 0);\n    }\n\n    fragmentColor = color;\n}";
 
-var conicFragmentFallbackSrc = "#version 100\n#ifdef GL_OES_standard_derivatives\n    #extension GL_OES_standard_derivatives : enable\n#endif\n#define SHADER_NAME Conic-Renderer-Fallback-Shader\n\nprecision mediump float;\n\nuniform sampler2D uSamplers[%texturesPerBatch%];\n\nvarying vec2 vWorldCoord;\nvarying vec2 vTextureCoord;\nvarying float vMasterID;\nvarying float vUniformID;\n\nuniform vec3 k[%uniformsPerBatch%];\nuniform vec3 l[%uniformsPerBatch%];\nuniform vec3 m[%uniformsPerBatch%];\nuniform bool inside;\n\nfloat sampleCurve(vec2 point, vec3 kv, vec3 lv, vec3 mv)\n{\n    float k = dot(vec3(vTextureCoord, 1), kv);\n    float l = dot(vec3(vTextureCoord, 1), lv);\n    float m = dot(vec3(vTextureCoord, 1), mv);\n\n    return k*k - l*m;\n}\n\nvoid main(void)\n{\n    vec3 kv, lv, mv;\n\n    for (int i = 0; i < %uniformsPerBatch%; i++)\n    {\n        if (float(i) > vUniformID - 0.5) \n        {\n            kv = k[i];\n            lv = l[i];\n            mv = m[i];\n            break;\n        }\n    }\n\n    float k_ = dot(vec3(vTextureCoord, 1), kv);\n    float l_ = dot(vec3(vTextureCoord, 1), lv);\n    float m_ = dot(vec3(vTextureCoord, 1), mv);\n\n    float cv = k_ * k_ - l_ * m_;\n\n#ifdef GL_OES_standard_derivatives\n    float cvdx = dFdx(cv);\n    float cvdy = dFdy(cv);\n    vec2 gradientTangent = vec2(cvdx, cvdy);\n\n    float signedDistance = cv / length(gradientTangent);\n    bool antialias = signedDistance > -1. && signedDistance < 1.;\n#endif\n\n    vec4 color;\n\n    if ((inside && cv < 0.) || (!inside && cv >= 0.) \n#ifdef GL_OES_standard_derivatives\n            || antialias\n#endif\n    )\n    {\n        for (int i = 0; i < %texturesPerBatch%; i++)\n        {\n            if (float(i) > vMasterID - 0.5)\n            {\n                color = texture2D(uSamplers[i], vTextureCoord);\n                break;\n            }\n        }\n    }\n    else\n    {\n        color = vec4(0, 0, 0, 1);\n    }\n\n#ifdef GL_OES_standard_derivatives\n    if (antialias)\n    {\n        float weight = inside ? (1. - signedDistance) / 2. : (1. + signedDistance) / 2.;\n        \n        color = weight * color + (1. - weight) * vec4(0, 0, 0, 1);\n    }\n#endif\n\n    gl_FragColor = color;\n}";
+var conicFragmentFallbackSrc = "#version 100\n#ifdef GL_OES_standard_derivatives\n    #extension GL_OES_standard_derivatives : enable\n#endif\n#define SHADER_NAME Conic-Renderer-Fallback-Shader\n\nprecision mediump float;\n\nuniform sampler2D uSamplers[%texturesPerBatch%];\n\nvarying vec2 vWorldCoord;\nvarying vec2 vTextureCoord;\nvarying float vMasterID;\nvarying float vUniformID;\n\nuniform vec3 k[%uniformsPerBatch%];\nuniform vec3 l[%uniformsPerBatch%];\nuniform vec3 m[%uniformsPerBatch%];\nuniform bool inside;\n\nfloat sampleCurve(vec2 point, vec3 kv, vec3 lv, vec3 mv)\n{\n    float k = dot(vec3(vTextureCoord, 1), kv);\n    float l = dot(vec3(vTextureCoord, 1), lv);\n    float m = dot(vec3(vTextureCoord, 1), mv);\n\n    return k*k - l*m;\n}\n\nvoid main(void)\n{\n    vec3 kv, lv, mv;\n\n    for (int i = 0; i < %uniformsPerBatch%; i++)\n    {\n        if (float(i) > vUniformID - 0.5) \n        {\n            kv = k[i];\n            lv = l[i];\n            mv = m[i];\n            break;\n        }\n    }\n\n    float k_ = dot(vec3(vTextureCoord, 1), kv);\n    float l_ = dot(vec3(vTextureCoord, 1), lv);\n    float m_ = dot(vec3(vTextureCoord, 1), mv);\n\n    float cv = k_ * k_ - l_ * m_;\n\n#ifdef GL_OES_standard_derivatives\n    float cvdx = dFdx(cv);\n    float cvdy = dFdy(cv);\n    vec2 gradientTangent = vec2(cvdx, cvdy);\n\n    float signedDistance = cv / length(gradientTangent);\n    bool antialias = signedDistance > -1. && signedDistance < 1.;\n#endif\n\n    vec4 color;\n\n    if ((inside && cv < 0.) || (!inside && cv >= 0.) \n#ifdef GL_OES_standard_derivatives\n            || antialias\n#endif\n    )\n    {\n        for (int i = 0; i < %texturesPerBatch%; i++)\n        {\n            if (float(i) > vMasterID - 0.5)\n            {\n                color = texture2D(uSamplers[i], vTextureCoord);\n                break;\n            }\n        }\n    }\n    else\n    {\n        color = vec4(0, 0, 0, 0);\n    }\n\n#ifdef GL_OES_standard_derivatives\n    if (antialias)\n    {\n        float weight = inside ? (1. - signedDistance) / 2. : (1. + signedDistance) / 2.;\n        \n        color = weight * color + (1. - weight) * vec4(0, 0, 0, 0);\n    }\n#endif\n\n    gl_FragColor = color;\n}";
 
 var ATTRIBUTE_WORLD_POSITION = new pixiBatchRenderer.AttributeRedirect({
-    source: 'worldPositionData',
+    source: 'vertexData',
     attrib: 'aWorldPosition',
     type: 'float32',
     size: 2,
@@ -32,7 +32,7 @@ var ATTRIBUTE_WORLD_POSITION = new pixiBatchRenderer.AttributeRedirect({
     glSize: 2,
 });
 var ATTRIBUTE_TEXTURE_POSITION = new pixiBatchRenderer.AttributeRedirect({
-    source: 'texturePositionData',
+    source: 'uvData',
     attrib: 'aTexturePosition',
     type: 'float32',
     size: 2,
@@ -51,8 +51,8 @@ var UNIFORM_M = new pixiBatchRenderer.UniformRedirect({
     source: 'm',
     uniform: 'm',
 });
-var webGL1Shader = new pixiBatchRenderer.BatchShaderFactory(conicVertexFallbackSrc, conicFragmentFallbackSrc, {}).derive();
-var webGL2Shader = new pixiBatchRenderer.BatchShaderFactory(conicVertexSrc, conicFragmentSrc, {}).derive();
+var webGL1Shader = new pixiBatchRenderer.BatchShaderFactory(conicVertexFallbackSrc, conicFragmentFallbackSrc, { inside: true }).derive();
+var webGL2Shader = new pixiBatchRenderer.BatchShaderFactory(conicVertexSrc, conicFragmentSrc, { inside: true }).derive();
 var shaderFunction = function (crendr) {
     var renderer = crendr.renderer;
     var contextSystem = renderer.context;
@@ -87,14 +87,11 @@ var ConicRenderer = conicRenderer;
 
 var SQRT_2 = Math.sqrt(2);
 /**
- * Describes a conic section
+ * Describes a conic section or any quadric curve
  *
  * A quadric curve can be represented in the form _k<sup>2</sup> - lm_, where, _k_, _l_, _m_
  * are linear functionals. _l_ and _m_ are two lines tangent to the curve, while _k_ is the
  * line connecting the two points of tangency.
- *
- * The curve equation is defined in "design space", and is transformed into texture space using
- * the {@link textureTransform}.
  *
  * @public
  */
@@ -860,9 +857,9 @@ var tempMatrix = new math.Matrix();
  * the form _ax + by + c = 0_. _l_ and _m_ are the tangents to the curve, and _k_ is a chord connecting the points
  * of tangency.
  */
-var ConicGraphic = /** @class */ (function (_super) {
-    __extends(ConicGraphic, _super);
-    function ConicGraphic(conic) {
+var ConicDisplay = /** @class */ (function (_super) {
+    __extends(ConicDisplay, _super);
+    function ConicDisplay(conic, texture) {
         if (conic === void 0) { conic = new Conic(); }
         var _this = _super.call(this) || this;
         /**
@@ -884,15 +881,15 @@ var ConicGraphic = /** @class */ (function (_super) {
         /**
          * World positions of the vertices
          */
-        _this.worldPositionData = [];
+        _this.vertexData = [];
         /**
          * Texture positions of the vertices.
          */
-        _this.texturePositionData = [];
-        _this._texture = core.Texture.WHITE;
+        _this.uvData = [];
+        _this._texture = texture || core.Texture.WHITE;
         return _this;
     }
-    Object.defineProperty(ConicGraphic.prototype, "k", {
+    Object.defineProperty(ConicDisplay.prototype, "k", {
         /**
          * @see Conic#k
          */
@@ -906,7 +903,7 @@ var ConicGraphic = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ConicGraphic.prototype, "l", {
+    Object.defineProperty(ConicDisplay.prototype, "l", {
         /**
          * @see Conic#l
          */
@@ -920,7 +917,7 @@ var ConicGraphic = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ConicGraphic.prototype, "m", {
+    Object.defineProperty(ConicDisplay.prototype, "m", {
         /**
          * @see Conic#m
          */
@@ -934,7 +931,20 @@ var ConicGraphic = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    ConicGraphic.prototype._render = function (renderer) {
+    Object.defineProperty(ConicDisplay.prototype, "texture", {
+        get: function () {
+            return this._texture;
+        },
+        set: function (tex) {
+            this._texture = tex || core.Texture.WHITE;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ConicDisplay.prototype._calculateBounds = function () {
+        this._bounds.addVertexData(this.vertexData, 0, this.vertexData.length);
+    };
+    ConicDisplay.prototype._render = function (renderer) {
         if (!renderer.plugins.conic) {
             renderer.plugins.conic = new ConicRenderer(renderer, null);
         }
@@ -942,6 +952,17 @@ var ConicGraphic = /** @class */ (function (_super) {
         renderer.plugins.conic.render(this);
     };
     /**
+     * Draws the triangle formed by the control points of the shape.
+     */
+    ConicDisplay.prototype.drawControlPoints = function () {
+        var controlPoints = this.shape.controlPoints;
+        this.drawTriangle(controlPoints[0].x, controlPoints[0].y, controlPoints[1].x, controlPoints[1].y, controlPoints[2].x, controlPoints[2].y);
+        return this;
+    };
+    /**
+     * Draw a triangle defined in texture space transformed into local space. Generally, you would want to draw the triangle
+     * formed by the shape's control points.
+     *
      * @param x0
      * @param y0
      * @param x1
@@ -949,8 +970,8 @@ var ConicGraphic = /** @class */ (function (_super) {
      * @param x2
      * @param y2
      */
-    ConicGraphic.prototype.drawTriangle = function (x0, y0, x1, y1, x2, y2) {
-        var data = this.texturePositionData;
+    ConicDisplay.prototype.drawTriangle = function (x0, y0, x1, y1, x2, y2) {
+        var data = this.uvData;
         var i = data.length;
         data.length += 6;
         data[i] = x0;
@@ -967,8 +988,8 @@ var ConicGraphic = /** @class */ (function (_super) {
      * @param width
      * @param height
      */
-    ConicGraphic.prototype.drawRect = function (x, y, width, height) {
-        var data = this.texturePositionData;
+    ConicDisplay.prototype.drawRect = function (x, y, width, height) {
+        var data = this.uvData;
         var i = data.length;
         data.length += 12;
         data[i] = x;
@@ -988,20 +1009,20 @@ var ConicGraphic = /** @class */ (function (_super) {
     /**
      * Updates the geometry data for this conic.
      */
-    ConicGraphic.prototype.updateConic = function () {
-        var worldPositionData = this.worldPositionData;
-        var texturePositionData = this.texturePositionData;
-        worldPositionData.length = texturePositionData.length;
+    ConicDisplay.prototype.updateConic = function () {
+        var vertexData = this.vertexData;
+        var uvData = this.uvData;
+        vertexData.length = uvData.length;
         var matrix = tempMatrix.copyFrom(this.worldTransform);
         var a = matrix.a, b = matrix.b, c = matrix.c, d = matrix.d, tx = matrix.tx, ty = matrix.ty;
-        for (var i = 0, j = worldPositionData.length / 2; i < j; i++) {
-            var x = texturePositionData[(i * 2)];
-            var y = texturePositionData[(i * 2) + 1];
-            worldPositionData[(i * 2)] = (a * x) + (c * y) + tx;
-            worldPositionData[(i * 2) + 1] = (b * x) + (d * y) + ty;
+        for (var i = 0, j = vertexData.length / 2; i < j; i++) {
+            var x = uvData[(i * 2)];
+            var y = uvData[(i * 2) + 1];
+            vertexData[(i * 2)] = (a * x) + (c * y) + tx;
+            vertexData[(i * 2) + 1] = (b * x) + (d * y) + ty;
         }
         this._updateID = this._dirtyID;
-        var indexData = this.indexData = new Array(worldPositionData.length / 2);
+        var indexData = this.indexData = new Array(vertexData.length / 2);
         // TODO: Remove indexData, pixi-batch-renderer might have a problem with it
         for (var i = 0, j = indexData.length; i < j; i++) {
             indexData[i] = i;
@@ -1013,11 +1034,11 @@ var ConicGraphic = /** @class */ (function (_super) {
      * @param c1
      * @param c2
      */
-    ConicGraphic.prototype.setControlPoints = function (c0, c1, c2) {
+    ConicDisplay.prototype.setControlPoints = function (c0, c1, c2) {
         var texturePoints = this.shape.controlPoints;
         this.setTransform(texturePoints[0], texturePoints[1], texturePoints[2], c0, c1, c2);
     };
-    ConicGraphic.prototype.setTransform = function () {
+    ConicDisplay.prototype.setTransform = function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
@@ -1099,7 +1120,7 @@ var ConicGraphic = /** @class */ (function (_super) {
      *
      * @override
      */
-    ConicGraphic.prototype.updateTransform = function () {
+    ConicDisplay.prototype.updateTransform = function () {
         var ret = _super.prototype.updateTransform.call(this);
         if (this._transformID !== this.transform._worldID) {
             this.updateConic();
@@ -1107,9 +1128,9 @@ var ConicGraphic = /** @class */ (function (_super) {
         }
         return ret;
     };
-    return ConicGraphic;
+    return ConicDisplay;
 }(display.Container));
 
 exports.Conic = Conic;
-exports.ConicGraphic = ConicGraphic;
+exports.ConicDisplay = ConicDisplay;
 //# sourceMappingURL=conic.js.map
