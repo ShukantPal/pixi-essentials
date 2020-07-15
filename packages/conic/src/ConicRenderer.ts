@@ -14,7 +14,7 @@ import conicFragmentSrc from './conic-renderer.frag';
 import conicFragmentFallbackSrc from './conic-renderer-fallback.frag';
 
 const ATTRIBUTE_WORLD_POSITION = new AttributeRedirect({
-    source: 'worldPositionData',
+    source: 'vertexData',
     attrib: 'aWorldPosition',
     type: 'float32',
     size: 2,
@@ -23,7 +23,7 @@ const ATTRIBUTE_WORLD_POSITION = new AttributeRedirect({
 });
 
 const ATTRIBUTE_TEXTURE_POSITION = new AttributeRedirect({
-    source: 'texturePositionData',
+    source: 'uvData',
     attrib: 'aTexturePosition',
     type: 'float32',
     size: 2,
@@ -86,6 +86,6 @@ const conicRenderer = BatchRendererPluginFactory.from({
     BatchFactoryClass: AggregateUniformsBatchFactory,
 });
 
-Renderer.registerPlugin('conicRenderer', conicRenderer);
+Renderer.registerPlugin('conic', conicRenderer);
 
 export const ConicRenderer = conicRenderer;

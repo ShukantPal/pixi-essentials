@@ -1,6 +1,6 @@
 /*!
  * @pixi-essentials/conic - v1.0.0
- * Compiled Wed, 15 Jul 2020 15:46:05 UTC
+ * Compiled Wed, 15 Jul 2020 18:01:24 UTC
  *
  * @pixi-essentials/conic is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -82,8 +82,222 @@ var conicRenderer = pixiBatchRenderer.BatchRendererPluginFactory.from({
     shaderFunction: shaderFunction,
     BatchFactoryClass: pixiBatchRenderer.AggregateUniformsBatchFactory,
 });
-core.Renderer.registerPlugin('conicRenderer', conicRenderer);
+core.Renderer.registerPlugin('conic', conicRenderer);
 var ConicRenderer = conicRenderer;
+
+var SQRT_2 = Math.sqrt(2);
+/**
+ * Describes a conic section
+ *
+ * A quadric curve can be represented in the form _k<sup>2</sup> - lm_, where, _k_, _l_, _m_
+ * are linear functionals. _l_ and _m_ are two lines tangent to the curve, while _k_ is the
+ * line connecting the two points of tangency.
+ *
+ * The curve equation is defined in "design space", and is transformed into texture space using
+ * the {@link textureTransform}.
+ *
+ * @public
+ */
+var Conic = /** @class */ (function () {
+    function Conic() {
+        /**
+         * The chord connecting the points of tangency on _l_ and _m_.
+         */
+        this.k = [1, 0, 0];
+        /**
+         * A line tangent to the curve.
+         */
+        this.l = [0, 1, 0];
+        /**
+         * A line tangent to the curve.
+         */
+        this.m = [0, 0, 1];
+        /**
+         * The control points in design space. The control points allow you to map design space points to the local space
+         * points when creating a graphic.
+         *
+         * By default, the conic is a quadratic bezier curve.
+         */
+        this.controlPoints = [
+            new math.Point(0, 0),
+            new math.Point(0.5, 0),
+            new math.Point(1, 1),
+        ];
+        /**
+         * Flags changes in the shape data
+         */
+        this._dirtyID = 0;
+    }
+    /**
+     * Sets the equation of the "k" line to _ax + by + c = 0_.
+     *
+     * @param a
+     * @param b
+     * @param c
+     */
+    Conic.prototype.setk = function (a, b, c) {
+        this.k[0] = a;
+        this.k[1] = b;
+        this.k[2] = c;
+        this._dirtyID++;
+        return this;
+    };
+    /**
+     * Sets the equation of the "l" line to _ax + by + c = 0_.
+     *
+     * @param a
+     * @param b
+     * @param c
+     */
+    Conic.prototype.setl = function (a, b, c) {
+        this.l[0] = a;
+        this.l[1] = b;
+        this.l[2] = c;
+        this._dirtyID++;
+        return this;
+    };
+    /**
+     * Sets the equation of the line "m" to _ax + by + c = 0_.
+     *
+     * @param a
+     * @param b
+     * @param c
+     */
+    Conic.prototype.setm = function (a, b, c) {
+        this.m[0] = a;
+        this.m[1] = b;
+        this.m[2] = c;
+        this._dirtyID++;
+        return this;
+    };
+    /**
+     * Set control points in texture space
+     * @param c0
+     * @param c1
+     * @param c2
+     */
+    Conic.prototype.setControlPoints = function (c0, c1, c2) {
+        this.controlPoints[0] = c0;
+        this.controlPoints[1] = c1;
+        this.controlPoints[2] = c2;
+    };
+    /**
+     * Flag the shape as dirty after you have modified the data directly.
+     */
+    Conic.prototype.update = function () {
+        this._dirtyID++;
+        return this;
+    };
+    /**
+     * Creates a circular conic of the given {@code radius} that is in the bounding box
+     * (0,0,2_r_,2_r_).
+     *
+     * Implicit form:
+     * (_x_/√2 + _y_/√2 - _r_/√2)<sup>2</sup> - _xy_ = _0_
+     *
+     * Simplified form:
+     * (_x_ - _r_)<sup>2</sup> - (_y_ - _r_)<sup>2</sup> - r<sup>2</sup> = _0_
+     *
+     * @param radius - the radius of the circle
+     * @return the conic shape
+     */
+    Conic.createCircle = function (radius) {
+        var conic = new Conic();
+        conic.setk(1 / SQRT_2, 1 / SQRT_2, -radius / SQRT_2);
+        conic.setl(1, 0, 0);
+        conic.setm(0, 1, 0);
+        return conic;
+    };
+    /**
+     * Creates an ellipse with the given major & minor semi-axes that is located in the
+     * bounding box (0,0,2_a_,2_b_).
+     *
+     * Implicit form:
+     * (_x_/_a_ + _y_/_b_ - 1)<sup>2</sup> - 2_xy_/_ab_ = 0
+     *
+     * Simplified form:
+     * (_x_/_a_ - 1)<sup>2</sup> + (_y_/_b_ -  1)<sup>2</sup> - 1 = 0
+     *
+     * @param a - major semi-axis length
+     * @param b - minor semi-axis length
+     */
+    Conic.createEllipse = function (a, b) {
+        var conic = new Conic();
+        conic.setk(1 / a, 1 / b, -1);
+        conic.setl(2 / a, 0, 0);
+        conic.setm(0, 1 / b, 0);
+        return conic;
+    };
+    /**
+     * Creates a parabola that opens upward (for _a_ > 0); since parabolas are not closed
+     * curves, they do not have a bounding box.
+     *
+     * The standard bezier curve is the parabola _x_<sup>2</sup> - _y_, with the control
+     * points (0,0), (1/2,0), (1,1).
+     *
+     * Equation:
+     * x<sup>2 - 4_ay_ = 0
+     *
+     * @param a - distance of directrix, focus from the vertex of the parabola (0,0)
+     */
+    Conic.createParabola = function (a) {
+        var conic = new Conic();
+        conic.setk(1, 0, 0);
+        conic.setl(0, 4 * a, 0);
+        conic.setm(0, 0, 1);
+        return conic;
+    };
+    /**
+     * Creates a hyperbola that opens up and down; since hyperbolas are not closed curves,
+     * they do not have a bounding box.
+     *
+     * Implicit form:
+     * 1<sup>2</sup> - (_y_/_b_ - _x_/_a_)(_y_/_b_ + _x_/_a_) = 0
+     *
+     * Simplified form:
+     * (y/b)<sup>2</sup> - (x/a)<sup>2</sup> = 1
+     *
+     * @param a - major semi-axis
+     * @param b - minor semi-axis
+     */
+    Conic.createHyperbola = function (a, b) {
+        var conic = new Conic();
+        conic.setk(0, 0, 1);
+        conic.setl(-1 / a, 1 / b, 0);
+        conic.setm(1 / a, 1 / b, 0);
+        return conic;
+    };
+    return Conic;
+}());
+
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at http://www.apache.org/licenses/LICENSE-2.0
+
+THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+MERCHANTABLITY OR NON-INFRINGEMENT.
+
+See the Apache Version 2.0 License for specific language governing permissions
+and limitations under the License.
+***************************************************************************** */
+/* global Reflect, Promise */
+
+var extendStatics = function(d, b) {
+    extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return extendStatics(d, b);
+};
+
+function __extends(d, b) {
+    extendStatics(d, b);
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+}
 
 var adjoint_1 = adjoint;
 
@@ -636,192 +850,6 @@ var glMat3 = {
   , transpose: transpose_1
 };
 
-/**
- * Describes a conic section
- *
- * A quadric curve can be represented in the form _k<sup>2</sup> - lm_, where, _k_, _l_, _m_
- * are linear functionals. _l_ and _m_ are two lines tangent to the curve, while _k_ is the
- * line connecting the two points of tangency.
- *
- * The curve equation is defined in "design space", and is transformed into texture space using
- * the {@link textureTransform}.
- *
- * @public
- */
-var Conic = /** @class */ (function () {
-    function Conic() {
-        /**
-         * The chord connecting the points of tangency on _l_ and _m_.
-         */
-        this.k = [0, 1, -1];
-        /**
-         * A line tangent to the curve.
-         */
-        this.l = [2, -1, -1];
-        /**
-         * A line tangent to the curve.
-         */
-        this.m = [-2, -1, -1];
-        /**
-         * The transformation matrix from design space to texture space.
-         */
-        this.textureTransform = new math.Matrix();
-        /**
-         * Flags changes in the shape data
-         */
-        this._dirtyID = 0;
-    }
-    /**
-     * Sets the equation of the "k" line to _ax + by + c = 0_.
-     *
-     * @param a
-     * @param b
-     * @param c
-     */
-    Conic.prototype.setk = function (a, b, c) {
-        this.k[0] = a;
-        this.k[1] = b;
-        this.k[2] = c;
-        this._dirtyID++;
-        return this;
-    };
-    /**
-     * Sets the equation of the "l" line to _ax + by + c = 0_.
-     *
-     * @param a
-     * @param b
-     * @param c
-     */
-    Conic.prototype.setl = function (a, b, c) {
-        this.l[0] = a;
-        this.l[1] = b;
-        this.l[2] = c;
-        this._dirtyID++;
-        return this;
-    };
-    /**
-     * Sets the equation of the line "m" to _ax + by + c = 0_.
-     *
-     * @param a
-     * @param b
-     * @param c
-     */
-    Conic.prototype.setm = function (a, b, c) {
-        this.m[0] = a;
-        this.m[1] = b;
-        this.m[2] = c;
-        this._dirtyID++;
-        return this;
-    };
-    Conic.prototype.setTransform = function () {
-        var args = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            args[_i] = arguments[_i];
-        }
-        if (args.length === 1) {
-            this.textureTransform.copyFrom(args[0]);
-            return this;
-        }
-        this.textureTransform.identity();
-        // Design space
-        var ax0;
-        var ay0;
-        var bx0;
-        var by0;
-        var cx0;
-        var cy0;
-        // Texture space
-        var ax1;
-        var ay1;
-        var bx1;
-        var by1;
-        var cx1;
-        var cy1;
-        if (args.length === 6) {
-            var points = args;
-            ax0 = points[0].x;
-            ay0 = points[0].y;
-            bx0 = points[1].x;
-            by0 = points[1].y;
-            cx0 = points[2].x;
-            cy0 = points[2].y;
-            ax1 = points[3].x;
-            ay1 = points[3].y;
-            bx1 = points[4].x;
-            by1 = points[4].y;
-            cx1 = points[5].x;
-            cy1 = points[5].y;
-        }
-        else {
-            var coords = args;
-            ax0 = coords[0];
-            ay0 = coords[1];
-            bx0 = coords[2];
-            by0 = coords[3];
-            cx0 = coords[4];
-            cy0 = coords[5];
-            ax1 = coords[6];
-            ay1 = coords[7];
-            bx1 = coords[8];
-            by1 = coords[9];
-            cx1 = coords[10];
-            cy1 = coords[11];
-        }
-        var input = [
-            ax0, bx0, cx0,
-            ay0, by0, cy0,
-            1, 1, 1,
-        ];
-        var inverse = glMat3.invert(input, input);
-        // input * textureTransform = output
-        // textureTransform = inverse(input) * output
-        this.textureTransform.a = (inverse[0] * ax1) + (inverse[3] * bx1) + (inverse[6] * cx1);
-        this.textureTransform.c = (inverse[1] * ax1) + (inverse[4] * bx1) + (inverse[7] * cx1);
-        this.textureTransform.tx = (inverse[2] * ax1) + (inverse[5] * bx1) + (inverse[8] * cx1);
-        this.textureTransform.b = (inverse[0] * ay1) + (inverse[3] * by1) + (inverse[6] * cy1);
-        this.textureTransform.d = (inverse[1] * ay1) + (inverse[4] * by1) + (inverse[7] * cy1);
-        this.textureTransform.ty = (inverse[2] * ay1) + (inverse[5] * by1) + (inverse[8] * cy1);
-        return this;
-    };
-    /**
-     * Flag the shape as dirty after you have modified the data directly.
-     */
-    Conic.prototype.update = function () {
-        this._dirtyID++;
-        return this;
-    };
-    return Conic;
-}());
-
-/*! *****************************************************************************
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use
-this file except in compliance with the License. You may obtain a copy of the
-License at http://www.apache.org/licenses/LICENSE-2.0
-
-THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
-WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
-MERCHANTABLITY OR NON-INFRINGEMENT.
-
-See the Apache Version 2.0 License for specific language governing permissions
-and limitations under the License.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-var extendStatics = function(d, b) {
-    extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return extendStatics(d, b);
-};
-
-function __extends(d, b) {
-    extendStatics(d, b);
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-}
-
 var tempMatrix = new math.Matrix();
 /**
  * Draws a segment of conic section represented by the equation _k_<sup>2</sup>- _lm = 0_, where k, l, m are lines.
@@ -907,12 +935,20 @@ var ConicGraphic = /** @class */ (function (_super) {
         configurable: true
     });
     ConicGraphic.prototype._render = function (renderer) {
-        if (!renderer.plugins.conicRenderer) {
-            renderer.plugins.conicRenderer = new ConicRenderer(renderer, null);
+        if (!renderer.plugins.conic) {
+            renderer.plugins.conic = new ConicRenderer(renderer, null);
         }
-        renderer.batch.setObjectRenderer(renderer.plugins.conicRenderer);
-        renderer.plugins.conicRenderer.render(this);
+        renderer.batch.setObjectRenderer(renderer.plugins.conic);
+        renderer.plugins.conic.render(this);
     };
+    /**
+     * @param x0
+     * @param y0
+     * @param x1
+     * @param y1
+     * @param x2
+     * @param y2
+     */
     ConicGraphic.prototype.drawTriangle = function (x0, y0, x1, y1, x2, y2) {
         var data = this.texturePositionData;
         var i = data.length;
@@ -923,6 +959,7 @@ var ConicGraphic = /** @class */ (function (_super) {
         data[i + 3] = y1;
         data[i + 4] = x2;
         data[i + 5] = y2;
+        return this;
     };
     /**
      * @param x
@@ -946,6 +983,7 @@ var ConicGraphic = /** @class */ (function (_super) {
         data[i + 9] = y + height;
         data[i + 10] = x;
         data[i + 11] = y + height;
+        return this;
     };
     /**
      * Updates the geometry data for this conic.
@@ -954,7 +992,7 @@ var ConicGraphic = /** @class */ (function (_super) {
         var worldPositionData = this.worldPositionData;
         var texturePositionData = this.texturePositionData;
         worldPositionData.length = texturePositionData.length;
-        var matrix = tempMatrix.copyFrom(this.shape.textureTransform).prepend(this.worldTransform);
+        var matrix = tempMatrix.copyFrom(this.worldTransform);
         var a = matrix.a, b = matrix.b, c = matrix.c, d = matrix.d, tx = matrix.tx, ty = matrix.ty;
         for (var i = 0, j = worldPositionData.length / 2; i < j; i++) {
             var x = texturePositionData[(i * 2)];
@@ -968,6 +1006,93 @@ var ConicGraphic = /** @class */ (function (_super) {
         for (var i = 0, j = indexData.length; i < j; i++) {
             indexData[i] = i;
         }
+    };
+    /**
+     * Sets the local-space control points of the curve.
+     * @param c0
+     * @param c1
+     * @param c2
+     */
+    ConicGraphic.prototype.setControlPoints = function (c0, c1, c2) {
+        var texturePoints = this.shape.controlPoints;
+        this.setTransform(texturePoints[0], texturePoints[1], texturePoints[2], c0, c1, c2);
+    };
+    ConicGraphic.prototype.setTransform = function () {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        var transform = this.transform;
+        var localTransform = transform.localTransform;
+        transform._localID++;
+        if (args.length === 1) {
+            localTransform.copyFrom(args[0]);
+            return this;
+        }
+        if (args.length === 9) {
+            _super.prototype.setTransform.apply(this, args);
+        }
+        localTransform.identity();
+        // Design space
+        var ax0;
+        var ay0;
+        var bx0;
+        var by0;
+        var cx0;
+        var cy0;
+        // Texture space
+        var ax1;
+        var ay1;
+        var bx1;
+        var by1;
+        var cx1;
+        var cy1;
+        if (args.length === 6) {
+            var points = args;
+            ax0 = points[0].x;
+            ay0 = points[0].y;
+            bx0 = points[1].x;
+            by0 = points[1].y;
+            cx0 = points[2].x;
+            cy0 = points[2].y;
+            ax1 = points[3].x;
+            ay1 = points[3].y;
+            bx1 = points[4].x;
+            by1 = points[4].y;
+            cx1 = points[5].x;
+            cy1 = points[5].y;
+        }
+        else {
+            var coords = args;
+            ax0 = coords[0];
+            ay0 = coords[1];
+            bx0 = coords[2];
+            by0 = coords[3];
+            cx0 = coords[4];
+            cy0 = coords[5];
+            ax1 = coords[6];
+            ay1 = coords[7];
+            bx1 = coords[8];
+            by1 = coords[9];
+            cx1 = coords[10];
+            cy1 = coords[11];
+        }
+        var input = [
+            ax0, bx0, cx0,
+            ay0, by0, cy0,
+            1, 1, 1,
+        ];
+        var inverse = glMat3.invert(input, input);
+        // input * textureTransform = output
+        // textureTransform = inverse(input) * output
+        localTransform.a = (inverse[0] * ax1) + (inverse[3] * bx1) + (inverse[6] * cx1);
+        localTransform.c = (inverse[1] * ax1) + (inverse[4] * bx1) + (inverse[7] * cx1);
+        localTransform.tx = (inverse[2] * ax1) + (inverse[5] * bx1) + (inverse[8] * cx1);
+        localTransform.b = (inverse[0] * ay1) + (inverse[3] * by1) + (inverse[6] * cy1);
+        localTransform.d = (inverse[1] * ay1) + (inverse[4] * by1) + (inverse[7] * cy1);
+        localTransform.ty = (inverse[2] * ay1) + (inverse[5] * by1) + (inverse[8] * cy1);
+        transform.setFromMatrix(localTransform);
+        return this;
     };
     /**
      * Updates the transform of the conic, and if changed updates the geometry data.
