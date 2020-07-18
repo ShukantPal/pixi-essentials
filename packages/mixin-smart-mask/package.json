@@ -34,14 +34,14 @@
 		"url": "https://github.com/SukantPal/pixi-essentials/issues"
 	},
 	"peerDependencies": {
+		"@pixi-essentials/object-pool": "0.0.1",
 		"@pixi/display": "^5.0.0",
-		"@pixi/math": "^5.0.0",
-		"@pixi-essentials/object-pool": "0.0.1"
+		"@pixi/math": "^5.0.0"
 	},
 	"devDependencies": {
-		"@pixi/display": "^5.0.0",
-		"@pixi/math": "^5.0.0",
 		"@pixi-essentials/object-pool": "0.0.1",
-		"@pixi/graphics": "^5.0.0"
+		"@pixi/display": "^5.0.0",
+		"@pixi/graphics": "^5.0.0",
+		"@pixi/math": "^5.0.0"
 	}
 }

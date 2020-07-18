@@ -1,0 +1,13 @@
+dependencies:
+  '@pixi-essentials/types': 'link:'
+devDependencies:
+  '@pixi/math': 5.3.0
+lockfileVersion: 5.1
+packages:
+  /@pixi/math/5.3.0:
+    dev: true
+    resolution:
+      integrity: sha512-tNCEJsRhlpz2AZEhs3CPS372zgONc535pnZ9LlzErhPhbaugRraTuYrVwyuTUeqpnokpzu9VMK7ywExt3VZ/gg==
+specifiers:
+  '@pixi-essentials/types': 'link:'
+  '@pixi/math': ^5.1.0

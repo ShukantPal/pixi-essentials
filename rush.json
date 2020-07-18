@@ -1,0 +1,80 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/rush/v5/rush.schema.json",
+  "rushVersion": "5.29.1",
+  "pnpmVersion": "4.14.4",
+  "pnpmOptions": {
+    "pnpmStore": "global",
+    "strictPeerDependencies": false,
+    "resolutionStrategy": "fast",
+  },
+  "nodeSupportedVersionRange": ">=10.0.0 <14.0.0",
+  "suppressNodeLtsWarning": true,
+  "repository": {
+    "url": "https://github.com/SukantPal/pixi-essentials",
+    "defaultBranch": "master",
+    "defaultRemote": "origin"
+  },
+  "eventHooks": {
+    "preRushInstall": [],
+    "postRushInstall": [],
+    "preRushBuild": [],
+    "postRushBuild": []
+  },
+  "projects": [
+    {
+      "packageName": "@pixi-essentials/bvh",
+      "projectFolder": "packages/bvh",
+      "reviewCategory": "production"
+    },
+    {
+      "packageName": "@pixi-essentials/conic",
+      "projectFolder": "packages/conic",
+      "reviewCategory": "production"
+    },
+    {
+      "packageName": "@pixi-essentials/cull",
+      "projectFolder": "packages/cull",
+      "reviewCategory": "production"
+    },
+    {
+      "packageName": "@pixi-essentials/filter-fft",
+      "projectFolder": "packages/filter-fft",
+      "reviewCategory": "production"
+    },
+    {
+      "packageName": "@pixi-essentials/instanced-renderer",
+      "projectFolder": "packages/instanced-renderer",
+      "reviewCategory": "production"
+    },
+    {
+      "packageName": "@pixi-essentials/mixin-smart-mask",
+      "projectFolder": "packages/mixin-smart-mask",
+      "reviewCategory": "production"
+    },
+    {
+      "packageName": "@pixi-essentials/object-pool",
+      "projectFolder": "packages/object-pool",
+      "reviewCategory": "production"
+    },
+    {
+      "packageName": "@pixi-essentials/ooo-renderer",
+      "projectFolder": "packages/ooo-renderer",
+      "reviewCategory": "production"
+    },
+    {
+      "packageName": "@pixi-essentials/shader-preprocessor",
+      "projectFolder": "packages/shader-preprocessor",
+      "reviewCategory": "production"
+    },
+    {
+      "packageName": "@pixi-essentials/system-g",
+      "projectFolder": "packages/system-g",
+      "reviewCategory": "production"
+    },
+    {
+      "packageName": "@pixi-essentials/types",
+      "projectFolder": "packages/types",
+      "reviewCategory": "production"
+    }
+  ]
+}

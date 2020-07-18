@@ -37,15 +37,15 @@
     "url": "https://github.com/SukantPal/pixi-essentials/issues"
   },
   "peerDependencies": {
+    "@pixi/constants": "^5.1.0",
     "@pixi/core": "^5.1.0",
     "@pixi/math": "^5.1.0",
-    "@pixi/utils": "^5.1.0",
-    "@pixi/constants": "^5.1.0"
+    "@pixi/utils": "^5.1.0"
   },
   "devDependencies": {
+    "@pixi/constants": "^5.1.0",
     "@pixi/core": "^5.1.0",
     "@pixi/math": "^5.1.0",
-    "@pixi/utils": "^5.1.0",
-    "@pixi/constants": "^5.1.0"
+    "@pixi/utils": "^5.1.0"
   }
 }

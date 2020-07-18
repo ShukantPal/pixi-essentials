@@ -35,17 +35,17 @@
     "gl-mat3": "2.0.0"
   },
   "peerDependencies": {
-    "@pixi/display": "^5.0.0",
-    "@pixi/core": "^5.0.0",
-    "@pixi/math": "^5.0.0",
     "@pixi/constants": "^5.0.0",
+    "@pixi/core": "^5.0.0",
+    "@pixi/display": "^5.0.0",
+    "@pixi/math": "^5.0.0",
     "pixi-batch-renderer": "2.3.2"
   },
   "devDependencies": {
-    "@pixi/display": "^5.0.0",
-    "@pixi/core": "^5.0.0",
-    "@pixi/math": "^5.0.0",
     "@pixi/constants": "^5.0.0",
+    "@pixi/core": "^5.0.0",
+    "@pixi/display": "^5.0.0",
+    "@pixi/math": "^5.0.0",
     "pixi-batch-renderer": "2.3.2",
     "pixi.js": "5.3.0"
   }

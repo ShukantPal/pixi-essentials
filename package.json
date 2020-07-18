@@ -4,8 +4,9 @@
   "description": "Essential plugins for PixiJS applications",
   "main": "index.js",
   "scripts": {
+    "prepare": "rush install",
     "build:compile": "rollup -c",
-    "build:types": "lerna run compile",
+    "build:types": "node ./scripts/runScript compile",
     "build": "npm run build:compile; npm run build:types",
     "prepublishOnly": "npm run build",
     "test": "floss --path test/index.js --debug"
@@ -28,9 +29,7 @@
   },
   "homepage": "https://github.com/SukantPal/pixi-essentials#readme",
   "devDependencies": {
-    "@lerna/batch-packages": "^3.16.0",
-    "@lerna/filter-packages": "^3.18.0",
-    "@lerna/project": "^3.18.0",
+    "@microsoft/rush-lib": "^5.29.1",
     "@pixi/eslint-config": "^1.0.1",
     "@typescript-eslint/eslint-plugin": "^2.26.0",
     "@typescript-eslint/parser": "^2.26.0",

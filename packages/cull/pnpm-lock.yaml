@@ -1,0 +1,5 @@
+dependencies:
+  '@pixi-essentials/cull': 'link:'
+lockfileVersion: 5.1
+specifiers:
+  '@pixi-essentials/cull': 'link:'

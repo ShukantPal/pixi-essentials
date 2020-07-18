@@ -7,34 +7,77 @@ import minimist from 'minimist';
 import commonjs from 'rollup-plugin-commonjs';
 import replace from 'rollup-plugin-replace';
 import { terser } from 'rollup-plugin-terser';
-import batchPackages from '@lerna/batch-packages';
-import filterPackages from '@lerna/filter-packages';
-import { getPackages } from '@lerna/project';
-import repo from './lerna.json';
 import fs from 'fs';
+import { RushConfiguration } from '@microsoft/rush-lib';
 
 /**
- * Get a list of the non-private sorted packages with Lerna v3
- * @see https://github.com/lerna/lerna/issues/1848
- * @return {Promise<Package[]>} List of packages
+ * Returns the root packageJSON
  */
-
-async function getSortedPackages(scope, ignore)
+function getRepositoryJson()
 {
-    const packages = await getPackages(__dirname);
-    const filtered = filterPackages(
-        packages,
-        scope,
-        ignore,
-        false,
-    );
+    const jsonPath = path.join(__dirname, 'package.json');
+    const jsonContents = fs.readFileSync(jsonPath, 'utf8');
 
-    return batchPackages(filtered)
-        .reduce((arr, batch) => arr.concat(batch), []);
+    return JSON.parse(jsonContents);
+}
+
+/**
+ * Get a list of the non-private sorted packages with rush-lib.
+ *
+ * @see https://rushstack.io/pages/api/rush-lib.rushconfigurationproject/
+ * @returns {PackageJson}
+ */
+function getSortedPackages(scope, ignore)
+{
+    const config = RushConfiguration.loadFromConfigurationFile(path.join(__dirname, 'rush.json'));
+    const packages = config.projects;
+    const filtered = packages.filter((project) =>
+    {
+        const packageName = project.packageName;
+
+        if (scope && !packageName.includes(scope))
+        {
+            return false;
+        }
+        if (ignore && packageName.includes(ignore))
+        {
+            return false;
+        }
+
+        return true;
+    });
+    const sorted = filtered.sort((p0, p1) =>
+    {
+        if (p0.downstreamDependencyProjects.includes(p1))
+        {
+            return -1;
+        }
+        if (p1.downstreamDependencyProjects.includes(p0))
+        {
+            return 1;
+        }
+
+        return 0;
+    });
+
+    const packageJsons = sorted
+        .map((project) => fs.readFileSync(path.join(project.projectFolder, 'package.json'), 'utf8'))
+        .map((packageJsonContents, i) =>
+        {
+            const project = sorted[i];
+            const packageJson = JSON.parse(packageJsonContents);
+
+            packageJson.location = project.projectFolder;
+
+            return packageJson;
+        });
+
+    return packageJsons;
 }
 
 async function main()
 {
+    const repo = getRepositoryJson();
     const plugins = [
         sourcemaps(),
         resolve({
@@ -64,7 +107,7 @@ async function main()
 
     // Support --scope and --ignore globs if passed in via commandline
     const { scope, ignore } = minimist(process.argv.slice(2));
-    const packages = await getSortedPackages(scope, ignore);
+    const packages = getSortedPackages(scope, ignore);
 
     const namespaces = {};
     const pkgData = {};
@@ -72,7 +115,7 @@ async function main()
     // Create a map of globals to use for bundled packages
     packages.forEach((pkg) =>
     {
-        const data = pkg.toJSON();
+        const data = pkg;
 
         pkgData[pkg.name] = data;
         namespaces[pkg.name] = data.namespace || 'PIXI';
