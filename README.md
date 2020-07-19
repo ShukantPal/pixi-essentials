@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://i.ibb.co/Z8wNvYW/Frame-1.png" alt="Frame-1-12x" width="600"></img>
+<img src="https://i.imgur.com/apQs3EL.png" alt="Frame-1-12x" width="600"></img>
 </p>
 
 :point_right: This project is a collection of essential packages for building performant, enterprise-level applications on top of the PixiJS library. It includes several optimization plugins, frequency-domain filters, display-object libraries, and mixins on the core API.
