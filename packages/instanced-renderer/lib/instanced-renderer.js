@@ -1,6 +1,6 @@
 /*!
  * @pixi-essentials/instanced-renderer - v0.0.1-alpha.1
- * Compiled Mon, 20 Jul 2020 15:24:27 UTC
+ * Compiled Mon, 20 Jul 2020 15:45:20 UTC
  *
  * @pixi-essentials/instanced-renderer is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -372,4 +372,4 @@ var InstancedRendererPluginFactory = /** @class */ (function () {
 
 exports.InstancedRenderer = InstancedRenderer;
 exports.InstancedRendererPluginFactory = InstancedRendererPluginFactory;
-//# sourceMappingURL=instanced-renderer.cjs.map
+//# sourceMappingURL=instanced-renderer.js.map

@@ -14,7 +14,7 @@
   "author": "Shukant Pal <shukantpal@outlook.com>",
   "homepage": "https://github.com/SukantPal/pixi-essentials/tree/master/packages/system-bvh#readme",
   "license": "MIT",
-  "main": "lib/system-bvh.cjs",
+  "main": "lib/system-bvh.js",
   "module": "lib/system-bvh.mjs",
   "bundle": "dist/system-bvh.js",
   "directories": {

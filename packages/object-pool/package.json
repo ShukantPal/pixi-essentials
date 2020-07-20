@@ -1,6 +1,6 @@
 {
   "name": "@pixi-essentials/object-pool",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Custom-tailored object pool for PixiJS-based applications",
   "keywords": [
     "pixi.js",
@@ -15,7 +15,7 @@
   "author": "Shukant Pal <shukantpal@outlook.com>",
   "homepage": "https://github.com/SukantPal/pixi-essentials/tree/master/packages/pixi-object-pool#readme",
   "license": "MIT",
-  "main": "lib/pixi-object-pool.cjs",
+  "main": "lib/pixi-object-pool.js",
   "module": "lib/pixi-object-pool.mjs",
   "bundle": "dist/pixi-object-pool.js",
   "directories": {

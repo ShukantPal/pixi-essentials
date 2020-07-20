@@ -1,6 +1,6 @@
 /*!
- * @pixi-essentials/object-pool - v0.0.2
- * Compiled Mon, 20 Jul 2020 15:24:27 UTC
+ * @pixi-essentials/object-pool - v0.0.3
+ * Compiled Mon, 20 Jul 2020 15:45:20 UTC
  *
  * @pixi-essentials/object-pool is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -368,4 +368,4 @@ var ObjectPoolFactory = /** @class */ (function () {
 
 exports.ObjectPool = ObjectPool;
 exports.ObjectPoolFactory = ObjectPoolFactory;
-//# sourceMappingURL=pixi-object-pool.cjs.map
+//# sourceMappingURL=pixi-object-pool.js.map

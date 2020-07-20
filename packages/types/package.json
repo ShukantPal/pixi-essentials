@@ -9,7 +9,7 @@
   "author": "Shukant Pal <shukantpal@outlook.com>",
   "homepage": "https://github.com/SukantPal/pixi-essentials/tree/master/packages/types#readme",
   "license": "MIT",
-  "main": "lib/types.cjs",
+  "main": "lib/types.js",
   "module": "lib/types.mjs",
   "bundle": "dist/types.js",
   "directories": {

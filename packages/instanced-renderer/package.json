@@ -13,7 +13,7 @@
   "author": "Shukant Pal <shukantpal@outlook.com>",
   "homepage": "https://github.com/SukantPal/pixi-essentials/tree/master/packages/instanced-renderer#readme",
   "license": "MIT",
-  "main": "lib/instanced-renderer.cjs",
+  "main": "lib/instanced-renderer.js",
   "module": "lib/instanced-renderer.mjs",
   "bundle": "dist/instanced-renderer.js",
   "directories": {

@@ -1,6 +1,6 @@
 /*!
  * @pixi-essentials/ooo-renderer - v0.0.1-alpha.0
- * Compiled Mon, 20 Jul 2020 15:24:27 UTC
+ * Compiled Mon, 20 Jul 2020 15:45:20 UTC
  *
  * @pixi-essentials/ooo-renderer is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -154,4 +154,4 @@ var OooRendererPluginFactory = /** @class */ (function () {
 
 exports.OooRenderer = OooRenderer;
 exports.OooRendererPluginFactory = OooRendererPluginFactory;
-//# sourceMappingURL=pixi-ooo-renderer.cjs.map
+//# sourceMappingURL=pixi-ooo-renderer.js.map

@@ -15,7 +15,7 @@
   "author": "Shukant Pal <shukantpal@outlook.com>",
   "homepage": "https://github.com/SukantPal/pixi-essentials/tree/master/packages/pixi-ooo-renderer#readme",
   "license": "MIT",
-  "main": "lib/pixi-ooo-renderer.cjs",
+  "main": "lib/pixi-ooo-renderer.js",
   "module": "lib/pixi-ooo-renderer.mjs",
   "bundle": "dist/pixi-ooo-renderer.js",
   "directories": {
