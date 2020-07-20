@@ -1,6 +1,6 @@
 /*!
  * @pixi-essentials/cull - v1.0.3
- * Compiled Sat, 18 Jul 2020 22:18:12 UTC
+ * Compiled Mon, 20 Jul 2020 15:24:27 UTC
  *
  * @pixi-essentials/cull is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -165,4 +165,4 @@ var Cull = /** @class */ (function () {
 }());
 
 export { Cull };
-//# sourceMappingURL=cull.ejs.map
+//# sourceMappingURL=cull.mjs.map

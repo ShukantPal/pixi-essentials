@@ -17,7 +17,7 @@
 	"homepage": "https://github.com/SukantPal/pixi-essentials/tree/master/packages/smart-mask#readme",
 	"license": "MIT",
 	"main": "lib/smart-mask.js",
-	"module": "lib/smart-mask.ejs",
+	"module": "lib/smart-mask.mjs",
 	"bundle": "dist/smart-mask.js",
 	"directories": {
 		"lib": "lib",
