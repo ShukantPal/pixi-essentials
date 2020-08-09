@@ -119,3 +119,55 @@ export class CircularLinkedList<Node extends ILinkedListNode> implements Iterabl
         return this._sharedIterator;
     }
 }
+
+export class CircularDoublyLinkedList<Node extends IDoublyLinkedListNode> implements Iterable<Node>
+{
+    public head: Node;
+    private _sharedIterator: CircularLinkedListIterator<Node>;
+
+    constructor(head: Node)
+    {
+        this.head = head;
+    }
+
+    /**
+     * Adds {@code node} into this list before {@code nodeAfter}.
+     *
+     * @param node - the node to be added to this list
+     * @param nodeAfter - the node that should come after the added node
+     */
+    add(node: Node, nodeAfter: Node = this.head): this
+    {
+        // Initialize node's pointers first!
+        node.next = nodeAfter;
+        node.previous = nodeAfter.previous;
+
+        nodeAfter.previous = node;
+
+        return this;
+    }
+
+    forEach(callback: (node: Node) => any): void
+    {
+        const head = this.head;
+        let current = head;
+
+        do
+        {
+            callback(current);
+            current = current.next;
+        } while (current !== head);
+    }
+
+    [Symbol.iterator](): Iterator<Node, Node, Node>
+    {
+        if (!this._sharedIterator)
+        {
+            this._sharedIterator = new CircularLinkedListIterator(this.head);
+        }
+
+        this._sharedIterator.reset(this.head);
+
+        return this._sharedIterator;
+    }
+}

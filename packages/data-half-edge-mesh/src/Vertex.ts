@@ -13,8 +13,15 @@ export class Vertex<V = any, E = any, F = any> implements IDoublyLinkedListNode
 
     public data: V;
 
-    constructor(data: V)
+    constructor(data?: V)
     {
         this.data = data;
+    }
+
+    connect(edge: HalfEdge<V, E, F>): this
+    {
+        this.anEdge = edge;
+
+        return this;
     }
 }
