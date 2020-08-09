@@ -1,6 +1,6 @@
 /*!
  * @pixi-essentials/object-pool - v0.0.3
- * Compiled Sun, 09 Aug 2020 02:07:48 UTC
+ * Compiled Sun, 09 Aug 2020 15:59:00 UTC
  *
  * @pixi-essentials/object-pool is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -14,35 +14,6 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var ticker = require('@pixi/ticker');
 
-/*! *****************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-var extendStatics = function(d, b) {
-    extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return extendStatics(d, b);
-};
-
-function __extends(d, b) {
-    extendStatics(d, b);
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-}
-
 /**
  * Provides the exponential moving average of a sequence.
  *
@@ -52,17 +23,17 @@ function __extends(d, b) {
  * @ignore
  * @class
  */
-var AverageProvider = /** @class */ (function () {
+class AverageProvider {
     /**
      * @ignore
      * @param {number} windowSize - no. of inputs used to calculate window
      * @param {number} decayRatio - quantifies the weight of previous values (b/w 0 and 1)
      */
-    function AverageProvider(windowSize, decayRatio) {
+    constructor(windowSize, decayRatio) {
         this._history = new Array(windowSize);
         this._decayRatio = decayRatio;
         this._currentIndex = 0;
-        for (var i = 0; i < windowSize; i++) {
+        for (let i = 0; i < windowSize; i++) {
             this._history[i] = 0;
         }
     }
@@ -71,33 +42,32 @@ var AverageProvider = /** @class */ (function () {
      * @param {number} input - the next value in the sequence
      * @returns {number} - the moving average
      */
-    AverageProvider.prototype.next = function (input) {
-        var _a = this, history = _a._history, decayRatio = _a._decayRatio;
-        var historyLength = history.length;
+    next(input) {
+        const { _history: history, _decayRatio: decayRatio } = this;
+        const historyLength = history.length;
         this._currentIndex = this._currentIndex < historyLength - 1 ? this._currentIndex + 1 : 0;
         history[this._currentIndex] = input;
-        var weightedSum = 0;
-        var weight = 0;
-        for (var i = this._currentIndex + 1; i < historyLength; i++) {
+        let weightedSum = 0;
+        let weight = 0;
+        for (let i = this._currentIndex + 1; i < historyLength; i++) {
             weightedSum = (weightedSum + history[i]) * decayRatio;
             weight = (weight + 1) * decayRatio;
         }
-        for (var i = 0; i <= this._currentIndex; i++) {
+        for (let i = 0; i <= this._currentIndex; i++) {
             weightedSum = (weightedSum + history[i]) * decayRatio;
             weight = (weight + 1) * decayRatio;
         }
         this._average = weightedSum / weight;
         return this._average;
-    };
-    AverageProvider.prototype.absDev = function () {
-        var errSum = 0;
-        for (var i = 0, j = this._history.length; i < j; i++) {
+    }
+    absDev() {
+        let errSum = 0;
+        for (let i = 0, j = this._history.length; i < j; i++) {
             errSum += Math.abs(this._history[i] - this._average);
         }
         return errSum / this._history.length;
-    };
-    return AverageProvider;
-}());
+    }
+}
 
 /**
  * `ObjectPool` provides the framework necessary for pooling minus the object instantiation
@@ -108,32 +78,30 @@ var AverageProvider = /** @class */ (function () {
  * @class
  * @public
  */
-var ObjectPool = /** @class */ (function () {
+class ObjectPool {
     /**
      * @param {IObjectPoolOptions} options
      */
-    function ObjectPool(options) {
-        var _this = this;
-        if (options === void 0) { options = {}; }
-        this._gcTick = function () {
-            _this._borrowRateAverage = _this._borrowRateAverageProvider.next(_this._borrowRate);
-            _this._marginAverage = _this._marginAverageProvider.next(_this._freeCount - _this._borrowRate);
-            var absDev = _this._borrowRateAverageProvider.absDev();
-            _this._flowRate = 0;
-            _this._borrowRate = 0;
-            _this._returnRate = 0;
-            var poolSize = _this._freeCount;
-            var poolCapacity = _this._freeList.length;
+    constructor(options = {}) {
+        this._gcTick = () => {
+            this._borrowRateAverage = this._borrowRateAverageProvider.next(this._borrowRate);
+            this._marginAverage = this._marginAverageProvider.next(this._freeCount - this._borrowRate);
+            const absDev = this._borrowRateAverageProvider.absDev();
+            this._flowRate = 0;
+            this._borrowRate = 0;
+            this._returnRate = 0;
+            const poolSize = this._freeCount;
+            const poolCapacity = this._freeList.length;
             // If the pool is small enough, it shouldn't really matter
-            if (poolSize < 128 && _this._borrowRateAverage < 128 && poolCapacity < 128) {
+            if (poolSize < 128 && this._borrowRateAverage < 128 && poolCapacity < 128) {
                 return;
             }
             // If pool is say, 2x, larger than borrowing rate on average (adjusted for variance/abs-dev), then downsize.
-            var threshold = Math.max(_this._borrowRateAverage * (_this._capacityRatio - 1), _this._reserveCount);
-            if (_this._freeCount > threshold + absDev) {
-                var newCap = threshold + absDev;
-                _this.capacity = Math.min(_this._freeList.length, Math.ceil(newCap));
-                _this._freeCount = _this._freeList.length;
+            const threshold = Math.max(this._borrowRateAverage * (this._capacityRatio - 1), this._reserveCount);
+            if (this._freeCount > threshold + absDev) {
+                const newCap = threshold + absDev;
+                this.capacity = Math.min(this._freeList.length, Math.ceil(newCap));
+                this._freeCount = this._freeList.length;
             }
         };
         /**
@@ -161,41 +129,37 @@ var ObjectPool = /** @class */ (function () {
         this._borrowRateAverageProvider = new AverageProvider(128, this._decayRatio);
         this._marginAverageProvider = new AverageProvider(128, this._decayRatio);
     }
-    Object.defineProperty(ObjectPool.prototype, "capacity", {
-        // TODO: Support object destruction. It might not be so good for perf tho.
-        // /**
-        // * Destroys the object before discarding it.
-        // *
-        // * @param {T} object
-        //  */
-        // abstract destroyObject(object: T): void;
-        /**
-         * The number of objects that can be stored in the pool without allocating more space.
-         *
-         * @member {number}
-         */
-        get: function () {
-            return this._freeList.length;
-        },
-        set: function (cp) {
-            this._freeList.length = Math.ceil(cp);
-        },
-        enumerable: false,
-        configurable: true
-    });
+    // TODO: Support object destruction. It might not be so good for perf tho.
+    // /**
+    // * Destroys the object before discarding it.
+    // *
+    // * @param {T} object
+    //  */
+    // abstract destroyObject(object: T): void;
+    /**
+     * The number of objects that can be stored in the pool without allocating more space.
+     *
+     * @member {number}
+     */
+    get capacity() {
+        return this._freeList.length;
+    }
+    set capacity(cp) {
+        this._freeList.length = Math.ceil(cp);
+    }
     /**
      * Obtains an instance from this pool.
      *
      * @returns {T}
      */
-    ObjectPool.prototype.allocate = function () {
+    allocate() {
         ++this._borrowRate;
         ++this._flowRate;
         if (this._freeCount > 0) {
             return this._freeList[--this._freeCount];
         }
         return this.create();
-    };
+    }
     /**
      * Obtains an array of instances from this pool. This is faster than allocating multiple objects
      * separately from this pool.
@@ -204,9 +168,9 @@ var ObjectPool = /** @class */ (function () {
      *      objects are inserted. The amount to allocate is inferred from the array's length.
      * @returns {T[]} array of allocated objects
      */
-    ObjectPool.prototype.allocateArray = function (lengthOrArray) {
-        var array;
-        var length;
+    allocateArray(lengthOrArray) {
+        let array;
+        let length;
         if (Array.isArray(lengthOrArray)) {
             array = lengthOrArray;
             length = lengthOrArray.length;
@@ -217,13 +181,13 @@ var ObjectPool = /** @class */ (function () {
         }
         this._borrowRate += length;
         this._flowRate += length;
-        var filled = 0;
+        let filled = 0;
         // Allocate as many objects from the existing pool
         if (this._freeCount > 0) {
-            var pool = this._freeList;
-            var poolFilled = Math.min(this._freeCount, length);
-            var poolSize = this._freeCount;
-            for (var i = 0; i < poolFilled; i++) {
+            const pool = this._freeList;
+            const poolFilled = Math.min(this._freeCount, length);
+            let poolSize = this._freeCount;
+            for (let i = 0; i < poolFilled; i++) {
                 array[filled] = pool[poolSize - 1];
                 ++filled;
                 --poolSize;
@@ -236,13 +200,13 @@ var ObjectPool = /** @class */ (function () {
             ++filled;
         }
         return array;
-    };
+    }
     /**
      * Returns the object to the pool.
      *
      * @param {T} object
      */
-    ObjectPool.prototype.release = function (object) {
+    release(object) {
         ++this._returnRate;
         --this._flowRate;
         if (this._freeCount === this.capacity) {
@@ -250,13 +214,13 @@ var ObjectPool = /** @class */ (function () {
         }
         this._freeList[this._freeCount] = object;
         ++this._freeCount;
-    };
+    }
     /**
      * Releases all of the objects in the passed array. These need not be allocated using `allocateArray`, however.
      *
      * @param {T[]} array
      */
-    ObjectPool.prototype.releaseArray = function (array) {
+    releaseArray(array) {
         this._returnRate += array.length;
         this._flowRate -= array.length;
         if (this._freeCount + array.length > this.capacity) {
@@ -264,65 +228,62 @@ var ObjectPool = /** @class */ (function () {
             this.capacity = Math.max(this.capacity * this._capacityRatio, this._freeCount + array.length);
         }
         // Place objects into pool list
-        for (var i = 0, j = array.length; i < j; i++) {
+        for (let i = 0, j = array.length; i < j; i++) {
             this._freeList[this._freeCount] = array[i];
             ++this._freeCount;
         }
-    };
+    }
     /**
      * Preallocates objects so that the pool size is at least `count`.
      *
      * @param {number} count
      */
-    ObjectPool.prototype.reserve = function (count) {
+    reserve(count) {
         this._reserveCount = count;
         if (this._freeCount < count) {
-            var diff = this._freeCount - count;
-            for (var i = 0; i < diff; i++) {
+            const diff = this._freeCount - count;
+            for (let i = 0; i < diff; i++) {
                 this._freeList[this._freeCount] = this.create();
                 ++this._freeCount;
             }
         }
-    };
+    }
     /**
      * Dereferences objects for the GC to collect and brings the pool size down to `count`.
      *
      * @param {number} count
      */
-    ObjectPool.prototype.limit = function (count) {
+    limit(count) {
         if (this._freeCount > count) {
-            var oldCapacity = this.capacity;
+            const oldCapacity = this.capacity;
             if (oldCapacity > count * this._capacityRatio) {
                 this.capacity = count * this._capacityRatio;
             }
-            var excessBound = Math.min(this._freeCount, this.capacity);
-            for (var i = count; i < excessBound; i++) {
+            const excessBound = Math.min(this._freeCount, this.capacity);
+            for (let i = count; i < excessBound; i++) {
                 this._freeList[i] = null;
             }
         }
-    };
+    }
     /**
      * Install the GC on the shared ticker.
      *
      * @param {Ticker}[ticker=Ticker.shared]
      */
-    ObjectPool.prototype.startGC = function (ticker$1) {
-        if (ticker$1 === void 0) { ticker$1 = ticker.Ticker.shared; }
+    startGC(ticker$1 = ticker.Ticker.shared) {
         ticker$1.add(this._gcTick, null, ticker.UPDATE_PRIORITY.UTILITY);
-    };
+    }
     /**
      * Stops running the GC on the pool.
      *
      * @param {Ticker}[ticker=Ticker.shared]
      */
-    ObjectPool.prototype.stopGC = function (ticker$1) {
-        if (ticker$1 === void 0) { ticker$1 = ticker.Ticker.shared; }
+    stopGC(ticker$1 = ticker.Ticker.shared) {
         ticker$1.remove(this._gcTick);
-    };
-    return ObjectPool;
-}());
+    }
+}
 
-var poolMap = new Map();
+const poolMap = new Map();
 /**
  * Factory for creating pools of objects with default constructors. It will store the pool of
  * a given type and reuse it on further builds.
@@ -342,32 +303,24 @@ var poolMap = new Map();
  * opool.returnObject(temp);
  * ```
  */
-var ObjectPoolFactory = /** @class */ (function () {
-    function ObjectPoolFactory() {
-    }
+class ObjectPoolFactory {
     /**
      * @param {Class} Type
      */
-    ObjectPoolFactory.build = function (Type) {
-        var pool = poolMap.get(Type);
+    static build(Type) {
+        let pool = poolMap.get(Type);
         if (pool) {
             return pool;
         }
-        pool = new (/** @class */ (function (_super) {
-            __extends(DefaultObjectPool, _super);
-            function DefaultObjectPool() {
-                return _super !== null && _super.apply(this, arguments) || this;
-            }
-            DefaultObjectPool.prototype.create = function () {
+        pool = new (class DefaultObjectPool extends ObjectPool {
+            create() {
                 return new Type();
-            };
-            return DefaultObjectPool;
-        }(ObjectPool)))();
+            }
+        })();
         poolMap.set(Type, pool);
         return pool;
-    };
-    return ObjectPoolFactory;
-}());
+    }
+}
 
 exports.ObjectPool = ObjectPool;
 exports.ObjectPoolFactory = ObjectPoolFactory;

@@ -1,6 +1,6 @@
 /*!
  * @pixi-essentials/conic - v1.0.0
- * Compiled Sun, 09 Aug 2020 02:07:48 UTC
+ * Compiled Sun, 09 Aug 2020 15:59:00 UTC
  *
  * @pixi-essentials/conic is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -26,7 +26,7 @@ var conicFragmentSrc = "#version 300 es\n#define SHADER_NAME Conic-Renderer-Shad
 
 var conicFragmentFallbackSrc = "#version 100\n#ifdef GL_OES_standard_derivatives\n    #extension GL_OES_standard_derivatives : enable\n#endif\n#define SHADER_NAME Conic-Renderer-Fallback-Shader\n\nprecision mediump float;\n\nuniform sampler2D uSamplers[%texturesPerBatch%];\n\nvarying vec2 vWorldCoord;\nvarying vec2 vTextureCoord;\nvarying float vMasterID;\nvarying float vUniformID;\n\nuniform vec3 k[%uniformsPerBatch%];\nuniform vec3 l[%uniformsPerBatch%];\nuniform vec3 m[%uniformsPerBatch%];\nuniform bool inside;\n\nfloat sampleCurve(vec2 point, vec3 kv, vec3 lv, vec3 mv)\n{\n    float k = dot(vec3(vTextureCoord, 1), kv);\n    float l = dot(vec3(vTextureCoord, 1), lv);\n    float m = dot(vec3(vTextureCoord, 1), mv);\n\n    return k*k - l*m;\n}\n\nvoid main(void)\n{\n    vec3 kv, lv, mv;\n\n    for (int i = 0; i < %uniformsPerBatch%; i++)\n    {\n        if (float(i) > vUniformID - 0.5) \n        {\n            kv = k[i];\n            lv = l[i];\n            mv = m[i];\n            break;\n        }\n    }\n\n    float k_ = dot(vec3(vTextureCoord, 1), kv);\n    float l_ = dot(vec3(vTextureCoord, 1), lv);\n    float m_ = dot(vec3(vTextureCoord, 1), mv);\n\n    float cv = k_ * k_ - l_ * m_;\n\n#ifdef GL_OES_standard_derivatives\n    float cvdx = dFdx(cv);\n    float cvdy = dFdy(cv);\n    vec2 gradientTangent = vec2(cvdx, cvdy);\n\n    float signedDistance = cv / length(gradientTangent);\n    bool antialias = signedDistance > -1. && signedDistance < 1.;\n#endif\n\n    vec4 color;\n\n    if ((inside && cv < 0.) || (!inside && cv >= 0.) \n#ifdef GL_OES_standard_derivatives\n            || antialias\n#endif\n    )\n    {\n        for (int i = 0; i < %texturesPerBatch%; i++)\n        {\n            if (float(i) > vMasterID - 0.5)\n            {\n                color = texture2D(uSamplers[i], vTextureCoord);\n                break;\n            }\n        }\n    }\n    else\n    {\n        color = vec4(0, 0, 0, 0);\n    }\n\n#ifdef GL_OES_standard_derivatives\n    if (antialias)\n    {\n        float weight = inside ? (1. - signedDistance) / 2. : (1. + signedDistance) / 2.;\n        \n        color = weight * color + (1. - weight) * vec4(0, 0, 0, 0);\n    }\n#endif\n\n    gl_FragColor = color;\n}";
 
-var ATTRIBUTE_WORLD_POSITION = new pixiBatchRenderer.AttributeRedirect({
+const ATTRIBUTE_WORLD_POSITION = new pixiBatchRenderer.AttributeRedirect({
     source: 'vertexData',
     attrib: 'aWorldPosition',
     type: 'float32',
@@ -34,7 +34,7 @@ var ATTRIBUTE_WORLD_POSITION = new pixiBatchRenderer.AttributeRedirect({
     glType: constants.TYPES.FLOAT,
     glSize: 2,
 });
-var ATTRIBUTE_TEXTURE_POSITION = new pixiBatchRenderer.AttributeRedirect({
+const ATTRIBUTE_TEXTURE_POSITION = new pixiBatchRenderer.AttributeRedirect({
     source: 'uvData',
     attrib: 'aTexturePosition',
     type: 'float32',
@@ -42,23 +42,23 @@ var ATTRIBUTE_TEXTURE_POSITION = new pixiBatchRenderer.AttributeRedirect({
     glType: constants.TYPES.FLOAT,
     glSize: 2,
 });
-var UNIFORM_K = new pixiBatchRenderer.UniformRedirect({
+const UNIFORM_K = new pixiBatchRenderer.UniformRedirect({
     source: 'k',
     uniform: 'k',
 });
-var UNIFORM_L = new pixiBatchRenderer.UniformRedirect({
+const UNIFORM_L = new pixiBatchRenderer.UniformRedirect({
     source: 'l',
     uniform: 'l',
 });
-var UNIFORM_M = new pixiBatchRenderer.UniformRedirect({
+const UNIFORM_M = new pixiBatchRenderer.UniformRedirect({
     source: 'm',
     uniform: 'm',
 });
-var webGL1Shader = new pixiBatchRenderer.BatchShaderFactory(conicVertexFallbackSrc, conicFragmentFallbackSrc, { inside: true }).derive();
-var webGL2Shader = new pixiBatchRenderer.BatchShaderFactory(conicVertexSrc, conicFragmentSrc, { inside: true }).derive();
-var shaderFunction = function (crendr) {
-    var renderer = crendr.renderer;
-    var contextSystem = renderer.context;
+const webGL1Shader = new pixiBatchRenderer.BatchShaderFactory(conicVertexFallbackSrc, conicFragmentFallbackSrc, { inside: true }).derive();
+const webGL2Shader = new pixiBatchRenderer.BatchShaderFactory(conicVertexSrc, conicFragmentSrc, { inside: true }).derive();
+const shaderFunction = (crendr) => {
+    const renderer = crendr.renderer;
+    const contextSystem = renderer.context;
     if (contextSystem.webGLVersion === 1 && !contextSystem.extensions.standardDerivatives) {
         contextSystem.extensions.standardDerivatives = renderer.gl.getExtension('OES_standard_derivatives');
     }
@@ -67,7 +67,7 @@ var shaderFunction = function (crendr) {
     }
     return webGL2Shader(crendr);
 };
-var conicRenderer = pixiBatchRenderer.BatchRendererPluginFactory.from({
+const conicRenderer = pixiBatchRenderer.BatchRendererPluginFactory.from({
     attribSet: [
         ATTRIBUTE_WORLD_POSITION,
         ATTRIBUTE_TEXTURE_POSITION,
@@ -82,13 +82,13 @@ var conicRenderer = pixiBatchRenderer.BatchRendererPluginFactory.from({
     texIDAttrib: 'aMasterID',
     uniformIDAttrib: 'aUniformID',
     inBatchIDAttrib: 'aBatchID',
-    shaderFunction: shaderFunction,
+    shaderFunction,
     BatchFactoryClass: pixiBatchRenderer.AggregateUniformsBatchFactory,
 });
 core.Renderer.registerPlugin('conic', conicRenderer);
-var ConicRenderer = conicRenderer;
+const ConicRenderer = conicRenderer;
 
-var SQRT_2 = Math.sqrt(2);
+const SQRT_2 = Math.sqrt(2);
 /**
  * Describes a conic section or any quadric curve
  *
@@ -98,8 +98,8 @@ var SQRT_2 = Math.sqrt(2);
  *
  * @public
  */
-var Conic = /** @class */ (function () {
-    function Conic() {
+class Conic {
+    constructor() {
         /**
          * The chord connecting the points of tangency on _l_ and _m_.
          */
@@ -135,13 +135,13 @@ var Conic = /** @class */ (function () {
      * @param b
      * @param c
      */
-    Conic.prototype.setk = function (a, b, c) {
+    setk(a, b, c) {
         this.k[0] = a;
         this.k[1] = b;
         this.k[2] = c;
         this._dirtyID++;
         return this;
-    };
+    }
     /**
      * Sets the equation of the "l" line to _ax + by + c = 0_.
      *
@@ -149,13 +149,13 @@ var Conic = /** @class */ (function () {
      * @param b
      * @param c
      */
-    Conic.prototype.setl = function (a, b, c) {
+    setl(a, b, c) {
         this.l[0] = a;
         this.l[1] = b;
         this.l[2] = c;
         this._dirtyID++;
         return this;
-    };
+    }
     /**
      * Sets the equation of the line "m" to _ax + by + c = 0_.
      *
@@ -163,31 +163,31 @@ var Conic = /** @class */ (function () {
      * @param b
      * @param c
      */
-    Conic.prototype.setm = function (a, b, c) {
+    setm(a, b, c) {
         this.m[0] = a;
         this.m[1] = b;
         this.m[2] = c;
         this._dirtyID++;
         return this;
-    };
+    }
     /**
      * Set control points in texture space
      * @param c0
      * @param c1
      * @param c2
      */
-    Conic.prototype.setControlPoints = function (c0, c1, c2) {
+    setControlPoints(c0, c1, c2) {
         this.controlPoints[0] = c0;
         this.controlPoints[1] = c1;
         this.controlPoints[2] = c2;
-    };
+    }
     /**
      * Flag the shape as dirty after you have modified the data directly.
      */
-    Conic.prototype.update = function () {
+    update() {
         this._dirtyID++;
         return this;
-    };
+    }
     /**
      * Creates a circular conic of the given {@code radius} that is in the bounding box
      * (0,0,2_r_,2_r_).
@@ -201,13 +201,13 @@ var Conic = /** @class */ (function () {
      * @param radius - the radius of the circle
      * @return the conic shape
      */
-    Conic.createCircle = function (radius) {
-        var conic = new Conic();
+    static createCircle(radius) {
+        const conic = new Conic();
         conic.setk(1 / SQRT_2, 1 / SQRT_2, -radius / SQRT_2);
         conic.setl(1, 0, 0);
         conic.setm(0, 1, 0);
         return conic;
-    };
+    }
     /**
      * Creates an ellipse with the given major & minor semi-axes that is located in the
      * bounding box (0,0,2_a_,2_b_).
@@ -221,13 +221,13 @@ var Conic = /** @class */ (function () {
      * @param a - major semi-axis length
      * @param b - minor semi-axis length
      */
-    Conic.createEllipse = function (a, b) {
-        var conic = new Conic();
+    static createEllipse(a, b) {
+        const conic = new Conic();
         conic.setk(1 / a, 1 / b, -1);
         conic.setl(2 / a, 0, 0);
         conic.setm(0, 1 / b, 0);
         return conic;
-    };
+    }
     /**
      * Creates a parabola that opens upward (for _a_ > 0); since parabolas are not closed
      * curves, they do not have a bounding box.
@@ -240,13 +240,13 @@ var Conic = /** @class */ (function () {
      *
      * @param a - distance of directrix, focus from the vertex of the parabola (0,0)
      */
-    Conic.createParabola = function (a) {
-        var conic = new Conic();
+    static createParabola(a) {
+        const conic = new Conic();
         conic.setk(1, 0, 0);
         conic.setl(0, 4 * a, 0);
         conic.setm(0, 0, 1);
         return conic;
-    };
+    }
     /**
      * Creates a hyperbola that opens up and down; since hyperbolas are not closed curves,
      * they do not have a bounding box.
@@ -260,43 +260,13 @@ var Conic = /** @class */ (function () {
      * @param a - major semi-axis
      * @param b - minor semi-axis
      */
-    Conic.createHyperbola = function (a, b) {
-        var conic = new Conic();
+    static createHyperbola(a, b) {
+        const conic = new Conic();
         conic.setk(0, 0, 1);
         conic.setl(-1 / a, 1 / b, 0);
         conic.setm(1 / a, 1 / b, 0);
         return conic;
-    };
-    return Conic;
-}());
-
-/*! *****************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-var extendStatics = function(d, b) {
-    extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return extendStatics(d, b);
-};
-
-function __extends(d, b) {
-    extendStatics(d, b);
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    }
 }
 
 var adjoint_1 = adjoint;
@@ -850,7 +820,7 @@ var glMat3 = {
   , transpose: transpose_1
 };
 
-var tempMatrix = new math.Matrix();
+const tempMatrix = new math.Matrix();
 /**
  * Draws a segment of conic section represented by the equation _k_<sup>2</sup>- _lm = 0_, where k, l, m are lines.
  *
@@ -860,108 +830,86 @@ var tempMatrix = new math.Matrix();
  * the form _ax + by + c = 0_. _l_ and _m_ are the tangents to the curve, and _k_ is a chord connecting the points
  * of tangency.
  */
-var ConicDisplay = /** @class */ (function (_super) {
-    __extends(ConicDisplay, _super);
-    function ConicDisplay(conic, texture) {
-        if (conic === void 0) { conic = new Conic(); }
-        var _this = _super.call(this) || this;
+class ConicDisplay extends display.Container {
+    constructor(conic = new Conic(), texture) {
+        super();
         /**
          * The conic curve drawn by this graphic.
          */
-        _this.shape = conic;
+        this.shape = conic;
         /**
          * Flags whether the geometry data needs to be updated.
          */
-        _this._dirtyID = 0;
+        this._dirtyID = 0;
         /**
          * The world transform ID last when the geometry was updated.
          */
-        _this._transformID = 0;
+        this._transformID = 0;
         /**
          * Last {@link _dirtyID} when the geometry was updated.
          */
-        _this._updateID = -1;
+        this._updateID = -1;
         /**
          * World positions of the vertices
          */
-        _this.vertexData = [];
+        this.vertexData = [];
         /**
          * Texture positions of the vertices.
          */
-        _this.uvData = [];
-        _this._texture = texture || core.Texture.WHITE;
-        return _this;
+        this.uvData = [];
+        this._texture = texture || core.Texture.WHITE;
     }
-    Object.defineProperty(ConicDisplay.prototype, "k", {
-        /**
-         * @see Conic#k
-         */
-        get: function () {
-            return this.shape.k;
-        },
-        set: function (line) {
-            var _a;
-            (_a = this.shape).setk.apply(_a, line);
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(ConicDisplay.prototype, "l", {
-        /**
-         * @see Conic#l
-         */
-        get: function () {
-            return this.shape.l;
-        },
-        set: function (line) {
-            var _a;
-            (_a = this.shape).setl.apply(_a, line);
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(ConicDisplay.prototype, "m", {
-        /**
-         * @see Conic#m
-         */
-        get: function () {
-            return this.shape.m;
-        },
-        set: function (line) {
-            var _a;
-            (_a = this.shape).setm.apply(_a, line);
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(ConicDisplay.prototype, "texture", {
-        get: function () {
-            return this._texture;
-        },
-        set: function (tex) {
-            this._texture = tex || core.Texture.WHITE;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    ConicDisplay.prototype._calculateBounds = function () {
+    /**
+     * @see Conic#k
+     */
+    get k() {
+        return this.shape.k;
+    }
+    set k(line) {
+        this.shape.setk(...line);
+    }
+    /**
+     * @see Conic#l
+     */
+    get l() {
+        return this.shape.l;
+    }
+    set l(line) {
+        this.shape.setl(...line);
+    }
+    /**
+     * @see Conic#m
+     */
+    get m() {
+        return this.shape.m;
+    }
+    set m(line) {
+        this.shape.setm(...line);
+    }
+    get texture() {
+        return this._texture;
+    }
+    set texture(tex) {
+        this._texture = tex || core.Texture.WHITE;
+    }
+    _calculateBounds() {
         this._bounds.addVertexData(this.vertexData, 0, this.vertexData.length);
-    };
-    ConicDisplay.prototype._render = function (renderer) {
+    }
+    _render(renderer) {
         if (!renderer.plugins.conic) {
             renderer.plugins.conic = new ConicRenderer(renderer, null);
         }
         renderer.batch.setObjectRenderer(renderer.plugins.conic);
         renderer.plugins.conic.render(this);
-    };
+    }
     /**
      * Draws the triangle formed by the control points of the shape.
      */
-    ConicDisplay.prototype.drawControlPoints = function () {
-        var controlPoints = this.shape.controlPoints;
+    drawControlPoints() {
+        const controlPoints = this.shape.controlPoints;
         this.drawTriangle(controlPoints[0].x, controlPoints[0].y, controlPoints[1].x, controlPoints[1].y, controlPoints[2].x, controlPoints[2].y);
         return this;
-    };
+    }
     /**
      * Draw a triangle defined in texture space transformed into local space. Generally, you would want to draw the triangle
      * formed by the shape's control points.
@@ -973,9 +921,9 @@ var ConicDisplay = /** @class */ (function (_super) {
      * @param x2
      * @param y2
      */
-    ConicDisplay.prototype.drawTriangle = function (x0, y0, x1, y1, x2, y2) {
-        var data = this.uvData;
-        var i = data.length;
+    drawTriangle(x0, y0, x1, y1, x2, y2) {
+        const data = this.uvData;
+        const i = data.length;
         data.length += 6;
         data[i] = x0;
         data[i + 1] = y0;
@@ -984,16 +932,16 @@ var ConicDisplay = /** @class */ (function (_super) {
         data[i + 4] = x2;
         data[i + 5] = y2;
         return this;
-    };
+    }
     /**
      * @param x
      * @param y
      * @param width
      * @param height
      */
-    ConicDisplay.prototype.drawRect = function (x, y, width, height) {
-        var data = this.uvData;
-        var i = data.length;
+    drawRect(x, y, width, height) {
+        const data = this.uvData;
+        const i = data.length;
         data.length += 12;
         data[i] = x;
         data[i + 1] = y;
@@ -1008,71 +956,67 @@ var ConicDisplay = /** @class */ (function (_super) {
         data[i + 10] = x;
         data[i + 11] = y + height;
         return this;
-    };
+    }
     /**
      * Updates the geometry data for this conic.
      */
-    ConicDisplay.prototype.updateConic = function () {
-        var vertexData = this.vertexData;
-        var uvData = this.uvData;
+    updateConic() {
+        const vertexData = this.vertexData;
+        const uvData = this.uvData;
         vertexData.length = uvData.length;
-        var matrix = tempMatrix.copyFrom(this.worldTransform);
-        var a = matrix.a, b = matrix.b, c = matrix.c, d = matrix.d, tx = matrix.tx, ty = matrix.ty;
-        for (var i = 0, j = vertexData.length / 2; i < j; i++) {
-            var x = uvData[(i * 2)];
-            var y = uvData[(i * 2) + 1];
+        const matrix = tempMatrix.copyFrom(this.worldTransform);
+        const { a, b, c, d, tx, ty } = matrix;
+        for (let i = 0, j = vertexData.length / 2; i < j; i++) {
+            const x = uvData[(i * 2)];
+            const y = uvData[(i * 2) + 1];
             vertexData[(i * 2)] = (a * x) + (c * y) + tx;
             vertexData[(i * 2) + 1] = (b * x) + (d * y) + ty;
         }
         this._updateID = this._dirtyID;
-        var indexData = this.indexData = new Array(vertexData.length / 2);
+        const indexData = this.indexData = new Array(vertexData.length / 2);
         // TODO: Remove indexData, pixi-batch-renderer might have a problem with it
-        for (var i = 0, j = indexData.length; i < j; i++) {
+        for (let i = 0, j = indexData.length; i < j; i++) {
             indexData[i] = i;
         }
-    };
+    }
     /**
      * Sets the local-space control points of the curve.
      * @param c0
      * @param c1
      * @param c2
      */
-    ConicDisplay.prototype.setControlPoints = function (c0, c1, c2) {
-        var texturePoints = this.shape.controlPoints;
+    setControlPoints(c0, c1, c2) {
+        const texturePoints = this.shape.controlPoints;
         this.setTransform(texturePoints[0], texturePoints[1], texturePoints[2], c0, c1, c2);
-    };
-    ConicDisplay.prototype.setTransform = function () {
-        var args = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            args[_i] = arguments[_i];
-        }
-        var transform = this.transform;
-        var localTransform = transform.localTransform;
+    }
+    setTransform(...args) {
+        const transform = this.transform;
+        const localTransform = transform.localTransform;
         transform._localID++;
         if (args.length === 1) {
             localTransform.copyFrom(args[0]);
             return this;
         }
         if (args.length === 9) {
-            _super.prototype.setTransform.apply(this, args);
+            super.setTransform(...args);
         }
         localTransform.identity();
         // Design space
-        var ax0;
-        var ay0;
-        var bx0;
-        var by0;
-        var cx0;
-        var cy0;
+        let ax0;
+        let ay0;
+        let bx0;
+        let by0;
+        let cx0;
+        let cy0;
         // Texture space
-        var ax1;
-        var ay1;
-        var bx1;
-        var by1;
-        var cx1;
-        var cy1;
+        let ax1;
+        let ay1;
+        let bx1;
+        let by1;
+        let cx1;
+        let cy1;
         if (args.length === 6) {
-            var points = args;
+            const points = args;
             ax0 = points[0].x;
             ay0 = points[0].y;
             bx0 = points[1].x;
@@ -1087,7 +1031,7 @@ var ConicDisplay = /** @class */ (function (_super) {
             cy1 = points[5].y;
         }
         else {
-            var coords = args;
+            const coords = args;
             ax0 = coords[0];
             ay0 = coords[1];
             bx0 = coords[2];
@@ -1101,12 +1045,12 @@ var ConicDisplay = /** @class */ (function (_super) {
             cx1 = coords[10];
             cy1 = coords[11];
         }
-        var input = [
+        const input = [
             ax0, bx0, cx0,
             ay0, by0, cy0,
             1, 1, 1,
         ];
-        var inverse = glMat3.invert(input, input);
+        const inverse = glMat3.invert(input, input);
         // input * textureTransform = output
         // textureTransform = inverse(input) * output
         localTransform.a = (inverse[0] * ax1) + (inverse[3] * bx1) + (inverse[6] * cx1);
@@ -1117,22 +1061,21 @@ var ConicDisplay = /** @class */ (function (_super) {
         localTransform.ty = (inverse[2] * ay1) + (inverse[5] * by1) + (inverse[8] * cy1);
         transform.setFromMatrix(localTransform);
         return this;
-    };
+    }
     /**
      * Updates the transform of the conic, and if changed updates the geometry data.
      *
      * @override
      */
-    ConicDisplay.prototype.updateTransform = function () {
-        var ret = _super.prototype.updateTransform.call(this);
+    updateTransform() {
+        const ret = super.updateTransform();
         if (this._transformID !== this.transform._worldID) {
             this.updateConic();
             this._transformID = this.transform._worldID;
         }
         return ret;
-    };
-    return ConicDisplay;
-}(display.Container));
+    }
+}
 
 exports.Conic = Conic;
 exports.ConicDisplay = ConicDisplay;

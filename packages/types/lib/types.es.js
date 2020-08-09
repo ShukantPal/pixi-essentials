@@ -1,6 +1,6 @@
 /*!
  * @pixi-essentials/types - v0.0.1-alpha.0
- * Compiled Sun, 09 Aug 2020 02:07:48 UTC
+ * Compiled Sun, 09 Aug 2020 15:59:00 UTC
  *
  * @pixi-essentials/types is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -20,8 +20,8 @@
  *      const { value } = iterator.next();
  * }
  */
-var CircularLinkedListIterator = /** @class */ (function () {
-    function CircularLinkedListIterator(node) {
+class CircularLinkedListIterator {
+    constructor(node) {
         /**
          * The last node returned by {@code this.next}.
          */
@@ -35,7 +35,10 @@ var CircularLinkedListIterator = /** @class */ (function () {
          */
         this.start = node;
     }
-    CircularLinkedListIterator.prototype.next = function () {
+    /**
+     * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators#Iterators
+     */
+    next() {
         if (this.current === null) {
             this.current = this.start;
         }
@@ -51,9 +54,32 @@ var CircularLinkedListIterator = /** @class */ (function () {
             value: this.current,
             done: this.done,
         };
-    };
-    return CircularLinkedListIterator;
-}());
+    }
+    /**
+     * Reset the iterator so it can be used again.
+     */
+    reset(start = this.start) {
+        this.current = null;
+        this.done = false;
+        this.start = start;
+        return this;
+    }
+}
+/**
+ * An iterable circular linked-list data structure.
+ */
+class CircularLinkedList {
+    constructor(head) {
+        this.head = head;
+    }
+    [Symbol.iterator]() {
+        if (!this._sharedIterator) {
+            this._sharedIterator = new CircularLinkedListIterator(this.head);
+        }
+        this._sharedIterator.reset(this.head);
+        return this._sharedIterator;
+    }
+}
 
-export { CircularLinkedListIterator };
-//# sourceMappingURL=types.mjs.map
+export { CircularLinkedList, CircularLinkedListIterator };
+//# sourceMappingURL=types.es.js.map

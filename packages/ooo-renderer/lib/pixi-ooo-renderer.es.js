@@ -8,13 +8,9 @@
  * Copyright 2019-2020, Shukant K. Pal, All Rights Reserved
  * 
  */
-'use strict';
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-var pixi_js = require('pixi.js');
-var pixiSpatialHash = require('pixi-spatial-hash');
-var objectPool = require('@pixi-essentials/object-pool');
+import { ObjectRenderer } from 'pixi.js';
+import { SpatialHash } from 'pixi-spatial-hash';
+import { ObjectPoolFactory } from '@pixi-essentials/object-pool';
 
 class OooElement {
     getBounds() {
@@ -22,19 +18,19 @@ class OooElement {
     }
 }
 
-const elementPool = objectPool.ObjectPoolFactory.build(OooElement);
+const elementPool = ObjectPoolFactory.build(OooElement);
 /**
  * The out-of-order rendering pipeline
  *
  * @public
  */
-class OooRenderer extends pixi_js.ObjectRenderer {
+class OooRenderer extends ObjectRenderer {
     constructor(renderer, options = {}) {
         super(renderer);
         /**
          * 2D spatial hash of the buffered display-objects. This updated on each render call on this object-renderer.
          */
-        this.spatialHash = new pixiSpatialHash.SpatialHash(options.blockSize || 256);
+        this.spatialHash = new SpatialHash(options.blockSize || 256);
         /**
          * Provides the pipeline used to render an object. By default, the ooo-renderer will use the `pluginName` property
          * to determine the pipeline.
@@ -114,6 +110,5 @@ class OooRendererPluginFactory {
     }
 }
 
-exports.OooRenderer = OooRenderer;
-exports.OooRendererPluginFactory = OooRendererPluginFactory;
-//# sourceMappingURL=pixi-ooo-renderer.js.map
+export { OooRenderer, OooRendererPluginFactory };
+//# sourceMappingURL=pixi-ooo-renderer.es.js.map

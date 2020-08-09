@@ -13,6 +13,16 @@ export declare interface Boundable {
 }
 
 /**
+ * An iterable circular linked-list data structure.
+ */
+export declare class CircularLinkedList<Node extends ILinkedListNode> implements Iterable<Node> {
+    head: Node;
+    private _sharedIterator;
+    constructor(head: Node);
+    [Symbol.iterator](): Iterator<Node, Node, Node>;
+}
+
+/**
  * Iterator for circular linked-lists
  *
  * @example
@@ -24,18 +34,36 @@ export declare interface Boundable {
  *      const { value } = iterator.next();
  * }
  */
-export declare class CircularLinkedListIterator<Node extends ILinkedListNode> implements Iterator<Node, Node, Node>
-{
+export declare class CircularLinkedListIterator<Node extends ILinkedListNode> implements Iterator<Node, Node, Node> {
     current: Node;
     done: boolean;
     protected start: Node;
     constructor(node: Node);
+    /**
+     * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators#Iterators
+     */
     next(): IteratorResult<Node, Node>;
+    /**
+     * Reset the iterator so it can be used again.
+     */
+    reset(start?: Node): this;
 }
 
-export declare interface ILinkedListNode {
-    next: this;
+/**
+ * A node in a doubly linked-list data structure.
+ */
+export declare interface IDoublyLinkedListNode extends ILinkedListNode {
     previous: this;
 }
 
-export { };
+/**
+ * A node in a linked-list data-structure.
+ */
+export declare interface ILinkedListNode {
+    /**
+     * The next node in the linked-list.
+     */
+    next: this;
+}
+
+export { }
