@@ -2,10 +2,11 @@
     "extends": "../../tsconfig.json",
     "compilerOptions": {
         "outDir": "compile",
-        "paths": {
-            "src": [
-                "./src"
-            ]
-        }
-    }
+    },
+    "include": [
+        "src/*.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
 }

@@ -1,0 +1,24 @@
+{
+  "name": "@pixi-essentials/data-half-edge-mesh",
+  "version": "1.0.0",
+  "description": "Generalized half-edge data structure to manipulate polygonal meshes",
+  "main": "lib/data-half-edge-mesh.js",
+  "module": "lib/data-half-edge-mesh.es.js",
+  "bundle": "dist/data-half-edge.mesh.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SukantPal/pixi-essentials.git"
+  },
+  "author": "Shukant K. Pal <shukantpal@outlook.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SukantPal/pixi-essentials/issues"
+  },
+  "homepage": "https://github.com/SukantPal/pixi-essentials#readme",
+  "dependencies": {
+    "@pixi-essentials/types": "0.0.1-alpha.0"
+  }
+}

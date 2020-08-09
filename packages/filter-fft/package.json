@@ -14,7 +14,7 @@
   "homepage": "https://github.com/SukantPal/pixi-essentials/tree/master/packages/filter-fft#readme",
   "license": "MIT",
   "main": "lib/filter-fft.js",
-  "module": "lib/filter-fft.mjs",
+  "module": "lib/filter-fft.es.js",
   "bundle": "lib/filter-fft.js",
   "directories": {
     "lib": "lib",

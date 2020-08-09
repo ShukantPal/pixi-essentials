@@ -10,7 +10,7 @@
   "homepage": "https://github.com/SukantPal/pixi-essentials/tree/master/packages/cull#readme",
   "license": "MIT",
   "main": "lib/cull.js",
-  "module": "lib/cull.mjs",
+  "module": "lib/cull.es.js",
   "bundle": "dist/cull.js",
   "directories": {
     "lib": "lib",

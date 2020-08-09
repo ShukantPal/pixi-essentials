@@ -1,9 +1,12 @@
 /*!
  * @pixi-essentials/object-pool - v0.0.3
- * Compiled Mon, 20 Jul 2020 15:45:20 UTC
+ * Compiled Sun, 09 Aug 2020 02:07:48 UTC
  *
  * @pixi-essentials/object-pool is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
+ * 
+ * Copyright 2019-2020, Shukant K. Pal, All Rights Reserved
+ * 
  */
 import { Ticker, UPDATE_PRIORITY } from '@pixi/ticker';
 

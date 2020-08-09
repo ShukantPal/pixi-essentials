@@ -130,6 +130,9 @@ async function main()
             ` *`,
             ` * ${pkg.name} is licensed under the MIT License.`,
             ` * http://www.opensource.org/licenses/mit-license`,
+            ` * `,
+            ` * Copyright 2019-2020, Shukant K. Pal, All Rights Reserved`,
+            ` * `,
             ` */`,
         ].join('\n');
 

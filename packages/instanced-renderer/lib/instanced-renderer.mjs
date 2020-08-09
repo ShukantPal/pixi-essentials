@@ -1,9 +1,12 @@
 /*!
  * @pixi-essentials/instanced-renderer - v0.0.1-alpha.1
- * Compiled Mon, 20 Jul 2020 15:45:20 UTC
+ * Compiled Sun, 09 Aug 2020 02:07:48 UTC
  *
  * @pixi-essentials/instanced-renderer is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
+ * 
+ * Copyright 2019-2020, Shukant K. Pal, All Rights Reserved
+ * 
  */
 import { ViewableBuffer, Buffer, Geometry, State, ObjectRenderer } from '@pixi/core';
 import { DRAW_MODES, TYPES } from '@pixi/constants';

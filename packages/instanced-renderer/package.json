@@ -14,7 +14,7 @@
   "homepage": "https://github.com/SukantPal/pixi-essentials/tree/master/packages/instanced-renderer#readme",
   "license": "MIT",
   "main": "lib/instanced-renderer.js",
-  "module": "lib/instanced-renderer.mjs",
+  "module": "lib/instanced-renderer.es.js",
   "bundle": "dist/instanced-renderer.js",
   "directories": {
     "lib": "lib",

@@ -10,7 +10,7 @@
   "homepage": "https://github.com/SukantPal/pixi-essentials/tree/master/packages/types#readme",
   "license": "MIT",
   "main": "lib/types.js",
-  "module": "lib/types.mjs",
+  "module": "lib/types.es.js",
   "bundle": "dist/types.js",
   "directories": {
     "lib": "lib",

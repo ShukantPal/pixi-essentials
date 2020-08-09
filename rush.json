@@ -7,7 +7,7 @@
     "strictPeerDependencies": false,
     "resolutionStrategy": "fast",
   },
-  "nodeSupportedVersionRange": ">=10.0.0 <14.0.0",
+  "nodeSupportedVersionRange": ">=10.0.0 <15.0.0",
   "suppressNodeLtsWarning": true,
   "repository": {
     "url": "https://github.com/SukantPal/pixi-essentials",
@@ -34,6 +34,11 @@
     {
       "packageName": "@pixi-essentials/cull",
       "projectFolder": "packages/cull",
+      "reviewCategory": "production"
+    },
+    {
+      "packageName": "@pixi-essentials/data-half-edge-mesh",
+      "projectFolder": "packages/data-half-edge-mesh",
       "reviewCategory": "production"
     },
     {

@@ -15,7 +15,7 @@
   "homepage": "https://github.com/SukantPal/pixi-essentials/tree/master/packages/shader-preprocessor#readme",
   "license": "MIT",
   "main": "lib/shader-preprocessor.js",
-  "module": "lib/shader-preprocessor.mjs",
+  "module": "lib/shader-preprocessor.es.js",
   "bundle": "dist/shader-preprocessor.js",
   "directories": {
     "lib": "lib",

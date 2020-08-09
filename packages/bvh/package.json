@@ -15,7 +15,7 @@
   "homepage": "https://github.com/SukantPal/pixi-essentials/tree/master/packages/system-bvh#readme",
   "license": "MIT",
   "main": "lib/system-bvh.js",
-  "module": "lib/system-bvh.mjs",
+  "module": "lib/system-bvh.es.js",
   "bundle": "dist/system-bvh.js",
   "directories": {
     "lib": "lib",
@@ -35,7 +35,7 @@
     "url": "https://github.com/SukantPal/pixi-essentials/issues"
   },
   "dependencies": {
-    "@pixi-essentials/object-pool": "0.0.2",
+    "@pixi-essentials/object-pool": "0.0.3",
     "@pixi-essentials/types": "0.0.1-alpha.0"
   },
   "peerDependencies": {
