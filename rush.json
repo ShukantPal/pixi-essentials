@@ -24,62 +24,74 @@
     {
       "packageName": "@pixi-essentials/bvh",
       "projectFolder": "packages/bvh",
-      "reviewCategory": "production"
+      "reviewCategory": "production",
+      "shouldPublish": true
     },
     {
       "packageName": "@pixi-essentials/conic",
       "projectFolder": "packages/conic",
-      "reviewCategory": "production"
+      "reviewCategory": "production",
+      "shouldPublish": true
     },
     {
       "packageName": "@pixi-essentials/cull",
       "projectFolder": "packages/cull",
-      "reviewCategory": "production"
+      "reviewCategory": "production",
+      "shouldPublish": true
     },
     {
       "packageName": "@pixi-essentials/data-half-edge-mesh",
       "projectFolder": "packages/data-half-edge-mesh",
-      "reviewCategory": "production"
+      "reviewCategory": "production",
+      "shouldPublish": true
     },
     {
       "packageName": "@pixi-essentials/filter-fft",
       "projectFolder": "packages/filter-fft",
-      "reviewCategory": "production"
+      "reviewCategory": "production",
+      "shouldPublish": true
     },
     {
       "packageName": "@pixi-essentials/instanced-renderer",
       "projectFolder": "packages/instanced-renderer",
-      "reviewCategory": "production"
+      "reviewCategory": "production",
+      "shouldPublish": true
     },
     {
       "packageName": "@pixi-essentials/mixin-smart-mask",
       "projectFolder": "packages/mixin-smart-mask",
-      "reviewCategory": "production"
+      "reviewCategory": "production",
+      "shouldPublish": true
     },
     {
       "packageName": "@pixi-essentials/object-pool",
       "projectFolder": "packages/object-pool",
-      "reviewCategory": "production"
+      "reviewCategory": "production",
+      "shouldPublish": true
     },
     {
       "packageName": "@pixi-essentials/ooo-renderer",
       "projectFolder": "packages/ooo-renderer",
-      "reviewCategory": "production"
+      "reviewCategory": "production",
+      "shouldPublish": true
     },
     {
       "packageName": "@pixi-essentials/shader-preprocessor",
       "projectFolder": "packages/shader-preprocessor",
-      "reviewCategory": "production"
+      "reviewCategory": "production",
+      "shouldPublish": true
     },
     {
       "packageName": "@pixi-essentials/system-g",
       "projectFolder": "packages/system-g",
-      "reviewCategory": "production"
+      "reviewCategory": "production",
+      "shouldPublish": true
     },
     {
       "packageName": "@pixi-essentials/types",
       "projectFolder": "packages/types",
-      "reviewCategory": "production"
+      "reviewCategory": "production",
+      "shouldPublish": true
     }
   ]
 }

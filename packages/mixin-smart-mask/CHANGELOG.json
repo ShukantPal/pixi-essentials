@@ -1,0 +1,25 @@
+{
+  "name": "@pixi-essentials/mixin-smart-mask",
+  "entries": [
+    {
+      "version": "1.0.2",
+      "tag": "@pixi-essentials/mixin-smart-mask_v1.0.2",
+      "date": "Sun, 09 Aug 2020 16:09:17 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "ESM bundle renamed to .es.js extension"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@pixi-essentials/object-pool\" from `0.0.1` to `0.0.4`"
+          },
+          {
+            "comment": "Updating dependency \"@pixi-essentials/object-pool\" from `0.0.1` to `0.0.4`"
+          }
+        ]
+      }
+    }
+  ]
+}

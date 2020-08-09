@@ -1,0 +1,20 @@
+{
+  "name": "@pixi-essentials/bvh",
+  "entries": [
+    {
+      "version": "0.0.1",
+      "tag": "@pixi-essentials/bvh_v0.0.1",
+      "date": "Sun, 09 Aug 2020 16:09:17 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@pixi-essentials/object-pool\" from `0.0.3` to `0.0.4`"
+          },
+          {
+            "comment": "Updating dependency \"@pixi-essentials/types\" from `0.0.1-alpha.0` to `0.0.1`"
+          }
+        ]
+      }
+    }
+  ]
+}

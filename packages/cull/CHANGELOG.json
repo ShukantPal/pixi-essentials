@@ -1,0 +1,17 @@
+{
+  "name": "@pixi-essentials/cull",
+  "entries": [
+    {
+      "version": "1.0.5",
+      "tag": "@pixi-essentials/cull_v1.0.5",
+      "date": "Sun, 09 Aug 2020 16:09:17 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "ESM bundle renamed to .es.js extension"
+          }
+        ]
+      }
+    }
+  ]
+}

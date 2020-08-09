@@ -1,6 +1,6 @@
 {
   "name": "@pixi-essentials/bvh",
-  "version": "0.0.1-alpha.0",
+  "version": "0.0.1",
   "description": "Bounding volume hierarchy for 2D scene graphs",
   "keywords": [
     "2d",
@@ -35,8 +35,8 @@
     "url": "https://github.com/SukantPal/pixi-essentials/issues"
   },
   "dependencies": {
-    "@pixi-essentials/object-pool": "0.0.3",
-    "@pixi-essentials/types": "0.0.1-alpha.0"
+    "@pixi-essentials/object-pool": "0.0.4",
+    "@pixi-essentials/types": "0.0.1"
   },
   "peerDependencies": {
     "@pixi/core": "^5.1.0",

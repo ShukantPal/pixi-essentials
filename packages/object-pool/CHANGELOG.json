@@ -1,0 +1,17 @@
+{
+  "name": "@pixi-essentials/object-pool",
+  "entries": [
+    {
+      "version": "0.0.4",
+      "tag": "@pixi-essentials/object-pool_v0.0.4",
+      "date": "Sun, 09 Aug 2020 16:09:17 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "ESM bundle renamed to .es.js extension"
+          }
+        ]
+      }
+    }
+  ]
+}

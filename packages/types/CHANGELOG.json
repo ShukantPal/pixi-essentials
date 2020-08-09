@@ -1,0 +1,17 @@
+{
+  "name": "@pixi-essentials/types",
+  "entries": [
+    {
+      "version": "0.0.1",
+      "tag": "@pixi-essentials/types_v0.0.1",
+      "date": "Sun, 09 Aug 2020 16:09:17 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "ESM bundle renamed to .es.js extension"
+          }
+        ]
+      }
+    }
+  ]
+}
