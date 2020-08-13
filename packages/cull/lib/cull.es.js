@@ -1,12 +1,11 @@
 /*!
- * @pixi-essentials/cull - v1.0.4
- * Compiled Sun, 09 Aug 2020 15:59:00 UTC
+ * @pixi-essentials/cull - v1.0.5
+ * Compiled Thu, 13 Aug 2020 15:26:33 UTC
  *
  * @pixi-essentials/cull is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
  * 
  * Copyright 2019-2020, Shukant K. Pal, All Rights Reserved
- * 
  */
 import { Rectangle } from 'pixi.js';
 

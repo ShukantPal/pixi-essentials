@@ -22,6 +22,12 @@
   },
   "projects": [
     {
+      "packageName": "@pixi-essentials/bounds",
+      "projectFolder": "packages/bounds",
+      "reviewCategory": "production",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@pixi-essentials/bvh",
       "projectFolder": "packages/bvh",
       "reviewCategory": "production",

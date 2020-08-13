@@ -15,7 +15,14 @@
     "plugins": [
         "@typescript-eslint"
     ],
-    "rules": {},
+    "rules": {
+        "@typescript-eslint/triple-slash-reference": [
+            "off"
+        ],
+        "spaced-comment": [
+            "off"
+        ]
+    },
     "extends": [
         "@pixi/eslint-config"
     ]

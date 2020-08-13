@@ -12,6 +12,21 @@ export declare interface Boundable {
     getBounds(): Rectangle;
 }
 
+export declare class CircularDoublyLinkedList<Node extends IDoublyLinkedListNode> implements Iterable<Node> {
+    head: Node;
+    private _sharedIterator;
+    constructor(head: Node);
+    /**
+     * Adds {@code node} into this list before {@code nodeAfter}.
+     *
+     * @param node - the node to be added to this list
+     * @param nodeAfter - the node that should come after the added node
+     */
+    add(node: Node, nodeAfter?: Node): this;
+    forEach(callback: (node: Node) => any): void;
+    [Symbol.iterator](): Iterator<Node, Node, Node>;
+}
+
 /**
  * An iterable circular linked-list data structure.
  */

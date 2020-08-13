@@ -1,0 +1,34 @@
+{
+  "name": "@pixi-essentials/bounds",
+  "version": "1.0.0",
+  "description": "Utilities for handling 2D bounding boxes",
+  "main": "lib/bounds.js",
+  "module": "lib/bounds.es.js",
+  "bundle": "dist/bounds.js",
+  "scripts": {
+    "compile": "rm -rf compile && tsc && api-extractor run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SukantPal/pixi-essentials.git"
+  },
+  "keywords": [
+    "bounds",
+    "pixijs",
+    "aabb",
+    "obb"
+  ],
+  "author": "Shukant K. Pal <shukantpal@outlook.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SukantPal/pixi-essentials/issues"
+  },
+  "homepage": "https://github.com/SukantPal/pixi-essentials#readme",
+  "peerDependencies": {
+    "@pixi/math": "^5.3.3"
+  },
+  "devDependencies": {
+    "@pixi/math": "^5.3.3",
+    "pixi.js": "~5.3.3"
+  }
+}
