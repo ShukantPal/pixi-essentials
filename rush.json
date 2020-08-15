@@ -94,6 +94,12 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@pixi-essentials/transformer",
+      "projectFolder": "packages/transformer",
+      "reviewCategory": "production",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@pixi-essentials/types",
       "projectFolder": "packages/types",
       "reviewCategory": "production",

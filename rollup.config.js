@@ -10,6 +10,44 @@ import { terser } from 'rollup-plugin-terser';
 import fs from 'fs';
 import { RushConfiguration } from '@microsoft/rush-lib';
 
+const defaultGlobals = {
+    // @pixi/* packages
+    '@pixi/accessiblity': 'PIXI',
+    '@pixi/app': 'PIXI',
+    '@pixi/basis': 'PIXI',
+    '@pixi/constants': 'PIXI',
+    '@pixi/core': 'PIXI',
+    '@pixi/display': 'PIXI',
+    '@pixi/extract': 'PIXI',
+    '@pixi/filters': 'PIXI',
+    '@pixi/graphics': 'PIXI',
+    '@pixi/graphics-extras': 'PIXI',
+    '@pixi/loaders': 'PIXI',
+    '@pixi/loaders-compressed-textures': 'PIXI',
+    '@pixi/math': 'PIXI',
+    '@pixi/mesh': 'PIXI',
+    '@pixi/mesh-extras': 'PIXI',
+    '@pixi/mixin-cache-as-bitmap': 'PIXI',
+    '@pixi/mixin-get-child-by-name': 'PIXI',
+    '@pixi/mixin-get-global-position': 'PIXI',
+    '@pixi/particles': 'PIXI',
+    '@pixi/polyfill': 'PIXI',
+    '@pixi/prepare': 'PIXI',
+    '@pixi/runner': 'PIXI',
+    '@pixi/settings': 'PIXI',
+    '@pixi/sprite': 'PIXI',
+    '@pixi/sprite-tiling': 'PIXI',
+    '@pixi/spritesheet': 'PIXI',
+    '@pixi/text': 'PIXI',
+    '@pixi/ticker': 'PIXI',
+    '@pixi/unsafe-eval': 'PIXI',
+    '@pixi/utils': 'PIXI',
+    'pixi.js': 'PIXI',
+
+    // pixi-batch-renderer plugin
+    'pixi-batch-renderer': 'PIXI.brend',
+};
+
 /**
  * Returns the root packageJSON
  */
@@ -124,6 +162,8 @@ async function main()
     packages.forEach((pkg) =>
     {
         let banner = [
+            `/* eslint-disable */`,
+            ` `,
             `/*!`,
             ` * ${pkg.name} - v${pkg.version}`,
             ` * Compiled ${compiled}`,
@@ -136,7 +176,7 @@ async function main()
         ].join('\n');
 
         // Check for bundle folder
-        const external = Object.keys(pkg.peerDependencies || []);
+        const external = Object.keys(pkg.peerDependencies || []).concat(Object.keys(pkg.dependencies || []));
         const basePath = path.relative(__dirname, pkg.location);
 
         let input = path.join(basePath, 'src/index.ts');
@@ -188,10 +228,7 @@ async function main()
 
             const file = path.join(basePath, bundle);
             // const external =  standalone ? null : Object.keys(namespaces);
-            const globals = {
-                '@pixi/ticker': 'PIXI',
-                'pixi.js': 'PIXI',
-            };
+            const globals = defaultGlobals;
             const ns = namespaces[pkg.name];
             const name = pkg.name.replace(/[^a-z]+/g, '_');
             let footer;

@@ -1,12 +1,13 @@
+/* eslint-disable */
+ 
 /*!
- * @pixi-essentials/types - v0.0.1-alpha.0
- * Compiled Sun, 09 Aug 2020 15:59:00 UTC
+ * @pixi-essentials/types - v0.0.1
+ * Compiled Sat, 15 Aug 2020 19:41:52 UTC
  *
  * @pixi-essentials/types is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
  * 
  * Copyright 2019-2020, Shukant K. Pal, All Rights Reserved
- * 
  */
 /**
  * Iterator for circular linked-lists
@@ -80,6 +81,39 @@ class CircularLinkedList {
         return this._sharedIterator;
     }
 }
+class CircularDoublyLinkedList {
+    constructor(head) {
+        this.head = head;
+    }
+    /**
+     * Adds {@code node} into this list before {@code nodeAfter}.
+     *
+     * @param node - the node to be added to this list
+     * @param nodeAfter - the node that should come after the added node
+     */
+    add(node, nodeAfter = this.head) {
+        // Initialize node's pointers first!
+        node.next = nodeAfter;
+        node.previous = nodeAfter.previous;
+        nodeAfter.previous = node;
+        return this;
+    }
+    forEach(callback) {
+        const head = this.head;
+        let current = head;
+        do {
+            callback(current);
+            current = current.next;
+        } while (current !== head);
+    }
+    [Symbol.iterator]() {
+        if (!this._sharedIterator) {
+            this._sharedIterator = new CircularLinkedListIterator(this.head);
+        }
+        this._sharedIterator.reset(this.head);
+        return this._sharedIterator;
+    }
+}
 
-export { CircularLinkedList, CircularLinkedListIterator };
+export { CircularDoublyLinkedList, CircularLinkedList, CircularLinkedListIterator };
 //# sourceMappingURL=types.es.js.map

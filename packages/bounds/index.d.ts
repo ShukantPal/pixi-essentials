@@ -127,7 +127,7 @@ export declare class AxisAlignedBounds {
 /**
  * An oriented bounding box is a rotated rectangle.
  *
- * An oriented bounding box is modelled by rotated its (axis-aligned) {@link OrientedBounds#innerBounds}
+ * An oriented bounding box is modelled by rotating its (axis-aligned) {@link OrientedBounds#innerBounds}
  * by an angle {@link OrientedBounds#angle} around its center. The center of an oriented bounding box and
  * its axis-aligned inner-bounds coincide.
  */

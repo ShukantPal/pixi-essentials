@@ -1,0 +1,38 @@
+{
+  "name": "@pixi-essentials/transformer",
+  "version": "1.0.0",
+  "description": "Interactive display-object to edit the transformation matrices of display-objects",
+  "main": "lib/transformer.js",
+  "module": "lib/transformer.es.js",
+  "bundle": "dist/transformer.js",
+  "scripts": {
+    "compile": "rm -rf compile && tsc && api-extractor run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SukantPal/pixi-essentials.git"
+  },
+  "keywords": [
+    "pixijs",
+    "transfomer",
+    "konva-transformer"
+  ],
+  "author": "Shukant K. Pal <shukantpal@outlook.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SukantPal/pixi-essentials/issues"
+  },
+  "homepage": "https://github.com/SukantPal/pixi-essentials#readme",
+  "dependencies": {
+    "@pixi/display": "~5.3.3",
+    "@pixi-essentials/bounds": "~1.0.0",
+    "@pixi/math": "~5.3.3",
+    "@pixi-essentials/object-pool": "~0.0.4",
+    "@pixi/graphics": "~5.3.3",
+    "@pixi/core": "~5.3.3",
+    "@pixi/interaction": "~5.3.3"
+  },
+  "devDependencies": {
+    "pixi.js": "~5.3.3"
+  }
+}

@@ -1,12 +1,13 @@
+/* eslint-disable */
+ 
 /*!
  * @pixi-essentials/instanced-renderer - v0.0.1-alpha.1
- * Compiled Sun, 09 Aug 2020 15:59:00 UTC
+ * Compiled Sat, 15 Aug 2020 19:41:52 UTC
  *
  * @pixi-essentials/instanced-renderer is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
  * 
  * Copyright 2019-2020, Shukant K. Pal, All Rights Reserved
- * 
  */
 'use strict';
 

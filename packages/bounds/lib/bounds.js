@@ -1,6 +1,8 @@
+/* eslint-disable */
+ 
 /*!
  * @pixi-essentials/bounds - v1.0.0
- * Compiled Thu, 13 Aug 2020 15:26:33 UTC
+ * Compiled Sat, 15 Aug 2020 19:41:52 UTC
  *
  * @pixi-essentials/bounds is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -64,6 +66,11 @@ class AxisAlignedBounds {
     set height(value) {
         this._height = value;
         this.dirtyID++;
+    }
+    get hull() {
+        if (this.isDirty())
+            this.update();
+        return this._hull;
     }
     get topLeft() {
         if (this.isDirty())
@@ -180,6 +187,19 @@ class AxisAlignedBounds {
         return false;
     }
     /**
+     * Checks whether the given {@link bounds} are equal to this.
+     *
+     * @param bounds
+     */
+    equals(bounds) {
+        if (!bounds)
+            return false;
+        return bounds.x === this.x
+            && bounds.y === this.y
+            && bounds.width === this.width
+            && bounds.height === this.height;
+    }
+    /**
      * Pads the rectangle making it grow in all directions.
      * If paddingY is omitted, both paddingX and paddingY will be set to paddingX.
      *
@@ -250,12 +270,12 @@ class AxisAlignedBounds {
 /**
  * An oriented bounding box is a rotated rectangle.
  *
- * An oriented bounding box is modelled by rotated its (axis-aligned) {@link OrientedBounds#innerBounds}
+ * An oriented bounding box is modelled by rotating its (axis-aligned) {@link OrientedBounds#innerBounds}
  * by an angle {@link OrientedBounds#angle} around its center. The center of an oriented bounding box and
  * its axis-aligned inner-bounds coincide.
  */
 class OrientedBounds {
-    constructor(x, y, width, height, angle = 0) {
+    constructor(x = 0, y = 0, width = 0, height = 0, angle = 0) {
         if (x instanceof AxisAlignedBounds) {
             angle = y || 0;
             y = x.y;
@@ -267,7 +287,7 @@ class OrientedBounds {
          * The unrotated version of this bounding box.
          */
         this.innerBounds = new AxisAlignedBounds(x, y, width, height);
-        this._angle = angle;
+        this._rotation = angle;
         this._center = new math.ObservablePoint(this.updateCenter, this);
         this._hull = [new math.Point(), new math.Point(), new math.Point(), new math.Point()];
         this._matrix = new math.Matrix();
@@ -277,11 +297,11 @@ class OrientedBounds {
     /**
      * The angle, in radians, by which this bounding box is tilted.
      */
-    get angle() {
-        return this._angle;
+    get rotation() {
+        return this._rotation;
     }
-    set angle(value) {
-        this._angle = value;
+    set rotation(value) {
+        this._rotation = value;
         this.dirtyID++;
     }
     /**
@@ -290,11 +310,23 @@ class OrientedBounds {
      * The center of this and {@code this.innerBounds} will always coincide.
      */
     get center() {
+        if (this.isDirty())
+            this.update();
         return this._center;
     }
     set center(value) {
         // this.updateCenter will automatically be fired!
         this.center.copyFrom(value);
+    }
+    /**
+     * The four-corners of this bounding, in clockwise order starting from the top-left.
+     *
+     * @readonly
+     */
+    get hull() {
+        if (this.isDirty())
+            this.update();
+        return this._hull;
     }
     /**
      * The top-left corner of this bounding box. The returned instance should not be modified directly.
@@ -333,6 +365,28 @@ class OrientedBounds {
         return this._hull[3];
     }
     /**
+     * Checks whether the given {@code bounds} are equal to this.
+     *
+     * @param bounds
+     */
+    equals(bounds) {
+        if (!bounds)
+            return false;
+        return this.innerBounds.equals(bounds.innerBounds)
+            && this.rotation === bounds.rotation;
+    }
+    /**
+     * Copies {@code bounds} into this instance.
+     *
+     * @param bounds
+     */
+    copyFrom(bounds) {
+        this.innerBounds.copyFrom(bounds.innerBounds);
+        this.rotation = bounds.rotation;
+        this.dirtyID++;
+        return this;
+    }
+    /**
      * Whether any internal state needs to be recalculated.
      */
     isDirty() {
@@ -344,7 +398,7 @@ class OrientedBounds {
      */
     update() {
         const innerBounds = this.innerBounds;
-        const angle = this._angle;
+        const angle = this._rotation;
         const center = this._center;
         const [topLeft, topRight, bottomRight, bottomLeft] = this._hull;
         const matrix = this._matrix;

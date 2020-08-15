@@ -77,6 +77,13 @@ export class AxisAlignedBounds
         this.dirtyID++;
     }
 
+    get hull(): Point[]
+    {
+        if (this.isDirty()) this.update();
+
+        return this._hull;
+    }
+
     get topLeft(): Point
     {
         if (this.isDirty()) this.update();
@@ -225,6 +232,21 @@ export class AxisAlignedBounds
         }
 
         return false;
+    }
+
+    /**
+     * Checks whether the given {@link bounds} are equal to this.
+     *
+     * @param bounds
+     */
+    equals(bounds: AxisAlignedBounds): boolean
+    {
+        if (!bounds) return false;
+
+        return bounds.x === this.x
+            && bounds.y === this.y
+            && bounds.width === this.width
+            && bounds.height === this.height;
     }
 
     /**

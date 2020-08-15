@@ -1,7 +1,6 @@
 dependencies:
   '@microsoft/api-extractor': 7.7.13
-  '@pixi/display': 5.3.0
-  '@pixi/graphics': 5.3.0
+  '@pixi/interaction': 5.3.3
   '@pixi/settings': 5.2.1
   '@pixi/ticker': 5.2.1
   '@pixi/utils': 5.3.0
@@ -17,6 +16,7 @@ dependencies:
   '@rush-temp/ooo-renderer': 'file:projects/ooo-renderer.tgz'
   '@rush-temp/shader-preprocessor': 'file:projects/shader-preprocessor.tgz'
   '@rush-temp/system-g': 'file:projects/system-g.tgz'
+  '@rush-temp/transformer': 'file:projects/transformer.tgz'
   '@rush-temp/types': 'file:projects/types.tgz'
   gl-mat3: 2.0.0
   pixi-spatial-hash: 1.0.0
@@ -1042,6 +1042,20 @@ packages:
       integrity: sha512-ZWbN7UNSrdL1LLxonV1O2yeOLoeyhSIHjD/ZGYbpQ32hcaZ1rYlUozXtc9xaLbNjJ715Y7zeKd7LM6zEol2VGQ==
       tarball: 'file:projects/system-g.tgz'
     version: 0.0.0
+  'file:projects/transformer.tgz':
+    dependencies:
+      '@pixi/core': 5.3.3
+      '@pixi/display': 5.3.3
+      '@pixi/graphics': 5.3.3
+      '@pixi/interaction': 5.3.3
+      '@pixi/math': 5.3.3
+      pixi.js: 5.3.3
+    dev: false
+    name: '@rush-temp/transformer'
+    resolution:
+      integrity: sha512-ko4L8AVHKARVQpUkHxV2Blzxz7LzaxBY0gv1nrHnHcgkenIiHA0qoJKTu6fsAGToWnz2FonDF0acQCRc5LZSMw==
+      tarball: 'file:projects/transformer.tgz'
+    version: 0.0.0
   'file:projects/types.tgz':
     dependencies:
       '@pixi/math': 5.3.0
@@ -1054,8 +1068,7 @@ packages:
 registry: ''
 specifiers:
   '@microsoft/api-extractor': 7.7.13
-  '@pixi/display': ^5.0.0
-  '@pixi/graphics': ^5.0.0
+  '@pixi/interaction': ~5.3.3
   '@pixi/settings': 5.2.1
   '@pixi/ticker': 5.2.1
   '@pixi/utils': ^5.1.0
@@ -1071,6 +1084,7 @@ specifiers:
   '@rush-temp/ooo-renderer': 'file:./projects/ooo-renderer.tgz'
   '@rush-temp/shader-preprocessor': 'file:./projects/shader-preprocessor.tgz'
   '@rush-temp/system-g': 'file:./projects/system-g.tgz'
+  '@rush-temp/transformer': 'file:./projects/transformer.tgz'
   '@rush-temp/types': 'file:./projects/types.tgz'
   gl-mat3: 2.0.0
   pixi-spatial-hash: 1.0.0

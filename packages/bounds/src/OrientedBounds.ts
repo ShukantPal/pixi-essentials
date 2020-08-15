@@ -1,11 +1,12 @@
 /// <reference path="../node_modules/pixi.js/pixi.js.d.ts" />
 import { AxisAlignedBounds } from './AxisAlignedBounds';
 import { Matrix, ObservablePoint, Point } from '@pixi/math';
+import { Point, Point } from 'pixi.js';
 
 /**
  * An oriented bounding box is a rotated rectangle.
  *
- * An oriented bounding box is modelled by rotated its (axis-aligned) {@link OrientedBounds#innerBounds}
+ * An oriented bounding box is modelled by rotating its (axis-aligned) {@link OrientedBounds#innerBounds}
  * by an angle {@link OrientedBounds#angle} around its center. The center of an oriented bounding box and
  * its axis-aligned inner-bounds coincide.
  */
@@ -15,7 +16,7 @@ export class OrientedBounds
     public currentID: number;
     public dirtyID: number;
 
-    protected _angle: number;
+    protected _rotation: number;
     protected _center: Point;
     protected _hull: [Point, Point, Point, Point];
     protected _matrix: Matrix;
@@ -33,9 +34,9 @@ export class OrientedBounds
      * @param height
      * @param angle
      */
-    constructor(x: number, y: number, width: number, height: number, angle?: number);
+    constructor(x?: number, y?: number, width?: number, height?: number, angle?: number);
 
-    constructor(x: number | AxisAlignedBounds, y?: number, width?: number, height?: number, angle = 0)
+    constructor(x: number | AxisAlignedBounds = 0, y = 0, width = 0, height = 0, angle = 0)
     {
         if (x instanceof AxisAlignedBounds)
         {
@@ -53,7 +54,7 @@ export class OrientedBounds
          */
         this.innerBounds = new AxisAlignedBounds(x, y, width, height);
 
-        this._angle = angle;
+        this._rotation = angle;
         this._center = new ObservablePoint<OrientedBounds>(this.updateCenter, this);
         this._hull = [new Point(), new Point(), new Point(), new Point()];
         this._matrix = new Matrix();
@@ -65,14 +66,14 @@ export class OrientedBounds
     /**
      * The angle, in radians, by which this bounding box is tilted.
      */
-    get angle(): number
+    get rotation(): number
     {
-        return this._angle;
+        return this._rotation;
     }
 
-    set angle(value: number)
+    set rotation(value: number)
     {
-        this._angle = value;
+        this._rotation = value;
         this.dirtyID++;
     }
 
@@ -83,6 +84,8 @@ export class OrientedBounds
      */
     get center(): ObservablePoint
     {
+        if (this.isDirty()) this.update();
+
         return this._center;
     }
 
@@ -90,6 +93,18 @@ export class OrientedBounds
     {
         // this.updateCenter will automatically be fired!
         this.center.copyFrom(value);
+    }
+
+    /**
+     * The four-corners of this bounding, in clockwise order starting from the top-left.
+     *
+     * @readonly
+     */
+    get hull(): [Point, Point, Point, Point]
+    {
+        if (this.isDirty()) this.update();
+
+        return this._hull;
     }
 
     /**
@@ -137,6 +152,33 @@ export class OrientedBounds
     }
 
     /**
+     * Checks whether the given {@code bounds} are equal to this.
+     *
+     * @param bounds
+     */
+    equals(bounds: OrientedBounds): boolean
+    {
+        if (!bounds) return false;
+
+        return this.innerBounds.equals(bounds.innerBounds)
+            && this.rotation === bounds.rotation;
+    }
+
+    /**
+     * Copies {@code bounds} into this instance.
+     *
+     * @param bounds
+     */
+    copyFrom(bounds: OrientedBounds): this
+    {
+        this.innerBounds.copyFrom(bounds.innerBounds);
+        this.rotation = bounds.rotation;
+        this.dirtyID++;
+
+        return this;
+    }
+
+    /**
      * Whether any internal state needs to be recalculated.
      */
     protected isDirty(): boolean
@@ -151,7 +193,7 @@ export class OrientedBounds
     protected update(): void
     {
         const innerBounds = this.innerBounds;
-        const angle = this._angle;
+        const angle = this._rotation;
 
         const center = this._center;
         const [topLeft, topRight, bottomRight, bottomLeft] = this._hull;

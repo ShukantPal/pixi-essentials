@@ -21,6 +21,9 @@
         ],
         "spaced-comment": [
             "off"
+        ],
+        "no-duplicate-imports": [
+            "off"
         ]
     },
     "extends": [
