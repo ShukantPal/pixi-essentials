@@ -1,6 +1,6 @@
 /*!
  * @pixi-essentials/filter-fft - v1.0.0
- * Compiled Sat, 15 Aug 2020 19:41:52 UTC
+ * Compiled Sat, 15 Aug 2020 19:50:15 UTC
  *
  * @pixi-essentials/filter-fft is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
