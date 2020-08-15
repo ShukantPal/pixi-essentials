@@ -19,8 +19,8 @@
     "pixi.js",
     "pixi",
     "webgl",
-    "plugins",
-    "renderer"
+    "renderer",
+    "plugins"
   ],
   "author": "Shukant K. Pal <shukantpal@outlook.com>",
   "license": "MIT",
