@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/transformer",
   "entries": [
     {
+      "version": "2.0.1",
+      "tag": "@pixi-essentials/transformer_v2.0.1",
+      "date": "Sat, 15 Aug 2020 22:03:46 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Added handleStyle, wireframeStyle getters/setters"
+          }
+        ]
+      }
+    },
+    {
       "version": "2.0.0",
       "tag": "@pixi-essentials/transformer_v2.0.0",
       "date": "Sat, 15 Aug 2020 20:26:58 GMT",
