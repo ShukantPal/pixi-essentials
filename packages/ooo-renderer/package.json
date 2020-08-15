@@ -1,6 +1,6 @@
 {
   "name": "@pixi-essentials/ooo-renderer",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Out-of-order rendering facility for PixiJS scene graphs",
   "keywords": [
     "pixi.js",
@@ -36,13 +36,13 @@
     "url": "https://github.com/SukantPal/pixi-essentials/issues"
   },
   "peerDependencies": {
-    "@pixi-essentials/object-pool": "^0.0.4",
+    "@pixi-essentials/object-pool": "^0.0.5",
     "pixi-batch-renderer": "^2.3.0",
     "pixi.js": "^5.2.1",
     "pixi-spatial-hash": "1.0.0"
   },
   "devDependencies": {
-    "@pixi-essentials/object-pool": "^0.0.4",
+    "@pixi-essentials/object-pool": "^0.0.5",
     "pixi-batch-renderer": "^2.3.0",
     "pixi.js": "^5.2.1",
     "pixi-spatial-hash": "1.0.0"

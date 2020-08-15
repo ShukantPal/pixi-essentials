@@ -2,6 +2,26 @@
   "name": "@pixi-essentials/ooo-renderer",
   "entries": [
     {
+      "version": "0.0.2",
+      "tag": "@pixi-essentials/ooo-renderer_v0.0.2",
+      "date": "Sat, 15 Aug 2020 20:26:58 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fixed UMD builds"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@pixi-essentials/object-pool\" from `^0.0.4` to `^0.0.5`"
+          },
+          {
+            "comment": "Updating dependency \"@pixi-essentials/object-pool\" from `^0.0.4` to `^0.0.5`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.1",
       "tag": "@pixi-essentials/ooo-renderer_v0.0.1",
       "date": "Sun, 09 Aug 2020 16:09:17 GMT",

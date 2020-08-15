@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/cull",
   "entries": [
     {
+      "version": "1.0.6",
+      "tag": "@pixi-essentials/cull_v1.0.6",
+      "date": "Sat, 15 Aug 2020 20:26:58 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fixed UMD builds"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.0.5",
       "tag": "@pixi-essentials/cull_v1.0.5",
       "date": "Sun, 09 Aug 2020 16:09:17 GMT",

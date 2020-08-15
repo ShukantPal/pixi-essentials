@@ -1,6 +1,6 @@
 {
   "name": "@pixi-essentials/shader-preprocessor",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Compile-time processing for shaders",
   "keywords": [
     "pixi.js",

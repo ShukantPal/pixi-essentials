@@ -1,6 +1,6 @@
 {
   "name": "@pixi-essentials/bounds",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Utilities for handling 2D bounding boxes",
   "main": "lib/bounds.js",
   "module": "lib/bounds.es.js",

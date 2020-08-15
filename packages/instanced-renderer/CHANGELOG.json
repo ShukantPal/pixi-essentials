@@ -1,0 +1,17 @@
+{
+  "name": "@pixi-essentials/instanced-renderer",
+  "entries": [
+    {
+      "version": "0.0.1",
+      "tag": "@pixi-essentials/instanced-renderer_v0.0.1",
+      "date": "Sat, 15 Aug 2020 20:26:58 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fixed UMD builds"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -2,6 +2,23 @@
   "name": "@pixi-essentials/data-half-edge-mesh",
   "entries": [
     {
+      "version": "1.0.2",
+      "tag": "@pixi-essentials/data-half-edge-mesh_v1.0.2",
+      "date": "Sat, 15 Aug 2020 20:26:58 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fixed UMD builds"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@pixi-essentials/types\" from `0.0.1` to `0.0.2`"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.0.1",
       "tag": "@pixi-essentials/data-half-edge-mesh_v1.0.1",
       "date": "Sun, 09 Aug 2020 16:09:17 GMT",

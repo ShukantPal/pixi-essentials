@@ -1,6 +1,6 @@
 {
   "name": "@pixi-essentials/data-half-edge-mesh",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Generalized half-edge data structure to manipulate polygonal meshes",
   "main": "lib/data-half-edge-mesh.js",
   "module": "lib/data-half-edge-mesh.es.js",
@@ -19,6 +19,6 @@
   },
   "homepage": "https://github.com/SukantPal/pixi-essentials#readme",
   "dependencies": {
-    "@pixi-essentials/types": "0.0.1"
+    "@pixi-essentials/types": "0.0.2"
   }
 }

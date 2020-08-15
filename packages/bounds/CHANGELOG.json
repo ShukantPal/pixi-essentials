@@ -1,0 +1,22 @@
+{
+  "name": "@pixi-essentials/bounds",
+  "entries": [
+    {
+      "version": "2.0.0",
+      "tag": "@pixi-essentials/bounds_v2.0.0",
+      "date": "Sat, 15 Aug 2020 20:26:58 GMT",
+      "comments": {
+        "major": [
+          {
+            "comment": "y"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Fixed UMD builds"
+          }
+        ]
+      }
+    }
+  ]
+}

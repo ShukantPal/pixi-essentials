@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/types",
   "entries": [
     {
+      "version": "0.0.2",
+      "tag": "@pixi-essentials/types_v0.0.2",
+      "date": "Sat, 15 Aug 2020 20:26:58 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fixed UMD builds"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.1",
       "tag": "@pixi-essentials/types_v0.0.1",
       "date": "Sun, 09 Aug 2020 16:09:17 GMT",
