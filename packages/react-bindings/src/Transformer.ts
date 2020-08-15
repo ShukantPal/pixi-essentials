@@ -4,6 +4,8 @@ import { Transformer as TransformerImpl, TransformerHandle as TransformerHandleI
 
 import type { ITransformerStyle, ITransformerHandleStyle } from '@pixi-essentials/transformer';
 
+const EMPTY: any = {};
+
 /**
  * @internal
  */
@@ -40,19 +42,25 @@ export const Transformer = PixiComponent<TransformerProps, TransformerImpl>('Tra
             throw new Error('Transformer does not support changing the TransformerHandleConstructor!');
         }
 
-        if (oldProps.handleStyle.color !== newProps.handleStyle.color
-                || oldProps.handleStyle.outlineColor !== newProps.handleStyle.outlineColor
-                || oldProps.handleStyle.outlineThickness !== newProps.handleStyle.outlineThickness
-                || oldProps.handleStyle.radius !== newProps.handleStyle.radius
-                || oldProps.handleStyle.shape !== newProps.handleStyle.shape)
+        const oldHandleStyle = oldProps.handleStyle || EMPTY;
+        const newHandleStyle = newProps.handleStyle || EMPTY;
+
+        if (oldHandleStyle.color !== newHandleStyle.color
+                || oldHandleStyle.outlineColor !== newHandleStyle.outlineColor
+                || oldHandleStyle.outlineThickness !== newHandleStyle.outlineThickness
+                || oldHandleStyle.radius !== newHandleStyle.radius
+                || oldHandleStyle.shape !== newHandleStyle.shape)
         {
-            instance.handleStyle = newProps.handleStyle;
+            instance.handleStyle = newHandleStyle;
         }
 
-        if (oldProps.wireframeStyle.color !== newProps.wireframeStyle.color
-            || oldProps.wireframeStyle.thickness !== newProps.wireframeStyle.thickness)
+        const oldWireframeStyle = oldProps.wireframeStyle || EMPTY;
+        const newWireframeStyle = newProps.wireframeStyle || EMPTY;
+
+        if (oldWireframeStyle.color !== newWireframeStyle.color
+            || oldWireframeStyle.thickness !== newWireframeStyle.thickness)
         {
-            instance.wireframeStyle = newProps.wireframeStyle;
+            instance.wireframeStyle = newWireframeStyle;
         }
     },
 });

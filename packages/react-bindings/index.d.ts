@@ -4,6 +4,7 @@ import {
     ITransformerHandleStyle,
     ITransformerStyle,
 } from '@pixi-essentials/transformer';
+import React from 'react';
 
 declare type TransformerProps = {
     group?: DisplayObject[];
@@ -12,4 +13,4 @@ declare type TransformerProps = {
     wireframeStyle?: Partial<ITransformerStyle>;
 };
 
-declare const Transformer: any;
+declare const Transformer: React.FC<TransformerProps>;

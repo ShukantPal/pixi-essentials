@@ -2,7 +2,7 @@
  
 /*!
  * @pixi-essentials/react-bindings - v1.0.0
- * Compiled Sat, 15 Aug 2020 21:31:08 UTC
+ * Compiled Sat, 15 Aug 2020 21:57:06 UTC
  *
  * @pixi-essentials/react-bindings is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -16,6 +16,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var reactPixi = require('@inlet/react-pixi');
 var transformer = require('@pixi-essentials/transformer');
 
+const EMPTY = {};
 /**
  * Transformer component
  *
@@ -36,16 +37,20 @@ const Transformer = reactPixi.PixiComponent('Transformer', {
         if (oldProps.handleConstructor !== newProps.handleConstructor) {
             throw new Error('Transformer does not support changing the TransformerHandleConstructor!');
         }
-        if (oldProps.handleStyle.color !== newProps.handleStyle.color
-            || oldProps.handleStyle.outlineColor !== newProps.handleStyle.outlineColor
-            || oldProps.handleStyle.outlineThickness !== newProps.handleStyle.outlineThickness
-            || oldProps.handleStyle.radius !== newProps.handleStyle.radius
-            || oldProps.handleStyle.shape !== newProps.handleStyle.shape) {
-            instance.handleStyle = newProps.handleStyle;
+        const oldHandleStyle = oldProps.handleStyle || EMPTY;
+        const newHandleStyle = newProps.handleStyle || EMPTY;
+        if (oldHandleStyle.color !== newHandleStyle.color
+            || oldHandleStyle.outlineColor !== newHandleStyle.outlineColor
+            || oldHandleStyle.outlineThickness !== newHandleStyle.outlineThickness
+            || oldHandleStyle.radius !== newHandleStyle.radius
+            || oldHandleStyle.shape !== newHandleStyle.shape) {
+            instance.handleStyle = newHandleStyle;
         }
-        if (oldProps.wireframeStyle.color !== newProps.wireframeStyle.color
-            || oldProps.wireframeStyle.thickness !== newProps.wireframeStyle.thickness) {
-            instance.wireframeStyle = newProps.wireframeStyle;
+        const oldWireframeStyle = oldProps.wireframeStyle || EMPTY;
+        const newWireframeStyle = newProps.wireframeStyle || EMPTY;
+        if (oldWireframeStyle.color !== newWireframeStyle.color
+            || oldWireframeStyle.thickness !== newWireframeStyle.thickness) {
+            instance.wireframeStyle = newWireframeStyle;
         }
     },
 });
