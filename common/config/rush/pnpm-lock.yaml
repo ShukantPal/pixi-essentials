@@ -1,4 +1,5 @@
 dependencies:
+  '@inlet/react-pixi': 5.0.3
   '@microsoft/api-extractor': 7.7.13
   '@pixi/interaction': 5.3.3
   '@pixi/settings': 5.2.1
@@ -14,6 +15,7 @@ dependencies:
   '@rush-temp/mixin-smart-mask': 'file:projects/mixin-smart-mask.tgz'
   '@rush-temp/object-pool': 'file:projects/object-pool.tgz'
   '@rush-temp/ooo-renderer': 'file:projects/ooo-renderer.tgz'
+  '@rush-temp/react-bindings': 'file:projects/react-bindings.tgz'
   '@rush-temp/shader-preprocessor': 'file:projects/shader-preprocessor.tgz'
   '@rush-temp/system-g': 'file:projects/system-g.tgz'
   '@rush-temp/transformer': 'file:projects/transformer.tgz'
@@ -22,6 +24,19 @@ dependencies:
   pixi-spatial-hash: 1.0.0
 lockfileVersion: 5.1
 packages:
+  /@inlet/react-pixi/5.0.3:
+    dependencies:
+      fbjs: 1.0.0
+      performance-now: 2.1.0
+      react-reconciler: 0.25.1
+    dev: false
+    peerDependencies:
+      pixi.js: ^5.3.x
+      prop-types: ^15.x.x
+      react: ^16.x.x
+      react-dom: ^16.x.x
+    resolution:
+      integrity: sha512-yg/s4oyz0pXbhLJToYYiOWS5xGhPtCuTuXyzWI7YmqlTr5WssN3VkMUVKFYQUvY2emb/A+ue8GCFxZ/19iSvqQ==
   /@microsoft/api-extractor-model/7.7.11:
     dependencies:
       '@microsoft/tsdoc': 0.12.19
@@ -650,6 +665,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-o5Roy6tNG4SL/FOkCAN6RzjiakZS25RLYFrcMttJqbdd8BWrnA+fGz57iN5Pb06pvBGvl5gQ0B48dJlslXvoTg==
+  /asap/2.0.6:
+    dev: false
+    resolution:
+      integrity: sha1-5QNHYR1+aQlDIIu9r+vLwvuGbUY=
   /colors/1.2.5:
     dev: false
     engines:
@@ -661,10 +680,22 @@ packages:
     optional: true
     resolution:
       integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
+  /core-js/2.6.11:
+    deprecated: 'core-js@<3 is no longer maintained and not recommended for usage due to the number of issues. Please, upgrade your dependencies to the actual version of core-js@3.'
+    dev: false
+    requiresBuild: true
+    resolution:
+      integrity: sha512-5wjnpaT/3dV+XB4borEsnAYQchn00XSgTAWKDkEqv+K8KevjbzmofK6hfJ9TZIlpj2N0xQpazy7PiRQiWHqzWg==
   /earcut/2.2.2:
     dev: false
     resolution:
       integrity: sha512-eZoZPPJcUHnfRZ0PjLvx2qBordSiO8ofC3vt+qACLM95u+4DovnbYNpQtJh0DNsWj8RnxrQytD4WA8gj5cRIaQ==
+  /encoding/0.1.13:
+    dependencies:
+      iconv-lite: 0.6.2
+    dev: false
+    resolution:
+      integrity: sha512-ETBauow1T35Y/WZMkio9jiM0Z5xjHHmJ4XmjZOq1l/dXz3lr2sRn87nJy20RupqSh1F2m3HHPSp8ShIPQJrJ3A==
   /es6-promise-polyfill/1.2.0:
     dev: false
     resolution:
@@ -673,6 +704,23 @@ packages:
     dev: false
     resolution:
       integrity: sha512-tvtQIeLVHjDkJYnzf2dgVMxfuSGJeM/7UCG17TT4EumTfNtF+0nebF/4zWOIkCreAbtNqhGEboB6BWrwqNaw4Q==
+  /fbjs-css-vars/1.0.2:
+    dev: false
+    resolution:
+      integrity: sha512-b2XGFAFdWZWg0phtAWLHCk836A1Xann+I+Dgd3Gk64MHKZO44FfoD1KxyvbSh0qZsIoXQGGlVztIY+oitJPpRQ==
+  /fbjs/1.0.0:
+    dependencies:
+      core-js: 2.6.11
+      fbjs-css-vars: 1.0.2
+      isomorphic-fetch: 2.2.1
+      loose-envify: 1.4.0
+      object-assign: 4.1.1
+      promise: 7.3.1
+      setimmediate: 1.0.5
+      ua-parser-js: 0.7.21
+    dev: false
+    resolution:
+      integrity: sha512-MUgcMEJaFhCaF1QtWGnmq9ZDRAzECTCRAF7O6UZIlAlkTs1SasiX9aP0Iw7wfD2mJ7wDTNfg2w7u5fSCwJk1OA==
   /fs-extra/7.0.1:
     dependencies:
       graceful-fs: 4.2.4
@@ -691,14 +739,39 @@ packages:
     dev: false
     resolution:
       integrity: sha512-WjKPNJF79dtJAVniUlGGWHYGz2jWxT6VhN/4m1NdkbZ2nOsEF+cI1Edgql5zCRhs/VsQYRvrXctxktVXZUkixw==
+  /iconv-lite/0.6.2:
+    dependencies:
+      safer-buffer: 2.1.2
+    dev: false
+    engines:
+      node: '>=0.10.0'
+    resolution:
+      integrity: sha512-2y91h5OpQlolefMPmUlivelittSWy0rP+oYVpn6A7GwVHNE8AWzoYOBNmlwks3LobaJxgHCYZAnyNo2GgpNRNQ==
+  /is-stream/1.1.0:
+    dev: false
+    engines:
+      node: '>=0.10.0'
+    resolution:
+      integrity: sha1-EtSj3U5o4Lec6428hBc66A2RykQ=
   /ismobilejs/1.1.1:
     dev: false
     resolution:
       integrity: sha512-VaFW53yt8QO61k2WJui0dHf4SlL8lxBofUuUmwBo0ljPk0Drz2TiuDW4jo3wDcv41qy/SxrJ+VAzJ/qYqsmzRw==
+  /isomorphic-fetch/2.2.1:
+    dependencies:
+      node-fetch: 1.7.3
+      whatwg-fetch: 3.4.0
+    dev: false
+    resolution:
+      integrity: sha1-YRrhrPFPXoH3KVB0coGf6XM1WKk=
   /jju/1.4.0:
     dev: false
     resolution:
       integrity: sha1-o6vicYryQaKykE+EpiWXDzia4yo=
+  /js-tokens/4.0.0:
+    dev: false
+    resolution:
+      integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==
   /jsonfile/4.0.0:
     dev: false
     optionalDependencies:
@@ -717,10 +790,24 @@ packages:
     dev: false
     resolution:
       integrity: sha512-JNvd8XER9GQX0v2qJgsaN/mzFCNA5BRe/j8JN9d+tWyGLSodKQHKFicdwNYzWwI3wjRnaKPsGj1XkBjx/F96DQ==
+  /loose-envify/1.4.0:
+    dependencies:
+      js-tokens: 4.0.0
+    dev: false
+    hasBin: true
+    resolution:
+      integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==
   /mini-signals/1.2.0:
     dev: false
     resolution:
       integrity: sha1-RbCAE8X65RokqhqTXNMXye1yHXQ=
+  /node-fetch/1.7.3:
+    dependencies:
+      encoding: 0.1.13
+      is-stream: 1.1.0
+    dev: false
+    resolution:
+      integrity: sha512-NhZ4CsKx7cYm2vSrBAr2PvFOe6sWDf0UYLRqA6svUYg7+/TSfVAu49jYC4BvQ4Sms9SZgdqGBgroqfDhJdTyKQ==
   /object-assign/4.1.1:
     dev: false
     engines:
@@ -737,6 +824,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-GSmOT2EbHrINBf9SR7CDELwlJ8AENk3Qn7OikK4nFYAu3Ote2+JYNVvkpAEQm3/TLNEJFD/xZJjzyxg3KBWOzw==
+  /performance-now/2.1.0:
+    dev: false
+    resolution:
+      integrity: sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
   /pixi-batch-renderer/2.3.2_pixi.js@5.3.0:
     dependencies:
       pixi.js: 5.3.0
@@ -837,6 +928,20 @@ packages:
     dev: false
     resolution:
       integrity: sha512-uFQOXXyPMAVVayDebSFBS1AFfPT6QYNuz9Vu11yI2/k1DAef/rbYoJpSMM6SeB6dezDJPtIAaXXNxdaYzbe+kg==
+  /promise/7.3.1:
+    dependencies:
+      asap: 2.0.6
+    dev: false
+    resolution:
+      integrity: sha512-nolQXZ/4L+bP/UGlkfaIujX9BKxGwmQ9OT4mOt5yvy8iK1h3wqTEJCijzGANTCCl9nWjY41juyAn2K3Q1hLLTg==
+  /prop-types/15.7.2:
+    dependencies:
+      loose-envify: 1.4.0
+      object-assign: 4.1.1
+      react-is: 16.13.1
+    dev: false
+    resolution:
+      integrity: sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
   /punycode/1.3.2:
     dev: false
     resolution:
@@ -847,6 +952,23 @@ packages:
       node: '>=0.4.x'
     resolution:
       integrity: sha1-sgmEkgO7Jd+CDadW50cAWHhSFiA=
+  /react-is/16.13.1:
+    dev: false
+    resolution:
+      integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
+  /react-reconciler/0.25.1:
+    dependencies:
+      loose-envify: 1.4.0
+      object-assign: 4.1.1
+      prop-types: 15.7.2
+      scheduler: 0.19.1
+    dev: false
+    engines:
+      node: '>=0.10.0'
+    peerDependencies:
+      react: ^16.13.1
+    resolution:
+      integrity: sha512-R5UwsIvRcSs3w8n9k3tBoTtUHdVhu9u84EG7E5M0Jk9F5i6DA1pQzPfUZd6opYWGy56MJOtV3VADzy6DRwYDjw==
   /resolve/1.8.1:
     dependencies:
       path-parse: 1.0.6
@@ -860,11 +982,26 @@ packages:
     dev: false
     resolution:
       integrity: sha512-fBuCRbEHdLCI1eglzQhUv9Rrdcmqkydr1r6uHE2cYHvRBrcLXeSmbE/qI/urFt8rPr/IGxir3BUwM5kUK8XoyA==
+  /safer-buffer/2.1.2:
+    dev: false
+    resolution:
+      integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
+  /scheduler/0.19.1:
+    dependencies:
+      loose-envify: 1.4.0
+      object-assign: 4.1.1
+    dev: false
+    resolution:
+      integrity: sha512-n/zwRWRYSUj0/3g/otKDRPMh6qv2SYMWNq85IEa8iZyAv8od9zDYpGSnpBEjNgcMNq6Scbu5KfIPxNF72R/2EA==
   /semver/5.3.0:
     dev: false
     hasBin: true
     resolution:
       integrity: sha1-myzl094C0XxgEq0yaqa00M9U+U8=
+  /setimmediate/1.0.5:
+    dev: false
+    resolution:
+      integrity: sha1-KQy7Iy4waULX1+qbg3Mqt4VvgoU=
   /source-map/0.6.1:
     dev: false
     engines:
@@ -886,6 +1023,10 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-/P5lkRXkWHNAbcJIiHPfRoKqyd7bsyCma1hZNUGfn20qm64T6ZBlrzprymeu918H+mB/0rIg2gGK/BXkhhYgBw==
+  /ua-parser-js/0.7.21:
+    dev: false
+    resolution:
+      integrity: sha512-+O8/qh/Qj8CgC6eYBVBykMrNtp5Gebn4dlGD/kKXVkJNDwyrAwSIqwz8CDf+tsAIWVycKcku6gIXJ0qwx/ZXaQ==
   /universalify/0.1.2:
     dev: false
     engines:
@@ -905,6 +1046,10 @@ packages:
       node: '>= 0.10'
     resolution:
       integrity: sha512-Yw5wW34fSv5spzTXNkokD6S6/Oq92d8q/t14TqsS3fAiA1RYnxSFSIZ+CY3n6PGGRCq5HhJTSepQvFUS2QUDxA==
+  /whatwg-fetch/3.4.0:
+    dev: false
+    resolution:
+      integrity: sha512-rsum2ulz2iuZH08mJkT0Yi6JnKhwdw4oeyMjokgxd+mmqYSd9cPpOQf01TIWgjxG/U4+QR+AwKq6lSbXVxkyoQ==
   /z-schema/3.18.4:
     dependencies:
       lodash.get: 4.4.2
@@ -933,7 +1078,7 @@ packages:
     dev: false
     name: '@rush-temp/bvh'
     resolution:
-      integrity: sha512-QNnnG4FLW6gjBbkH4KSRYITkXkLz5TpgXZb/B3vnjkC8WTbdnJkBppiS13AmstLZI6hXiJy39Yv8WvgJQKC/nA==
+      integrity: sha512-GrSUybsLYaQxzd9b3YMSnW1pRbOyTeN85ZQ14ZUBF3BRf5xVndwXNiW1YBbLo6hrzHj8ddj+WZ+4OvsPsO8+Ig==
       tarball: 'file:projects/bvh.tgz'
     version: 0.0.0
   'file:projects/conic.tgz':
@@ -964,7 +1109,7 @@ packages:
     dev: false
     name: '@rush-temp/data-half-edge-mesh'
     resolution:
-      integrity: sha512-ydhhgXw8DjnGlOH8jmkN/W7o/ciWZq8XAlnPe6JB8ZXvPlyHpYFdmZ8skebTzT1wH9exQfW8Msf2+p9g1m2wSg==
+      integrity: sha512-1wMp+0f73+vmNtWPOceHAPFyhnuuenr7sH23nR5vQsv4HMutI+1IeAPgOYybawRBIiSkMig9q5JBaGfzyrtUbQ==
       tarball: 'file:projects/data-half-edge-mesh.tgz'
     version: 0.0.0
   'file:projects/filter-fft.tgz':
@@ -995,7 +1140,7 @@ packages:
     dev: false
     name: '@rush-temp/mixin-smart-mask'
     resolution:
-      integrity: sha512-TiWRMXAX7rj47M2B+ECnvz11/xlEWnC7UAGnXwnK22B9DSKXZAnS8Bcm75wR4LJCVPqWo/QjEZu4Uv4NeWVOQg==
+      integrity: sha512-uHYzdE+32L5V1S2uiVKc+V2gkHBwLEj3pyTKtEqkcNWdG/hDQr3ErxIVvu88HRa43ZePCwP042YhWaf08HQPFw==
       tarball: 'file:projects/mixin-smart-mask.tgz'
     version: 0.0.0
   'file:projects/object-pool.tgz':
@@ -1017,8 +1162,17 @@ packages:
     dev: false
     name: '@rush-temp/ooo-renderer'
     resolution:
-      integrity: sha512-d0iGrEuS/0Q4PjSx1p4GW94496o9Zxrbtc145MZZ0Kx4JGnu0kw6F18uLdi3bPQ7rJlIIePZAODGCROOFIUVbg==
+      integrity: sha512-btGy7iP3vL8Ecb/h48d4jRYSL3ySEbv2IfE9LfCHZUoEJYxWQXwUqdtLE0Vkej56IA2+cy2s/u3QhoaNA5r5Jg==
       tarball: 'file:projects/ooo-renderer.tgz'
+    version: 0.0.0
+  'file:projects/react-bindings.tgz':
+    dependencies:
+      '@inlet/react-pixi': 5.0.3
+    dev: false
+    name: '@rush-temp/react-bindings'
+    resolution:
+      integrity: sha512-eKvgj1NXPG1FsbgdtmySwBkNNxFr4MQBqwL4kp8ca63z5PMUbDg/mXUmo+XGtq0403tWpZKlVFF1HLwRGv4IKQ==
+      tarball: 'file:projects/react-bindings.tgz'
     version: 0.0.0
   'file:projects/shader-preprocessor.tgz':
     dependencies:
@@ -1053,7 +1207,7 @@ packages:
     dev: false
     name: '@rush-temp/transformer'
     resolution:
-      integrity: sha512-ko4L8AVHKARVQpUkHxV2Blzxz7LzaxBY0gv1nrHnHcgkenIiHA0qoJKTu6fsAGToWnz2FonDF0acQCRc5LZSMw==
+      integrity: sha512-M5AHm3RfYnfOLnWWOT6SiFMBaL4pmSnOAbtaSPBRvnSCHs3tVQDMwvWYO9R8UYK+fKUONE2LeCLkGiehIx/gyQ==
       tarball: 'file:projects/transformer.tgz'
     version: 0.0.0
   'file:projects/types.tgz':
@@ -1067,6 +1221,7 @@ packages:
     version: 0.0.0
 registry: ''
 specifiers:
+  '@inlet/react-pixi': ~5.0.3
   '@microsoft/api-extractor': 7.7.13
   '@pixi/interaction': ~5.3.3
   '@pixi/settings': 5.2.1
@@ -1082,6 +1237,7 @@ specifiers:
   '@rush-temp/mixin-smart-mask': 'file:./projects/mixin-smart-mask.tgz'
   '@rush-temp/object-pool': 'file:./projects/object-pool.tgz'
   '@rush-temp/ooo-renderer': 'file:./projects/ooo-renderer.tgz'
+  '@rush-temp/react-bindings': 'file:./projects/react-bindings.tgz'
   '@rush-temp/shader-preprocessor': 'file:./projects/shader-preprocessor.tgz'
   '@rush-temp/system-g': 'file:./projects/system-g.tgz'
   '@rush-temp/transformer': 'file:./projects/transformer.tgz'

@@ -1,8 +1,8 @@
 /* eslint-disable */
  
 /*!
- * @pixi-essentials/transformer - v1.0.0
- * Compiled Sat, 15 Aug 2020 20:24:07 UTC
+ * @pixi-essentials/transformer - v2.0.0
+ * Compiled Sat, 15 Aug 2020 21:31:08 UTC
  *
  * @pixi-essentials/transformer is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -21,22 +21,28 @@ var bounds = require('@pixi-essentials/bounds');
 var objectPool = require('@pixi-essentials/object-pool');
 
 /// <reference path="./types.d.ts" />
+/**
+ * The default transformer handle style.
+ *
+ * @ignore
+ */
+const DEFAULT_HANDLE_STYLE = {
+    color: 0xffffff,
+    outlineColor: 0x000000,
+    outlineThickness: 1,
+    radius: 8,
+    shape: 'square',
+};
 const tempPoint = new math.Point();
 const tempDelta = new math.Point();
 /**
- * The default transfomer handle implementation.
+ * The transfomer handle base implementation.
  */
 class TransformerHandle extends graphics.Graphics {
     constructor(styleOpts = {}, handler, cursor) {
         super();
-        const style = Object.assign({
-            color: 0xffffff,
-            outlineColor: 0x000000,
-            outlineThickness: 1,
-            radius: 8,
-            shape: 'square',
-        }, styleOpts);
-        this.style = style;
+        const style = Object.assign({}, DEFAULT_HANDLE_STYLE, styleOpts);
+        this._style = style;
         this.cursor = cursor || 'move';
         this.onHandleDelta = handler;
         this.lineStyle(style.outlineThickness, style.outlineColor)
@@ -52,11 +58,16 @@ class TransformerHandle extends graphics.Graphics {
         this._pointerDragging = false;
         this._pointerPosition = new math.Point();
         this.interactive = true;
-        this.on('mousedown', () => { console.log('MD'); });
         this.on('mousedown', this.onPointerDown, this);
         this.on('mousemove', this.onPointerMove, this);
         this.on('mouseup', this.onPointerUp, this);
         this.on('mouseupoutside', this.onPointerUp, this);
+    }
+    get style() {
+        return this._style;
+    }
+    set style(value) {
+        this._style = Object.assign({}, DEFAULT_HANDLE_STYLE, value);
     }
     onPointerDown() {
         this._pointerDown = true;
@@ -220,6 +231,15 @@ const SCALE_COMPONENTS = {
     bottomRight: { x: 1, y: 1 },
 };
 /**
+ * The default wireframe style for {@link Transformer}.
+ *
+ * @ignore
+ */
+const DEFAULT_WIREFRAME_STYLE = {
+    color: 0x000000,
+    thickness: 2,
+};
+/**
  * {@code Transformer} provides an interactive interface for editing the transforms in a group. It supports translating,
  * scaling, rotating, and skewing display-objects both through interaction and code.
  */
@@ -326,13 +346,10 @@ class Transformer extends display.Container {
         /**
          * The wireframe style applied on the transformer
          */
-        this.wireframeStyle = Object.assign({
-            color: 0x000000,
-            thickness: 2,
-        }, options.wireframeStyle || {});
+        this._wireframeStyle = Object.assign({}, DEFAULT_WIREFRAME_STYLE, options.wireframeStyle || {});
         const HandleConstructor = options.handleConstructor || TransformerHandle;
         const handleStyle = options.handleStyle || {};
-        this.handleStyle = handleStyle;
+        this._handleStyle = handleStyle;
         // Initialize transformer handles
         const rotatorHandles = {
             rotator: this.addChild(new HandleConstructor(handleStyle, (origin, delta) => { this.rotateGroup('rotator', origin, delta); })),
@@ -352,6 +369,27 @@ class Transformer extends display.Container {
         this.updateGroupBounds();
     }
     /**
+     * The currently applied handle style. If you have edited the transformer handles directly, this may be inaccurate.
+     */
+    get handleStyle() {
+        return this._handleStyle;
+    }
+    set handleStyle(value) {
+        const handles = this.handles;
+        for (const handleKey in handles) {
+            handles[handleKey].style = value;
+        }
+    }
+    /**
+     * The currently applied wireframe style.
+     */
+    get wireframeStyle() {
+        return this._wireframeStyle;
+    }
+    set wireframeStyle(value) {
+        this._wireframeStyle = Object.assign({}, DEFAULT_WIREFRAME_STYLE, value);
+    }
+    /**
      * This will update the transformer's geometry and render it to the canvas.
      *
      * @override
@@ -359,7 +397,7 @@ class Transformer extends display.Container {
      */
     render(renderer) {
         const targets = this.group;
-        const { color, thickness } = this.wireframeStyle;
+        const { color, thickness } = this._wireframeStyle;
         // Updates occur right here!
         this.wireframe.clear()
             .lineStyle(thickness, color);

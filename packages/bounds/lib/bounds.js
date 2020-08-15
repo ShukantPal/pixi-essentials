@@ -1,8 +1,8 @@
 /* eslint-disable */
  
 /*!
- * @pixi-essentials/bounds - v1.0.0
- * Compiled Sat, 15 Aug 2020 20:24:07 UTC
+ * @pixi-essentials/bounds - v2.0.0
+ * Compiled Sat, 15 Aug 2020 21:31:08 UTC
  *
  * @pixi-essentials/bounds is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license

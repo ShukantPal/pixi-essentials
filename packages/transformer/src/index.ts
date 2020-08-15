@@ -4,5 +4,5 @@ import '@pixi/interaction';
 export { Transformer } from './Transformer';
 export { TransformerHandle } from './TransformerHandle';
 
-export type { ITransformerOptions } from './Transformer';
+export type { ITransformerOptions, ITransformerStyle } from './Transformer';
 export type { ITransformerHandleStyle } from './TransformerHandle';

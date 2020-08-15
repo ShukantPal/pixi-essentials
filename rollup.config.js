@@ -62,6 +62,9 @@ const defaultGlobals = {
     '@pixi-essentials/system-g': 'PIXI',
     '@pixi-essentials/transformer': 'PIXI',
     '@pixi-essentials/types': 'PIXI',
+
+    // External libraries related to the PixiJS ecosystem
+    '@inlet/react-pixi': 'ReactPixi',
 };
 
 /**

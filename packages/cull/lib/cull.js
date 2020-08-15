@@ -1,8 +1,8 @@
 /* eslint-disable */
  
 /*!
- * @pixi-essentials/cull - v1.0.5
- * Compiled Sat, 15 Aug 2020 20:24:07 UTC
+ * @pixi-essentials/cull - v1.0.6
+ * Compiled Sat, 15 Aug 2020 21:31:08 UTC
  *
  * @pixi-essentials/cull is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license

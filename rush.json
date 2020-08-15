@@ -82,6 +82,12 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@pixi-essentials/react-bindings",
+      "projectFolder": "packages/react-bindings",
+      "reviewCategory": "production",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@pixi-essentials/shader-preprocessor",
       "projectFolder": "packages/shader-preprocessor",
       "reviewCategory": "production",

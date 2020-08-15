@@ -1,0 +1,33 @@
+{
+  "name": "@pixi-essentials/react-bindings",
+  "version": "1.0.0",
+  "description": "React components for display-objects provided by pixi-essentials, for usage with @inlet/react-pixi.",
+  "main": "lib/react-bindings.js",
+  "module": "lib/react-bindings.es.js",
+  "bundle": "dist/react-bindings.js",
+  "namespace": "ReactPixi",
+  "scripts": {
+    "compile": "rm -rf compile && tsc && api-extractor run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SukantPal/pixi-essentials.git"
+  },
+  "keywords": [
+    "pixijs",
+    "react-pixi",
+    "reactjs",
+    "pixi-essentials"
+  ],
+  "author": "Shukant K. Pal <shukantpal@outlook.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SukantPal/pixi-essentials/issues"
+  },
+  "homepage": "https://github.com/SukantPal/pixi-essentials#readme",
+  "dependencies": {
+    "@inlet/react-pixi": "~5.0.3",
+    "@pixi-essentials/transformer": "~2.0.0",
+    "@pixi/display": "~5.3.3"
+  }
+}

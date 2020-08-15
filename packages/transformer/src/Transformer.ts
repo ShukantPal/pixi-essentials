@@ -111,11 +111,21 @@ const SCALE_COMPONENTS: {
      bottomRight: { x: 1, y: 1 },
  };
 
-interface ITransformerStyle
+export interface ITransformerStyle
 {
     color: number;
     thickness: number;
 }
+
+/**
+ * The default wireframe style for {@link Transformer}.
+ *
+ * @ignore
+ */
+const DEFAULT_WIREFRAME_STYLE: ITransformerStyle = {
+    color: 0x000000,
+    thickness: 2,
+};
 
 /**
  * @ignore
@@ -124,8 +134,8 @@ export interface ITransformerOptions
 {
     group: DisplayObject[];
     handleConstructor: typeof DisplayObject;
-    handleStyle: ITransformerHandleStyle;
-    wireframeStyle: ITransformerStyle;
+    handleStyle: Partial<ITransformerHandleStyle>;
+    wireframeStyle: Partial<ITransformerStyle>;
 }
 
 /**
@@ -134,13 +144,13 @@ export interface ITransformerOptions
  */
 export class Transformer extends Container
 {
-    protected group: DisplayObject[];
-    protected groupBounds: OrientedBounds;
+    public group: DisplayObject[];
 
+    protected groupBounds: OrientedBounds;
     protected handles: { [H in Handle]: TransformerHandle };
-    protected handleStyle: Partial<ITransformerHandleStyle>;
     protected wireframe: Graphics;
-    protected wireframeStyle: ITransformerStyle;
+    protected _handleStyle: Partial<ITransformerHandleStyle>;
+    protected _wireframeStyle: Partial<ITransformerStyle>;
 
     /**
      * @param {object}[options]
@@ -173,15 +183,12 @@ export class Transformer extends Container
         /**
          * The wireframe style applied on the transformer
          */
-        this.wireframeStyle = Object.assign({
-            color: 0x000000,
-            thickness: 2,
-        }, options.wireframeStyle || {});
+        this._wireframeStyle = Object.assign({}, DEFAULT_WIREFRAME_STYLE, options.wireframeStyle || {});
 
         const HandleConstructor = options.handleConstructor || TransformerHandle;
         const handleStyle = options.handleStyle || {};
 
-        this.handleStyle = handleStyle;
+        this._handleStyle = handleStyle;
 
         // Initialize transformer handles
         const rotatorHandles = {
@@ -207,6 +214,35 @@ export class Transformer extends Container
         // Update groupBounds immediately. This is because mouse events can propagate before the next animation frame.
         this.groupBounds = new OrientedBounds();
         this.updateGroupBounds();
+    }
+
+    /**
+     * The currently applied handle style. If you have edited the transformer handles directly, this may be inaccurate.
+     */
+    get handleStyle(): Partial<ITransformerHandleStyle>
+    {
+        return this._handleStyle;
+    }
+    set handleStyle(value: Partial<ITransformerHandleStyle>)
+    {
+        const handles = this.handles;
+
+        for (const handleKey in handles)
+        {
+            (handles[handleKey] as TransformerHandle).style = value;
+        }
+    }
+
+    /**
+     * The currently applied wireframe style.
+     */
+    get wireframeStyle(): Partial<ITransformerStyle>
+    {
+        return this._wireframeStyle;
+    }
+    set wireframeStyle(value: Partial<ITransformerStyle>)
+    {
+        this._wireframeStyle = Object.assign({}, DEFAULT_WIREFRAME_STYLE, value);
     }
 
     /**
@@ -318,7 +354,7 @@ export class Transformer extends Container
     render(renderer: Renderer): void
     {
         const targets = this.group;
-        const { color, thickness } = this.wireframeStyle;
+        const { color, thickness } = this._wireframeStyle;
 
         // Updates occur right here!
         this.wireframe.clear()

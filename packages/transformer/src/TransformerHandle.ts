@@ -17,17 +17,30 @@ export interface ITransformerHandleStyle
     shape: string;
 }
 
+/**
+ * The default transformer handle style.
+ *
+ * @ignore
+ */
+const DEFAULT_HANDLE_STYLE = {
+    color: 0xffffff,
+    outlineColor: 0x000000,
+    outlineThickness: 1,
+    radius: 8,
+    shape: 'square',
+};
+
 const tempPoint = new Point();
 const tempDelta = new Point();
 
 /**
- * The default transfomer handle implementation.
+ * The transfomer handle base implementation.
  */
 export class TransformerHandle extends Graphics
 {
     onHandleDelta: (origin: Point, delta: Point) => void;
 
-    protected style: ITransformerHandleStyle;
+    protected _style: ITransformerHandleStyle;
 
     private _pointerDown: boolean;
     private _pointerDragging: boolean;
@@ -38,15 +51,9 @@ export class TransformerHandle extends Graphics
     {
         super();
 
-        const style: ITransformerHandleStyle = Object.assign({
-            color: 0xffffff,
-            outlineColor: 0x000000,
-            outlineThickness: 1,
-            radius: 8,
-            shape: 'square',
-        }, styleOpts);
+        const style: ITransformerHandleStyle = Object.assign({}, DEFAULT_HANDLE_STYLE, styleOpts);
 
-        this.style = style;
+        this._style = style;
         this.cursor = cursor || 'move';
         this.onHandleDelta = handler;
 
@@ -70,12 +77,19 @@ export class TransformerHandle extends Graphics
 
         this.interactive = true;
 
-        this.on('mousedown', () => { console.log('MD'); });
-
         this.on('mousedown', this.onPointerDown, this);
         this.on('mousemove', this.onPointerMove, this);
         this.on('mouseup', this.onPointerUp, this);
         this.on('mouseupoutside', this.onPointerUp, this);
+    }
+
+    get style(): Partial<ITransformerHandleStyle>
+    {
+        return this._style;
+    }
+    set style(value: Partial<ITransformerHandleStyle>)
+    {
+        this._style = Object.assign({}, DEFAULT_HANDLE_STYLE, value);
     }
 
     protected onPointerDown(): void

@@ -1,8 +1,8 @@
 /* eslint-disable */
  
 /*!
- * @pixi-essentials/system-g - v0.0.1-alpha.0
- * Compiled Sat, 15 Aug 2020 20:24:07 UTC
+ * @pixi-essentials/system-g - v0.0.1
+ * Compiled Sat, 15 Aug 2020 21:31:08 UTC
  *
  * @pixi-essentials/system-g is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
