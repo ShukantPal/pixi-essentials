@@ -34,5 +34,8 @@
   },
   "devDependencies": {
     "pixi.js": "~5.3.3"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
