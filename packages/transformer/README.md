@@ -2,13 +2,13 @@
 
 This package contains `Transformer`, which provides an interactive interface for scaling and rotating groups of display-objects.
 
-## Installation
+## Installation :package:
 
 ```base
 npm install @pixi-essentials/transformer
 ```
 
-## Usage
+## Usage :page_facing_up:
 
 ```js
 import * as PIXI from 'pixi.js';
