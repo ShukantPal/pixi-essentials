@@ -2,7 +2,7 @@
  
 /*!
  * @pixi-essentials/types - v0.0.1
- * Compiled Sat, 15 Aug 2020 20:19:34 UTC
+ * Compiled Sat, 15 Aug 2020 20:24:07 UTC
  *
  * @pixi-essentials/types is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
