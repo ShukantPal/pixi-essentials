@@ -1,8 +1,8 @@
 /* eslint-disable */
  
 /*!
- * @pixi-essentials/react-bindings - v1.0.0
- * Compiled Sat, 15 Aug 2020 21:57:06 UTC
+ * @pixi-essentials/react-bindings - v1.0.1
+ * Compiled Sun, 16 Aug 2020 16:31:07 UTC
  *
  * @pixi-essentials/react-bindings is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -19,17 +19,12 @@ const EMPTY = {};
  * @see https://github.com/SukantPal/pixi-essentials/tree/master/packages/transformer
  */
 const Transformer = PixiComponent('Transformer', {
-    create: (props) => {
-        const instance = new Transformer$1({
-            group: props.group,
-            handleConstructor: props.handleConstructor,
-            handleStyle: props.handleStyle,
-            wireframeStyle: props.wireframeStyle,
-        });
-        return instance;
-    },
+    create: (props) => new Transformer$1(props),
     applyProps(instance, oldProps, newProps) {
         instance.group = newProps.group;
+        instance.skewRadius = newProps.skewRadius || instance.skewRadius;
+        instance.skewTransform = newProps.skewTransform;
+        instance.transientGroupTilt = newProps.transientGroupTilt;
         if (oldProps.handleConstructor !== newProps.handleConstructor) {
             throw new Error('Transformer does not support changing the TransformerHandleConstructor!');
         }

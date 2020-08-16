@@ -3,6 +3,7 @@ import { PixiComponent } from '@inlet/react-pixi';
 import { Transformer as TransformerImpl, TransformerHandle as TransformerHandleImpl } from '@pixi-essentials/transformer';
 
 import type { ITransformerStyle, ITransformerHandleStyle } from '@pixi-essentials/transformer';
+import type React from 'react';
 
 const EMPTY: any = {};
 
@@ -13,6 +14,9 @@ export type TransformerProps = {
     group?: DisplayObject[];
     handleConstructor?: typeof TransformerHandleImpl;
     handleStyle?: Partial<ITransformerHandleStyle>;
+    skewRadius?: number;
+    skewTransform?: boolean;
+    transientGroupTilt?: boolean;
     wireframeStyle?: Partial<ITransformerStyle>;
 };
 
@@ -21,21 +25,14 @@ export type TransformerProps = {
  *
  * @see https://github.com/SukantPal/pixi-essentials/tree/master/packages/transformer
  */
-export const Transformer = PixiComponent<TransformerProps, TransformerImpl>('Transformer', {
-    create: (props: TransformerProps): TransformerImpl =>
-    {
-        const instance = new TransformerImpl({
-            group: props.group,
-            handleConstructor: props.handleConstructor,
-            handleStyle: props.handleStyle,
-            wireframeStyle: props.wireframeStyle,
-        });
-
-        return instance;
-    },
+export const Transformer: React.FC<TransformerProps> = PixiComponent<TransformerProps, TransformerImpl>('Transformer', {
+    create: (props: TransformerProps): TransformerImpl => new TransformerImpl(props),
     applyProps(instance: TransformerImpl, oldProps: TransformerProps, newProps: TransformerProps): void
     {
         instance.group = newProps.group;
+        instance.skewRadius = newProps.skewRadius || instance.skewRadius;
+        instance.skewTransform = newProps.skewTransform;
+        instance.transientGroupTilt = newProps.transientGroupTilt;
 
         if (oldProps.handleConstructor !== newProps.handleConstructor)
         {

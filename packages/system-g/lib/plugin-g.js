@@ -2,7 +2,7 @@
  
 /*!
  * @pixi-essentials/system-g - v0.0.1
- * Compiled Sat, 15 Aug 2020 21:57:06 UTC
+ * Compiled Sun, 16 Aug 2020 16:31:07 UTC
  *
  * @pixi-essentials/system-g is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license

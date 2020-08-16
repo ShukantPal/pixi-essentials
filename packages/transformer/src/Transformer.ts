@@ -7,9 +7,11 @@ import { Graphics } from '@pixi/graphics';
 import { AxisAlignedBounds, OrientedBounds } from '@pixi-essentials/bounds';
 import { ObjectPoolFactory } from '@pixi-essentials/object-pool';
 import { TransformerHandle } from './TransformerHandle';
+import { createHorizontalSkew, createVerticalSkew } from './utils/skewTransform';
 import { decomposeTransform } from './utils/decomposeTransform';
 import { multiplyTransform } from './utils/multiplyTransform';
 
+import type { InteractionEvent } from '@pixi/interaction';
 import type { ITransformerHandleStyle } from './TransformerHandle';
 
 // Preallocated objects
@@ -46,6 +48,13 @@ type ScaleHandle = 'topLeft' |
     'bottomLeft' |
     'bottomCenter' |
     'bottomRight';
+/**
+ * The handles used for skewing
+ *
+ * @internal
+ * @ignore
+ */
+type SkewHandle = 'skewHorizontal' | 'skewVertical';
 
 /**
  * All the handles provided by {@link Transformer}.
@@ -53,7 +62,7 @@ type ScaleHandle = 'topLeft' |
  * @internal
  * @ignore
  */
-type Handle = RotatorHandle | ScaleHandle;
+type Handle = RotatorHandle | ScaleHandle | SkewHandle;
 
 /**
  * Specific cursors for each handle
@@ -111,6 +120,9 @@ const SCALE_COMPONENTS: {
      bottomRight: { x: 1, y: 1 },
  };
 
+/**
+ * @ignore
+ */
 export interface ITransformerStyle
 {
     color: number;
@@ -135,22 +147,37 @@ export interface ITransformerOptions
     group: DisplayObject[];
     handleConstructor: typeof DisplayObject;
     handleStyle: Partial<ITransformerHandleStyle>;
+    skewRadius: number;
+    skewTransform: boolean;
+    transientGroupTilt: boolean;
     wireframeStyle: Partial<ITransformerStyle>;
 }
 
 /**
  * {@code Transformer} provides an interactive interface for editing the transforms in a group. It supports translating,
  * scaling, rotating, and skewing display-objects both through interaction and code.
+ *
+ * NOTE: The transformer needs to capture all interaction events that would otherwise go to the display-objects in the
+ * group. Hence, it must be placed after them in the scene graph.
  */
 export class Transformer extends Container
 {
     public group: DisplayObject[];
+    public skewRadius: number;
+    public transientGroupTilt: boolean;
 
     protected groupBounds: OrientedBounds;
     protected handles: { [H in Handle]: TransformerHandle };
     protected wireframe: Graphics;
+    protected _skewTransform: boolean;
+    protected _skewX: number;
+    protected _skewY: number;
     protected _handleStyle: Partial<ITransformerHandleStyle>;
     protected _wireframeStyle: Partial<ITransformerStyle>;
+
+    private _pointerDown: boolean;
+    private _pointerDragging: boolean;
+    private _pointerPosition: Point;
 
     /**
      * @param {object}[options]
@@ -162,6 +189,11 @@ export class Transformer extends Container
      * @param {string}[options.handleStyle.outlineThickness] - thickness of the handle outline (stroke)
      * @param {number}[options.handleStyle.radius] - dimensions of the handle
      * @param {string}[options.handleStyle.shape] - 'circle' or 'square'
+     * @param {number}[options.skewRadius] - distance of skew handles from center of transformer box
+     *  (`skewTransform` should be enabled)
+     * @param {number}[options.skewTransform] - whether to enable skewing
+     * @param {boolean}[options.transientGroupTilt=true] - whether the transformer should reset the wireframe's rotation
+     *      after a rotator handle is "defocused".
      * @param {object}[options.wireframeStyle] - styling options for the wireframe.
      * @param {number}[options.wireframeStyle.color] - color of the lines
      * @param {number}[options.wireframeStyle.thickness] - thickness of the lines
@@ -170,15 +202,28 @@ export class Transformer extends Container
     {
         super();
 
-        this.group = options.group || [];
-
         this.interactive = true;
         this.cursor = 'move';
+
+        this.group = options.group || [];
+        this.skewRadius = options.skewRadius || 64;
+        this._skewTransform = options.skewTransform !== undefined ? options.skewTransform : false;
+        this.transientGroupTilt = options.transientGroupTilt !== undefined ? options.transientGroupTilt : true;
 
         /**
          * Draws the bounding boxes
          */
         this.wireframe = this.addChild(new Graphics());
+
+        /**
+         * The horizontal skew value. Rotating the group by 𝜽 will also change this value by 𝜽.
+         */
+        this._skewX = 0;
+
+        /**
+         * The vertical skew value. Rotating the group by 𝜽 will also change this value by 𝜽.
+         */
+        this._skewY = 0;
 
         /**
          * The wireframe style applied on the transformer
@@ -192,8 +237,12 @@ export class Transformer extends Container
 
         // Initialize transformer handles
         const rotatorHandles = {
-            rotator: this.addChild(new HandleConstructor(handleStyle,
-                (origin: Point, delta: Point) => { this.rotateGroup('rotator', origin, delta); })),
+            rotator: this.addChild(
+                new HandleConstructor(
+                    handleStyle,
+                    (origin: Point, delta: Point) => { this.rotateGroup('rotator', origin, delta); },
+                    this.commitGroup,
+                )),
         };
         const scaleHandles = SCALE_HANDLES.reduce((scaleHandles, handleKey) =>
         {
@@ -202,18 +251,49 @@ export class Transformer extends Container
                 this.scaleGroup(handleKey as ScaleHandle, delta);
             };
 
-            scaleHandles[handleKey] = new HandleConstructor(handleStyle, handleDelta, HANDLE_TO_CURSOR[handleKey]);
+            scaleHandles[handleKey] = new HandleConstructor(
+                handleStyle,
+                handleDelta,
+                this.commitGroup,
+                HANDLE_TO_CURSOR[handleKey]);
             this.addChild(scaleHandles[handleKey]);
 
             return scaleHandles;
         }, {});
+        const skewHandles = {
+            skewHorizontal: this.addChild(
+                new HandleConstructor(
+                    handleStyle,
+                    (origin: Point, delta: Point) => { this.skewGroup('skewHorizontal', origin, delta); },
+                    this.commitGroup,
+                    'pointer',
+                )),
+            skewVertical: this.addChild(
+                new HandleConstructor(
+                    handleStyle,
+                    (origin: Point, delta: Point) => { this.skewGroup('skewVertical', origin, delta); },
+                    this.commitGroup,
+                    'pointer',
+                )),
+        };
 
-        this.handles = Object.assign({}, rotatorHandles, scaleHandles) as { [H in Handle]: TransformerHandle };
+        this.handles = Object.assign({}, rotatorHandles, scaleHandles, skewHandles) as { [H in Handle]: TransformerHandle };
         this.handles.middleCenter.visible = false;
+        this.handles.skewHorizontal.visible = this._skewTransform;
+        this.handles.skewVertical.visible = this._skewTransform;
 
         // Update groupBounds immediately. This is because mouse events can propagate before the next animation frame.
         this.groupBounds = new OrientedBounds();
         this.updateGroupBounds();
+
+        // Pointer events
+        this._pointerDown = false;
+        this._pointerDragging = false;
+        this._pointerPosition = new Point();
+        this.on('pointerdown', this.onPointerDown, this);
+        this.on('pointermove', this.onPointerMove, this);
+        this.on('pointerup', this.onPointerUp, this);
+        this.on('pointerupoutside', this.onPointerUp, this);
     }
 
     /**
@@ -231,6 +311,26 @@ export class Transformer extends Container
         {
             (handles[handleKey] as TransformerHandle).style = value;
         }
+
+        this._handleStyle = value;
+    }
+
+    /**
+     * This will enable the skewing handles.
+     */
+    get skewTransform(): boolean
+    {
+        return this._skewTransform;
+    }
+    set skewTransform(value: boolean)
+    {
+        if (this._skewTransform !== value)
+        {
+            this._skewTransform = value;
+
+            this.handles.skewHorizontal.visible = value;
+            this.handles.skewVertical.visible = value;
+        }
     }
 
     /**
@@ -244,6 +344,23 @@ export class Transformer extends Container
     {
         this._wireframeStyle = Object.assign({}, DEFAULT_WIREFRAME_STYLE, value);
     }
+
+    /**
+     * This will translate the group by {@code delta}.
+     *
+     * NOTE: There is no handle that provides translation. The user drags the transformer directly.
+     *
+     * @param delta
+     */
+    translateGroup = (delta: Point): void =>
+    {
+        // Translation matrix
+        const matrix = tempMatrix
+            .identity()
+            .translate(delta.x, delta.y);
+
+        this.prependTransform(matrix);
+    };
 
     /**
      * This will rotate the group such that the {@code origin} point will move by {@code delta}.
@@ -278,6 +395,10 @@ export class Transformer extends Container
 
         this.prependTransform(matrix, true);
         this.updateGroupBounds(bounds.rotation + deltaAngle);
+
+        // Rotation moves both skew.x & skew.y
+        this._skewX += deltaAngle;
+        this._skewY += deltaAngle;
     };
 
     /**
@@ -346,12 +467,88 @@ export class Transformer extends Container
     };
 
     /**
+     * This will skew the group such that the skew handle would move to the destination {@code origin + delta}.
+     *
+     * @param handle
+     * @param delta
+     */
+    skewGroup = (handle: SkewHandle, origin: Point, delta: Point): void =>
+    {
+        const bounds = this.groupBounds;
+
+        // Destination point
+        const dst = tempPoint.set(origin.x + delta.x, origin.y + delta.y);
+
+        // Center of skew (same as center of rotation!)
+        const sOrigin = bounds.center;
+
+        // Skew matrix
+        const matrix = tempMatrix.identity()
+            .translate(-sOrigin.x, -sOrigin.y);
+        let rotation = this.groupBounds.rotation;
+
+        if (handle === 'skewHorizontal')
+        {
+            const oldSkew = this._skewX;
+
+            // Calculate new skew
+            this._skewX = Math.atan2(dst.y - sOrigin.y, dst.x - sOrigin.x);
+
+            // Skew by new skew.x
+            matrix.prepend(createVerticalSkew(-oldSkew));
+            matrix.prepend(createVerticalSkew(this._skewX));
+        }
+        else // skewVertical
+        {
+            const oldSkew = this._skewY;
+
+            // Calculate new skew
+            const newSkew = Math.atan2(dst.y - sOrigin.y, dst.x - sOrigin.x) - (Math.PI / 2);
+
+            this._skewY = newSkew;
+
+            // HINT: skewY is applied negatively b/c y-axis is flipped
+            matrix.prepend(createHorizontalSkew(oldSkew));
+            matrix.prepend(createHorizontalSkew(-this._skewY));
+
+            rotation -= newSkew - oldSkew;
+        }
+
+        matrix.translate(sOrigin.x, sOrigin.y);
+
+        this.prependTransform(matrix, true);
+        this.updateGroupBounds(rotation);
+    };
+
+    /**
+     * This is called after the user finishes dragging a handle. If {@link this.transientGroupTilt} is enabled, it will
+     * reset the rotation of this group (if more than one display-object is grouped).
+     */
+    commitGroup = (): void =>
+    {
+        if (this.transientGroupTilt !== false && this.group.length > 1)
+        {
+            this.updateGroupBounds(0);
+        }
+    };
+
+    /**
      * This will update the transformer's geometry and render it to the canvas.
      *
      * @override
      * @param renderer
      */
     render(renderer: Renderer): void
+    {
+        this.draw();
+
+        super.render(renderer);
+    }
+
+    /**
+     * Recalculates the transformer's geometry. This is called on each render.
+     */
+    protected draw(): void
     {
         const targets = this.group;
         const { color, thickness } = this._wireframeStyle;
@@ -366,7 +563,9 @@ export class Transformer extends Container
         }
 
         // groupBounds may change on each render-loop b/c of any ongoing animation
-        const groupBounds = Transformer.calculateGroupOrientedBounds(targets, this.groupBounds.rotation, tempBounds, true);
+        const groupBounds = targets.length !== 1
+            ? Transformer.calculateGroupOrientedBounds(targets, this.groupBounds.rotation, tempBounds, true)
+            : Transformer.calculateOrientedBounds(targets[0], tempBounds);// Auto-detect rotation
 
         // Redraw skeleton and position handles
         this.drawBounds(groupBounds);
@@ -374,8 +573,6 @@ export class Transformer extends Container
 
         // Update cached groupBounds
         this.groupBounds.copyFrom(groupBounds);
-
-        super.render(renderer);
     }
 
     /**
@@ -385,8 +582,11 @@ export class Transformer extends Container
      */
     protected drawBounds(bounds: OrientedBounds | AxisAlignedBounds): void
     {
+        // Fill polygon with ultra-low alpha to capture pointer events.
         this.wireframe
-            .drawPolygon(bounds.hull);
+            .beginFill(0xffffff, 1e-4)
+            .drawPolygon(bounds.hull)
+            .endFill();
     }
 
     /**
@@ -398,8 +598,9 @@ export class Transformer extends Container
     {
         const handles = this.handles;
 
-        const { topLeft, topRight, bottomLeft, bottomRight } = groupBounds;
+        const { topLeft, topRight, bottomLeft, bottomRight, center } = groupBounds;
 
+        // Scale handles
         handles.topLeft.position.copyFrom(topLeft);
         handles.topCenter.position.set((topLeft.x + topRight.x) / 2, (topLeft.y + topRight.y) / 2);
         handles.topRight.position.copyFrom(topRight);
@@ -409,6 +610,15 @@ export class Transformer extends Container
         handles.bottomLeft.position.copyFrom(bottomLeft);
         handles.bottomCenter.position.set((bottomLeft.x + bottomRight.x) / 2, (bottomLeft.y + bottomRight.y) / 2);
         handles.bottomRight.position.copyFrom(bottomRight);
+
+        // Skew handles
+        handles.skewHorizontal.position.set(
+            center.x + (Math.cos(this._skewX) * this.skewRadius),
+            center.y + (Math.sin(this._skewX) * this.skewRadius));
+        // HINT: Slope = skew.y + Math.PI / 2
+        handles.skewVertical.position.set(
+            center.x + (-Math.sin(this._skewY) * this.skewRadius),
+            center.y + (Math.cos(this._skewY) * this.skewRadius));
 
         groupBounds.innerBounds.pad(32);
 
@@ -423,14 +633,100 @@ export class Transformer extends Container
         this.wireframe.moveTo(bx, by)
             .lineTo(handles.rotator.position.x, handles.rotator.position.y);
 
+        if (this._skewTransform)
+        {
+            this.wireframe
+                .beginFill(this.wireframeStyle.color)
+                .drawCircle(center.x, center.y, this.wireframeStyle.thickness * 2)
+                .endFill();
+            this.wireframe
+                .moveTo(center.x, center.y)
+                .lineTo(handles.skewHorizontal.x, handles.skewHorizontal.y)
+                .moveTo(center.x, center.y)
+                .lineTo(handles.skewVertical.x, handles.skewVertical.y);
+        }
+
         // Update transforms
         for (const handleName in handles)
         {
+            let rotation = this.groupBounds.rotation;
+
+            if (handleName === 'skewHorizontal')
+            {
+                rotation = this._skewX;
+            }
+            else if (handleName === 'skewVertical')
+            {
+                rotation = this._skewY;
+            }
+
             const handle: TransformerHandle = handles[handleName];
 
-            handle.rotation = groupBounds.rotation;
+            handle.rotation = rotation;
             handle.getBounds(false, tempRect);
         }
+    }
+
+    /**
+     * Called on the `pointerdown` event. You must call the super implementation.
+     *
+     * @param e
+     */
+    protected onPointerDown(e: InteractionEvent): void
+    {
+        this._pointerDown = true;
+        this._pointerDragging = false;
+
+        e.stopPropagation();
+    }
+
+    /**
+     * Called on the `pointermove` event. You must call the super implementation.
+     *
+     * @param e
+     */
+    protected onPointerMove(e: InteractionEvent): void
+    {
+        if (!this._pointerDown)
+        {
+            return;
+        }
+
+        const lastPointerPosition = this._pointerPosition;
+        const currentPointerPosition = e.data.getLocalPosition(this, tempPoint);
+
+        const cx = currentPointerPosition.x;
+        const cy = currentPointerPosition.y;
+
+        // Translate group by difference
+        if (this._pointerDragging)
+        {
+            const delta = currentPointerPosition;
+
+            delta.x -= lastPointerPosition.x;
+            delta.y -= lastPointerPosition.y;
+
+            this.translateGroup(delta);
+        }
+
+        this._pointerPosition.x = cx;
+        this._pointerPosition.y = cy;
+        this._pointerDragging = true;
+
+        e.stopPropagation();
+    }
+
+    /**
+     * Called on the `pointerup` and `pointerupoutside` events. You must call the super implementation.
+     *
+     * @param e
+     */
+    protected onPointerUp(e: InteractionEvent): void
+    {
+        this._pointerDragging = false;
+        this._pointerDown = false;
+
+        e.stopPropagation();
     }
 
     /**

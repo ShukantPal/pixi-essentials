@@ -39,6 +39,7 @@ const tempDelta = new Point();
 export class TransformerHandle extends Graphics
 {
     onHandleDelta: (origin: Point, delta: Point) => void;
+    onHandleCommit: () => void;
 
     protected _style: ITransformerHandleStyle;
 
@@ -47,7 +48,9 @@ export class TransformerHandle extends Graphics
     private _pointerPosition: Point;
 
     constructor(styleOpts: Partial<ITransformerHandleStyle> = {},
-        handler?: (origin: Point, delta: Point) => void, cursor?: string)
+        handler?: (origin: Point, delta: Point) => void,
+        commit?: () => void,
+        cursor?: string)
     {
         super();
 
@@ -56,6 +59,7 @@ export class TransformerHandle extends Graphics
         this._style = style;
         this.cursor = cursor || 'move';
         this.onHandleDelta = handler;
+        this.onHandleCommit = commit;
 
         this.lineStyle(style.outlineThickness, style.outlineColor)
             .beginFill(style.color);
@@ -92,10 +96,12 @@ export class TransformerHandle extends Graphics
         this._style = Object.assign({}, DEFAULT_HANDLE_STYLE, value);
     }
 
-    protected onPointerDown(): void
+    protected onPointerDown(e: InteractionEvent): void
     {
         this._pointerDown = true;
         this._pointerDragging = false;
+
+        e.stopPropagation();
     }
 
     protected onPointerMove(e: InteractionEvent): void
@@ -113,6 +119,8 @@ export class TransformerHandle extends Graphics
         {
             this.onDragStart(e);
         }
+
+        e.stopPropagation();
     }
 
     protected onPointerUp(e: InteractionEvent): void
@@ -152,5 +160,10 @@ export class TransformerHandle extends Graphics
     protected onDragEnd(_: InteractionEvent): void
     {
         this._pointerDragging = false;
+
+        if (this.onHandleCommit)
+        {
+            this.onHandleCommit();
+        }
     }
 }
