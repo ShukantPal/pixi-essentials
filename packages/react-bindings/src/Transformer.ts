@@ -17,9 +17,13 @@ export type TransformerProps = {
     handleConstructor?: typeof TransformerHandleImpl;
     handleStyle?: Partial<ITransformerHandleStyle>;
     rotateEnabled?: boolean;
+    rotationSnaps?: number[];
+    rotationSnapTolerance?: number;
     scaleEnabled?: boolean;
     skewEnabled?: boolean;
     skewRadius?: number;
+    skewSnaps?: number[];
+    skewSnapTolerance?: number;
     translateEnabled?: boolean;
     transientGroupTilt?: boolean;
     wireframeStyle?: Partial<ITransformerStyle>;
@@ -48,6 +52,23 @@ export const Transformer: React.FC<TransformerProps> = PixiComponent<Transformer
         if (oldProps.handleConstructor !== newProps.handleConstructor)
         {
             throw new Error('Transformer does not support changing the TransformerHandleConstructor!');
+        }
+
+        if (oldProps.rotationSnaps !== newProps.rotationSnaps)
+        {
+            instance.rotationSnaps = newProps.rotationSnaps;
+        }
+        if (oldProps.rotationSnapTolerance !== newProps.rotationSnapTolerance)
+        {
+            instance.rotationSnapTolerance = newProps.rotationSnapTolerance;
+        }
+        if (oldProps.skewSnaps !== newProps.skewSnaps)
+        {
+            instance.skewSnaps = newProps.skewSnaps;
+        }
+        if (oldProps.skewSnapTolerance !== newProps.skewSnapTolerance)
+        {
+            instance.skewSnapTolerance = newProps.skewSnapTolerance;
         }
 
         const oldHandleStyle = oldProps.handleStyle || EMPTY;

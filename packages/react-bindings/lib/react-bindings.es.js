@@ -2,7 +2,7 @@
  
 /*!
  * @pixi-essentials/react-bindings - v1.0.1
- * Compiled Sun, 16 Aug 2020 19:22:28 UTC
+ * Compiled Sun, 16 Aug 2020 19:31:00 UTC
  *
  * @pixi-essentials/react-bindings is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -32,6 +32,18 @@ const Transformer = PixiComponent('Transformer', {
         instance.transientGroupTilt = newProps.transientGroupTilt;
         if (oldProps.handleConstructor !== newProps.handleConstructor) {
             throw new Error('Transformer does not support changing the TransformerHandleConstructor!');
+        }
+        if (oldProps.rotationSnaps !== newProps.rotationSnaps) {
+            instance.rotationSnaps = newProps.rotationSnaps;
+        }
+        if (oldProps.rotationSnapTolerance !== newProps.rotationSnapTolerance) {
+            instance.rotationSnapTolerance = newProps.rotationSnapTolerance;
+        }
+        if (oldProps.skewSnaps !== newProps.skewSnaps) {
+            instance.skewSnaps = newProps.skewSnaps;
+        }
+        if (oldProps.skewSnapTolerance !== newProps.skewSnapTolerance) {
+            instance.skewSnapTolerance = newProps.skewSnapTolerance;
         }
         const oldHandleStyle = oldProps.handleStyle || EMPTY;
         const newHandleStyle = newProps.handleStyle || EMPTY;

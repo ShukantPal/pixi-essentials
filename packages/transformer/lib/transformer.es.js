@@ -2,7 +2,7 @@
  
 /*!
  * @pixi-essentials/transformer - v2.0.1
- * Compiled Sun, 16 Aug 2020 19:22:28 UTC
+ * Compiled Sun, 16 Aug 2020 19:31:00 UTC
  *
  * @pixi-essentials/transformer is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -142,6 +142,7 @@ class TransformerHandle extends Graphics {
         this.endFill();
     }
     /**
+     * Handles the `pointerdown` event. You must call the super implementation.
      *
      * @param e
      */
@@ -150,6 +151,11 @@ class TransformerHandle extends Graphics {
         this._pointerDragging = false;
         e.stopPropagation();
     }
+    /**
+     * Handles the `pointermove` event. You must call the super implementation.
+     *
+     * @param e
+     */
     onPointerMove(e) {
         if (!this._pointerDown) {
             return;
@@ -162,16 +168,31 @@ class TransformerHandle extends Graphics {
         }
         e.stopPropagation();
     }
+    /**
+     * Handles the `pointerup` event. You must call the super implementation.
+     *
+     * @param e
+     */
     onPointerUp(e) {
         if (this._pointerDragging) {
             this.onDragEnd(e);
         }
         this._pointerDown = false;
     }
+    /**
+     * Called on the first `pointermove` when {@code this._pointerDown} is true. You must call the super implementation.
+     *
+     * @param e
+     */
     onDragStart(e) {
         e.data.getLocalPosition(this.parent, this._pointerPosition);
         this._pointerDragging = true;
     }
+    /**
+     * Called on a `pointermove` when {@code this._pointerDown} & {@code this._pointerDragging}.
+     *
+     * @param e
+     */
     onDrag(e) {
         const currentPosition = e.data.getLocalPosition(this.parent, tempPoint);
         // Callback handles the rest!
@@ -180,6 +201,11 @@ class TransformerHandle extends Graphics {
         }
         this._pointerPosition.copyFrom(currentPosition);
     }
+    /**
+     * Called on a `pointerup` or `pointerupoutside` & {@code this._pointerDragging} was true.
+     *
+     * @param _
+     */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     onDragEnd(_) {
         this._pointerDragging = false;
@@ -354,6 +380,7 @@ const DEFAULT_ROTATION_SNAPS = [
     -Math.PI / 4,
     -Math.PI / 2,
     -Math.PI * 3 / 4,
+    -Math.PI,
 ];
 /**
  * The default snap tolerance, i.e. the maximum angle b/w the pointer & nearest snap ray for snapping.
