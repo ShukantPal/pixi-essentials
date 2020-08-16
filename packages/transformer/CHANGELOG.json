@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/transformer",
   "entries": [
     {
+      "version": "2.0.2",
+      "tag": "@pixi-essentials/transformer_v2.0.2",
+      "date": "Sun, 16 Aug 2020 19:35:37 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Refactored documentation & event handling, added group translation, options for enabling/disabling specific handles, **skew** transformation, rotation/skew snapping, transformer-handles will redraw on style change."
+          }
+        ]
+      }
+    },
+    {
       "version": "2.0.1",
       "tag": "@pixi-essentials/transformer_v2.0.1",
       "date": "Sat, 15 Aug 2020 22:03:46 GMT",
