@@ -2,7 +2,7 @@
  
 /*!
  * @pixi-essentials/transformer - v2.0.1
- * Compiled Sun, 16 Aug 2020 16:31:07 UTC
+ * Compiled Sun, 16 Aug 2020 19:22:28 UTC
  *
  * @pixi-essentials/transformer is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -31,45 +31,124 @@ const DEFAULT_HANDLE_STYLE = {
     outlineColor: 0x000000,
     outlineThickness: 1,
     radius: 8,
-    shape: 'square',
+    shape: 'tooth',
 };
+// Preallocated objects
 const tempPoint = new math.Point();
-const tempDelta = new math.Point();
 /**
  * The transfomer handle base implementation.
  */
 class TransformerHandle extends graphics.Graphics {
-    constructor(styleOpts = {}, handler, commit, cursor) {
+    /**
+     * @param {string} handle - the type of handle being drawn
+     * @param {object} styleOpts - styling options passed by the user
+     * @param {function} handler - handler for drag events, it receives the pointer position; used by {@code onDrag}.
+     * @param {function} commit - handler for drag-end events.
+     * @param {string}[cursor='move'] - a custom cursor to be applied on this handle
+     */
+    constructor(handle, styleOpts = {}, handler, commit, cursor) {
         super();
         const style = Object.assign({}, DEFAULT_HANDLE_STYLE, styleOpts);
+        this._handle = handle;
         this._style = style;
-        this.cursor = cursor || 'move';
         this.onHandleDelta = handler;
         this.onHandleCommit = commit;
-        this.lineStyle(style.outlineThickness, style.outlineColor)
-            .beginFill(style.color);
-        if (style.shape === 'square') {
-            this.drawRect(-style.radius / 2, -style.radius / 2, style.radius, style.radius);
-        }
-        else {
-            this.drawCircle(0, 0, style.radius);
-        }
-        this.endFill();
+        // Redraw on next render()
+        this._dirty = true;
+        // Pointer events
+        this.interactive = true;
+        this.cursor = cursor || 'move';
         this._pointerDown = false;
         this._pointerDragging = false;
         this._pointerPosition = new math.Point();
-        this.interactive = true;
         this.on('mousedown', this.onPointerDown, this);
         this.on('mousemove', this.onPointerMove, this);
         this.on('mouseup', this.onPointerUp, this);
         this.on('mouseupoutside', this.onPointerUp, this);
     }
+    /**
+     * The currently applied handle style.
+     */
     get style() {
         return this._style;
     }
     set style(value) {
         this._style = Object.assign({}, DEFAULT_HANDLE_STYLE, value);
+        this._dirty = true;
     }
+    render(renderer) {
+        if (this._dirty) {
+            this.draw();
+            this._dirty = false;
+        }
+        super.render(renderer);
+    }
+    /**
+     * Redraws the handle's geometry. This is called on a `render` if {@code this._dirty} is true.
+     */
+    draw() {
+        const handle = this._handle;
+        const style = this._style;
+        this.lineStyle(style.outlineThickness, style.outlineColor)
+            .beginFill(style.color);
+        if (style.shape === 'square') {
+            this.drawRect(-style.radius / 2, -style.radius / 2, style.radius, style.radius);
+        }
+        else if (style.shape === 'tooth') {
+            switch (handle) {
+                case 'middleLeft':
+                    this.drawPolygon([
+                        -style.radius / 2, -style.radius / 2,
+                        -style.radius / 2, style.radius / 2,
+                        style.radius / 2, style.radius / 2,
+                        style.radius * 1.1, 0,
+                        style.radius / 2, -style.radius / 2,
+                    ]);
+                    break;
+                case 'topCenter':
+                    this.drawPolygon([
+                        -style.radius / 2, -style.radius / 2,
+                        style.radius / 2, -style.radius / 2,
+                        style.radius / 2, style.radius / 2,
+                        0, style.radius * 1.1,
+                        -style.radius / 2, style.radius / 2,
+                    ]);
+                    break;
+                case 'middleRight':
+                    this.drawPolygon([
+                        -style.radius / 2, style.radius / 2,
+                        -style.radius * 1.1, 0,
+                        -style.radius / 2, -style.radius / 2,
+                        style.radius / 2, -style.radius / 2,
+                        style.radius / 2, style.radius / 2,
+                    ]);
+                    break;
+                case 'bottomCenter':
+                    this.drawPolygon([
+                        0, -style.radius * 1.1,
+                        style.radius / 2, -style.radius / 2,
+                        style.radius / 2, style.radius / 2,
+                        -style.radius / 2, style.radius / 2,
+                        -style.radius / 2, -style.radius / 2,
+                    ]);
+                    break;
+                case 'rotator':
+                    this.drawCircle(0, 0, style.radius / Math.sqrt(2));
+                    break;
+                default:
+                    this.drawRect(-style.radius / 2, -style.radius / 2, style.radius, style.radius);
+                    break;
+            }
+        }
+        else {
+            this.drawCircle(0, 0, style.radius);
+        }
+        this.endFill();
+    }
+    /**
+     *
+     * @param e
+     */
     onPointerDown(e) {
         this._pointerDown = true;
         this._pointerDragging = false;
@@ -98,16 +177,14 @@ class TransformerHandle extends graphics.Graphics {
         this._pointerDragging = true;
     }
     onDrag(e) {
-        const lastPosition = this._pointerPosition;
         const currentPosition = e.data.getLocalPosition(this.parent, tempPoint);
         // Callback handles the rest!
         if (this.onHandleDelta) {
-            tempDelta.x = currentPosition.x - lastPosition.x;
-            tempDelta.y = currentPosition.y - lastPosition.y;
-            this.onHandleDelta(lastPosition, tempDelta);
+            this.onHandleDelta(currentPosition);
         }
-        this._pointerPosition.copyFrom(tempPoint);
+        this._pointerPosition.copyFrom(currentPosition);
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     onDragEnd(_) {
         this._pointerDragging = false;
         if (this.onHandleCommit) {
@@ -258,6 +335,52 @@ const SCALE_COMPONENTS = {
     bottomRight: { x: 1, y: 1 },
 };
 /**
+ * All possible values of {@link Handle}.
+ *
+ * @ignore
+ */
+const HANDLES = [
+    ...SCALE_HANDLES,
+    'rotator',
+    'skewHorizontal',
+    'skewVertical',
+];
+/**
+ * The default snap angles for rotation, in radians.
+ *
+ * @ignore
+ */
+const DEFAULT_ROTATION_SNAPS = [
+    Math.PI / 4,
+    Math.PI / 2,
+    Math.PI * 3 / 4,
+    Math.PI,
+    -Math.PI / 4,
+    -Math.PI / 2,
+    -Math.PI * 3 / 4,
+];
+/**
+ * The default snap tolerance, i.e. the maximum angle b/w the pointer & nearest snap ray for snapping.
+ *
+ * @ignore
+ */
+const DEFAULT_ROTATION_SNAP_TOLERANCE = Math.PI / 90;
+/**
+ * The default snap angles for skewing, in radians.
+ *
+ * @ignore
+ */
+const DEFAULT_SKEW_SNAPS = [
+    Math.PI / 4,
+    -Math.PI / 4,
+];
+/**
+ * The default snap tolerance for skewing.
+ *
+ * @ignore
+ */
+const DEFAULT_SKEW_SNAP_TOLERANCE = Math.PI / 90;
+/**
  * The default wireframe style for {@link Transformer}.
  *
  * @ignore
@@ -274,9 +397,26 @@ const DEFAULT_WIREFRAME_STYLE = {
  * group. Hence, it must be placed after them in the scene graph.
  */
 class Transformer extends display.Container {
+    /* eslint-disable max-len */
     /**
+     * | Handle                | Type                     | Notes |
+     * | --------------------- | ------------------------ | ----- |
+     * | rotator               | Rotate                   | |
+     * | topLeft               | Scale                    | |
+     * | topCenter             | Scale                    | |
+     * | topRight              | Scale                    | |
+     * | middleLeft            | Scale                    | |
+     * | middleCenter          | Scale                    | This cannot be enabled!                                             |
+     * | middleRight           | Scale                    | |
+     * | bottomLeft            | Scale                    | |
+     * | bottomCenter          | Scale                    | |
+     * | bottomRight           | Scale                    | |
+     * | skewHorizontal        | Skew                     | Applies vertical shear. Handle segment is horizontal at skew.y = 0! |
+     * | skewVertical          | Skew                     | Applied horizontal shear. Handle segment is vertical at skew.x = 0! |
+     *
      * @param {object}[options]
      * @param {DisplayObject[]}[options.group] - the group of display-objects being transformed
+     * @param {boolean}[options.enabledHandles] - specifically define which handles are to be enabled
      * @param {typeof TransformerHandle}[options.handleConstructor] - a custom transformer-handle class
      * @param {object}[options.handleStyle] - styling options for the handle. These cannot be modified afterwards!
      * @param {number}[options.handleStyle.color] - handle color
@@ -284,9 +424,17 @@ class Transformer extends display.Container {
      * @param {string}[options.handleStyle.outlineThickness] - thickness of the handle outline (stroke)
      * @param {number}[options.handleStyle.radius] - dimensions of the handle
      * @param {string}[options.handleStyle.shape] - 'circle' or 'square'
+     * @param {boolean}[options.rotateEnabled=true] - whether rotate handles are enabled
+     * @param {number[]}[options.rotationSnaps] - the rotation snap angles, in radians. By default, transformer will
+     *      snap for each 1/8th of a revolution.
+     * @param {number}[options.rotationSnapTolerance] - the snap tolerance for rotation in radians
+     * @param {boolean}[options.scaleEnabled=true] - whether scale handles are enabled
+     * @param {boolean}[options.skewEnabled=true] - whether skew handles are enabled
      * @param {number}[options.skewRadius] - distance of skew handles from center of transformer box
-     *  (`skewTransform` should be enabled)
-     * @param {number}[options.skewTransform] - whether to enable skewing
+     *      (`skewTransform` should be enabled)
+     * @param {number[]}[options.skewSnaps] - the skew snap angles, in radians.
+     * @param {number}[options.skewSnapTolerance] - the skew snap tolerance angle.
+     * @param {boolean}[options.translateEnabled=true] - whether dragging the transformer should move the group
      * @param {boolean}[options.transientGroupTilt=true] - whether the transformer should reset the wireframe's rotation
      *      after a rotator handle is "defocused".
      * @param {object}[options.wireframeStyle] - styling options for the wireframe.
@@ -294,6 +442,7 @@ class Transformer extends display.Container {
      * @param {number}[options.wireframeStyle.thickness] - thickness of the lines
      */
     constructor(options = {}) {
+        /* eslint-enable max-len */
         super();
         /**
          * This will translate the group by {@code delta}.
@@ -310,15 +459,15 @@ class Transformer extends display.Container {
             this.prependTransform(matrix);
         };
         /**
-         * This will rotate the group such that the {@code origin} point will move by {@code delta}.
+         * This will rotate the group such that the handle will come to {@code pointerPosition}.
          *
          * @param handle - the rotator handle was dragged
-         * @param origin - the original pointer position (before dragging)
-         * @param delta - the difference in pointer position (after dragging)
+         * @param pointerPosition - the new pointer position (after dragging)
          */
-        this.rotateGroup = (_, origin, delta) => {
+        this.rotateGroup = (handle, pointerPosition) => {
             const bounds = this.groupBounds;
-            const destination = tempPoint$1.set(origin.x + delta.x, origin.y + delta.y);
+            const origin = this.handles[handle].position;
+            const destination = pointerPosition;
             // Center of rotation - does not change in transformation
             const rOrigin = bounds.center;
             // Original angle subtended by pointer
@@ -326,7 +475,11 @@ class Transformer extends display.Container {
             // Final angle subtended by pointer
             const dstAngle = Math.atan2(destination.y - rOrigin.y, destination.x - rOrigin.x);
             // The angle by which bounds should be rotated
-            const deltaAngle = dstAngle - orgAngle;
+            let deltaAngle = dstAngle - orgAngle;
+            // Snap
+            let newRotation = this.groupBounds.rotation + deltaAngle;
+            newRotation = this.snapAngle(newRotation, this.rotationSnapTolerance, this.rotationSnaps);
+            deltaAngle = newRotation - this.groupBounds.rotation;
             // Rotation matrix
             const matrix = tempMatrix$2
                 .identity()
@@ -334,18 +487,18 @@ class Transformer extends display.Container {
                 .rotate(deltaAngle)
                 .translate(rOrigin.x, rOrigin.y);
             this.prependTransform(matrix, true);
-            this.updateGroupBounds(bounds.rotation + deltaAngle);
+            this.updateGroupBounds(newRotation);
             // Rotation moves both skew.x & skew.y
             this._skewX += deltaAngle;
             this._skewY += deltaAngle;
         };
         /**
-         * This will scale the group such that the handle will move by {@code delta}.
+         * This will scale the group such that the scale handle will come under {@code pointerPosition}.
          *
          * @param handle - the scaling handle that was dragged
-         * @param delta - the change in pointer position since the last event
+         * @param pointerPosition - the new pointer position
          */
-        this.scaleGroup = (handle, delta) => {
+        this.scaleGroup = (handle, pointerPosition) => {
             // Directions along x,y axes that will produce positive scaling
             const xDir = SCALE_COMPONENTS[handle].x;
             const yDir = SCALE_COMPONENTS[handle].y;
@@ -353,8 +506,8 @@ class Transformer extends display.Container {
             const angle = bounds.rotation;
             const innerBounds = bounds.innerBounds;
             // Delta vector in world frame
-            const dx = delta.x;
-            const dy = delta.y;
+            const dx = pointerPosition.x - this.handles[handle].x;
+            const dy = pointerPosition.y - this.handles[handle].y;
             // Unit vector along u-axis (horizontal axis after rotation) of bounds
             const uxvec = (bounds.topRight.x - bounds.topLeft.x) / innerBounds.width;
             const uyvec = (bounds.topRight.y - bounds.topLeft.y) / innerBounds.width;
@@ -370,7 +523,8 @@ class Transformer extends display.Container {
             const matrix = tempMatrix$2.identity();
             if (xDir !== 0) {
                 // Origin of horizontal scaling - a point which does not move after applying the transform
-                const hsOrigin = xDir === 1 ? bounds.topLeft : bounds.topRight;
+                // eslint-disable-next-line no-nested-ternary
+                const hsOrigin = !this.centeredScaling ? (xDir === 1 ? bounds.topLeft : bounds.topRight) : bounds.center;
                 matrix.translate(-hsOrigin.x, -hsOrigin.y)
                     .rotate(-angle)
                     .scale(sx, 1)
@@ -379,7 +533,8 @@ class Transformer extends display.Container {
             }
             if (yDir !== 0) {
                 // Origin of vertical scaling - a point which does not move after applying the transform
-                const vsOrigin = yDir === 1 ? bounds.topLeft : bounds.bottomLeft;
+                // eslint-disable-next-line no-nested-ternary
+                const vsOrigin = !this.centeredScaling ? (yDir === 1 ? bounds.topLeft : bounds.bottomLeft) : bounds.center;
                 matrix.translate(-vsOrigin.x, -vsOrigin.y)
                     .rotate(-angle)
                     .scale(1, sy)
@@ -389,15 +544,15 @@ class Transformer extends display.Container {
             this.prependTransform(matrix);
         };
         /**
-         * This will skew the group such that the skew handle would move to the destination {@code origin + delta}.
+         * This will skew the group such that the skew handle would move to the {@code pointerPosition}.
          *
          * @param handle
-         * @param delta
+         * @param pointerPosition
          */
-        this.skewGroup = (handle, origin, delta) => {
+        this.skewGroup = (handle, pointerPosition) => {
             const bounds = this.groupBounds;
             // Destination point
-            const dst = tempPoint$1.set(origin.x + delta.x, origin.y + delta.y);
+            const dst = tempPoint$1.copyFrom(pointerPosition);
             // Center of skew (same as center of rotation!)
             const sOrigin = bounds.center;
             // Skew matrix
@@ -408,6 +563,7 @@ class Transformer extends display.Container {
                 const oldSkew = this._skewX;
                 // Calculate new skew
                 this._skewX = Math.atan2(dst.y - sOrigin.y, dst.x - sOrigin.x);
+                this._skewX = this.snapAngle(this._skewX, this.skewSnapTolerance, this.skewSnaps);
                 // Skew by new skew.x
                 matrix.prepend(createVerticalSkew(-oldSkew));
                 matrix.prepend(createVerticalSkew(this._skewX));
@@ -418,10 +574,11 @@ class Transformer extends display.Container {
                 // Calculate new skew
                 const newSkew = Math.atan2(dst.y - sOrigin.y, dst.x - sOrigin.x) - (Math.PI / 2);
                 this._skewY = newSkew;
+                this._skewY = this.snapAngle(this._skewY, this.skewSnapTolerance, this.skewSnaps);
                 // HINT: skewY is applied negatively b/c y-axis is flipped
                 matrix.prepend(createHorizontalSkew(oldSkew));
                 matrix.prepend(createHorizontalSkew(-this._skewY));
-                rotation -= newSkew - oldSkew;
+                rotation -= this._skewY - oldSkew;
             }
             matrix.translate(sOrigin.x, sOrigin.y);
             this.prependTransform(matrix, true);
@@ -439,8 +596,20 @@ class Transformer extends display.Container {
         this.interactive = true;
         this.cursor = 'move';
         this.group = options.group || [];
+        this.centeredScaling = !!options.centeredScaling;
+        this.rotationSnaps = options.rotationSnaps || DEFAULT_ROTATION_SNAPS;
+        this.rotationSnapTolerance = options.rotationSnapTolerance !== undefined
+            ? options.rotationSnapTolerance
+            : DEFAULT_ROTATION_SNAP_TOLERANCE;
         this.skewRadius = options.skewRadius || 64;
-        this._skewTransform = options.skewTransform !== undefined ? options.skewTransform : false;
+        this.skewSnaps = options.skewSnaps || DEFAULT_SKEW_SNAPS;
+        this.skewSnapTolerance = options.skewSnapTolerance !== undefined
+            ? options.skewSnapTolerance
+            : DEFAULT_SKEW_SNAP_TOLERANCE;
+        this._rotateEnabled = options.rotateEnabled !== false;
+        this._scaleEnabled = options.scaleEnabled !== false;
+        this._skewEnabled = options.skewEnabled === true;
+        this.translateEnabled = options.translateEnabled !== false;
         this.transientGroupTilt = options.transientGroupTilt !== undefined ? options.transientGroupTilt : true;
         /**
          * Draws the bounding boxes
@@ -463,24 +632,28 @@ class Transformer extends display.Container {
         this._handleStyle = handleStyle;
         // Initialize transformer handles
         const rotatorHandles = {
-            rotator: this.addChild(new HandleConstructor(handleStyle, (origin, delta) => { this.rotateGroup('rotator', origin, delta); }, this.commitGroup)),
+            rotator: this.addChild(new HandleConstructor('rotator', handleStyle, (pointerPosition) => {
+                // The origin is the rotator handle's position, yes.
+                this.rotateGroup('rotator', pointerPosition);
+            }, this.commitGroup)),
         };
         const scaleHandles = SCALE_HANDLES.reduce((scaleHandles, handleKey) => {
-            const handleDelta = (_, delta) => {
-                this.scaleGroup(handleKey, delta);
+            const handleDelta = (pointerPosition) => {
+                this.scaleGroup(handleKey, pointerPosition);
             };
-            scaleHandles[handleKey] = new HandleConstructor(handleStyle, handleDelta, this.commitGroup, HANDLE_TO_CURSOR[handleKey]);
+            scaleHandles[handleKey] = new HandleConstructor(handleKey, handleStyle, handleDelta, this.commitGroup, HANDLE_TO_CURSOR[handleKey]);
+            scaleHandles[handleKey].visible = this._scaleEnabled;
             this.addChild(scaleHandles[handleKey]);
             return scaleHandles;
         }, {});
         const skewHandles = {
-            skewHorizontal: this.addChild(new HandleConstructor(handleStyle, (origin, delta) => { this.skewGroup('skewHorizontal', origin, delta); }, this.commitGroup, 'pointer')),
-            skewVertical: this.addChild(new HandleConstructor(handleStyle, (origin, delta) => { this.skewGroup('skewVertical', origin, delta); }, this.commitGroup, 'pointer')),
+            skewHorizontal: this.addChild(new HandleConstructor('skewHorizontal', handleStyle, (pointerPosition) => { this.skewGroup('skewHorizontal', pointerPosition); }, this.commitGroup, 'pointer')),
+            skewVertical: this.addChild(new HandleConstructor('skewVertical', handleStyle, (pointerPosition) => { this.skewGroup('skewVertical', pointerPosition); }, this.commitGroup, 'pointer')),
         };
         this.handles = Object.assign({}, rotatorHandles, scaleHandles, skewHandles);
         this.handles.middleCenter.visible = false;
-        this.handles.skewHorizontal.visible = this._skewTransform;
-        this.handles.skewVertical.visible = this._skewTransform;
+        this.handles.skewHorizontal.visible = this._skewEnabled;
+        this.handles.skewVertical.visible = this._skewEnabled;
         // Update groupBounds immediately. This is because mouse events can propagate before the next animation frame.
         this.groupBounds = new bounds.OrientedBounds();
         this.updateGroupBounds();
@@ -492,6 +665,32 @@ class Transformer extends display.Container {
         this.on('pointermove', this.onPointerMove, this);
         this.on('pointerup', this.onPointerUp, this);
         this.on('pointerupoutside', this.onPointerUp, this);
+    }
+    /**
+     * The list of enabled handles, if applied manually.
+     */
+    get enabledHandles() {
+        return this._enabledHandles;
+    }
+    set enabledHandles(value) {
+        if (!this._enabledHandles && !value) {
+            return;
+        }
+        this._enabledHandles = value;
+        HANDLES.forEach((handleKey) => { this.handles[handleKey].visible = false; });
+        if (value) {
+            value.forEach((handleKey) => { this.handles[handleKey].visible = true; });
+        }
+        else {
+            this.handles.rotator.visible = this._rotateEnabled;
+            this.handles.skewHorizontal.visible = this._skewEnabled;
+            this.handles.skewVertical.visible = this._skewEnabled;
+            SCALE_HANDLES.forEach((handleKey) => {
+                if (handleKey === 'middleCenter')
+                    return;
+                this.handles[handleKey].visible = this._scaleEnabled;
+            });
+        }
     }
     /**
      * The currently applied handle style. If you have edited the transformer handles directly, this may be inaccurate.
@@ -507,14 +706,52 @@ class Transformer extends display.Container {
         this._handleStyle = value;
     }
     /**
-     * This will enable the skewing handles.
+     * This will enable the rotate handles.
      */
-    get skewTransform() {
-        return this._skewTransform;
+    get rotateEnabled() {
+        return this._rotateEnabled;
     }
-    set skewTransform(value) {
-        if (this._skewTransform !== value) {
-            this._skewTransform = value;
+    set rotateEnabled(value) {
+        if (!this._rotateEnabled !== value) {
+            this._rotateEnabled = value;
+            if (this._enabledHandles) {
+                return;
+            }
+            this.handles.rotator.visible = value;
+        }
+    }
+    /**
+     * This will enable the scale handles.
+     */
+    get scaleEnabled() {
+        return this._scaleEnabled;
+    }
+    set scaleEnabled(value) {
+        if (!this._scaleEnabled !== value) {
+            this._scaleEnabled = value;
+            if (this._enabledHandles) {
+                return;
+            }
+            SCALE_HANDLES.forEach((handleKey) => {
+                if (handleKey === 'middleCenter') {
+                    return;
+                }
+                this.handles[handleKey].visible = value;
+            });
+        }
+    }
+    /**
+     * This will enable the skew handles.
+     */
+    get skewEnabled() {
+        return this._skewEnabled;
+    }
+    set skewEnabled(value) {
+        if (this._skewEnabled !== value) {
+            this._skewEnabled = value;
+            if (this._enabledHandles) {
+                return;
+            }
             this.handles.skewHorizontal.visible = value;
             this.handles.skewVertical.visible = value;
         }
@@ -580,29 +817,33 @@ class Transformer extends display.Container {
     drawHandles(groupBounds) {
         const handles = this.handles;
         const { topLeft, topRight, bottomLeft, bottomRight, center } = groupBounds;
-        // Scale handles
-        handles.topLeft.position.copyFrom(topLeft);
-        handles.topCenter.position.set((topLeft.x + topRight.x) / 2, (topLeft.y + topRight.y) / 2);
-        handles.topRight.position.copyFrom(topRight);
-        handles.middleLeft.position.set((topLeft.x + bottomLeft.x) / 2, (topLeft.y + bottomLeft.y) / 2);
-        handles.middleCenter.position.set((topLeft.x + bottomRight.x) / 2, (topLeft.y + bottomRight.y) / 2);
-        handles.middleRight.position.set((topRight.x + bottomRight.x) / 2, (topRight.y + bottomRight.y) / 2);
-        handles.bottomLeft.position.copyFrom(bottomLeft);
-        handles.bottomCenter.position.set((bottomLeft.x + bottomRight.x) / 2, (bottomLeft.y + bottomRight.y) / 2);
-        handles.bottomRight.position.copyFrom(bottomRight);
-        // Skew handles
-        handles.skewHorizontal.position.set(center.x + (Math.cos(this._skewX) * this.skewRadius), center.y + (Math.sin(this._skewX) * this.skewRadius));
-        // HINT: Slope = skew.y + Math.PI / 2
-        handles.skewVertical.position.set(center.x + (-Math.sin(this._skewY) * this.skewRadius), center.y + (Math.cos(this._skewY) * this.skewRadius));
-        groupBounds.innerBounds.pad(32);
-        handles.rotator.position.x = (groupBounds.topLeft.x + groupBounds.topRight.x) / 2;
-        handles.rotator.position.y = (groupBounds.topLeft.y + groupBounds.topRight.y) / 2;
-        groupBounds.innerBounds.pad(-32);
-        const bx = (groupBounds.topLeft.x + groupBounds.topRight.x) / 2;
-        const by = (groupBounds.topLeft.y + groupBounds.topRight.y) / 2;
-        this.wireframe.moveTo(bx, by)
-            .lineTo(handles.rotator.position.x, handles.rotator.position.y);
-        if (this._skewTransform) {
+        if (this._rotateEnabled) {
+            groupBounds.innerBounds.pad(32);
+            handles.rotator.position.x = (groupBounds.topLeft.x + groupBounds.topRight.x) / 2;
+            handles.rotator.position.y = (groupBounds.topLeft.y + groupBounds.topRight.y) / 2;
+            groupBounds.innerBounds.pad(-32);
+            const bx = (groupBounds.topLeft.x + groupBounds.topRight.x) / 2;
+            const by = (groupBounds.topLeft.y + groupBounds.topRight.y) / 2;
+            this.wireframe.moveTo(bx, by)
+                .lineTo(handles.rotator.position.x, handles.rotator.position.y);
+        }
+        if (this._scaleEnabled) {
+            // Scale handles
+            handles.topLeft.position.copyFrom(topLeft);
+            handles.topCenter.position.set((topLeft.x + topRight.x) / 2, (topLeft.y + topRight.y) / 2);
+            handles.topRight.position.copyFrom(topRight);
+            handles.middleLeft.position.set((topLeft.x + bottomLeft.x) / 2, (topLeft.y + bottomLeft.y) / 2);
+            handles.middleCenter.position.set((topLeft.x + bottomRight.x) / 2, (topLeft.y + bottomRight.y) / 2);
+            handles.middleRight.position.set((topRight.x + bottomRight.x) / 2, (topRight.y + bottomRight.y) / 2);
+            handles.bottomLeft.position.copyFrom(bottomLeft);
+            handles.bottomCenter.position.set((bottomLeft.x + bottomRight.x) / 2, (bottomLeft.y + bottomRight.y) / 2);
+            handles.bottomRight.position.copyFrom(bottomRight);
+        }
+        if (this._skewEnabled) {
+            // Skew handles
+            handles.skewHorizontal.position.set(center.x + (Math.cos(this._skewX) * this.skewRadius), center.y + (Math.sin(this._skewX) * this.skewRadius));
+            // HINT: Slope = skew.y + Math.PI / 2
+            handles.skewVertical.position.set(center.x + (-Math.sin(this._skewY) * this.skewRadius), center.y + (Math.cos(this._skewY) * this.skewRadius));
             this.wireframe
                 .beginFill(this.wireframeStyle.color)
                 .drawCircle(center.x, center.y, this.wireframeStyle.thickness * 2)
@@ -651,7 +892,7 @@ class Transformer extends display.Container {
         const cx = currentPointerPosition.x;
         const cy = currentPointerPosition.y;
         // Translate group by difference
-        if (this._pointerDragging) {
+        if (this._pointerDragging && this.translateEnabled) {
             const delta = currentPointerPosition;
             delta.x -= lastPointerPosition.x;
             delta.y -= lastPointerPosition.y;
@@ -694,6 +935,26 @@ class Transformer extends display.Container {
      */
     updateGroupBounds(rotation = this.groupBounds.rotation) {
         Transformer.calculateGroupOrientedBounds(this.group, rotation, this.groupBounds);
+    }
+    /**
+     * Snaps the given {@code angle} to one of the snapping angles, if possible.
+     *
+     * @param angle - the input angle
+     * @param snapTolerance - the maximum difference b/w the given angle & a snapping angle
+     * @param snaps - the snapping angles
+     * @returns the snapped angle
+     */
+    snapAngle(angle, snapTolerance, snaps) {
+        angle = angle % (Math.PI * 2);
+        if (!snaps || snaps.length === 1 || !snapTolerance) {
+            return angle;
+        }
+        for (let i = 0, j = snaps.length; i < j; i++) {
+            if (Math.abs(angle - snaps[i]) <= snapTolerance) {
+                return snaps[i];
+            }
+        }
+        return angle;
     }
     /**
      * Calculates the positions of the four corners of the display-object. The quadrilateral formed by

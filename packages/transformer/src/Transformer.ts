@@ -31,7 +31,7 @@ const pointPool = ObjectPoolFactory.build(Point as any);
  * @internal
  * @ignore
  */
-type RotatorHandle = 'rotator';
+type RotateHandle = 'rotator';
 
 /**
  * The handles used for scaling.
@@ -48,6 +48,7 @@ type ScaleHandle = 'topLeft' |
     'bottomLeft' |
     'bottomCenter' |
     'bottomRight';
+
 /**
  * The handles used for skewing
  *
@@ -62,7 +63,7 @@ type SkewHandle = 'skewHorizontal' | 'skewVertical';
  * @internal
  * @ignore
  */
-type Handle = RotatorHandle | ScaleHandle | SkewHandle;
+export type Handle = RotateHandle | ScaleHandle | SkewHandle;
 
 /**
  * Specific cursors for each handle
@@ -87,7 +88,7 @@ const HANDLE_TO_CURSOR: { [H in Handle]?: string } = {
  * @internal
  * @ignore
  */
-const SCALE_HANDLES = [
+const SCALE_HANDLES: ScaleHandle[] = [
     'topLeft',
     'topCenter',
     'topRight',
@@ -121,6 +122,58 @@ const SCALE_COMPONENTS: {
  };
 
 /**
+ * All possible values of {@link Handle}.
+ *
+ * @ignore
+ */
+const HANDLES = [
+    ...SCALE_HANDLES,
+    'rotator',
+    'skewHorizontal',
+    'skewVertical',
+];
+
+/**
+ * The default snap angles for rotation, in radians.
+ *
+ * @ignore
+ */
+const DEFAULT_ROTATION_SNAPS = [
+    Math.PI / 4,
+    Math.PI / 2,
+    Math.PI * 3 / 4,
+    Math.PI,
+    -Math.PI / 4,
+    -Math.PI / 2,
+    -Math.PI * 3 / 4,
+    -Math.PI,
+];
+
+/**
+ * The default snap tolerance, i.e. the maximum angle b/w the pointer & nearest snap ray for snapping.
+ *
+ * @ignore
+ */
+const DEFAULT_ROTATION_SNAP_TOLERANCE = Math.PI / 90;
+
+/**
+ * The default snap angles for skewing, in radians.
+ *
+ * @ignore
+ */
+const DEFAULT_SKEW_SNAPS = [
+    Math.PI / 4,
+    -Math.PI / 4,
+];
+
+/**
+ * The default snap tolerance for skewing.
+ *
+ * @ignore
+ */
+const DEFAULT_SKEW_SNAP_TOLERANCE = Math.PI / 90;
+
+/**
  * @ignore
  */
 export interface ITransformerStyle
@@ -144,12 +197,21 @@ const DEFAULT_WIREFRAME_STYLE: ITransformerStyle = {
  */
 export interface ITransformerOptions
 {
+    centeredScaling: boolean;
+    enabledHandles?: Array<Handle>;
     group: DisplayObject[];
     handleConstructor: typeof DisplayObject;
     handleStyle: Partial<ITransformerHandleStyle>;
-    skewRadius: number;
-    skewTransform: boolean;
-    transientGroupTilt: boolean;
+    rotateEnabled?: boolean;
+    rotationSnaps?: number[];
+    rotationSnapTolerance?: number;
+    scaleEnabled?: boolean;
+    skewEnabled?: boolean;
+    skewRadius?: number;
+    skewSnaps?: number[];
+    skewSnapTolerance?: number;
+    translateEnabled?: boolean;
+    transientGroupTilt?: boolean;
     wireframeStyle: Partial<ITransformerStyle>;
 }
 
@@ -163,13 +225,24 @@ export interface ITransformerOptions
 export class Transformer extends Container
 {
     public group: DisplayObject[];
+
+    public centeredScaling: boolean;
+    public rotationSnaps: number[];
+    public rotationSnapTolerance: number;
     public skewRadius: number;
+    public skewSnaps: number[];
+    public skewSnapTolerance: number;
+    public translateEnabled: boolean;
     public transientGroupTilt: boolean;
 
     protected groupBounds: OrientedBounds;
     protected handles: { [H in Handle]: TransformerHandle };
     protected wireframe: Graphics;
-    protected _skewTransform: boolean;
+
+    protected _enabledHandles: Handle[];
+    protected _rotateEnabled: boolean;
+    protected _scaleEnabled: boolean;
+    protected _skewEnabled: boolean;
     protected _skewX: number;
     protected _skewY: number;
     protected _handleStyle: Partial<ITransformerHandleStyle>;
@@ -179,9 +252,26 @@ export class Transformer extends Container
     private _pointerDragging: boolean;
     private _pointerPosition: Point;
 
+    /* eslint-disable max-len */
     /**
+     * | Handle                | Type                     | Notes |
+     * | --------------------- | ------------------------ | ----- |
+     * | rotator               | Rotate                   | |
+     * | topLeft               | Scale                    | |
+     * | topCenter             | Scale                    | |
+     * | topRight              | Scale                    | |
+     * | middleLeft            | Scale                    | |
+     * | middleCenter          | Scale                    | This cannot be enabled!                                             |
+     * | middleRight           | Scale                    | |
+     * | bottomLeft            | Scale                    | |
+     * | bottomCenter          | Scale                    | |
+     * | bottomRight           | Scale                    | |
+     * | skewHorizontal        | Skew                     | Applies vertical shear. Handle segment is horizontal at skew.y = 0! |
+     * | skewVertical          | Skew                     | Applied horizontal shear. Handle segment is vertical at skew.x = 0! |
+     *
      * @param {object}[options]
      * @param {DisplayObject[]}[options.group] - the group of display-objects being transformed
+     * @param {boolean}[options.enabledHandles] - specifically define which handles are to be enabled
      * @param {typeof TransformerHandle}[options.handleConstructor] - a custom transformer-handle class
      * @param {object}[options.handleStyle] - styling options for the handle. These cannot be modified afterwards!
      * @param {number}[options.handleStyle.color] - handle color
@@ -189,9 +279,17 @@ export class Transformer extends Container
      * @param {string}[options.handleStyle.outlineThickness] - thickness of the handle outline (stroke)
      * @param {number}[options.handleStyle.radius] - dimensions of the handle
      * @param {string}[options.handleStyle.shape] - 'circle' or 'square'
+     * @param {boolean}[options.rotateEnabled=true] - whether rotate handles are enabled
+     * @param {number[]}[options.rotationSnaps] - the rotation snap angles, in radians. By default, transformer will
+     *      snap for each 1/8th of a revolution.
+     * @param {number}[options.rotationSnapTolerance] - the snap tolerance for rotation in radians
+     * @param {boolean}[options.scaleEnabled=true] - whether scale handles are enabled
+     * @param {boolean}[options.skewEnabled=true] - whether skew handles are enabled
      * @param {number}[options.skewRadius] - distance of skew handles from center of transformer box
-     *  (`skewTransform` should be enabled)
-     * @param {number}[options.skewTransform] - whether to enable skewing
+     *      (`skewTransform` should be enabled)
+     * @param {number[]}[options.skewSnaps] - the skew snap angles, in radians.
+     * @param {number}[options.skewSnapTolerance] - the skew snap tolerance angle.
+     * @param {boolean}[options.translateEnabled=true] - whether dragging the transformer should move the group
      * @param {boolean}[options.transientGroupTilt=true] - whether the transformer should reset the wireframe's rotation
      *      after a rotator handle is "defocused".
      * @param {object}[options.wireframeStyle] - styling options for the wireframe.
@@ -200,14 +298,27 @@ export class Transformer extends Container
      */
     constructor(options: Partial<ITransformerOptions> = {})
     {
+    /* eslint-enable max-len */
         super();
 
         this.interactive = true;
         this.cursor = 'move';
 
         this.group = options.group || [];
+        this.centeredScaling = !!options.centeredScaling;
+        this.rotationSnaps = options.rotationSnaps || DEFAULT_ROTATION_SNAPS;
+        this.rotationSnapTolerance = options.rotationSnapTolerance !== undefined
+            ? options.rotationSnapTolerance
+            : DEFAULT_ROTATION_SNAP_TOLERANCE;
         this.skewRadius = options.skewRadius || 64;
-        this._skewTransform = options.skewTransform !== undefined ? options.skewTransform : false;
+        this.skewSnaps = options.skewSnaps || DEFAULT_SKEW_SNAPS;
+        this.skewSnapTolerance = options.skewSnapTolerance !== undefined
+            ? options.skewSnapTolerance
+            : DEFAULT_SKEW_SNAP_TOLERANCE;
+        this._rotateEnabled = options.rotateEnabled !== false;
+        this._scaleEnabled = options.scaleEnabled !== false;
+        this._skewEnabled = options.skewEnabled === true;
+        this.translateEnabled = options.translateEnabled !== false;
         this.transientGroupTilt = options.transientGroupTilt !== undefined ? options.transientGroupTilt : true;
 
         /**
@@ -239,23 +350,30 @@ export class Transformer extends Container
         const rotatorHandles = {
             rotator: this.addChild(
                 new HandleConstructor(
+                    'rotator',
                     handleStyle,
-                    (origin: Point, delta: Point) => { this.rotateGroup('rotator', origin, delta); },
+                    (pointerPosition) =>
+                    {
+                        // The origin is the rotator handle's position, yes.
+                        this.rotateGroup('rotator', pointerPosition);
+                    },
                     this.commitGroup,
                 )),
         };
-        const scaleHandles = SCALE_HANDLES.reduce((scaleHandles, handleKey) =>
+        const scaleHandles = SCALE_HANDLES.reduce((scaleHandles, handleKey: ScaleHandle) =>
         {
-            const handleDelta = (_: Point, delta: Point): void =>
+            const handleDelta = (pointerPosition: Point): void =>
             {
-                this.scaleGroup(handleKey as ScaleHandle, delta);
+                this.scaleGroup(handleKey as ScaleHandle, pointerPosition);
             };
 
             scaleHandles[handleKey] = new HandleConstructor(
+                handleKey,
                 handleStyle,
                 handleDelta,
                 this.commitGroup,
                 HANDLE_TO_CURSOR[handleKey]);
+            scaleHandles[handleKey].visible = this._scaleEnabled;
             this.addChild(scaleHandles[handleKey]);
 
             return scaleHandles;
@@ -263,15 +381,17 @@ export class Transformer extends Container
         const skewHandles = {
             skewHorizontal: this.addChild(
                 new HandleConstructor(
+                    'skewHorizontal',
                     handleStyle,
-                    (origin: Point, delta: Point) => { this.skewGroup('skewHorizontal', origin, delta); },
+                    (pointerPosition: Point) => { this.skewGroup('skewHorizontal', pointerPosition); },
                     this.commitGroup,
                     'pointer',
                 )),
             skewVertical: this.addChild(
                 new HandleConstructor(
+                    'skewVertical',
                     handleStyle,
-                    (origin: Point, delta: Point) => { this.skewGroup('skewVertical', origin, delta); },
+                    (pointerPosition: Point) => { this.skewGroup('skewVertical', pointerPosition); },
                     this.commitGroup,
                     'pointer',
                 )),
@@ -279,8 +399,8 @@ export class Transformer extends Container
 
         this.handles = Object.assign({}, rotatorHandles, scaleHandles, skewHandles) as { [H in Handle]: TransformerHandle };
         this.handles.middleCenter.visible = false;
-        this.handles.skewHorizontal.visible = this._skewTransform;
-        this.handles.skewVertical.visible = this._skewTransform;
+        this.handles.skewHorizontal.visible = this._skewEnabled;
+        this.handles.skewVertical.visible = this._skewEnabled;
 
         // Update groupBounds immediately. This is because mouse events can propagate before the next animation frame.
         this.groupBounds = new OrientedBounds();
@@ -294,6 +414,43 @@ export class Transformer extends Container
         this.on('pointermove', this.onPointerMove, this);
         this.on('pointerup', this.onPointerUp, this);
         this.on('pointerupoutside', this.onPointerUp, this);
+    }
+
+    /**
+     * The list of enabled handles, if applied manually.
+     */
+    get enabledHandles(): Array<Handle>
+    {
+        return this._enabledHandles;
+    }
+    set enabledHandles(value: Array<Handle>)
+    {
+        if (!this._enabledHandles && !value)
+        {
+            return;
+        }
+
+        this._enabledHandles = value;
+
+        HANDLES.forEach((handleKey) => { this.handles[handleKey].visible = false; });
+
+        if (value)
+        {
+            value.forEach((handleKey) => { this.handles[handleKey].visible = true; });
+        }
+        else
+        {
+            this.handles.rotator.visible = this._rotateEnabled;
+            this.handles.skewHorizontal.visible = this._skewEnabled;
+            this.handles.skewVertical.visible = this._skewEnabled;
+
+            SCALE_HANDLES.forEach((handleKey) =>
+            {
+                if (handleKey === 'middleCenter') return;
+
+                this.handles[handleKey].visible = this._scaleEnabled;
+            });
+        }
     }
 
     /**
@@ -316,17 +473,74 @@ export class Transformer extends Container
     }
 
     /**
-     * This will enable the skewing handles.
+     * This will enable the rotate handles.
      */
-    get skewTransform(): boolean
+    get rotateEnabled(): boolean
     {
-        return this._skewTransform;
+        return this._rotateEnabled;
     }
-    set skewTransform(value: boolean)
+    set rotateEnabled(value: boolean)
     {
-        if (this._skewTransform !== value)
+        if (!this._rotateEnabled !== value)
         {
-            this._skewTransform = value;
+            this._rotateEnabled = value;
+
+            if (this._enabledHandles)
+            {
+                return;
+            }
+
+            this.handles.rotator.visible = value;
+        }
+    }
+
+    /**
+     * This will enable the scale handles.
+     */
+    get scaleEnabled(): boolean
+    {
+        return this._scaleEnabled;
+    }
+    set scaleEnabled(value: boolean)
+    {
+        if (!this._scaleEnabled !== value)
+        {
+            this._scaleEnabled = value;
+
+            if (this._enabledHandles)
+            {
+                return;
+            }
+
+            SCALE_HANDLES.forEach((handleKey) =>
+            {
+                if (handleKey === 'middleCenter')
+                {
+                    return;
+                }
+
+                this.handles[handleKey].visible = value;
+            });
+        }
+    }
+
+    /**
+     * This will enable the skew handles.
+     */
+    get skewEnabled(): boolean
+    {
+        return this._skewEnabled;
+    }
+    set skewEnabled(value: boolean)
+    {
+        if (this._skewEnabled !== value)
+        {
+            this._skewEnabled = value;
+
+            if (this._enabledHandles)
+            {
+                return;
+            }
 
             this.handles.skewHorizontal.visible = value;
             this.handles.skewVertical.visible = value;
@@ -363,16 +577,16 @@ export class Transformer extends Container
     };
 
     /**
-     * This will rotate the group such that the {@code origin} point will move by {@code delta}.
+     * This will rotate the group such that the handle will come to {@code pointerPosition}.
      *
      * @param handle - the rotator handle was dragged
-     * @param origin - the original pointer position (before dragging)
-     * @param delta - the difference in pointer position (after dragging)
+     * @param pointerPosition - the new pointer position (after dragging)
      */
-    rotateGroup = (_: RotatorHandle, origin: Point, delta: Point): void =>
+    rotateGroup = (handle: RotateHandle, pointerPosition: Point): void =>
     {
         const bounds = this.groupBounds;
-        const destination = tempPoint.set(origin.x + delta.x, origin.y + delta.y);
+        const origin = this.handles[handle].position;
+        const destination = pointerPosition;
 
         // Center of rotation - does not change in transformation
         const rOrigin = bounds.center;
@@ -384,7 +598,13 @@ export class Transformer extends Container
         const dstAngle = Math.atan2(destination.y - rOrigin.y, destination.x - rOrigin.x);
 
         // The angle by which bounds should be rotated
-        const deltaAngle = dstAngle - orgAngle;
+        let deltaAngle = dstAngle - orgAngle;
+
+        // Snap
+        let newRotation = this.groupBounds.rotation + deltaAngle;
+
+        newRotation = this.snapAngle(newRotation, this.rotationSnapTolerance, this.rotationSnaps);
+        deltaAngle = newRotation - this.groupBounds.rotation;
 
         // Rotation matrix
         const matrix = tempMatrix
@@ -394,7 +614,7 @@ export class Transformer extends Container
             .translate(rOrigin.x, rOrigin.y);
 
         this.prependTransform(matrix, true);
-        this.updateGroupBounds(bounds.rotation + deltaAngle);
+        this.updateGroupBounds(newRotation);
 
         // Rotation moves both skew.x & skew.y
         this._skewX += deltaAngle;
@@ -402,12 +622,12 @@ export class Transformer extends Container
     };
 
     /**
-     * This will scale the group such that the handle will move by {@code delta}.
+     * This will scale the group such that the scale handle will come under {@code pointerPosition}.
      *
      * @param handle - the scaling handle that was dragged
-     * @param delta - the change in pointer position since the last event
+     * @param pointerPosition - the new pointer position
      */
-    scaleGroup = (handle: ScaleHandle, delta: Point): void =>
+    scaleGroup = (handle: ScaleHandle, pointerPosition: Point): void =>
     {
         // Directions along x,y axes that will produce positive scaling
         const xDir = SCALE_COMPONENTS[handle].x;
@@ -418,8 +638,8 @@ export class Transformer extends Container
         const innerBounds = bounds.innerBounds;
 
         // Delta vector in world frame
-        const dx = delta.x;
-        const dy = delta.y;
+        const dx = pointerPosition.x - this.handles[handle].x;
+        const dy = pointerPosition.y - this.handles[handle].y;
 
         // Unit vector along u-axis (horizontal axis after rotation) of bounds
         const uxvec = (bounds.topRight.x - bounds.topLeft.x) / innerBounds.width;
@@ -442,7 +662,8 @@ export class Transformer extends Container
         if (xDir !== 0)
         {
             // Origin of horizontal scaling - a point which does not move after applying the transform
-            const hsOrigin = xDir === 1 ? bounds.topLeft : bounds.topRight;
+            // eslint-disable-next-line no-nested-ternary
+            const hsOrigin = !this.centeredScaling ? (xDir === 1 ? bounds.topLeft : bounds.topRight) : bounds.center;
 
             matrix.translate(-hsOrigin.x, -hsOrigin.y)
                 .rotate(-angle)
@@ -454,7 +675,8 @@ export class Transformer extends Container
         if (yDir !== 0)
         {
             // Origin of vertical scaling - a point which does not move after applying the transform
-            const vsOrigin = yDir === 1 ? bounds.topLeft : bounds.bottomLeft;
+            // eslint-disable-next-line no-nested-ternary
+            const vsOrigin = !this.centeredScaling ? (yDir === 1 ? bounds.topLeft : bounds.bottomLeft) : bounds.center;
 
             matrix.translate(-vsOrigin.x, -vsOrigin.y)
                 .rotate(-angle)
@@ -467,17 +689,17 @@ export class Transformer extends Container
     };
 
     /**
-     * This will skew the group such that the skew handle would move to the destination {@code origin + delta}.
+     * This will skew the group such that the skew handle would move to the {@code pointerPosition}.
      *
      * @param handle
-     * @param delta
+     * @param pointerPosition
      */
-    skewGroup = (handle: SkewHandle, origin: Point, delta: Point): void =>
+    skewGroup = (handle: SkewHandle, pointerPosition: Point): void =>
     {
         const bounds = this.groupBounds;
 
         // Destination point
-        const dst = tempPoint.set(origin.x + delta.x, origin.y + delta.y);
+        const dst = tempPoint.copyFrom(pointerPosition);
 
         // Center of skew (same as center of rotation!)
         const sOrigin = bounds.center;
@@ -493,6 +715,7 @@ export class Transformer extends Container
 
             // Calculate new skew
             this._skewX = Math.atan2(dst.y - sOrigin.y, dst.x - sOrigin.x);
+            this._skewX = this.snapAngle(this._skewX, this.skewSnapTolerance, this.skewSnaps);
 
             // Skew by new skew.x
             matrix.prepend(createVerticalSkew(-oldSkew));
@@ -506,12 +729,13 @@ export class Transformer extends Container
             const newSkew = Math.atan2(dst.y - sOrigin.y, dst.x - sOrigin.x) - (Math.PI / 2);
 
             this._skewY = newSkew;
+            this._skewY = this.snapAngle(this._skewY, this.skewSnapTolerance, this.skewSnaps);
 
             // HINT: skewY is applied negatively b/c y-axis is flipped
             matrix.prepend(createHorizontalSkew(oldSkew));
             matrix.prepend(createHorizontalSkew(-this._skewY));
 
-            rotation -= newSkew - oldSkew;
+            rotation -= this._skewY - oldSkew;
         }
 
         matrix.translate(sOrigin.x, sOrigin.y);
@@ -600,41 +824,47 @@ export class Transformer extends Container
 
         const { topLeft, topRight, bottomLeft, bottomRight, center } = groupBounds;
 
-        // Scale handles
-        handles.topLeft.position.copyFrom(topLeft);
-        handles.topCenter.position.set((topLeft.x + topRight.x) / 2, (topLeft.y + topRight.y) / 2);
-        handles.topRight.position.copyFrom(topRight);
-        handles.middleLeft.position.set((topLeft.x + bottomLeft.x) / 2, (topLeft.y + bottomLeft.y) / 2);
-        handles.middleCenter.position.set((topLeft.x + bottomRight.x) / 2, (topLeft.y + bottomRight.y) / 2);
-        handles.middleRight.position.set((topRight.x + bottomRight.x) / 2, (topRight.y + bottomRight.y) / 2);
-        handles.bottomLeft.position.copyFrom(bottomLeft);
-        handles.bottomCenter.position.set((bottomLeft.x + bottomRight.x) / 2, (bottomLeft.y + bottomRight.y) / 2);
-        handles.bottomRight.position.copyFrom(bottomRight);
-
-        // Skew handles
-        handles.skewHorizontal.position.set(
-            center.x + (Math.cos(this._skewX) * this.skewRadius),
-            center.y + (Math.sin(this._skewX) * this.skewRadius));
-        // HINT: Slope = skew.y + Math.PI / 2
-        handles.skewVertical.position.set(
-            center.x + (-Math.sin(this._skewY) * this.skewRadius),
-            center.y + (Math.cos(this._skewY) * this.skewRadius));
-
-        groupBounds.innerBounds.pad(32);
-
-        handles.rotator.position.x = (groupBounds.topLeft.x + groupBounds.topRight.x) / 2;
-        handles.rotator.position.y = (groupBounds.topLeft.y + groupBounds.topRight.y) / 2;
-
-        groupBounds.innerBounds.pad(-32);
-
-        const bx = (groupBounds.topLeft.x + groupBounds.topRight.x) / 2;
-        const by = (groupBounds.topLeft.y + groupBounds.topRight.y) / 2;
-
-        this.wireframe.moveTo(bx, by)
-            .lineTo(handles.rotator.position.x, handles.rotator.position.y);
-
-        if (this._skewTransform)
+        if (this._rotateEnabled)
         {
+            groupBounds.innerBounds.pad(32);
+
+            handles.rotator.position.x = (groupBounds.topLeft.x + groupBounds.topRight.x) / 2;
+            handles.rotator.position.y = (groupBounds.topLeft.y + groupBounds.topRight.y) / 2;
+
+            groupBounds.innerBounds.pad(-32);
+
+            const bx = (groupBounds.topLeft.x + groupBounds.topRight.x) / 2;
+            const by = (groupBounds.topLeft.y + groupBounds.topRight.y) / 2;
+
+            this.wireframe.moveTo(bx, by)
+                .lineTo(handles.rotator.position.x, handles.rotator.position.y);
+        }
+
+        if (this._scaleEnabled)
+        {
+            // Scale handles
+            handles.topLeft.position.copyFrom(topLeft);
+            handles.topCenter.position.set((topLeft.x + topRight.x) / 2, (topLeft.y + topRight.y) / 2);
+            handles.topRight.position.copyFrom(topRight);
+            handles.middleLeft.position.set((topLeft.x + bottomLeft.x) / 2, (topLeft.y + bottomLeft.y) / 2);
+            handles.middleCenter.position.set((topLeft.x + bottomRight.x) / 2, (topLeft.y + bottomRight.y) / 2);
+            handles.middleRight.position.set((topRight.x + bottomRight.x) / 2, (topRight.y + bottomRight.y) / 2);
+            handles.bottomLeft.position.copyFrom(bottomLeft);
+            handles.bottomCenter.position.set((bottomLeft.x + bottomRight.x) / 2, (bottomLeft.y + bottomRight.y) / 2);
+            handles.bottomRight.position.copyFrom(bottomRight);
+        }
+
+        if (this._skewEnabled)
+        {
+            // Skew handles
+            handles.skewHorizontal.position.set(
+                center.x + (Math.cos(this._skewX) * this.skewRadius),
+                center.y + (Math.sin(this._skewX) * this.skewRadius));
+            // HINT: Slope = skew.y + Math.PI / 2
+            handles.skewVertical.position.set(
+                center.x + (-Math.sin(this._skewY) * this.skewRadius),
+                center.y + (Math.cos(this._skewY) * this.skewRadius));
+
             this.wireframe
                 .beginFill(this.wireframeStyle.color)
                 .drawCircle(center.x, center.y, this.wireframeStyle.thickness * 2)
@@ -699,7 +929,7 @@ export class Transformer extends Container
         const cy = currentPointerPosition.y;
 
         // Translate group by difference
-        if (this._pointerDragging)
+        if (this._pointerDragging && this.translateEnabled)
         {
             const delta = currentPointerPosition;
 
@@ -758,6 +988,34 @@ export class Transformer extends Container
     private updateGroupBounds(rotation: number = this.groupBounds.rotation): void
     {
         Transformer.calculateGroupOrientedBounds(this.group, rotation, this.groupBounds);
+    }
+
+    /**
+     * Snaps the given {@code angle} to one of the snapping angles, if possible.
+     *
+     * @param angle - the input angle
+     * @param snapTolerance - the maximum difference b/w the given angle & a snapping angle
+     * @param snaps - the snapping angles
+     * @returns the snapped angle
+     */
+    private snapAngle(angle: number, snapTolerance: number, snaps?: number[]): number
+    {
+        angle = angle % (Math.PI * 2);
+
+        if (!snaps || snaps.length === 1 || !snapTolerance)
+        {
+            return angle;
+        }
+
+        for (let i = 0, j = snaps.length; i < j; i++)
+        {
+            if (Math.abs(angle - snaps[i]) <= snapTolerance)
+            {
+                return snaps[i];
+            }
+        }
+
+        return angle;
     }
 
     /**

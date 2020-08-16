@@ -1,15 +1,21 @@
 import { DisplayObject } from '@pixi/display';
 import {
-    Transformer as TransformerImpl,
     ITransformerHandleStyle,
     ITransformerStyle,
 } from '@pixi-essentials/transformer';
 import React from 'react';
 
 declare type TransformerProps = {
+    centeredScaling?: boolean;
     group?: DisplayObject[];
-    handleConstructor?: typeof TransformerImpl;
+    handleConstructor?: any;
     handleStyle?: Partial<ITransformerHandleStyle>;
+    rotateEnabled?: boolean;
+    scaleEnabled?: boolean;
+    skewEnabled?: boolean;
+    skewRadius?: number;
+    translateEnabled?: boolean;
+    transientGroupTilt?: boolean;
     wireframeStyle?: Partial<ITransformerStyle>;
 };
 

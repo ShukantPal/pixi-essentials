@@ -11,11 +11,16 @@ const EMPTY: any = {};
  * @internal
  */
 export type TransformerProps = {
+    centeredScaling?: boolean;
+    enabledHandles?: Array<string>;
     group?: DisplayObject[];
     handleConstructor?: typeof TransformerHandleImpl;
     handleStyle?: Partial<ITransformerHandleStyle>;
+    rotateEnabled?: boolean;
+    scaleEnabled?: boolean;
+    skewEnabled?: boolean;
     skewRadius?: number;
-    skewTransform?: boolean;
+    translateEnabled?: boolean;
     transientGroupTilt?: boolean;
     wireframeStyle?: Partial<ITransformerStyle>;
 };
@@ -26,12 +31,18 @@ export type TransformerProps = {
  * @see https://github.com/SukantPal/pixi-essentials/tree/master/packages/transformer
  */
 export const Transformer: React.FC<TransformerProps> = PixiComponent<TransformerProps, TransformerImpl>('Transformer', {
-    create: (props: TransformerProps): TransformerImpl => new TransformerImpl(props),
+    create: (props: TransformerProps): TransformerImpl => new TransformerImpl(props as any),
     applyProps(instance: TransformerImpl, oldProps: TransformerProps, newProps: TransformerProps): void
     {
         instance.group = newProps.group;
+
+        instance.centeredScaling = newProps.centeredScaling;
+        instance.enabledHandles = newProps.enabledHandles as any;
         instance.skewRadius = newProps.skewRadius || instance.skewRadius;
-        instance.skewTransform = newProps.skewTransform;
+        instance.rotateEnabled = newProps.rotateEnabled !== false;
+        instance.scaleEnabled = newProps.scaleEnabled !== false;
+        instance.skewEnabled = newProps.skewEnabled === true;
+        instance.translateEnabled = newProps.translateEnabled !== false;
         instance.transientGroupTilt = newProps.transientGroupTilt;
 
         if (oldProps.handleConstructor !== newProps.handleConstructor)
