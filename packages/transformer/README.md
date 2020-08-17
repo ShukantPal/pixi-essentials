@@ -8,6 +8,11 @@ This package contains `Transformer`, which provides an interactive interface for
 npm install @pixi-essentials/transformer
 ```
 
+## Pens :pen:
+
++ Standard usage: https://codepen.io/sukantpal/pen/dyMMmZm
++ Usage with @pixi-essentials/react-bindings: https://codepen.io/sukantpal/pen/ZEWWoWX
+
 ## Usage :page_facing_up:
 
 ```js
