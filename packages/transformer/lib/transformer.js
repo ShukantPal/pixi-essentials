@@ -2,7 +2,7 @@
  
 /*!
  * @pixi-essentials/transformer - v2.0.2
- * Compiled Mon, 17 Aug 2020 18:38:22 UTC
+ * Compiled Mon, 17 Aug 2020 20:19:04 UTC
  *
  * @pixi-essentials/transformer is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -32,10 +32,7 @@ const DEFAULT_HANDLE_STYLE = {
     outlineThickness: 1,
     radius: 8,
     shape: 'tooth',
-    scaleInvariant: true,
 };
-// Preallocated objects
-const tempPoint = new math.Point();
 /**
  * The transfomer handle base implementation.
  */
@@ -58,16 +55,6 @@ class TransformerHandle extends graphics.Graphics {
          * This flags whether this handle should be redrawn in the next frame due to style changes.
          */
         this._dirty = true;
-        /**
-         * This tracks attributes of the world transform on each render. It is used to check whether redrawing is needed
-         * to maintain scale invariancy (if {@code style.scaleInvariant} is enabled).
-         */
-        this._drawTransform = {
-            scale2: {
-                x: 1,
-                y: 1,
-            },
-        };
         // Pointer events
         this.interactive = true;
         this.cursor = cursor || 'move';
@@ -90,24 +77,9 @@ class TransformerHandle extends graphics.Graphics {
         this._dirty = true;
     }
     render(renderer) {
-        let dirty = this._dirty;
-        let sx = 1;
-        let sy = 1;
-        if (this.style.scaleInvariant) {
-            const worldTransform = this.worldTransform;
-            const drawTransform = this._drawTransform;
-            // Decompose world transform scale (squared)
-            sx = (Math.pow(worldTransform.a, 2)) + (Math.pow(worldTransform.b, 2));
-            sy = (Math.pow(worldTransform.c, 2)) + (Math.pow(worldTransform.d, 2));
-            dirty = dirty
-                || sx !== drawTransform.scale2.x
-                || sy !== drawTransform.scale2.y;
-        }
-        if (dirty) {
+        if (this._dirty) {
             this.draw();
             this._dirty = false;
-            this._drawTransform.scale2.x = sx;
-            this._drawTransform.scale2.y = sy;
         }
         super.render(renderer);
     }
@@ -117,8 +89,7 @@ class TransformerHandle extends graphics.Graphics {
     draw() {
         const handle = this._handle;
         const style = this._style;
-        // HINT: Radius is adjusted if scale-invariancy is enabled
-        const radius = style.radius / (this._style.scaleInvariant ? Math.sqrt(this._drawTransform.scale2.x) : 1);
+        const radius = style.radius;
         this.lineStyle(style.outlineThickness, style.outlineColor)
             .beginFill(style.color);
         if (style.shape === 'square') {
@@ -334,10 +305,11 @@ function multiplyTransform(displayObject, transform, skipUpdate) {
 const tempTransform = new math.Transform();
 const tempCorners = [new math.Point(), new math.Point(), new math.Point(), new math.Point()];
 const tempMatrix$2 = new math.Matrix();
-const tempPoint$1 = new math.Point();
+const tempPoint = new math.Point();
 const tempBounds = new bounds.OrientedBounds();
 const tempRect = new math.Rectangle();
 const tempHull = [new math.Point(), new math.Point(), new math.Point(), new math.Point()];
+const tempPointer = new math.Point();
 // Pool for allocating an arbitrary number of points
 const pointPool = objectPool.ObjectPoolFactory.build(math.Point);
 /**
@@ -451,6 +423,12 @@ const DEFAULT_WIREFRAME_STYLE = {
  * {@code Transformer} provides an interactive interface for editing the transforms in a group. It supports translating,
  * scaling, rotating, and skewing display-objects both through interaction and code.
  *
+ * A transformer operates in world-space, and it is best to not to position, scale, rotate, or skew one. If you do so, the
+ * wireframe itself will not distort (i.e. will adapt _against_ your transforms). However, the wireframe may become
+ * thinner/thicker and the handles will scale & rotate. For example, setting `transformer.scale.set(2)` will make the handles
+ * twice as big, but will not scale the wireframe (assuming the display-object group itself has not been
+ * scaled up).
+ *
  * NOTE: The transformer needs to capture all interaction events that would otherwise go to the display-objects in the
  * group. Hence, it must be placed after them in the scene graph.
  *
@@ -507,7 +485,7 @@ class Transformer extends display.Container {
         /* eslint-enable max-len */
         super();
         /**
-         * This will translate the group by {@code delta}.
+         * This will translate the group by {@code delta} in their world-space.
          *
          * NOTE: There is no handle that provides translation. The user drags the transformer directly.
          *
@@ -524,18 +502,19 @@ class Transformer extends display.Container {
          * This will rotate the group such that the handle will come to {@code pointerPosition}.
          *
          * @param handle - the rotator handle was dragged
-         * @param pointerPosition - the new pointer position (after dragging)
+         * @param pointerPosition - the new pointer position, in screen space
          */
         this.rotateGroup = (handle, pointerPosition) => {
             const bounds = this.groupBounds;
-            const origin = this.worldTransform.apply(this.handles[handle].position, tempPoint$1);
-            const destination = pointerPosition;
+            const handlePosition = this.worldTransform.apply(this.handles[handle].position, tempPoint);
+            this.projectionTransform.applyInverse(handlePosition, handlePosition);
+            pointerPosition = this.projectionTransform.applyInverse(pointerPosition, tempPointer);
             // Center of rotation - does not change in transformation
             const rOrigin = bounds.center;
-            // Original angle subtended by pointer
-            const orgAngle = Math.atan2(origin.y - rOrigin.y, origin.x - rOrigin.x);
-            // Final angle subtended by pointer
-            const dstAngle = Math.atan2(destination.y - rOrigin.y, destination.x - rOrigin.x);
+            // Original tilt
+            const orgAngle = Math.atan2(handlePosition.y - rOrigin.y, handlePosition.x - rOrigin.x);
+            // Final tilt
+            const dstAngle = Math.atan2(pointerPosition.y - rOrigin.y, pointerPosition.x - rOrigin.x);
             // The angle by which bounds should be rotated
             let deltaAngle = dstAngle - orgAngle;
             // Snap
@@ -558,7 +537,7 @@ class Transformer extends display.Container {
          * This will scale the group such that the scale handle will come under {@code pointerPosition}.
          *
          * @param handle - the scaling handle that was dragged
-         * @param pointerPosition - the new pointer position
+         * @param pointerPosition - the new pointer position, in screen space
          */
         this.scaleGroup = (handle, pointerPosition) => {
             // Directions along x,y axes that will produce positive scaling
@@ -567,8 +546,10 @@ class Transformer extends display.Container {
             const bounds = this.groupBounds;
             const angle = bounds.rotation;
             const innerBounds = bounds.innerBounds;
-            // Position of handle in world-space
-            const handlePosition = this.worldTransform.apply(this.handles[handle].position, tempPoint$1);
+            // Position of handle in the group's world-space
+            const handlePosition = this.worldTransform.apply(this.handles[handle].position, tempPoint);
+            this.projectionTransform.applyInverse(handlePosition, handlePosition);
+            pointerPosition = this.projectionTransform.applyInverse(pointerPosition, tempPointer);
             // Delta vector in world frame
             const dx = pointerPosition.x - handlePosition.x;
             const dy = pointerPosition.y - handlePosition.y;
@@ -611,12 +592,13 @@ class Transformer extends display.Container {
          * This will skew the group such that the skew handle would move to the {@code pointerPosition}.
          *
          * @param handle
-         * @param pointerPosition
+         * @param pointerPosition - pointer position, in screen space
          */
         this.skewGroup = (handle, pointerPosition) => {
             const bounds = this.groupBounds;
             // Destination point
-            const dst = tempPoint$1.copyFrom(pointerPosition);
+            const dst = tempPoint.copyFrom(pointerPosition);
+            this.projectionTransform.applyInverse(dst, dst);
             // Center of skew (same as center of rotation!)
             const sOrigin = bounds.center;
             // Skew matrix
@@ -659,21 +641,62 @@ class Transformer extends display.Container {
         };
         this.interactive = true;
         this.cursor = 'move';
+        /**
+         * The group of display-objects under transformation.
+         */
         this.group = options.group || [];
+        /**
+         * This will prevent the wireframe's center from shifting on scaling.
+         */
         this.centeredScaling = !!options.centeredScaling;
+        /**
+         * This is used when the display-object group are rendered through a projection transformation (i.e. are disconnected
+         * from the transformer in the scene graph). The transformer project itself into their frame-of-reference using this
+         * transform.
+         *
+         * Specifically, the projection-transform converts points from the group's world space to the transformer's world
+         * space. If you are not applying a projection on the transformer itself, this means it is the group's
+         * world-to-screen transformation.
+         */
+        this.projectionTransform = new math.Matrix();
+        /**
+         * The angles at which rotation should snap.
+         */
         this.rotationSnaps = options.rotationSnaps || DEFAULT_ROTATION_SNAPS;
+        /**
+         * The maximum angular difference for snapping rotation.
+         */
         this.rotationSnapTolerance = options.rotationSnapTolerance !== undefined
             ? options.rotationSnapTolerance
             : DEFAULT_ROTATION_SNAP_TOLERANCE;
+        /**
+         * The distance of skewing handles from the group's center.
+         */
         this.skewRadius = options.skewRadius || 64;
+        /**
+         * The angles at which both the horizontal & vertical skew handles should snap.
+         */
         this.skewSnaps = options.skewSnaps || DEFAULT_SKEW_SNAPS;
+        /**
+         * The maximum angular difference for snapping skew handles.
+         */
         this.skewSnapTolerance = options.skewSnapTolerance !== undefined
             ? options.skewSnapTolerance
             : DEFAULT_SKEW_SNAP_TOLERANCE;
         this._rotateEnabled = options.rotateEnabled !== false;
         this._scaleEnabled = options.scaleEnabled !== false;
         this._skewEnabled = options.skewEnabled === true;
+        /**
+         * This will enable translation on dragging the transformer. By default, it is turned on.
+         *
+         * @default true
+         */
         this.translateEnabled = options.translateEnabled !== false;
+        /**
+         * This will reset the rotation angle after the user finishes rotating a group with more than one display-object.
+         *
+         * @default true
+         */
         this.transientGroupTilt = options.transientGroupTilt !== undefined ? options.transientGroupTilt : true;
         /**
          * Draws the bounding boxes
@@ -714,6 +737,9 @@ class Transformer extends display.Container {
             skewHorizontal: this.addChild(new HandleConstructor('skewHorizontal', handleStyle, (pointerPosition) => { this.skewGroup('skewHorizontal', pointerPosition); }, this.commitGroup, 'pointer')),
             skewVertical: this.addChild(new HandleConstructor('skewVertical', handleStyle, (pointerPosition) => { this.skewGroup('skewVertical', pointerPosition); }, this.commitGroup, 'pointer')),
         };
+        /**
+         * Object mapping handle-names to the handle display-objects.
+         */
         this.handles = Object.assign({}, rotatorHandles, scaleHandles, skewHandles);
         this.handles.middleCenter.visible = false;
         this.handles.skewHorizontal.visible = this._skewEnabled;
@@ -867,11 +893,10 @@ class Transformer extends display.Container {
      * @param bounds
      */
     drawBounds(bounds) {
-        const worldTransform = this.worldTransform;
         const hull = tempHull;
         // Bring hull into local-space
         for (let i = 0; i < 4; i++) {
-            worldTransform.applyInverse(bounds.hull[i], hull[i]);
+            this.toTransformerLocal(bounds.hull[i], hull[i]);
         }
         // Fill polygon with ultra-low alpha to capture pointer events.
         this.wireframe
@@ -886,30 +911,29 @@ class Transformer extends display.Container {
      */
     drawHandles(groupBounds) {
         const handles = this.handles;
-        const worldTransform = this.worldTransform;
         const { topLeft: worldTopLeft, topRight: worldTopRight, bottomLeft: worldBottomLeft, bottomRight: worldBottomRight, center: worldCenter, } = groupBounds;
         const [topLeft, topRight, bottomLeft, bottomRight] = tempHull;
-        const center = tempPoint$1;
-        worldTransform.applyInverse(worldBottomLeft, bottomLeft);
-        worldTransform.applyInverse(worldBottomRight, bottomRight);
-        worldTransform.applyInverse(worldCenter, center);
+        const center = tempPoint;
+        this.toTransformerLocal(worldTopLeft, topLeft);
+        this.toTransformerLocal(worldTopRight, topRight);
+        this.toTransformerLocal(worldBottomLeft, bottomLeft);
+        this.toTransformerLocal(worldBottomRight, bottomRight);
+        this.toTransformerLocal(worldCenter, center);
         if (this._rotateEnabled) {
-            groupBounds.innerBounds.pad(32);
-            worldTransform.applyInverse(groupBounds.topLeft, topLeft);
-            worldTransform.applyInverse(groupBounds.topRight, topRight);
-            handles.rotator.position.x = (topLeft.x + topRight.x) / 2;
-            handles.rotator.position.y = (topLeft.y + topRight.y) / 2;
-            groupBounds.innerBounds.pad(-32);
-            worldTransform.applyInverse(groupBounds.topLeft, topLeft);
-            worldTransform.applyInverse(groupBounds.topRight, topRight);
+            // Midpoint from topLeft to topRight
             const bx = (topLeft.x + topRight.x) / 2;
             const by = (topLeft.y + topRight.y) / 2;
+            // Vector perpendicular to <bx,by>.
+            let px = -(topLeft.y - topRight.y);
+            let py = (topLeft.x - topRight.x);
+            // Normalize <px,py> to 32 units.
+            const pl = Math.sqrt((px * px) + (py * py));
+            px *= 32 / pl;
+            py *= 32 / pl;
+            handles.rotator.position.x = bx + px;
+            handles.rotator.position.y = by + py;
             this.wireframe.moveTo(bx, by)
                 .lineTo(handles.rotator.position.x, handles.rotator.position.y);
-        }
-        else {
-            worldTransform.applyInverse(worldTopLeft, topLeft);
-            worldTransform.applyInverse(worldTopRight, topRight);
         }
         if (this._scaleEnabled) {
             // Scale handles
@@ -924,12 +948,19 @@ class Transformer extends display.Container {
             handles.bottomRight.position.copyFrom(bottomRight);
         }
         if (this._skewEnabled) {
-            // Calculate skew handle positions in world-space, and then transform back into local-space.
-            handles.skewHorizontal.position.set(worldCenter.x + (Math.cos(this._skewX) * this.skewRadius), worldCenter.y + (Math.sin(this._skewX) * this.skewRadius));
+            const cx = center.x;
+            const cy = center.y;
+            // Transform center into screen space
+            this.worldTransform.apply(center, center);
+            // Calculate skew handle positions in screen space, and then transform back into local-space. This ensures that
+            // the handles appear at skewRadius distance, regardless of the projection.
+            handles.skewHorizontal.position.set(center.x + (Math.cos(this._skewX) * this.skewRadius), center.y + (Math.sin(this._skewX) * this.skewRadius));
             handles.skewVertical.position.set(// HINT: Slope = skew.y + Math.PI / 2
-            worldCenter.x + (-Math.sin(this._skewY) * this.skewRadius), worldCenter.y + (Math.cos(this._skewY) * this.skewRadius));
-            worldTransform.applyInverse(handles.skewHorizontal.position, handles.skewHorizontal.position);
-            worldTransform.applyInverse(handles.skewVertical.position, handles.skewVertical.position);
+            center.x + (-Math.sin(this._skewY) * this.skewRadius), center.y + (Math.cos(this._skewY) * this.skewRadius));
+            this.worldTransform.applyInverse(handles.skewHorizontal.position, handles.skewHorizontal.position);
+            this.worldTransform.applyInverse(handles.skewVertical.position, handles.skewVertical.position);
+            // Restore center to local-space
+            center.set(cx, cy);
             this.wireframe
                 .beginFill(this.wireframeStyle.color)
                 .drawCircle(center.x, center.y, this.wireframeStyle.thickness * 2)
@@ -974,15 +1005,21 @@ class Transformer extends display.Container {
             return;
         }
         const lastPointerPosition = this._pointerPosition;
-        const currentPointerPosition = tempPoint$1.copyFrom(e.data.global);
+        const currentPointerPosition = tempPoint.copyFrom(e.data.global);
         const cx = currentPointerPosition.x;
         const cy = currentPointerPosition.y;
         // Translate group by difference
         if (this._pointerDragging && this.translateEnabled) {
-            const delta = currentPointerPosition;
-            delta.x -= lastPointerPosition.x;
-            delta.y -= lastPointerPosition.y;
-            this.translateGroup(delta);
+            const [worldOrigin, worldDestination, worldDelta] = tempHull;
+            // HINT: The pointer has moved from lastPointerPosition to currentPointerPosition in the transformer's
+            // world space. However, we want to translate the display-object's in their world space; to do this,
+            // we project (0,0) and the delta into their world-space, and take the difference.
+            worldOrigin.set(0, 0);
+            worldDestination.set(currentPointerPosition.x - lastPointerPosition.x, currentPointerPosition.y - lastPointerPosition.y);
+            this.projectionTransform.applyInverse(worldOrigin, worldOrigin);
+            this.projectionTransform.applyInverse(worldDestination, worldDestination);
+            worldDelta.set(worldDestination.x - worldOrigin.x, worldDestination.y - worldOrigin.y);
+            this.translateGroup(worldDelta);
         }
         this._pointerPosition.x = cx;
         this._pointerPosition.y = cy;
@@ -1044,6 +1081,19 @@ class Transformer extends display.Container {
         return angle;
     }
     /**
+     * Transforms {@code input} from the group's world space into the transformer's local space, and puts the result
+     * into {@code output}.
+     *
+     * @param input
+     * @param output
+     * @returns the output
+     */
+    toTransformerLocal(input, output) {
+        this.projectionTransform.apply(input, output);
+        this.worldTransform.applyInverse(output, output);
+        return output;
+    }
+    /**
      * Calculates the positions of the four corners of the display-object. The quadrilateral formed by
      * these points will be the tightest fit around it.
      *
@@ -1051,6 +1101,7 @@ class Transformer extends display.Container {
      * @param transform - The transform applied on the display-object. By default, this is its world-transform
      * @param corners - Optional array of four points to put the result into
      * @param index - Optional index into "corners"
+     * @returns an array of four points holding the positions of the corners
      */
     static calculateTransformedCorners(displayObject, transform = displayObject.worldTransform, corners, index = 0) {
         const localBounds = displayObject.getLocalBounds();
@@ -1153,8 +1204,8 @@ class Transformer extends display.Container {
         bounds$1.innerBounds.width = maxX - minX;
         bounds$1.innerBounds.height = maxY - minY;
         bounds$1.rotation = rotation;
-        matrix.applyInverse(bounds$1.center, tempPoint$1);
-        bounds$1.center.copyFrom(tempPoint$1);
+        matrix.applyInverse(bounds$1.center, tempPoint);
+        bounds$1.center.copyFrom(tempPoint);
         return bounds$1;
     }
 }

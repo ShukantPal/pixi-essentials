@@ -1,4 +1,5 @@
 import { DisplayObject } from '@pixi/display';
+import { Matrix } from '@pixi/math';
 import { PixiComponent } from '@inlet/react-pixi';
 import { Transformer as TransformerImpl, TransformerHandle as TransformerHandleImpl } from '@pixi-essentials/transformer';
 import { applyEventProps } from './utils/applyEventProps';
@@ -7,6 +8,8 @@ import type { ITransformerStyle, ITransformerHandleStyle } from '@pixi-essential
 import type React from 'react';
 
 const EMPTY: any = {};
+
+const IDENTITY_MATRIX = Matrix.IDENTITY;// Prevent reinstantation each time
 
 /**
  * @internal
@@ -17,6 +20,7 @@ export type TransformerProps = {
     group?: DisplayObject[];
     handleConstructor?: typeof TransformerHandleImpl;
     handleStyle?: Partial<ITransformerHandleStyle>;
+    projectionTransform?: Matrix;
     rotateEnabled?: boolean;
     rotationSnaps?: number[];
     rotationSnapTolerance?: number;
@@ -60,6 +64,7 @@ export const Transformer: React.FC<TransformerProps> = PixiComponent<Transformer
 
         instance.centeredScaling = newProps.centeredScaling;
         instance.enabledHandles = newProps.enabledHandles as any;
+        instance.projectionTransform.copyFrom(newProps.projectionTransform || IDENTITY_MATRIX);
         instance.skewRadius = newProps.skewRadius || instance.skewRadius;
         instance.rotateEnabled = newProps.rotateEnabled !== false;
         instance.scaleEnabled = newProps.scaleEnabled !== false;

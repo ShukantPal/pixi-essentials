@@ -2,7 +2,7 @@
  
 /*!
  * @pixi-essentials/object-pool - v0.0.5
- * Compiled Mon, 17 Aug 2020 18:38:22 UTC
+ * Compiled Mon, 17 Aug 2020 20:19:04 UTC
  *
  * @pixi-essentials/object-pool is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license

@@ -2,13 +2,14 @@
  
 /*!
  * @pixi-essentials/react-bindings - v1.0.2
- * Compiled Mon, 17 Aug 2020 18:38:22 UTC
+ * Compiled Mon, 17 Aug 2020 20:19:04 UTC
  *
  * @pixi-essentials/react-bindings is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
  * 
  * Copyright 2019-2020, Shukant K. Pal, All Rights Reserved
  */
+import { Matrix } from '@pixi/math';
 import { PixiComponent } from '@inlet/react-pixi';
 import { Transformer as Transformer$1 } from '@pixi-essentials/transformer';
 
@@ -37,6 +38,7 @@ function applyEventProps(displayObject, events, oldProps, newProps) {
 }
 
 const EMPTY = {};
+const IDENTITY_MATRIX = Matrix.IDENTITY; // Prevent reinstantation each time
 /**
  * @ignore
  */
@@ -59,6 +61,7 @@ const Transformer = PixiComponent('Transformer', {
         instance.group = newProps.group || [];
         instance.centeredScaling = newProps.centeredScaling;
         instance.enabledHandles = newProps.enabledHandles;
+        instance.projectionTransform.copyFrom(newProps.projectionTransform || IDENTITY_MATRIX);
         instance.skewRadius = newProps.skewRadius || instance.skewRadius;
         instance.rotateEnabled = newProps.rotateEnabled !== false;
         instance.scaleEnabled = newProps.scaleEnabled !== false;
