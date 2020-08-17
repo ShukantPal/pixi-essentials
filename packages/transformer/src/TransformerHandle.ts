@@ -8,14 +8,33 @@ import { InteractionEvent } from '@pixi/interaction';
 import type { Handle } from './Transformer';
 
 /**
- * @ignore
+ * @see TransformerHandle#style
  */
 export interface ITransformerHandleStyle
 {
+    /**
+     * Fill color of the handle
+     */
     color: number;
+
+    /**
+     * Outline color of the handle
+     */
     outlineColor: number;
+
+    /**
+     * Outline thickness around the handle
+     */
     outlineThickness: number;
+
+    /**
+     * Radius (or size for non-circular handles) of the handle
+     */
     radius: number;
+
+    /**
+     * {@link TransformerHandle} provides three types of handle shapes - 'circle', 'square', 'tooth'.
+     */
     shape: string;
 }
 
@@ -24,16 +43,13 @@ export interface ITransformerHandleStyle
  *
  * @ignore
  */
-const DEFAULT_HANDLE_STYLE = {
+const DEFAULT_HANDLE_STYLE: ITransformerHandleStyle = {
     color: 0xffffff,
     outlineColor: 0x000000,
     outlineThickness: 1,
     radius: 8,
     shape: 'tooth',
 };
-
-// Preallocated objects
-const tempPoint = new Point();
 
 /**
  * The transfomer handle base implementation.
@@ -74,7 +90,9 @@ export class TransformerHandle extends Graphics
         this.onHandleDelta = handler;
         this.onHandleCommit = commit;
 
-        // Redraw on next render()
+        /**
+         * This flags whether this handle should be redrawn in the next frame due to style changes.
+         */
         this._dirty = true;
 
         // Pointer events
@@ -107,6 +125,7 @@ export class TransformerHandle extends Graphics
         if (this._dirty)
         {
             this.draw();
+
             this._dirty = false;
         }
 
@@ -121,12 +140,14 @@ export class TransformerHandle extends Graphics
         const handle = this._handle;
         const style = this._style;
 
+        const radius = style.radius;
+
         this.lineStyle(style.outlineThickness, style.outlineColor)
             .beginFill(style.color);
 
         if (style.shape === 'square')
         {
-            this.drawRect(-style.radius / 2, -style.radius / 2, style.radius, style.radius);
+            this.drawRect(-radius / 2, -radius / 2, radius, radius);
         }
         else if (style.shape === 'tooth')
         {
@@ -134,51 +155,51 @@ export class TransformerHandle extends Graphics
             {
                 case 'middleLeft':
                     this.drawPolygon([
-                        -style.radius / 2, -style.radius / 2,
-                        -style.radius / 2, style.radius / 2,
-                        style.radius / 2, style.radius / 2,
-                        style.radius * 1.1, 0,
-                        style.radius / 2, -style.radius / 2,
+                        -radius / 2, -radius / 2,
+                        -radius / 2, radius / 2,
+                        radius / 2, radius / 2,
+                        radius * 1.1, 0,
+                        radius / 2, -radius / 2,
                     ]);
                     break;
                 case 'topCenter':
                     this.drawPolygon([
-                        -style.radius / 2, -style.radius / 2,
-                        style.radius / 2, -style.radius / 2,
-                        style.radius / 2, style.radius / 2,
-                        0, style.radius * 1.1,
-                        -style.radius / 2, style.radius / 2,
+                        -radius / 2, -radius / 2,
+                        radius / 2, -radius / 2,
+                        radius / 2, radius / 2,
+                        0, radius * 1.1,
+                        -radius / 2, radius / 2,
                     ]);
                     break;
                 case 'middleRight':
                     this.drawPolygon([
-                        -style.radius / 2, style.radius / 2,
-                        -style.radius * 1.1, 0,
-                        -style.radius / 2, -style.radius / 2,
-                        style.radius / 2, -style.radius / 2,
-                        style.radius / 2, style.radius / 2,
+                        -radius / 2, radius / 2,
+                        -radius * 1.1, 0,
+                        -radius / 2, -radius / 2,
+                        radius / 2, -radius / 2,
+                        radius / 2, radius / 2,
                     ]);
                     break;
                 case 'bottomCenter':
                     this.drawPolygon([
-                        0, -style.radius * 1.1,
-                        style.radius / 2, -style.radius / 2,
-                        style.radius / 2, style.radius / 2,
-                        -style.radius / 2, style.radius / 2,
-                        -style.radius / 2, -style.radius / 2,
+                        0, -radius * 1.1,
+                        radius / 2, -radius / 2,
+                        radius / 2, radius / 2,
+                        -radius / 2, radius / 2,
+                        -radius / 2, -radius / 2,
                     ]);
                     break;
                 case 'rotator':
-                    this.drawCircle(0, 0, style.radius / Math.sqrt(2));
+                    this.drawCircle(0, 0, radius / Math.sqrt(2));
                     break;
                 default:
-                    this.drawRect(-style.radius / 2, -style.radius / 2, style.radius, style.radius);
+                    this.drawRect(-radius / 2, -radius / 2, radius, radius);
                     break;
             }
         }
         else
         {
-            this.drawCircle(0, 0, style.radius);
+            this.drawCircle(0, 0, radius);
         }
 
         this.endFill();
@@ -243,7 +264,7 @@ export class TransformerHandle extends Graphics
      */
     protected onDragStart(e: InteractionEvent): void
     {
-        e.data.getLocalPosition(this.parent, this._pointerPosition);
+        this._pointerPosition.copyFrom(e.data.global);
 
         this._pointerDragging = true;
     }
@@ -255,7 +276,7 @@ export class TransformerHandle extends Graphics
      */
     protected onDrag(e: InteractionEvent): void
     {
-        const currentPosition = e.data.getLocalPosition(this.parent, tempPoint);
+        const currentPosition = e.data.global;
 
         // Callback handles the rest!
         if (this.onHandleDelta)

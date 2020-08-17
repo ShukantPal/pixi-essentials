@@ -2,7 +2,7 @@
  
 /*!
  * @pixi-essentials/transformer - v2.0.2
- * Compiled Mon, 17 Aug 2020 15:35:55 UTC
+ * Compiled Mon, 17 Aug 2020 18:38:22 UTC
  *
  * @pixi-essentials/transformer is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -32,6 +32,7 @@ const DEFAULT_HANDLE_STYLE = {
     outlineThickness: 1,
     radius: 8,
     shape: 'tooth',
+    scaleInvariant: true,
 };
 // Preallocated objects
 const tempPoint = new math.Point();
@@ -53,8 +54,20 @@ class TransformerHandle extends graphics.Graphics {
         this._style = style;
         this.onHandleDelta = handler;
         this.onHandleCommit = commit;
-        // Redraw on next render()
+        /**
+         * This flags whether this handle should be redrawn in the next frame due to style changes.
+         */
         this._dirty = true;
+        /**
+         * This tracks attributes of the world transform on each render. It is used to check whether redrawing is needed
+         * to maintain scale invariancy (if {@code style.scaleInvariant} is enabled).
+         */
+        this._drawTransform = {
+            scale2: {
+                x: 1,
+                y: 1,
+            },
+        };
         // Pointer events
         this.interactive = true;
         this.cursor = cursor || 'move';
@@ -77,9 +90,24 @@ class TransformerHandle extends graphics.Graphics {
         this._dirty = true;
     }
     render(renderer) {
-        if (this._dirty) {
+        let dirty = this._dirty;
+        let sx = 1;
+        let sy = 1;
+        if (this.style.scaleInvariant) {
+            const worldTransform = this.worldTransform;
+            const drawTransform = this._drawTransform;
+            // Decompose world transform scale (squared)
+            sx = (Math.pow(worldTransform.a, 2)) + (Math.pow(worldTransform.b, 2));
+            sy = (Math.pow(worldTransform.c, 2)) + (Math.pow(worldTransform.d, 2));
+            dirty = dirty
+                || sx !== drawTransform.scale2.x
+                || sy !== drawTransform.scale2.y;
+        }
+        if (dirty) {
             this.draw();
             this._dirty = false;
+            this._drawTransform.scale2.x = sx;
+            this._drawTransform.scale2.y = sy;
         }
         super.render(renderer);
     }
@@ -89,59 +117,61 @@ class TransformerHandle extends graphics.Graphics {
     draw() {
         const handle = this._handle;
         const style = this._style;
+        // HINT: Radius is adjusted if scale-invariancy is enabled
+        const radius = style.radius / (this._style.scaleInvariant ? Math.sqrt(this._drawTransform.scale2.x) : 1);
         this.lineStyle(style.outlineThickness, style.outlineColor)
             .beginFill(style.color);
         if (style.shape === 'square') {
-            this.drawRect(-style.radius / 2, -style.radius / 2, style.radius, style.radius);
+            this.drawRect(-radius / 2, -radius / 2, radius, radius);
         }
         else if (style.shape === 'tooth') {
             switch (handle) {
                 case 'middleLeft':
                     this.drawPolygon([
-                        -style.radius / 2, -style.radius / 2,
-                        -style.radius / 2, style.radius / 2,
-                        style.radius / 2, style.radius / 2,
-                        style.radius * 1.1, 0,
-                        style.radius / 2, -style.radius / 2,
+                        -radius / 2, -radius / 2,
+                        -radius / 2, radius / 2,
+                        radius / 2, radius / 2,
+                        radius * 1.1, 0,
+                        radius / 2, -radius / 2,
                     ]);
                     break;
                 case 'topCenter':
                     this.drawPolygon([
-                        -style.radius / 2, -style.radius / 2,
-                        style.radius / 2, -style.radius / 2,
-                        style.radius / 2, style.radius / 2,
-                        0, style.radius * 1.1,
-                        -style.radius / 2, style.radius / 2,
+                        -radius / 2, -radius / 2,
+                        radius / 2, -radius / 2,
+                        radius / 2, radius / 2,
+                        0, radius * 1.1,
+                        -radius / 2, radius / 2,
                     ]);
                     break;
                 case 'middleRight':
                     this.drawPolygon([
-                        -style.radius / 2, style.radius / 2,
-                        -style.radius * 1.1, 0,
-                        -style.radius / 2, -style.radius / 2,
-                        style.radius / 2, -style.radius / 2,
-                        style.radius / 2, style.radius / 2,
+                        -radius / 2, radius / 2,
+                        -radius * 1.1, 0,
+                        -radius / 2, -radius / 2,
+                        radius / 2, -radius / 2,
+                        radius / 2, radius / 2,
                     ]);
                     break;
                 case 'bottomCenter':
                     this.drawPolygon([
-                        0, -style.radius * 1.1,
-                        style.radius / 2, -style.radius / 2,
-                        style.radius / 2, style.radius / 2,
-                        -style.radius / 2, style.radius / 2,
-                        -style.radius / 2, -style.radius / 2,
+                        0, -radius * 1.1,
+                        radius / 2, -radius / 2,
+                        radius / 2, radius / 2,
+                        -radius / 2, radius / 2,
+                        -radius / 2, -radius / 2,
                     ]);
                     break;
                 case 'rotator':
-                    this.drawCircle(0, 0, style.radius / Math.sqrt(2));
+                    this.drawCircle(0, 0, radius / Math.sqrt(2));
                     break;
                 default:
-                    this.drawRect(-style.radius / 2, -style.radius / 2, style.radius, style.radius);
+                    this.drawRect(-radius / 2, -radius / 2, radius, radius);
                     break;
             }
         }
         else {
-            this.drawCircle(0, 0, style.radius);
+            this.drawCircle(0, 0, radius);
         }
         this.endFill();
     }
@@ -189,7 +219,7 @@ class TransformerHandle extends graphics.Graphics {
      * @param e
      */
     onDragStart(e) {
-        e.data.getLocalPosition(this.parent, this._pointerPosition);
+        this._pointerPosition.copyFrom(e.data.global);
         this._pointerDragging = true;
     }
     /**
@@ -198,7 +228,7 @@ class TransformerHandle extends graphics.Graphics {
      * @param e
      */
     onDrag(e) {
-        const currentPosition = e.data.getLocalPosition(this.parent, tempPoint);
+        const currentPosition = e.data.global;
         // Callback handles the rest!
         if (this.onHandleDelta) {
             this.onHandleDelta(currentPosition);
@@ -307,6 +337,7 @@ const tempMatrix$2 = new math.Matrix();
 const tempPoint$1 = new math.Point();
 const tempBounds = new bounds.OrientedBounds();
 const tempRect = new math.Rectangle();
+const tempHull = [new math.Point(), new math.Point(), new math.Point(), new math.Point()];
 // Pool for allocating an arbitrary number of points
 const pointPool = objectPool.ObjectPoolFactory.build(math.Point);
 /**
@@ -422,6 +453,8 @@ const DEFAULT_WIREFRAME_STYLE = {
  *
  * NOTE: The transformer needs to capture all interaction events that would otherwise go to the display-objects in the
  * group. Hence, it must be placed after them in the scene graph.
+ *
+ * @fires ontransformchange
  */
 class Transformer extends display.Container {
     /* eslint-disable max-len */
@@ -446,11 +479,13 @@ class Transformer extends display.Container {
      * @param {boolean}[options.enabledHandles] - specifically define which handles are to be enabled
      * @param {typeof TransformerHandle}[options.handleConstructor] - a custom transformer-handle class
      * @param {object}[options.handleStyle] - styling options for the handle. These cannot be modified afterwards!
-     * @param {number}[options.handleStyle.color] - handle color
-     * @param {string}[options.handleStyle.outlineColor] - color of the handle outline (stroke)
-     * @param {string}[options.handleStyle.outlineThickness] - thickness of the handle outline (stroke)
-     * @param {number}[options.handleStyle.radius] - dimensions of the handle
-     * @param {string}[options.handleStyle.shape] - 'circle' or 'square'
+     * @param {number}[options.handleStyle.color=0xffffff] - handle color
+     * @param {string}[options.handleStyle.outlineColor=0x000000] - color of the handle outline (stroke)
+     * @param {string}[options.handleStyle.outlineThickness=1] - thickness of the handle outline (stroke)
+     * @param {number}[options.handleStyle.radius=8] - dimensions of the handle
+     * @param {string}[options.handleStyle.shape='tooth'] - 'circle', 'tooth', or 'square'
+     * @param {boolean}[options.handleStyle.scaleInvariant] - whether the handles should not become bigger when the whole scene
+     *  is scaled up.
      * @param {boolean}[options.rotateEnabled=true] - whether rotate handles are enabled
      * @param {number[]}[options.rotationSnaps] - the rotation snap angles, in radians. By default, transformer will
      *      snap for each 1/8th of a revolution.
@@ -493,7 +528,7 @@ class Transformer extends display.Container {
          */
         this.rotateGroup = (handle, pointerPosition) => {
             const bounds = this.groupBounds;
-            const origin = this.handles[handle].position;
+            const origin = this.worldTransform.apply(this.handles[handle].position, tempPoint$1);
             const destination = pointerPosition;
             // Center of rotation - does not change in transformation
             const rOrigin = bounds.center;
@@ -532,9 +567,11 @@ class Transformer extends display.Container {
             const bounds = this.groupBounds;
             const angle = bounds.rotation;
             const innerBounds = bounds.innerBounds;
+            // Position of handle in world-space
+            const handlePosition = this.worldTransform.apply(this.handles[handle].position, tempPoint$1);
             // Delta vector in world frame
-            const dx = pointerPosition.x - this.handles[handle].x;
-            const dy = pointerPosition.y - this.handles[handle].y;
+            const dx = pointerPosition.x - handlePosition.x;
+            const dy = pointerPosition.y - handlePosition.y;
             // Unit vector along u-axis (horizontal axis after rotation) of bounds
             const uxvec = (bounds.topRight.x - bounds.topLeft.x) / innerBounds.width;
             const uyvec = (bounds.topRight.y - bounds.topLeft.y) / innerBounds.width;
@@ -825,34 +862,54 @@ class Transformer extends display.Container {
         this.groupBounds.copyFrom(groupBounds);
     }
     /**
-     * Draws the bounding box into {@code this.skeleton}.
+     * Draws the bounding box into {@code this.wireframe}.
      *
      * @param bounds
      */
     drawBounds(bounds) {
+        const worldTransform = this.worldTransform;
+        const hull = tempHull;
+        // Bring hull into local-space
+        for (let i = 0; i < 4; i++) {
+            worldTransform.applyInverse(bounds.hull[i], hull[i]);
+        }
         // Fill polygon with ultra-low alpha to capture pointer events.
         this.wireframe
             .beginFill(0xffffff, 1e-4)
-            .drawPolygon(bounds.hull)
+            .drawPolygon(hull)
             .endFill();
     }
     /**
-     * Draw the handles and any remaining parts of the skeleton
+     * Draw the handles and any remaining parts of the wireframe.
      *
      * @param groupBounds
      */
     drawHandles(groupBounds) {
         const handles = this.handles;
-        const { topLeft, topRight, bottomLeft, bottomRight, center } = groupBounds;
+        const worldTransform = this.worldTransform;
+        const { topLeft: worldTopLeft, topRight: worldTopRight, bottomLeft: worldBottomLeft, bottomRight: worldBottomRight, center: worldCenter, } = groupBounds;
+        const [topLeft, topRight, bottomLeft, bottomRight] = tempHull;
+        const center = tempPoint$1;
+        worldTransform.applyInverse(worldBottomLeft, bottomLeft);
+        worldTransform.applyInverse(worldBottomRight, bottomRight);
+        worldTransform.applyInverse(worldCenter, center);
         if (this._rotateEnabled) {
             groupBounds.innerBounds.pad(32);
-            handles.rotator.position.x = (groupBounds.topLeft.x + groupBounds.topRight.x) / 2;
-            handles.rotator.position.y = (groupBounds.topLeft.y + groupBounds.topRight.y) / 2;
+            worldTransform.applyInverse(groupBounds.topLeft, topLeft);
+            worldTransform.applyInverse(groupBounds.topRight, topRight);
+            handles.rotator.position.x = (topLeft.x + topRight.x) / 2;
+            handles.rotator.position.y = (topLeft.y + topRight.y) / 2;
             groupBounds.innerBounds.pad(-32);
-            const bx = (groupBounds.topLeft.x + groupBounds.topRight.x) / 2;
-            const by = (groupBounds.topLeft.y + groupBounds.topRight.y) / 2;
+            worldTransform.applyInverse(groupBounds.topLeft, topLeft);
+            worldTransform.applyInverse(groupBounds.topRight, topRight);
+            const bx = (topLeft.x + topRight.x) / 2;
+            const by = (topLeft.y + topRight.y) / 2;
             this.wireframe.moveTo(bx, by)
                 .lineTo(handles.rotator.position.x, handles.rotator.position.y);
+        }
+        else {
+            worldTransform.applyInverse(worldTopLeft, topLeft);
+            worldTransform.applyInverse(worldTopRight, topRight);
         }
         if (this._scaleEnabled) {
             // Scale handles
@@ -867,10 +924,12 @@ class Transformer extends display.Container {
             handles.bottomRight.position.copyFrom(bottomRight);
         }
         if (this._skewEnabled) {
-            // Skew handles
-            handles.skewHorizontal.position.set(center.x + (Math.cos(this._skewX) * this.skewRadius), center.y + (Math.sin(this._skewX) * this.skewRadius));
-            // HINT: Slope = skew.y + Math.PI / 2
-            handles.skewVertical.position.set(center.x + (-Math.sin(this._skewY) * this.skewRadius), center.y + (Math.cos(this._skewY) * this.skewRadius));
+            // Calculate skew handle positions in world-space, and then transform back into local-space.
+            handles.skewHorizontal.position.set(worldCenter.x + (Math.cos(this._skewX) * this.skewRadius), worldCenter.y + (Math.sin(this._skewX) * this.skewRadius));
+            handles.skewVertical.position.set(// HINT: Slope = skew.y + Math.PI / 2
+            worldCenter.x + (-Math.sin(this._skewY) * this.skewRadius), worldCenter.y + (Math.cos(this._skewY) * this.skewRadius));
+            worldTransform.applyInverse(handles.skewHorizontal.position, handles.skewHorizontal.position);
+            worldTransform.applyInverse(handles.skewVertical.position, handles.skewVertical.position);
             this.wireframe
                 .beginFill(this.wireframeStyle.color)
                 .drawCircle(center.x, center.y, this.wireframeStyle.thickness * 2)
@@ -915,7 +974,7 @@ class Transformer extends display.Container {
             return;
         }
         const lastPointerPosition = this._pointerPosition;
-        const currentPointerPosition = e.data.getLocalPosition(this, tempPoint$1);
+        const currentPointerPosition = tempPoint$1.copyFrom(e.data.global);
         const cx = currentPointerPosition.x;
         const cy = currentPointerPosition.y;
         // Translate group by difference
@@ -954,6 +1013,7 @@ class Transformer extends display.Container {
         if (!skipUpdate) {
             this.updateGroupBounds();
         }
+        this.emit('transformchange');
     }
     /**
      * Recalculates {@code this.groupBounds} at the same angle.
@@ -1098,6 +1158,11 @@ class Transformer extends display.Container {
         return bounds$1;
     }
 }
+/**
+ * This is fired when the transformer modifies the transforms of display-objects.
+ *
+ * @event Transformer#transformchange
+ */
 
 exports.Transformer = Transformer;
 exports.TransformerHandle = TransformerHandle;

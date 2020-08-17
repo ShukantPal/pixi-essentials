@@ -21,6 +21,7 @@ const tempMatrix = new Matrix();
 const tempPoint = new Point();
 const tempBounds = new OrientedBounds();
 const tempRect = new Rectangle();
+const tempHull = [new Point(), new Point(), new Point(), new Point()];
 
 // Pool for allocating an arbitrary number of points
 const pointPool = ObjectPoolFactory.build(Point as any);
@@ -219,6 +220,12 @@ export interface ITransformerOptions
  * {@code Transformer} provides an interactive interface for editing the transforms in a group. It supports translating,
  * scaling, rotating, and skewing display-objects both through interaction and code.
  *
+ * A transformer operates in world-space, and it is best to not to position, scale, rotate, or skew one. If you do so, the
+ * wireframe itself will not distort (i.e. will adapt _against_ your transforms). However, the wireframe may become
+ * thinner/thicker and the handles will scale & rotate. For example, setting `transformer.scale.set(2)` will make the handles
+ * twice as big, but will not scale the wireframe (assuming the display-object group itself has not been
+ * scaled up).
+ *
  * NOTE: The transformer needs to capture all interaction events that would otherwise go to the display-objects in the
  * group. Hence, it must be placed after them in the scene graph.
  *
@@ -276,11 +283,13 @@ export class Transformer extends Container
      * @param {boolean}[options.enabledHandles] - specifically define which handles are to be enabled
      * @param {typeof TransformerHandle}[options.handleConstructor] - a custom transformer-handle class
      * @param {object}[options.handleStyle] - styling options for the handle. These cannot be modified afterwards!
-     * @param {number}[options.handleStyle.color] - handle color
-     * @param {string}[options.handleStyle.outlineColor] - color of the handle outline (stroke)
-     * @param {string}[options.handleStyle.outlineThickness] - thickness of the handle outline (stroke)
-     * @param {number}[options.handleStyle.radius] - dimensions of the handle
-     * @param {string}[options.handleStyle.shape] - 'circle' or 'square'
+     * @param {number}[options.handleStyle.color=0xffffff] - handle color
+     * @param {string}[options.handleStyle.outlineColor=0x000000] - color of the handle outline (stroke)
+     * @param {string}[options.handleStyle.outlineThickness=1] - thickness of the handle outline (stroke)
+     * @param {number}[options.handleStyle.radius=8] - dimensions of the handle
+     * @param {string}[options.handleStyle.shape='tooth'] - 'circle', 'tooth', or 'square'
+     * @param {boolean}[options.handleStyle.scaleInvariant] - whether the handles should not become bigger when the whole scene
+     *  is scaled up.
      * @param {boolean}[options.rotateEnabled=true] - whether rotate handles are enabled
      * @param {number[]}[options.rotationSnaps] - the rotation snap angles, in radians. By default, transformer will
      *      snap for each 1/8th of a revolution.
@@ -587,7 +596,7 @@ export class Transformer extends Container
     rotateGroup = (handle: RotateHandle, pointerPosition: Point): void =>
     {
         const bounds = this.groupBounds;
-        const origin = this.handles[handle].position;
+        const origin = this.worldTransform.apply(this.handles[handle].position, tempPoint);
         const destination = pointerPosition;
 
         // Center of rotation - does not change in transformation
@@ -639,9 +648,12 @@ export class Transformer extends Container
         const angle = bounds.rotation;
         const innerBounds = bounds.innerBounds;
 
+        // Position of handle in world-space
+        const handlePosition = this.worldTransform.apply(this.handles[handle].position, tempPoint);
+
         // Delta vector in world frame
-        const dx = pointerPosition.x - this.handles[handle].x;
-        const dy = pointerPosition.y - this.handles[handle].y;
+        const dx = pointerPosition.x - handlePosition.x;
+        const dy = pointerPosition.y - handlePosition.y;
 
         // Unit vector along u-axis (horizontal axis after rotation) of bounds
         const uxvec = (bounds.topRight.x - bounds.topLeft.x) / innerBounds.width;
@@ -802,44 +814,75 @@ export class Transformer extends Container
     }
 
     /**
-     * Draws the bounding box into {@code this.skeleton}.
+     * Draws the bounding box into {@code this.wireframe}.
      *
      * @param bounds
      */
     protected drawBounds(bounds: OrientedBounds | AxisAlignedBounds): void
     {
+        const worldTransform = this.worldTransform;
+        const hull = tempHull;
+
+        // Bring hull into local-space
+        for (let i = 0; i < 4; i++)
+        {
+            worldTransform.applyInverse(bounds.hull[i], hull[i]);
+        }
+
         // Fill polygon with ultra-low alpha to capture pointer events.
         this.wireframe
             .beginFill(0xffffff, 1e-4)
-            .drawPolygon(bounds.hull)
+            .drawPolygon(hull)
             .endFill();
     }
 
     /**
-     * Draw the handles and any remaining parts of the skeleton
+     * Draw the handles and any remaining parts of the wireframe.
      *
      * @param groupBounds
      */
     protected drawHandles(groupBounds: OrientedBounds): void
     {
         const handles = this.handles;
+        const worldTransform = this.worldTransform;
+        const {
+            topLeft: worldTopLeft,
+            topRight: worldTopRight,
+            bottomLeft: worldBottomLeft,
+            bottomRight: worldBottomRight,
+            center: worldCenter,
+        } = groupBounds;
 
-        const { topLeft, topRight, bottomLeft, bottomRight, center } = groupBounds;
+        const [topLeft, topRight, bottomLeft, bottomRight] = tempHull;
+        const center = tempPoint;
+
+        worldTransform.applyInverse(worldBottomLeft, bottomLeft);
+        worldTransform.applyInverse(worldBottomRight, bottomRight);
+        worldTransform.applyInverse(worldCenter, center);
 
         if (this._rotateEnabled)
         {
             groupBounds.innerBounds.pad(32);
+            worldTransform.applyInverse(groupBounds.topLeft, topLeft);
+            worldTransform.applyInverse(groupBounds.topRight, topRight);
 
-            handles.rotator.position.x = (groupBounds.topLeft.x + groupBounds.topRight.x) / 2;
-            handles.rotator.position.y = (groupBounds.topLeft.y + groupBounds.topRight.y) / 2;
+            handles.rotator.position.x = (topLeft.x + topRight.x) / 2;
+            handles.rotator.position.y = (topLeft.y + topRight.y) / 2;
 
             groupBounds.innerBounds.pad(-32);
+            worldTransform.applyInverse(groupBounds.topLeft, topLeft);
+            worldTransform.applyInverse(groupBounds.topRight, topRight);
 
-            const bx = (groupBounds.topLeft.x + groupBounds.topRight.x) / 2;
-            const by = (groupBounds.topLeft.y + groupBounds.topRight.y) / 2;
+            const bx = (topLeft.x + topRight.x) / 2;
+            const by = (topLeft.y + topRight.y) / 2;
 
             this.wireframe.moveTo(bx, by)
                 .lineTo(handles.rotator.position.x, handles.rotator.position.y);
+        }
+        else
+        {
+            worldTransform.applyInverse(worldTopLeft, topLeft);
+            worldTransform.applyInverse(worldTopRight, topRight);
         }
 
         if (this._scaleEnabled)
@@ -858,14 +901,17 @@ export class Transformer extends Container
 
         if (this._skewEnabled)
         {
-            // Skew handles
+            // Calculate skew handle positions in world-space, and then transform back into local-space.
+
             handles.skewHorizontal.position.set(
-                center.x + (Math.cos(this._skewX) * this.skewRadius),
-                center.y + (Math.sin(this._skewX) * this.skewRadius));
-            // HINT: Slope = skew.y + Math.PI / 2
-            handles.skewVertical.position.set(
-                center.x + (-Math.sin(this._skewY) * this.skewRadius),
-                center.y + (Math.cos(this._skewY) * this.skewRadius));
+                worldCenter.x + (Math.cos(this._skewX) * this.skewRadius),
+                worldCenter.y + (Math.sin(this._skewX) * this.skewRadius));
+            handles.skewVertical.position.set( // HINT: Slope = skew.y + Math.PI / 2
+                worldCenter.x + (-Math.sin(this._skewY) * this.skewRadius),
+                worldCenter.y + (Math.cos(this._skewY) * this.skewRadius));
+
+            worldTransform.applyInverse(handles.skewHorizontal.position, handles.skewHorizontal.position);
+            worldTransform.applyInverse(handles.skewVertical.position, handles.skewVertical.position);
 
             this.wireframe
                 .beginFill(this.wireframeStyle.color)
@@ -925,7 +971,7 @@ export class Transformer extends Container
         }
 
         const lastPointerPosition = this._pointerPosition;
-        const currentPointerPosition = e.data.getLocalPosition(this, tempPoint);
+        const currentPointerPosition = tempPoint.copyFrom(e.data.global);
 
         const cx = currentPointerPosition.x;
         const cy = currentPointerPosition.y;

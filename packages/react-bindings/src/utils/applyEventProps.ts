@@ -30,7 +30,7 @@ export function applyEventProps(
 
             if (newHandler)
             {
-                displayObject.off(event, newHandler);
+                displayObject.on(event, newHandler);
             }
         }
     }

@@ -2,7 +2,7 @@
  
 /*!
  * @pixi-essentials/react-bindings - v1.0.2
- * Compiled Mon, 17 Aug 2020 15:35:55 UTC
+ * Compiled Mon, 17 Aug 2020 18:38:22 UTC
  *
  * @pixi-essentials/react-bindings is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -16,15 +16,50 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var reactPixi = require('@inlet/react-pixi');
 var transformer = require('@pixi-essentials/transformer');
 
+/**
+ * Removes old listeners and applies the new ones passed in the props
+ *
+ * @param displayObject - display-object emitting events
+ * @param events - object mapping handler prop-names to the fired events
+ * @param oldProps - old props. If calling on first props being passed, this should be `{}`.
+ * @param newProps - new props.
+ */
+function applyEventProps(displayObject, events, oldProps, newProps) {
+    for (const handlerName in events) {
+        const oldHandler = oldProps[handlerName];
+        const newHandler = newProps[handlerName];
+        const event = events[handlerName];
+        if (oldHandler !== newHandler) {
+            if (oldHandler) {
+                displayObject.off(event, oldHandler);
+            }
+            if (newHandler) {
+                displayObject.on(event, newHandler);
+            }
+        }
+    }
+}
+
 const EMPTY = {};
+/**
+ * @ignore
+ */
+const HANDLER_TO_EVENT = {
+    transformchange: 'transformchange',
+};
 /**
  * Transformer component
  *
  * @see https://github.com/SukantPal/pixi-essentials/tree/master/packages/transformer
  */
 const Transformer = reactPixi.PixiComponent('Transformer', {
-    create: (props) => new transformer.Transformer(props),
+    create: (props) => {
+        const transformerImpl = new transformer.Transformer(props);
+        applyEventProps(transformerImpl, HANDLER_TO_EVENT, {}, props);
+        return transformerImpl;
+    },
     applyProps(instance, oldProps, newProps) {
+        applyEventProps(instance, HANDLER_TO_EVENT, oldProps, newProps);
         instance.group = newProps.group || [];
         instance.centeredScaling = newProps.centeredScaling;
         instance.enabledHandles = newProps.enabledHandles;
