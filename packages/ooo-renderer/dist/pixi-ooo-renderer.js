@@ -1,6 +1,6 @@
 /*!
  * @pixi-essentials/ooo-renderer - v0.0.2
- * Compiled Sun, 16 Aug 2020 19:31:00 UTC
+ * Compiled Mon, 17 Aug 2020 15:35:55 UTC
  *
  * @pixi-essentials/ooo-renderer is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license

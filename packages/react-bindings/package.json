@@ -24,11 +24,15 @@
   },
   "homepage": "https://github.com/SukantPal/pixi-essentials#readme",
   "dependencies": {
-    "@inlet/react-pixi": "~5.0.3",
     "@pixi-essentials/transformer": "~2.0.2",
     "@pixi/display": "~5.3.3"
   },
+  "peerDependencies": {
+    "@inlet/react-pixi": "^5.0.0",
+    "react": "^16.0.0"
+  },
   "devDependencies": {
-    "@types/react": "~16.9.46"
+    "@types/react": "^16.9.46",
+    "@inlet/react-pixi": "^5.0.0"
   }
 }

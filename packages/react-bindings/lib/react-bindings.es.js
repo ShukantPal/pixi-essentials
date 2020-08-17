@@ -1,8 +1,8 @@
 /* eslint-disable */
  
 /*!
- * @pixi-essentials/react-bindings - v1.0.1
- * Compiled Sun, 16 Aug 2020 19:31:00 UTC
+ * @pixi-essentials/react-bindings - v1.0.2
+ * Compiled Mon, 17 Aug 2020 15:35:55 UTC
  *
  * @pixi-essentials/react-bindings is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -21,7 +21,7 @@ const EMPTY = {};
 const Transformer = PixiComponent('Transformer', {
     create: (props) => new Transformer$1(props),
     applyProps(instance, oldProps, newProps) {
-        instance.group = newProps.group;
+        instance.group = newProps.group || [];
         instance.centeredScaling = newProps.centeredScaling;
         instance.enabledHandles = newProps.enabledHandles;
         instance.skewRadius = newProps.skewRadius || instance.skewRadius;

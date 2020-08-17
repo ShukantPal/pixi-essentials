@@ -1,8 +1,8 @@
 /* eslint-disable */
  
 /*!
- * @pixi-essentials/transformer - v2.0.1
- * Compiled Sun, 16 Aug 2020 19:31:00 UTC
+ * @pixi-essentials/transformer - v2.0.2
+ * Compiled Mon, 17 Aug 2020 15:35:55 UTC
  *
  * @pixi-essentials/transformer is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license

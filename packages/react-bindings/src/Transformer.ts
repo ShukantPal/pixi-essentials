@@ -1,6 +1,7 @@
 import { DisplayObject } from '@pixi/display';
 import { PixiComponent } from '@inlet/react-pixi';
 import { Transformer as TransformerImpl, TransformerHandle as TransformerHandleImpl } from '@pixi-essentials/transformer';
+import { applyEventProps } from './utils/applyEventProps';
 
 import type { ITransformerStyle, ITransformerHandleStyle } from '@pixi-essentials/transformer';
 import type React from 'react';
@@ -26,7 +27,15 @@ export type TransformerProps = {
     skewSnapTolerance?: number;
     translateEnabled?: boolean;
     transientGroupTilt?: boolean;
+    transformchange?: () => void;
     wireframeStyle?: Partial<ITransformerStyle>;
+};
+
+/**
+ * @ignore
+ */
+const HANDLER_TO_EVENT = {
+    transformchange: 'transformchange',
 };
 
 /**
@@ -35,10 +44,19 @@ export type TransformerProps = {
  * @see https://github.com/SukantPal/pixi-essentials/tree/master/packages/transformer
  */
 export const Transformer: React.FC<TransformerProps> = PixiComponent<TransformerProps, TransformerImpl>('Transformer', {
-    create: (props: TransformerProps): TransformerImpl => new TransformerImpl(props as any),
+    create: (props: TransformerProps): TransformerImpl =>
+    {
+        const transformerImpl = new TransformerImpl(props as any);
+
+        applyEventProps(transformerImpl, HANDLER_TO_EVENT, {}, props);
+
+        return transformerImpl;
+    },
     applyProps(instance: TransformerImpl, oldProps: TransformerProps, newProps: TransformerProps): void
     {
-        instance.group = newProps.group;
+        applyEventProps(instance, HANDLER_TO_EVENT, oldProps, newProps);
+
+        instance.group = newProps.group || [];
 
         instance.centeredScaling = newProps.centeredScaling;
         instance.enabledHandles = newProps.enabledHandles as any;
