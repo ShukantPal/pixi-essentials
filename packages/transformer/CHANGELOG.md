@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/transformer
 
-This log was last generated on Sun, 16 Aug 2020 19:35:37 GMT and should not be manually modified.
+This log was last generated on Mon, 17 Aug 2020 20:24:17 GMT and should not be manually modified.
+
+## 2.0.3
+Mon, 17 Aug 2020 20:24:17 GMT
+
+### Patches
+
+- Support for projection-transforms, and placement inside scaled/rotated containers.
 
 ## 2.0.2
 Sun, 16 Aug 2020 19:35:37 GMT

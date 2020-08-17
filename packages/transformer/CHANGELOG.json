@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/transformer",
   "entries": [
     {
+      "version": "2.0.3",
+      "tag": "@pixi-essentials/transformer_v2.0.3",
+      "date": "Mon, 17 Aug 2020 20:24:17 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Support for projection-transforms, and placement inside scaled/rotated containers."
+          }
+        ]
+      }
+    },
+    {
       "version": "2.0.2",
       "tag": "@pixi-essentials/transformer_v2.0.2",
       "date": "Sun, 16 Aug 2020 19:35:37 GMT",

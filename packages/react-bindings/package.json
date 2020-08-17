@@ -1,6 +1,6 @@
 {
   "name": "@pixi-essentials/react-bindings",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "React components for display-objects provided by pixi-essentials, for usage with @inlet/react-pixi.",
   "main": "lib/react-bindings.js",
   "module": "lib/react-bindings.es.js",
@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/SukantPal/pixi-essentials#readme",
   "dependencies": {
-    "@pixi-essentials/transformer": "~2.0.2",
+    "@pixi-essentials/transformer": "~2.0.3",
     "@pixi/display": "~5.3.3"
   },
   "peerDependencies": {
