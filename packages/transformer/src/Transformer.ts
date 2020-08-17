@@ -1218,7 +1218,7 @@ export class Transformer extends Container
         const angle = tempTransform.rotation;
         const corners = Transformer.calculateTransformedCorners(displayObject, displayObject.worldTransform, tempCorners);
 
-        // Calculate centroid, which is our center of rotatation
+        // Calculate centroid, which is our center of rotation
         const cx = (corners[0].x + corners[1].x + corners[2].x + corners[3].x) / 4;
         const cy = (corners[0].y + corners[1].y + corners[2].y + corners[3].y) / 4;
 
