@@ -1,6 +1,6 @@
 /*!
  * @pixi-essentials/bounds - v2.0.0
- * Compiled Mon, 17 Aug 2020 20:19:04 UTC
+ * Compiled Wed, 19 Aug 2020 15:26:43 UTC
  *
  * @pixi-essentials/bounds is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license

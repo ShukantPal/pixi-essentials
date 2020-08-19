@@ -1,8 +1,8 @@
 /* eslint-disable */
  
 /*!
- * @pixi-essentials/transformer - v2.0.2
- * Compiled Mon, 17 Aug 2020 20:19:04 UTC
+ * @pixi-essentials/transformer - v2.0.3
+ * Compiled Wed, 19 Aug 2020 15:26:43 UTC
  *
  * @pixi-essentials/transformer is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -427,8 +427,6 @@ const DEFAULT_WIREFRAME_STYLE = {
  *
  * NOTE: The transformer needs to capture all interaction events that would otherwise go to the display-objects in the
  * group. Hence, it must be placed after them in the scene graph.
- *
- * @fires ontransformchange
  */
 class Transformer extends Container {
     /* eslint-disable max-len */
@@ -634,6 +632,7 @@ class Transformer extends Container {
             if (this.transientGroupTilt !== false && this.group.length > 1) {
                 this.updateGroupBounds(0);
             }
+            this.emit('transformcommit');
         };
         this.interactive = true;
         this.cursor = 'move';
@@ -1046,7 +1045,7 @@ class Transformer extends Container {
         if (!skipUpdate) {
             this.updateGroupBounds();
         }
-        this.emit('transformchange');
+        this.emit('transformchange', delta);
     }
     /**
      * Recalculates {@code this.groupBounds} at the same angle.
@@ -1130,7 +1129,7 @@ class Transformer extends Container {
         tempTransform.updateLocalTransform();
         const angle = tempTransform.rotation;
         const corners = Transformer.calculateTransformedCorners(displayObject, displayObject.worldTransform, tempCorners);
-        // Calculate centroid, which is our center of rotatation
+        // Calculate centroid, which is our center of rotation
         const cx = (corners[0].x + corners[1].x + corners[2].x + corners[3].x) / 4;
         const cy = (corners[0].y + corners[1].y + corners[2].y + corners[3].y) / 4;
         // Unrotation matrix
@@ -1209,6 +1208,12 @@ class Transformer extends Container {
  * This is fired when the transformer modifies the transforms of display-objects.
  *
  * @event Transformer#transformchange
+ * @type {Matrix}
+ */
+/**
+ * This is fired when the user lifts the mouse button after dragging a transformer handle.
+ *
+ * @event Transformer#transformcommit
  */
 
 export { Transformer, TransformerHandle };

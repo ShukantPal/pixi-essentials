@@ -24,8 +24,8 @@
   },
   "homepage": "https://github.com/SukantPal/pixi-essentials#readme",
   "dependencies": {
-    "@pixi-essentials/transformer": "~2.0.3",
-    "@pixi/display": "~5.3.3"
+    "@pixi-essentials/transformer": "^2.0.3",
+    "@pixi/display": "^5.3.3"
   },
   "peerDependencies": {
     "@inlet/react-pixi": "^5.0.0",

@@ -229,8 +229,6 @@ export interface ITransformerOptions
  *
  * NOTE: The transformer needs to capture all interaction events that would otherwise go to the display-objects in the
  * group. Hence, it must be placed after them in the scene graph.
- *
- * @fires ontransformchange
  */
 export class Transformer extends Container
 {
@@ -829,6 +827,8 @@ export class Transformer extends Container
         {
             this.updateGroupBounds(0);
         }
+
+        this.emit('transformcommit');
     };
 
     /**
@@ -1103,7 +1103,7 @@ export class Transformer extends Container
             this.updateGroupBounds();
         }
 
-        this.emit('transformchange');
+        this.emit('transformchange', delta);
     }
 
     /**
@@ -1325,4 +1325,11 @@ export class Transformer extends Container
  * This is fired when the transformer modifies the transforms of display-objects.
  *
  * @event Transformer#transformchange
+ * @type {Matrix}
+ */
+
+/**
+ * This is fired when the user lifts the mouse button after dragging a transformer handle. It can be used
+ *
+ * @event Transformer#transformcommit
  */

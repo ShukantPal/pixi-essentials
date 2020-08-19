@@ -2,7 +2,7 @@
  
 /*!
  * @pixi-essentials/mixin-smart-mask - v1.0.3
- * Compiled Mon, 17 Aug 2020 20:19:04 UTC
+ * Compiled Wed, 19 Aug 2020 15:26:43 UTC
  *
  * @pixi-essentials/mixin-smart-mask is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license

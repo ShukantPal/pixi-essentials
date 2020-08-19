@@ -40,6 +40,7 @@ export type TransformerProps = {
  */
 const HANDLER_TO_EVENT = {
     transformchange: 'transformchange',
+    transformcommit: 'transformcommit',
 };
 
 /**
