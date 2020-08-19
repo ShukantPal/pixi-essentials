@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/react-bindings
 
-This log was last generated on Mon, 17 Aug 2020 20:24:17 GMT and should not be manually modified.
+This log was last generated on Wed, 19 Aug 2020 15:31:07 GMT and should not be manually modified.
+
+## 1.0.4
+Wed, 19 Aug 2020 15:31:07 GMT
+
+### Patches
+
+- Support for transformcommit event in Transformer (from @pixi-essentials/transformer)
 
 ## 1.0.3
 Mon, 17 Aug 2020 20:24:17 GMT

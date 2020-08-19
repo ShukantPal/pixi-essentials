@@ -2,6 +2,23 @@
   "name": "@pixi-essentials/react-bindings",
   "entries": [
     {
+      "version": "1.0.4",
+      "tag": "@pixi-essentials/react-bindings_v1.0.4",
+      "date": "Wed, 19 Aug 2020 15:31:07 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Support for transformcommit event in Transformer (from @pixi-essentials/transformer)"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@pixi-essentials/transformer\" from `^2.0.3` to `^2.0.4`"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.0.3",
       "tag": "@pixi-essentials/react-bindings_v1.0.3",
       "date": "Mon, 17 Aug 2020 20:24:17 GMT",

@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/transformer",
   "entries": [
     {
+      "version": "2.0.4",
+      "tag": "@pixi-essentials/transformer_v2.0.4",
+      "date": "Wed, 19 Aug 2020 15:31:07 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "transformcommit event"
+          }
+        ]
+      }
+    },
+    {
       "version": "2.0.3",
       "tag": "@pixi-essentials/transformer_v2.0.3",
       "date": "Mon, 17 Aug 2020 20:24:17 GMT",
