@@ -862,6 +862,8 @@ export class Transformer extends Container
      */
     commitGroup = (): void =>
     {
+        this._transformType = 'none';
+
         if (this.transientGroupTilt !== false && this.group.length > 1)
         {
             this.updateGroupBounds(0);
