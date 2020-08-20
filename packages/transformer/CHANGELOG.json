@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/transformer",
   "entries": [
     {
+      "version": "2.0.5",
+      "tag": "@pixi-essentials/transformer_v2.0.5",
+      "date": "Thu, 20 Aug 2020 15:34:06 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Add transformType, getGroupBounds APIs"
+          }
+        ]
+      }
+    },
+    {
       "version": "2.0.4",
       "tag": "@pixi-essentials/transformer_v2.0.4",
       "date": "Wed, 19 Aug 2020 15:31:07 GMT",

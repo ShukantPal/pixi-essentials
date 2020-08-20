@@ -1,8 +1,8 @@
 /* eslint-disable */
  
 /*!
- * @pixi-essentials/react-bindings - v1.0.3
- * Compiled Wed, 19 Aug 2020 15:26:43 UTC
+ * @pixi-essentials/react-bindings - v1.0.4
+ * Compiled Thu, 20 Aug 2020 15:33:06 UTC
  *
  * @pixi-essentials/react-bindings is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license

@@ -1,8 +1,8 @@
 /* eslint-disable */
  
 /*!
- * @pixi-essentials/transformer - v2.0.3
- * Compiled Wed, 19 Aug 2020 15:26:43 UTC
+ * @pixi-essentials/transformer - v2.0.4
+ * Compiled Thu, 20 Aug 2020 15:33:06 UTC
  *
  * @pixi-essentials/transformer is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -486,6 +486,7 @@ class Transformer extends Container {
          * @param delta
          */
         this.translateGroup = (delta) => {
+            this._transformType = 'translate';
             // Translation matrix
             const matrix = tempMatrix$2
                 .identity()
@@ -499,6 +500,7 @@ class Transformer extends Container {
          * @param pointerPosition - the new pointer position, in screen space
          */
         this.rotateGroup = (handle, pointerPosition) => {
+            this._transformType = 'rotate';
             const bounds = this.groupBounds;
             const handlePosition = this.worldTransform.apply(this.handles[handle].position, tempPoint);
             this.projectionTransform.applyInverse(handlePosition, handlePosition);
@@ -534,6 +536,7 @@ class Transformer extends Container {
          * @param pointerPosition - the new pointer position, in screen space
          */
         this.scaleGroup = (handle, pointerPosition) => {
+            this._transformType = 'scale';
             // Directions along x,y axes that will produce positive scaling
             const xDir = SCALE_COMPONENTS[handle].x;
             const yDir = SCALE_COMPONENTS[handle].y;
@@ -589,6 +592,7 @@ class Transformer extends Container {
          * @param pointerPosition - pointer position, in screen space
          */
         this.skewGroup = (handle, pointerPosition) => {
+            this._transformType = 'skew';
             const bounds = this.groupBounds;
             // Destination point
             const dst = tempPoint.copyFrom(pointerPosition);
@@ -629,6 +633,7 @@ class Transformer extends Container {
          * reset the rotation of this group (if more than one display-object is grouped).
          */
         this.commitGroup = () => {
+            this._transformType = 'none';
             if (this.transientGroupTilt !== false && this.group.length > 1) {
                 this.updateGroupBounds(0);
             }
@@ -705,6 +710,10 @@ class Transformer extends Container {
          * The vertical skew value. Rotating the group by 𝜽 will also change this value by 𝜽.
          */
         this._skewY = 0;
+        /**
+         * The current type of transform being applied by the user.
+         */
+        this._transformType = 'none';
         /**
          * The wireframe style applied on the transformer
          */
@@ -842,6 +851,15 @@ class Transformer extends Container {
         }
     }
     /**
+     * This is the type of transformation being applied by the user on the group. It can be inaccurate if you call one of
+     * `translateGroup`, `scaleGroup`, `rotateGroup`, `skewGroup` without calling `commitGroup` afterwards.
+     *
+     * @readonly
+     */
+    get transformType() {
+        return this._transformType;
+    }
+    /**
      * The currently applied wireframe style.
      */
     get wireframeStyle() {
@@ -849,6 +867,16 @@ class Transformer extends Container {
     }
     set wireframeStyle(value) {
         this._wireframeStyle = Object.assign({}, DEFAULT_WIREFRAME_STYLE, value);
+    }
+    /**
+     * @param forceUpdate - forces a recalculation of the group bounds
+     * @returns the oriented bounding box of the wireframe
+     */
+    getGroupBounds(forceUpdate = false) {
+        if (forceUpdate) {
+            this.updateGroupBounds();
+        }
+        return this.groupBounds;
     }
     /**
      * This will update the transformer's geometry and render it to the canvas.
@@ -1211,7 +1239,7 @@ class Transformer extends Container {
  * @type {Matrix}
  */
 /**
- * This is fired when the user lifts the mouse button after dragging a transformer handle.
+ * This is fired when the user lifts the mouse button after dragging a transformer handle. It can be used
  *
  * @event Transformer#transformcommit
  */
