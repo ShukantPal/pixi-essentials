@@ -33,6 +33,7 @@ export declare class AxisAlignedBounds {
     set width(value: number);
     get height(): number;
     set height(value: number);
+    get hull(): Point[];
     get topLeft(): Point;
     get topRight(): Point;
     get bottomRight(): Point;
@@ -92,6 +93,12 @@ export declare class AxisAlignedBounds {
      */
     contains(x: number, y: number): boolean;
     /**
+     * Checks whether the given {@link bounds} are equal to this.
+     *
+     * @param bounds
+     */
+    equals(bounds: AxisAlignedBounds): boolean;
+    /**
      * Pads the rectangle making it grow in all directions.
      * If paddingY is omitted, both paddingX and paddingY will be set to paddingX.
      *
@@ -135,7 +142,7 @@ export declare class OrientedBounds {
     innerBounds: AxisAlignedBounds;
     currentID: number;
     dirtyID: number;
-    protected _angle: number;
+    protected _rotation: number;
     protected _center: Point;
     protected _hull: [Point, Point, Point, Point];
     protected _matrix: Matrix;
@@ -151,12 +158,12 @@ export declare class OrientedBounds {
      * @param height
      * @param angle
      */
-    constructor(x: number, y: number, width: number, height: number, angle?: number);
+    constructor(x?: number, y?: number, width?: number, height?: number, angle?: number);
     /**
      * The angle, in radians, by which this bounding box is tilted.
      */
-    get angle(): number;
-    set angle(value: number);
+    get rotation(): number;
+    set rotation(value: number);
     /**
      * The center of this bounding box.
      *
@@ -164,6 +171,12 @@ export declare class OrientedBounds {
      */
     get center(): ObservablePoint;
     set center(value: Point);
+    /**
+     * The four-corners of this bounding, in clockwise order starting from the top-left.
+     *
+     * @readonly
+     */
+    get hull(): [Point, Point, Point, Point];
     /**
      * The top-left corner of this bounding box. The returned instance should not be modified directly.
      *
@@ -184,6 +197,18 @@ export declare class OrientedBounds {
      * The bottom-left corner of this bounding box. The returned instance should not be modified directly.
      */
     get bottomLeft(): Point;
+    /**
+     * Checks whether the given {@code bounds} are equal to this.
+     *
+     * @param bounds
+     */
+    equals(bounds: OrientedBounds): boolean;
+    /**
+     * Copies {@code bounds} into this instance.
+     *
+     * @param bounds
+     */
+    copyFrom(bounds: OrientedBounds): this;
     /**
      * Whether any internal state needs to be recalculated.
      */

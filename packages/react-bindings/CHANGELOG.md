@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/react-bindings
 
-This log was last generated on Wed, 19 Aug 2020 15:31:07 GMT and should not be manually modified.
+This log was last generated on Thu, 20 Aug 2020 23:25:30 GMT and should not be manually modified.
+
+## 1.0.5
+Thu, 20 Aug 2020 23:25:30 GMT
+
+### Patches
+
+- Fix listeners being registered twice bug in <Transformer />
 
 ## 1.0.4
 Wed, 19 Aug 2020 15:31:07 GMT

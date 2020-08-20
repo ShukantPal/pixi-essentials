@@ -1,6 +1,6 @@
 /*!
- * @pixi-essentials/transformer - v2.0.4
- * Compiled Thu, 20 Aug 2020 15:33:06 UTC
+ * @pixi-essentials/transformer - v2.0.5
+ * Compiled Thu, 20 Aug 2020 23:24:32 UTC
  *
  * @pixi-essentials/transformer is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license

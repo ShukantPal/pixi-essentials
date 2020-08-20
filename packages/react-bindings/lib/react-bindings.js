@@ -2,7 +2,7 @@
  
 /*!
  * @pixi-essentials/react-bindings - v1.0.4
- * Compiled Thu, 20 Aug 2020 15:33:06 UTC
+ * Compiled Thu, 20 Aug 2020 23:24:32 UTC
  *
  * @pixi-essentials/react-bindings is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -56,11 +56,7 @@ const HANDLER_TO_EVENT = {
  * @see https://github.com/SukantPal/pixi-essentials/tree/master/packages/transformer
  */
 const Transformer = reactPixi.PixiComponent('Transformer', {
-    create: (props) => {
-        const transformerImpl = new transformer.Transformer(props);
-        applyEventProps(transformerImpl, HANDLER_TO_EVENT, {}, props);
-        return transformerImpl;
-    },
+    create: (props) => new transformer.Transformer(props),
     applyProps(instance, oldProps, newProps) {
         applyEventProps(instance, HANDLER_TO_EVENT, oldProps, newProps);
         instance.group = newProps.group || [];

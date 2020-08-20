@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/react-bindings",
   "entries": [
     {
+      "version": "1.0.5",
+      "tag": "@pixi-essentials/react-bindings_v1.0.5",
+      "date": "Thu, 20 Aug 2020 23:25:30 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix listeners being registered twice bug in <Transformer />"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.0.4",
       "tag": "@pixi-essentials/react-bindings_v1.0.4",
       "date": "Wed, 19 Aug 2020 15:31:07 GMT",
