@@ -49,14 +49,7 @@ const HANDLER_TO_EVENT = {
  * @see https://github.com/SukantPal/pixi-essentials/tree/master/packages/transformer
  */
 export const Transformer: React.FC<TransformerProps> = PixiComponent<TransformerProps, TransformerImpl>('Transformer', {
-    create: (props: TransformerProps): TransformerImpl =>
-    {
-        const transformerImpl = new TransformerImpl(props as any);
-
-        applyEventProps(transformerImpl, HANDLER_TO_EVENT, {}, props);
-
-        return transformerImpl;
-    },
+    create: (props: TransformerProps): TransformerImpl => new TransformerImpl(props as any),
     applyProps(instance: TransformerImpl, oldProps: TransformerProps, newProps: TransformerProps): void
     {
         applyEventProps(instance, HANDLER_TO_EVENT, oldProps, newProps);
