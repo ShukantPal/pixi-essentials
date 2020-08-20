@@ -3,7 +3,7 @@
 This package is a mixin for `DisplayObject` that optimizes mask rendering. It is used to prevent masking when the contents of a
 display-object already lie inside the mask's bounds. It should **only be used with rectangular masks**.
 
-## Installation
+## Installation :package:
 
 ```bash
 npm install @pixi-essentials/mixin-smart-mask
