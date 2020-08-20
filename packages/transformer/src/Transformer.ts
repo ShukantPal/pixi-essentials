@@ -254,6 +254,7 @@ export class Transformer extends Container
     protected _skewEnabled: boolean;
     protected _skewX: number;
     protected _skewY: number;
+    protected _transformType: 'translate' | 'scale' | 'rotate' | 'skew' | 'none';
     protected _handleStyle: Partial<ITransformerHandleStyle>;
     protected _wireframeStyle: Partial<ITransformerStyle>;
 
@@ -397,6 +398,11 @@ export class Transformer extends Container
          * The vertical skew value. Rotating the group by 𝜽 will also change this value by 𝜽.
          */
         this._skewY = 0;
+
+        /**
+         * The current type of transform being applied by the user.
+         */
+        this._transformType = 'none';
 
         /**
          * The wireframe style applied on the transformer
@@ -613,6 +619,17 @@ export class Transformer extends Container
     }
 
     /**
+     * This is the type of transformation being applied by the user on the group. It can be inaccurate if you call one of
+     * `translateGroup`, `scaleGroup`, `rotateGroup`, `skewGroup` without calling `commitGroup` afterwards.
+     *
+     * @readonly
+     */
+    get transformType(): 'translate' | 'scale' | 'rotate' | 'skew' | 'none'
+    {
+        return this._transformType;
+    }
+
+    /**
      * The currently applied wireframe style.
      */
     get wireframeStyle(): Partial<ITransformerStyle>
@@ -625,6 +642,20 @@ export class Transformer extends Container
     }
 
     /**
+     * @param forceUpdate - forces a recalculation of the group bounds
+     * @returns the oriented bounding box of the wireframe
+     */
+    getGroupBounds(forceUpdate = false): OrientedBounds
+    {
+        if (forceUpdate)
+        {
+            this.updateGroupBounds();
+        }
+
+        return this.groupBounds;
+    }
+
+    /**
      * This will translate the group by {@code delta} in their world-space.
      *
      * NOTE: There is no handle that provides translation. The user drags the transformer directly.
@@ -633,6 +664,8 @@ export class Transformer extends Container
      */
     translateGroup = (delta: Point): void =>
     {
+        this._transformType = 'translate';
+
         // Translation matrix
         const matrix = tempMatrix
             .identity()
@@ -649,6 +682,8 @@ export class Transformer extends Container
      */
     rotateGroup = (handle: RotateHandle, pointerPosition: Point): void =>
     {
+        this._transformType = 'rotate';
+
         const bounds = this.groupBounds;
         const handlePosition = this.worldTransform.apply(this.handles[handle].position, tempPoint);
 
@@ -694,6 +729,8 @@ export class Transformer extends Container
      */
     scaleGroup = (handle: ScaleHandle, pointerPosition: Point): void =>
     {
+        this._transformType = 'scale';
+
         // Directions along x,y axes that will produce positive scaling
         const xDir = SCALE_COMPONENTS[handle].x;
         const yDir = SCALE_COMPONENTS[handle].y;
@@ -767,6 +804,8 @@ export class Transformer extends Container
      */
     skewGroup = (handle: SkewHandle, pointerPosition: Point): void =>
     {
+        this._transformType = 'skew';
+
         const bounds = this.groupBounds;
 
         // Destination point
