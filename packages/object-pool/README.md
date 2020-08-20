@@ -1,4 +1,4 @@
-# Object Pool
+# @pixi-essentials/object-pool
 [![install size](https://packagephobia.now.sh/badge?p=@pixi-essentials/object-pool)](https://packagephobia.now.sh/result?p=@pixi-essentials/object-pool)
 
 This package implements a custom-tailored object pool for PixiJS applications. It provides the
@@ -24,12 +24,19 @@ is enabled and reserve is set to 100,000.
 * You should use auto-GC only if allocations-per-frame is smooth (slowly increase & slowly decrease) or you know the upper
 limit of objects you need per frame.
 
-## Usage
+## Installation :package:
+
+```bash
+npm install @pixi-essentials/object-pool
+```
+
+## Usage :page_facing_up:
 
 ```ts
-import { ObjectPoolFactory } from 'pixi-object-pool';
+import { ObjectPoolFactory } from '@pixi-essentials/object-pool';
+import { Rectangle } from '@pixi/math';
 
-const rpool: ObjectPoolFactory = ObjectPoolFactory.build(PIXI.Rectangle);
+const rpool: ObjectPoolFactory = ObjectPoolFactory.build(Rectangle);
 
 rpool.reserve(10000);
 rpool.startGC();// prevent pool from staying above 10,000 rectangles for too long

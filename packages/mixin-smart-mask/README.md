@@ -1,9 +1,15 @@
 # @pixi-essentials/smart-mask
 
 This package is a mixin for `DisplayObject` that optimizes mask rendering. It is used to prevent masking when the contents of a
-display-object already lie inside the mask's bounds.
+display-object already lie inside the mask's bounds. It should **only be used with rectangular masks**.
 
-## Usage
+## Installation
+
+```bash
+npm install @pixi-essentials/mixin-smart-mask
+```
+
+## Usage :page_facing_up:
 
 In order for to use smart-masks, you must set masks on the `smartMask` property of display-objects instead; before each rendering
 frame, you must call `updateSmartMask` to re-evalulate which masks are essential for rendering correctly.

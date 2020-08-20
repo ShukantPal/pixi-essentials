@@ -2,7 +2,13 @@
 
 This package provides an optimized, highly configurable culling mechanism.
 
-## Usage
+## Installation :package:
+
+```bash
+npm install @pixi-essentials/cull
+```
+
+## Usage :page_facing_up:
 
 ### Static scenes
 

@@ -6,7 +6,13 @@ two dimensions.
 Any quadratic curve can be represented in the form _k_<sup>2</sup> - _lm_ = _0_, where _k_, _l_, _m_ are linear functionals (of form _ax_ + _by_ + _c_ = _0_). _l_
 and _m_ are tangents to the curve, while _k_ is the chord joining the points of tangency. The `Conic` shape exploits this representation to store quadric curves.
 
-## Basic usage
+## Installation :package:
+
+```bash
+npm install @pixi-essentials/conic
+```
+
+## Usage :page_facing_up:
 
 ```ts
 import { Conic, ConicDisplay } from '@pixi-essentials/conic';

@@ -1,7 +1,6 @@
 /// <reference path="../node_modules/pixi.js/pixi.js.d.ts" />
 import { AxisAlignedBounds } from './AxisAlignedBounds';
 import { Matrix, ObservablePoint, Point } from '@pixi/math';
-import { Point, Point } from 'pixi.js';
 
 /**
  * An oriented bounding box is a rotated rectangle.
