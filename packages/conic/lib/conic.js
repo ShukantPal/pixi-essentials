@@ -2,7 +2,7 @@
  
 /*!
  * @pixi-essentials/conic - v1.0.2
- * Compiled Sat, 22 Aug 2020 22:41:53 UTC
+ * Compiled Sat, 22 Aug 2020 22:59:50 UTC
  *
  * @pixi-essentials/conic is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license

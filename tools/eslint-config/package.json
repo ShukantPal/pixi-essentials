@@ -4,6 +4,7 @@
   "description": "ESLint config for pixi-essentials",
   "main": "index.js",
   "scripts": {
+    "build": "echo @pixi-essentials/eslint-config does not build!",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
