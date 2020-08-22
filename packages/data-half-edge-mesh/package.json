@@ -6,6 +6,7 @@
   "module": "lib/data-half-edge-mesh.es.js",
   "bundle": "dist/data-half-edge.mesh.js",
   "scripts": {
+    "build": "rollup -c node_modules/@pixi-build-tools/rollup-configurator/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,5 +21,10 @@
   "homepage": "https://github.com/SukantPal/pixi-essentials#readme",
   "dependencies": {
     "@pixi-essentials/types": "0.0.2"
+  },
+  "devDependencies": {
+    "@pixi-build-tools/rollup-configurator": "1.0.3",
+    "tslib": "~2.0.1",
+    "typescript": "~4.0.2"
   }
 }

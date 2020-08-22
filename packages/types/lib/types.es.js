@@ -2,12 +2,12 @@
  
 /*!
  * @pixi-essentials/types - v0.0.2
- * Compiled Thu, 20 Aug 2020 23:24:32 UTC
+ * Compiled Sat, 22 Aug 2020 21:46:45 UTC
  *
  * @pixi-essentials/types is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
  * 
- * Copyright 2019-2020, Shukant K. Pal, All Rights Reserved
+ * Copyright 2019-2020, Shukant Pal <shukantpal@outlook.com>, All Rights Reserved
  */
 /**
  * Iterator for circular linked-lists
@@ -21,8 +21,8 @@
  *      const { value } = iterator.next();
  * }
  */
-class CircularLinkedListIterator {
-    constructor(node) {
+var CircularLinkedListIterator = /** @class */ (function () {
+    function CircularLinkedListIterator(node) {
         /**
          * The last node returned by {@code this.next}.
          */
@@ -39,7 +39,7 @@ class CircularLinkedListIterator {
     /**
      * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators#Iterators
      */
-    next() {
+    CircularLinkedListIterator.prototype.next = function () {
         if (this.current === null) {
             this.current = this.start;
         }
@@ -55,34 +55,37 @@ class CircularLinkedListIterator {
             value: this.current,
             done: this.done,
         };
-    }
+    };
     /**
      * Reset the iterator so it can be used again.
      */
-    reset(start = this.start) {
+    CircularLinkedListIterator.prototype.reset = function (start) {
+        if (start === void 0) { start = this.start; }
         this.current = null;
         this.done = false;
         this.start = start;
         return this;
-    }
-}
+    };
+    return CircularLinkedListIterator;
+}());
 /**
  * An iterable circular linked-list data structure.
  */
-class CircularLinkedList {
-    constructor(head) {
+var CircularLinkedList = /** @class */ (function () {
+    function CircularLinkedList(head) {
         this.head = head;
     }
-    [Symbol.iterator]() {
+    CircularLinkedList.prototype[Symbol.iterator] = function () {
         if (!this._sharedIterator) {
             this._sharedIterator = new CircularLinkedListIterator(this.head);
         }
         this._sharedIterator.reset(this.head);
         return this._sharedIterator;
-    }
-}
-class CircularDoublyLinkedList {
-    constructor(head) {
+    };
+    return CircularLinkedList;
+}());
+var CircularDoublyLinkedList = /** @class */ (function () {
+    function CircularDoublyLinkedList(head) {
         this.head = head;
     }
     /**
@@ -91,29 +94,31 @@ class CircularDoublyLinkedList {
      * @param node - the node to be added to this list
      * @param nodeAfter - the node that should come after the added node
      */
-    add(node, nodeAfter = this.head) {
+    CircularDoublyLinkedList.prototype.add = function (node, nodeAfter) {
+        if (nodeAfter === void 0) { nodeAfter = this.head; }
         // Initialize node's pointers first!
         node.next = nodeAfter;
         node.previous = nodeAfter.previous;
         nodeAfter.previous = node;
         return this;
-    }
-    forEach(callback) {
-        const head = this.head;
-        let current = head;
+    };
+    CircularDoublyLinkedList.prototype.forEach = function (callback) {
+        var head = this.head;
+        var current = head;
         do {
             callback(current);
             current = current.next;
         } while (current !== head);
-    }
-    [Symbol.iterator]() {
+    };
+    CircularDoublyLinkedList.prototype[Symbol.iterator] = function () {
         if (!this._sharedIterator) {
             this._sharedIterator = new CircularLinkedListIterator(this.head);
         }
         this._sharedIterator.reset(this.head);
         return this._sharedIterator;
-    }
-}
+    };
+    return CircularDoublyLinkedList;
+}());
 
 export { CircularDoublyLinkedList, CircularLinkedList, CircularLinkedListIterator };
 //# sourceMappingURL=types.es.js.map

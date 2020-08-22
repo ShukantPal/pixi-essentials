@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "prepare": "rush install",
-    "build:compile": "rollup -c",
+    "build:compile": "rush build",
     "build:types": "node ./scripts/runScript compile",
     "build": "npm run build:compile; npm run build:types",
     "prepublishOnly": "npm run build",

@@ -2,11 +2,11 @@
  
 /*!
  * @pixi-essentials/system-g - v0.0.1
- * Compiled Thu, 20 Aug 2020 23:24:32 UTC
+ * Compiled Sat, 22 Aug 2020 21:46:45 UTC
  *
  * @pixi-essentials/system-g is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
  * 
- * Copyright 2019-2020, Shukant K. Pal, All Rights Reserved
+ * Copyright 2019-2020, Shukant Pal <shukantpal@outlook.com>, All Rights Reserved
  */
 //# sourceMappingURL=plugin-g.es.js.map

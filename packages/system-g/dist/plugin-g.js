@@ -1,11 +1,22 @@
+/* eslint-disable */
+ 
 /*!
  * @pixi-essentials/system-g - v0.0.1
- * Compiled Thu, 20 Aug 2020 23:24:32 UTC
+ * Compiled Sat, 22 Aug 2020 21:46:45 UTC
  *
  * @pixi-essentials/system-g is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
  * 
- * Copyright 2019-2020, Shukant K. Pal, All Rights Reserved
+ * Copyright 2019-2020, Shukant Pal <shukantpal@outlook.com>, All Rights Reserved
  */
-this.PIXI=this.PIXI||{},Object.assign(this.PIXI,_pixi_essentials_system_g);
+this.PIXI = this.PIXI || {};
+(function (factory) {
+	typeof define === 'function' && define.amd ? define(factory) :
+	factory();
+}((function () { 'use strict';
+
+	"use strict";
+
+})));
+Object.assign(this.PIXI, _pixi_essentials_system_g);
 //# sourceMappingURL=plugin-g.js.map

@@ -2,25 +2,25 @@
  
 /*!
  * @pixi-essentials/mixin-smart-mask - v1.0.3
- * Compiled Thu, 20 Aug 2020 23:24:32 UTC
+ * Compiled Sat, 22 Aug 2020 21:46:46 UTC
  *
  * @pixi-essentials/mixin-smart-mask is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
  * 
- * Copyright 2019-2020, Shukant K. Pal, All Rights Reserved
+ * Copyright 2019-2020, Shukant Pal <shukantpal@outlook.com>, All Rights Reserved
  */
 import { Bounds, DisplayObject } from '@pixi/display';
 import { Rectangle } from '@pixi/math';
 import { ObjectPoolFactory } from '@pixi-essentials/object-pool';
 
 // Shared rectangle pool
-const rectanglePool = ObjectPoolFactory.build(Rectangle);
+var rectanglePool = ObjectPoolFactory.build(Rectangle);
 // Temp bounds object to calculate the display-object's content bounds
-const tempBounds = new Bounds();
+var tempBounds = new Bounds();
 // Temp rect to store children bounds
-const tempRect = new Rectangle();
+var tempRect = new Rectangle();
 // Empty array to swap children
-const EMPTY_ARRAY = [];
+var EMPTY_ARRAY = [];
 /**
  * It enable smart-masking, set this property. Before rendering the scene graph, you must invoke
  * {@code updateSmartMask} on each display-object to enable masking.
@@ -41,16 +41,18 @@ DisplayObject.prototype.smartMask = null;
  * @param skipUpdate - whether to not recalculate the transforms of each display-object. This is false
  *      by default because it is expected you will do this on your own.
  */
-DisplayObject.prototype.updateSmartMask = function updateSmartMask(recursive = true, skipUpdate = true) {
+DisplayObject.prototype.updateSmartMask = function updateSmartMask(recursive, skipUpdate) {
+    if (recursive === void 0) { recursive = true; }
+    if (skipUpdate === void 0) { skipUpdate = true; }
     if (!this.smartMask) {
         if (recursive) {
             return this.getBounds(skipUpdate, rectanglePool.allocate());
         }
         return null;
     }
-    const smartMask = this.smartMask;
-    const maskBounds = rectanglePool.allocate();
-    const unmaskedTargetBounds = rectanglePool.allocate();
+    var smartMask = this.smartMask;
+    var maskBounds = rectanglePool.allocate();
+    var unmaskedTargetBounds = rectanglePool.allocate();
     smartMask.getBounds(skipUpdate, maskBounds);
     if (!skipUpdate) {
         this._recursivePostUpdateTransform();
@@ -68,8 +70,8 @@ DisplayObject.prototype.updateSmartMask = function updateSmartMask(recursive = t
         unmaskedTargetBounds.copyFrom(this.filterArea);
     }
     else {
-        const originalBounds = this._bounds;
-        const originalChildren = this.children;
+        var originalBounds = this._bounds;
+        var originalChildren = this.children;
         tempBounds.clear();
         this._bounds = tempBounds;
         this.children = EMPTY_ARRAY;
@@ -79,23 +81,23 @@ DisplayObject.prototype.updateSmartMask = function updateSmartMask(recursive = t
         // copyFrom needed if Rectangle.EMPTY is returned
         unmaskedTargetBounds.copyFrom(tempBounds.getRectangle(unmaskedTargetBounds));
     }
-    const children = this.children;
+    var children = this.children;
     if (children && children.length) {
         // Use recursion to both update the smart-masks of children & calculate the unmasked target bounds
         if (recursive) {
-            for (let i = 0, j = children.length; i < j; i++) {
-                const child = children[i];
+            for (var i = 0, j = children.length; i < j; i++) {
+                var child = children[i];
                 if (!child.renderable || !child.visible) {
                     continue;
                 }
-                const childBounds = child.updateSmartMask(true, skipUpdate);
+                var childBounds = child.updateSmartMask(true, skipUpdate);
                 unmaskedTargetBounds.enlarge(childBounds);
                 rectanglePool.release(childBounds); // Recursive updates require the caller to release the returned rectangle
             }
         }
         else {
-            for (let i = 0, j = children.length; i < j; i++) {
-                const child = children[i];
+            for (var i = 0, j = children.length; i < j; i++) {
+                var child = children[i];
                 if (!child.renderable || !child.visible) {
                     continue;
                 }

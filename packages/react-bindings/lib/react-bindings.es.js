@@ -1,13 +1,13 @@
 /* eslint-disable */
  
 /*!
- * @pixi-essentials/react-bindings - v1.0.4
- * Compiled Thu, 20 Aug 2020 23:24:32 UTC
+ * @pixi-essentials/react-bindings - v1.0.5
+ * Compiled Sat, 22 Aug 2020 21:46:47 UTC
  *
  * @pixi-essentials/react-bindings is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
  * 
- * Copyright 2019-2020, Shukant K. Pal, All Rights Reserved
+ * Copyright 2019-2020, Shukant K. Pal <shukantpal@outlook.com>, All Rights Reserved
  */
 import { Matrix } from '@pixi/math';
 import { PixiComponent } from '@inlet/react-pixi';
@@ -22,10 +22,10 @@ import { Transformer as Transformer$1 } from '@pixi-essentials/transformer';
  * @param newProps - new props.
  */
 function applyEventProps(displayObject, events, oldProps, newProps) {
-    for (const handlerName in events) {
-        const oldHandler = oldProps[handlerName];
-        const newHandler = newProps[handlerName];
-        const event = events[handlerName];
+    for (var handlerName in events) {
+        var oldHandler = oldProps[handlerName];
+        var newHandler = newProps[handlerName];
+        var event = events[handlerName];
         if (oldHandler !== newHandler) {
             if (oldHandler) {
                 displayObject.off(event, oldHandler);
@@ -37,12 +37,12 @@ function applyEventProps(displayObject, events, oldProps, newProps) {
     }
 }
 
-const EMPTY = {};
-const IDENTITY_MATRIX = Matrix.IDENTITY; // Prevent reinstantation each time
+var EMPTY = {};
+var IDENTITY_MATRIX = Matrix.IDENTITY; // Prevent reinstantation each time
 /**
  * @ignore
  */
-const HANDLER_TO_EVENT = {
+var HANDLER_TO_EVENT = {
     transformchange: 'transformchange',
     transformcommit: 'transformcommit',
 };
@@ -51,9 +51,9 @@ const HANDLER_TO_EVENT = {
  *
  * @see https://github.com/SukantPal/pixi-essentials/tree/master/packages/transformer
  */
-const Transformer = PixiComponent('Transformer', {
-    create: (props) => new Transformer$1(props),
-    applyProps(instance, oldProps, newProps) {
+var Transformer = PixiComponent('Transformer', {
+    create: function (props) { return new Transformer$1(props); },
+    applyProps: function (instance, oldProps, newProps) {
         applyEventProps(instance, HANDLER_TO_EVENT, oldProps, newProps);
         instance.group = newProps.group || [];
         instance.centeredScaling = newProps.centeredScaling;
@@ -80,8 +80,8 @@ const Transformer = PixiComponent('Transformer', {
         if (oldProps.skewSnapTolerance !== newProps.skewSnapTolerance) {
             instance.skewSnapTolerance = newProps.skewSnapTolerance;
         }
-        const oldHandleStyle = oldProps.handleStyle || EMPTY;
-        const newHandleStyle = newProps.handleStyle || EMPTY;
+        var oldHandleStyle = oldProps.handleStyle || EMPTY;
+        var newHandleStyle = newProps.handleStyle || EMPTY;
         if (oldHandleStyle.color !== newHandleStyle.color
             || oldHandleStyle.outlineColor !== newHandleStyle.outlineColor
             || oldHandleStyle.outlineThickness !== newHandleStyle.outlineThickness
@@ -89,8 +89,8 @@ const Transformer = PixiComponent('Transformer', {
             || oldHandleStyle.shape !== newHandleStyle.shape) {
             instance.handleStyle = newHandleStyle;
         }
-        const oldWireframeStyle = oldProps.wireframeStyle || EMPTY;
-        const newWireframeStyle = newProps.wireframeStyle || EMPTY;
+        var oldWireframeStyle = oldProps.wireframeStyle || EMPTY;
+        var newWireframeStyle = newProps.wireframeStyle || EMPTY;
         if (oldWireframeStyle.color !== newWireframeStyle.color
             || oldWireframeStyle.thickness !== newWireframeStyle.thickness) {
             instance.wireframeStyle = newWireframeStyle;

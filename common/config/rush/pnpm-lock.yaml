@@ -1,6 +1,7 @@
 dependencies:
-  '@inlet/react-pixi': 5.0.3
+  '@inlet/react-pixi': 5.0.3_react@16.13.1
   '@microsoft/api-extractor': 7.7.13
+  '@pixi-build-tools/rollup-configurator': 1.0.3_tslib@2.0.1+typescript@4.0.2
   '@pixi/interaction': 5.3.3
   '@pixi/settings': 5.2.1
   '@pixi/ticker': 5.2.1
@@ -23,13 +24,35 @@ dependencies:
   '@types/react': 16.9.46
   gl-mat3: 2.0.0
   pixi-spatial-hash: 1.0.0
+  react: 16.13.1
+  tslib: 2.0.1
+  typescript: 4.0.2
 lockfileVersion: 5.1
 packages:
-  /@inlet/react-pixi/5.0.3:
+  /@babel/code-frame/7.10.4:
+    dependencies:
+      '@babel/highlight': 7.10.4
+    dev: false
+    resolution:
+      integrity: sha512-vG6SvB6oYEhvgisZNFRmRCUkLz11c7rp+tbNTynGqc6mS1d5ATd/sGyV6W0KZZnXRKMTzZDRgQT3Ou9jhpAfUg==
+  /@babel/helper-validator-identifier/7.10.4:
+    dev: false
+    resolution:
+      integrity: sha512-3U9y+43hz7ZM+rzG24Qe2mufW5KhvFg/NhnNph+i9mgCtdTCtMJuI1TMkrIUiK7Ix4PYlRF9I5dhqaLYA/ADXw==
+  /@babel/highlight/7.10.4:
+    dependencies:
+      '@babel/helper-validator-identifier': 7.10.4
+      chalk: 2.4.2
+      js-tokens: 4.0.0
+    dev: false
+    resolution:
+      integrity: sha512-i6rgnR/YgPEQzZZnbTHHuZdlE8qyoBNalD6F+q4vAFlcMEcqmkoG+mPqJYJCo63qPf74+Y1UZsl3l6f7/RIkmA==
+  /@inlet/react-pixi/5.0.3_react@16.13.1:
     dependencies:
       fbjs: 1.0.0
       performance-now: 2.1.0
-      react-reconciler: 0.25.1
+      react: 16.13.1
+      react-reconciler: 0.25.1_react@16.13.1
     dev: false
     peerDependencies:
       pixi.js: ^5.3.x
@@ -64,6 +87,27 @@ packages:
     dev: false
     resolution:
       integrity: sha512-IpgPxHrNxZiMNUSXqR1l/gePKPkfAmIKoDRP9hp7OwjU29ZR8WCJsOJ8iBKgw0Qk+pFwR+8Y1cy8ImLY6e9m4A==
+  /@pixi-build-tools/globals/1.0.2:
+    dev: false
+    resolution:
+      integrity: sha512-mDJyuxRKZaSuKqB2mUyyh7S8/bzFh510blMfKwq3Wwvjxdqsgb7TMkLm9mY1rvJ6gNr4WvFBuTIlIKOyTH1y4g==
+  /@pixi-build-tools/rollup-configurator/1.0.3_tslib@2.0.1+typescript@4.0.2:
+    dependencies:
+      '@pixi-build-tools/globals': 1.0.2
+      '@rollup/plugin-commonjs': 15.0.0
+      rollup-plugin-node-resolve: 5.2.0
+      rollup-plugin-replace: 2.2.0
+      rollup-plugin-sourcemaps: 0.6.2
+      rollup-plugin-string: 3.0.0
+      rollup-plugin-terser: 7.0.0
+      rollup-plugin-typescript: 1.0.1_tslib@2.0.1+typescript@4.0.2
+    dev: false
+    peerDependencies:
+      rollup: '*'
+      tslib: '*'
+      typescript: '*'
+    resolution:
+      integrity: sha512-gfF5912SRZR4cW3pjg/ljXDmmEY0inUwmpfobjxTBRE/PHtpMv9+mAuvT4iWXkM3aawLW8u5p3ICAN9LEMcy7A==
   /@pixi/accessibility/5.3.0:
     dependencies:
       '@pixi/core': 5.3.0
@@ -632,6 +676,34 @@ packages:
     dev: false
     resolution:
       integrity: sha512-GDP2h1Mph9Uei4zmJjzDK6GZ5S9O2A09VySVfWyKgWwP3SQ/Ss0bGYm4sE6+u1NMSz1WCrLgu66H82XuXs2Cbg==
+  /@rollup/plugin-commonjs/15.0.0:
+    dependencies:
+      '@rollup/pluginutils': 3.1.0
+      commondir: 1.0.1
+      estree-walker: 2.0.1
+      glob: 7.1.6
+      is-reference: 1.2.1
+      magic-string: 0.25.7
+      resolve: 1.17.0
+    dev: false
+    engines:
+      node: '>= 8.0.0'
+    peerDependencies:
+      rollup: ^2.22.0
+    resolution:
+      integrity: sha512-8uAdikHqVyrT32w1zB9VhW6uGwGjhKgnDNP4pQJsjdnyF4FgCj6/bmv24c7v2CuKhq32CcyCwRzMPEElaKkn0w==
+  /@rollup/pluginutils/3.1.0:
+    dependencies:
+      '@types/estree': 0.0.39
+      estree-walker: 1.0.1
+      picomatch: 2.2.2
+    dev: false
+    engines:
+      node: '>= 8.0.0'
+    peerDependencies:
+      rollup: ^1.20.0||^2.0.0
+    resolution:
+      integrity: sha512-GksZ6pr6TpIjHm8h9lSQ8pi8BE9VeubNT0OMJ3B5uZJ8pz73NPiqOtCog/x2/QzM1ENChPKxMDhiQuRHsqc+lg==
   /@rushstack/node-core-library/3.19.7:
     dependencies:
       '@types/node': 10.17.13
@@ -656,6 +728,14 @@ packages:
     dev: false
     resolution:
       integrity: sha512-VQgHxyPMTj3hIlq9SY1mctqx+Jj8kpQfoLvDlVSDNOyuYs8JYfkuY3OW/4+dO657yPmNhHpePRx0/Tje5ImNVQ==
+  /@types/estree/0.0.39:
+    dev: false
+    resolution:
+      integrity: sha512-EYNwp3bU+98cpU4lAWYYL7Zz+2gryWH1qbdDTidVd6hkiR6weksdbMadyXKXNPEkQFhXM+hVO9ZygomHXp+AIw==
+  /@types/estree/0.0.45:
+    dev: false
+    resolution:
+      integrity: sha512-jnqIUKDUqJbDIUxm0Uj7bnlMnRm1T/eZ9N+AVMqhPgzrba2GhGG5o/jCTwmdPK709nEZsGoMzXEDUjcXHa3W0g==
   /@types/node/10.17.13:
     dev: false
     resolution:
@@ -671,6 +751,20 @@ packages:
     dev: false
     resolution:
       integrity: sha512-dbHzO3aAq1lB3jRQuNpuZ/mnu+CdD3H0WVaaBQA8LTT3S33xhVBUj232T8M3tAhSWJs/D/UqORYUlJNl/8VQZg==
+  /@types/resolve/0.0.8:
+    dependencies:
+      '@types/node': 10.17.13
+    dev: false
+    resolution:
+      integrity: sha512-auApPaJf3NPfe18hSoJkp8EbZzer2ISk7o8mCC3M9he/a04+gbMF97NkpD2S8riMGvm4BMRI59/SZQSaLTKpsQ==
+  /ansi-styles/3.2.1:
+    dependencies:
+      color-convert: 1.9.3
+    dev: false
+    engines:
+      node: '>=4'
+    resolution:
+      integrity: sha512-VT0ZI6kZRdTh8YyJw3SMbYm/u+NqfsAxEpWO0Pf9sq8/e94WxxOpPKx9FR1FlyCtOVDNOQ+8ntlqFxiRc+r5qA==
   /argparse/1.0.10:
     dependencies:
       sprintf-js: 1.0.3
@@ -681,6 +775,54 @@ packages:
     dev: false
     resolution:
       integrity: sha1-5QNHYR1+aQlDIIu9r+vLwvuGbUY=
+  /atob/2.1.2:
+    dev: false
+    engines:
+      node: '>= 4.5.0'
+    hasBin: true
+    resolution:
+      integrity: sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
+  /balanced-match/1.0.0:
+    dev: false
+    resolution:
+      integrity: sha1-ibTRmasr7kneFk6gK4nORi1xt2c=
+  /brace-expansion/1.1.11:
+    dependencies:
+      balanced-match: 1.0.0
+      concat-map: 0.0.1
+    dev: false
+    resolution:
+      integrity: sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==
+  /buffer-from/1.1.1:
+    dev: false
+    resolution:
+      integrity: sha512-MQcXEUbCKtEo7bhqEs6560Hyd4XaovZlO/k9V3hjVUF/zwW7KBVdSK4gIt/bzwS9MbR5qob+F5jusZsb0YQK2A==
+  /builtin-modules/3.1.0:
+    dev: false
+    engines:
+      node: '>=6'
+    resolution:
+      integrity: sha512-k0KL0aWZuBt2lrxrcASWDfwOLMnodeQjodT/1SxEQAXsHANgo6ZC/VEaSEHCXt7aSTZ4/4H5LKa+tBXmW7Vtvw==
+  /chalk/2.4.2:
+    dependencies:
+      ansi-styles: 3.2.1
+      escape-string-regexp: 1.0.5
+      supports-color: 5.5.0
+    dev: false
+    engines:
+      node: '>=4'
+    resolution:
+      integrity: sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ==
+  /color-convert/1.9.3:
+    dependencies:
+      color-name: 1.1.3
+    dev: false
+    resolution:
+      integrity: sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==
+  /color-name/1.1.3:
+    dev: false
+    resolution:
+      integrity: sha1-p9BVi9icQveV3UIyj3QIMcpTvCU=
   /colors/1.2.5:
     dev: false
     engines:
@@ -689,9 +831,16 @@ packages:
       integrity: sha512-erNRLao/Y3Fv54qUa0LBB+//Uf3YwMUmdJinN20yMXm9zdKKqH9wt7R9IIVZ+K7ShzfpLV/Zg8+VyrBJYB4lpg==
   /commander/2.20.3:
     dev: false
-    optional: true
     resolution:
       integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
+  /commondir/1.0.1:
+    dev: false
+    resolution:
+      integrity: sha1-3dgA2gxmEnOTzKWVDqloo6rxJTs=
+  /concat-map/0.0.1:
+    dev: false
+    resolution:
+      integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=
   /core-js/2.6.11:
     deprecated: 'core-js@<3 is no longer maintained and not recommended for usage due to the number of issues. Please, upgrade your dependencies to the actual version of core-js@3.'
     dev: false
@@ -702,6 +851,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-ofovWglpqoqbfLNOTBNZLSbMuGrblAf1efvvArGKOZMBrIoJeu5UsAipQolkijtyQx5MtAzT/J9IHj/CEY1mJw==
+  /decode-uri-component/0.2.0:
+    dev: false
+    engines:
+      node: '>=0.10'
+    resolution:
+      integrity: sha1-6zkTMzRYd1y4TNGh+uBiEGu4dUU=
   /earcut/2.2.2:
     dev: false
     resolution:
@@ -716,6 +871,24 @@ packages:
     dev: false
     resolution:
       integrity: sha1-84kl8jyz4+jObNqP93T867sJDN4=
+  /escape-string-regexp/1.0.5:
+    dev: false
+    engines:
+      node: '>=0.8.0'
+    resolution:
+      integrity: sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
+  /estree-walker/0.6.1:
+    dev: false
+    resolution:
+      integrity: sha512-SqmZANLWS0mnatqbSfRP5g8OXZC12Fgg1IwNtLsyHDzJizORW4khDfjPqJZsemPWBB2uqykUah5YpQ6epsqC/w==
+  /estree-walker/1.0.1:
+    dev: false
+    resolution:
+      integrity: sha512-1fMXF3YP4pZZVozF8j/ZLfvnR8NSIljt56UhbZ5PeeDmmGHpgpdwQt7ITlGvYaQukCvuBRMLEiKiYC+oeIg4cg==
+  /estree-walker/2.0.1:
+    dev: false
+    resolution:
+      integrity: sha512-tF0hv+Yi2Ot1cwj9eYHtxC0jB9bmjacjQs6ZBTj82H8JwUywFuc+7E83NWfNMwHXZc11mjfFcVXPe9gEP4B8dg==
   /eventemitter3/3.1.2:
     dev: false
     resolution:
@@ -747,14 +920,41 @@ packages:
       node: '>=6 <7 || >=8'
     resolution:
       integrity: sha512-YJDaCJZEnBmcbw13fvdAM9AwNOJwOzrE4pqMqBq5nFiEqXUqHwlK4B+3pUw6JNvfSPtX05xFHtYy/1ni01eGCw==
+  /fs.realpath/1.0.0:
+    dev: false
+    resolution:
+      integrity: sha1-FQStJSMVjKpA20onh8sBQRmU6k8=
   /gl-mat3/2.0.0:
     dev: false
     resolution:
       integrity: sha512-/RfKyizhztkG+gH07lA0/OI9uXVEqDrvjza1U8kZc3Sjvn/iT1a99jyL1WtLzXMn/BYp0geE2/DsNp9GCXp28Q==
+  /glob/7.1.6:
+    dependencies:
+      fs.realpath: 1.0.0
+      inflight: 1.0.6
+      inherits: 2.0.4
+      minimatch: 3.0.4
+      once: 1.4.0
+      path-is-absolute: 1.0.1
+    dev: false
+    resolution:
+      integrity: sha512-LwaxwyZ72Lk7vZINtNNrywX0ZuLyStrdDtabefZKAY5ZGJhVtgdznluResxNmPitE0SAO+O26sWTHeKSI2wMBA==
   /graceful-fs/4.2.4:
     dev: false
     resolution:
       integrity: sha512-WjKPNJF79dtJAVniUlGGWHYGz2jWxT6VhN/4m1NdkbZ2nOsEF+cI1Edgql5zCRhs/VsQYRvrXctxktVXZUkixw==
+  /has-flag/3.0.0:
+    dev: false
+    engines:
+      node: '>=4'
+    resolution:
+      integrity: sha1-tdRU3CGZriJWmfNGfloH87lVuv0=
+  /has-flag/4.0.0:
+    dev: false
+    engines:
+      node: '>=8'
+    resolution:
+      integrity: sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==
   /iconv-lite/0.6.2:
     dependencies:
       safer-buffer: 2.1.2
@@ -763,6 +963,27 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha512-2y91h5OpQlolefMPmUlivelittSWy0rP+oYVpn6A7GwVHNE8AWzoYOBNmlwks3LobaJxgHCYZAnyNo2GgpNRNQ==
+  /inflight/1.0.6:
+    dependencies:
+      once: 1.4.0
+      wrappy: 1.0.2
+    dev: false
+    resolution:
+      integrity: sha1-Sb1jMdfQLQwJvJEKEHW6gWW1bfk=
+  /inherits/2.0.4:
+    dev: false
+    resolution:
+      integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
+  /is-module/1.0.0:
+    dev: false
+    resolution:
+      integrity: sha1-Mlj7afeMFNW4FdZkM2tM/7ZEFZE=
+  /is-reference/1.2.1:
+    dependencies:
+      '@types/estree': 0.0.45
+    dev: false
+    resolution:
+      integrity: sha512-U82MsXXiFIrjCK4otLT+o2NA2Cd2g5MLoOVXUZjIOhLurrRxpEXzI8O0KZHr3IjLvlAH1kTPYSuqer5T9ZVBKQ==
   /is-stream/1.1.0:
     dev: false
     engines:
@@ -780,6 +1001,16 @@ packages:
     dev: false
     resolution:
       integrity: sha1-YRrhrPFPXoH3KVB0coGf6XM1WKk=
+  /jest-worker/26.3.0:
+    dependencies:
+      '@types/node': 10.17.13
+      merge-stream: 2.0.0
+      supports-color: 7.1.0
+    dev: false
+    engines:
+      node: '>= 10.13.0'
+    resolution:
+      integrity: sha512-Vmpn2F6IASefL+DVBhPzI2J9/GJUsqzomdeN+P+dK8/jKxbh8R3BtFnx3FIta7wYlPU62cpJMJQo4kuOowcMnw==
   /jju/1.4.0:
     dev: false
     resolution:
@@ -813,10 +1044,26 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==
+  /magic-string/0.25.7:
+    dependencies:
+      sourcemap-codec: 1.4.8
+    dev: false
+    resolution:
+      integrity: sha512-4CrMT5DOHTDk4HYDlzmwu4FVCcIYI8gauveasrdCu2IKIFOJ3f0v/8MDGJCDL9oD2ppz/Av1b0Nj345H9M+XIA==
+  /merge-stream/2.0.0:
+    dev: false
+    resolution:
+      integrity: sha512-abv/qOcuPfk3URPfDzmZU1LKmuw8kT+0nIHvKrKgFrwifol/doWcdA4ZqsWQ8ENrFKkd67Mfpo/LovbIUsbt3w==
   /mini-signals/1.2.0:
     dev: false
     resolution:
       integrity: sha1-RbCAE8X65RokqhqTXNMXye1yHXQ=
+  /minimatch/3.0.4:
+    dependencies:
+      brace-expansion: 1.1.11
+    dev: false
+    resolution:
+      integrity: sha512-yJHVQEhyqPLUTgt9B83PXu6W3rx4MvvHvSUvToogpwoGDOUQ+yDrR0HRot+yOCdCO7u4hX3pWft6kWBBcqh0UA==
   /node-fetch/1.7.3:
     dependencies:
       encoding: 0.1.13
@@ -830,12 +1077,24 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-IQmtx5ZYh8/AXLvUQsrIv7s2CGM=
+  /once/1.4.0:
+    dependencies:
+      wrappy: 1.0.2
+    dev: false
+    resolution:
+      integrity: sha1-WDsap3WWHUsROsF9nFC6753Xa9E=
   /parse-uri/1.0.0:
     dev: false
     engines:
       node: '>= 0.10'
     resolution:
       integrity: sha1-KHLcwi8aeXrN4Vg9igrClVLdrCA=
+  /path-is-absolute/1.0.1:
+    dev: false
+    engines:
+      node: '>=0.10.0'
+    resolution:
+      integrity: sha1-F0uSaHNVNP+8es5r9TpanhtcX18=
   /path-parse/1.0.6:
     dev: false
     resolution:
@@ -844,6 +1103,12 @@ packages:
     dev: false
     resolution:
       integrity: sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
+  /picomatch/2.2.2:
+    dev: false
+    engines:
+      node: '>=8.6'
+    resolution:
+      integrity: sha512-q0M/9eZHzmr0AulXyPwNfZjtwZ/RBZlbN3K3CErVrk50T2ASYI7Bye0EvekFY3IP1Nt2DHu0re+V2ZHIpMkuWg==
   /pixi-batch-renderer/2.3.2_pixi.js@5.3.0:
     dependencies:
       pixi.js: 5.3.0
@@ -968,15 +1233,22 @@ packages:
       node: '>=0.4.x'
     resolution:
       integrity: sha1-sgmEkgO7Jd+CDadW50cAWHhSFiA=
+  /randombytes/2.1.0:
+    dependencies:
+      safe-buffer: 5.2.1
+    dev: false
+    resolution:
+      integrity: sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ==
   /react-is/16.13.1:
     dev: false
     resolution:
       integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
-  /react-reconciler/0.25.1:
+  /react-reconciler/0.25.1_react@16.13.1:
     dependencies:
       loose-envify: 1.4.0
       object-assign: 4.1.1
       prop-types: 15.7.2
+      react: 16.13.1
       scheduler: 0.19.1
     dev: false
     engines:
@@ -985,6 +1257,22 @@ packages:
       react: ^16.13.1
     resolution:
       integrity: sha512-R5UwsIvRcSs3w8n9k3tBoTtUHdVhu9u84EG7E5M0Jk9F5i6DA1pQzPfUZd6opYWGy56MJOtV3VADzy6DRwYDjw==
+  /react/16.13.1:
+    dependencies:
+      loose-envify: 1.4.0
+      object-assign: 4.1.1
+      prop-types: 15.7.2
+    dev: false
+    engines:
+      node: '>=0.10.0'
+    resolution:
+      integrity: sha512-YMZQQq32xHLX0bz5Mnibv1/LHb3Sqzngu7xstSM+vrkE5Kzr9xE0yMByK5kMoTK30YVJE61WfbxIFFvfeDKT1w==
+  /resolve/1.17.0:
+    dependencies:
+      path-parse: 1.0.6
+    dev: false
+    resolution:
+      integrity: sha512-ic+7JYiV8Vi2yzQGFWOkiZD5Z9z7O2Zhm9XMaTxdJExKasieFCr+yXZ/WmXsckHiKl12ar0y6XiXDx3m4RHn1w==
   /resolve/1.8.1:
     dependencies:
       path-parse: 1.0.6
@@ -998,6 +1286,79 @@ packages:
     dev: false
     resolution:
       integrity: sha512-fBuCRbEHdLCI1eglzQhUv9Rrdcmqkydr1r6uHE2cYHvRBrcLXeSmbE/qI/urFt8rPr/IGxir3BUwM5kUK8XoyA==
+  /rollup-plugin-node-resolve/5.2.0:
+    dependencies:
+      '@types/resolve': 0.0.8
+      builtin-modules: 3.1.0
+      is-module: 1.0.0
+      resolve: 1.17.0
+      rollup-pluginutils: 2.8.2
+    deprecated: This package has been deprecated and is no longer maintained. Please use @rollup/plugin-node-resolve.
+    dev: false
+    peerDependencies:
+      rollup: '>=1.11.0'
+    resolution:
+      integrity: sha512-jUlyaDXts7TW2CqQ4GaO5VJ4PwwaV8VUGA7+km3n6k6xtOEacf61u0VXwN80phY/evMcaS+9eIeJ9MOyDxt5Zw==
+  /rollup-plugin-replace/2.2.0:
+    dependencies:
+      magic-string: 0.25.7
+      rollup-pluginutils: 2.8.2
+    deprecated: This module has moved and is now available at @rollup/plugin-replace. Please update your dependencies. This version is no longer maintained.
+    dev: false
+    resolution:
+      integrity: sha512-/5bxtUPkDHyBJAKketb4NfaeZjL5yLZdeUihSfbF2PQMz+rSTEb8ARKoOl3UBT4m7/X+QOXJo3sLTcq+yMMYTA==
+  /rollup-plugin-sourcemaps/0.6.2:
+    dependencies:
+      '@rollup/pluginutils': 3.1.0
+      source-map-resolve: 0.6.0
+    dev: false
+    engines:
+      node: '>=10.0.0'
+    peerDependencies:
+      '@types/node': '>=10.0.0'
+      rollup: '>=0.31.2'
+    resolution:
+      integrity: sha512-9AwTKg3yRykwzemfLt71ySe0LvrAci+bpsOL1LaTYFk5BX4HF6X7DQfpHa74ANfSja3hyjiQkXCR8goSOnW//Q==
+  /rollup-plugin-string/3.0.0:
+    dependencies:
+      rollup-pluginutils: 2.8.2
+    dev: false
+    resolution:
+      integrity: sha512-vqyzgn9QefAgeKi+Y4A7jETeIAU1zQmS6VotH6bzm/zmUQEnYkpIGRaOBPY41oiWYV4JyBoGAaBjYMYuv+6wVw==
+  /rollup-plugin-terser/7.0.0:
+    dependencies:
+      '@babel/code-frame': 7.10.4
+      jest-worker: 26.3.0
+      serialize-javascript: 4.0.0
+      terser: 5.2.1
+    dev: false
+    peerDependencies:
+      rollup: ^2.0.0
+    resolution:
+      integrity: sha512-p/N3lLiFusCjYTLfVkoaiRTOGr5AESEaljMPH12MhOtoMkmTBhIAfuadrcWy4am1U0vU4WTxO9fi0K09O4CboQ==
+  /rollup-plugin-typescript/1.0.1_tslib@2.0.1+typescript@4.0.2:
+    dependencies:
+      resolve: 1.17.0
+      rollup-pluginutils: 2.8.2
+      tslib: 2.0.1
+      typescript: 4.0.2
+    deprecated: This package has been deprecated and is no longer maintained. Please use @rollup/plugin-typescript.
+    dev: false
+    peerDependencies:
+      tslib: '*'
+      typescript: '>=2.1.0'
+    resolution:
+      integrity: sha512-rwJDNn9jv/NsKZuyBb/h0jsclP4CJ58qbvZt2Q9zDIGILF2LtdtvCqMOL+Gq9IVq5MTrTlHZNrn8h7VjQgd8tw==
+  /rollup-pluginutils/2.8.2:
+    dependencies:
+      estree-walker: 0.6.1
+    dev: false
+    resolution:
+      integrity: sha512-EEp9NhnUkwY8aif6bxgovPHMoMoNr2FulJziTndpt5H9RdwC47GSGuII9XxpSdzVGM0GWrNPHV6ie1LTNJPaLQ==
+  /safe-buffer/5.2.1:
+    dev: false
+    resolution:
+      integrity: sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ==
   /safer-buffer/2.1.2:
     dev: false
     resolution:
@@ -1014,24 +1375,79 @@ packages:
     hasBin: true
     resolution:
       integrity: sha1-myzl094C0XxgEq0yaqa00M9U+U8=
+  /serialize-javascript/4.0.0:
+    dependencies:
+      randombytes: 2.1.0
+    dev: false
+    resolution:
+      integrity: sha512-GaNA54380uFefWghODBWEGisLZFj00nS5ACs6yHa9nLqlLpVLO8ChDGeKRjZnV4Nh4n0Qi7nhYZD/9fCPzEqkw==
   /setimmediate/1.0.5:
     dev: false
     resolution:
       integrity: sha1-KQy7Iy4waULX1+qbg3Mqt4VvgoU=
+  /source-map-resolve/0.6.0:
+    dependencies:
+      atob: 2.1.2
+      decode-uri-component: 0.2.0
+    dev: false
+    resolution:
+      integrity: sha512-KXBr9d/fO/bWo97NXsPIAW1bFSBOuCnjbNTBMO7N59hsv5i9yzRDfcYwwt0l04+VqnKC+EwzvJZIP/qkuMgR/w==
+  /source-map-support/0.5.19:
+    dependencies:
+      buffer-from: 1.1.1
+      source-map: 0.6.1
+    dev: false
+    resolution:
+      integrity: sha512-Wonm7zOCIJzBGQdB+thsPar0kYuCIzYvxZwlBa87yi/Mdjv7Tip2cyVbLj5o0cFPN4EVkuTwb3GDDyUx2DGnGw==
   /source-map/0.6.1:
     dev: false
     engines:
       node: '>=0.10.0'
     resolution:
       integrity: sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==
+  /sourcemap-codec/1.4.8:
+    dev: false
+    resolution:
+      integrity: sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==
   /sprintf-js/1.0.3:
     dev: false
     resolution:
       integrity: sha1-BOaSb2YolTVPPdAVIDYzuFcpfiw=
+  /supports-color/5.5.0:
+    dependencies:
+      has-flag: 3.0.0
+    dev: false
+    engines:
+      node: '>=4'
+    resolution:
+      integrity: sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==
+  /supports-color/7.1.0:
+    dependencies:
+      has-flag: 4.0.0
+    dev: false
+    engines:
+      node: '>=8'
+    resolution:
+      integrity: sha512-oRSIpR8pxT1Wr2FquTNnGet79b3BWljqOuoW/h4oBhxJ/HUbX5nX6JSruTkvXDCFMwDPvsaTTbvMLKZWSy0R5g==
+  /terser/5.2.1:
+    dependencies:
+      commander: 2.20.3
+      source-map: 0.6.1
+      source-map-support: 0.5.19
+    dev: false
+    engines:
+      node: '>=6.0.0'
+    hasBin: true
+    resolution:
+      integrity: sha512-/AOtjRtAMNGO0fIF6m8HfcvXTw/2AKpsOzDn36tA5RfhRdeXyb4RvHxJ5Pah7iL6dFkLk+gOnCaNHGwJPl6TrQ==
   /timsort/0.3.0:
     dev: false
     resolution:
       integrity: sha1-QFQRqOfmM5/mTbmiNN4R3DHgK9Q=
+  /tslib/2.0.1:
+    dev: false
+    resolution:
+      integrity: sha512-SgIkNheinmEBgx1IUNirK0TUD4X9yjjBRTqqjggWCU3pUEqIk3/Uwl3yRixYKT6WjQuGiwDv4NomL3wqRCj+CQ==
   /typescript/3.7.5:
     dev: false
     engines:
@@ -1039,6 +1455,13 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-/P5lkRXkWHNAbcJIiHPfRoKqyd7bsyCma1hZNUGfn20qm64T6ZBlrzprymeu918H+mB/0rIg2gGK/BXkhhYgBw==
+  /typescript/4.0.2:
+    dev: false
+    engines:
+      node: '>=4.2.0'
+    hasBin: true
+    resolution:
+      integrity: sha512-e4ERvRV2wb+rRZ/IQeb3jm2VxBsirQLpQhdxplZ2MEzGvDkkMmPglecnNDfSUBivMjP93vRbngYYDQqQ/78bcQ==
   /ua-parser-js/0.7.21:
     dev: false
     resolution:
@@ -1066,6 +1489,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-rsum2ulz2iuZH08mJkT0Yi6JnKhwdw4oeyMjokgxd+mmqYSd9cPpOQf01TIWgjxG/U4+QR+AwKq6lSbXVxkyoQ==
+  /wrappy/1.0.2:
+    dev: false
+    resolution:
+      integrity: sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=
   /z-schema/3.18.4:
     dependencies:
       lodash.get: 4.4.2
@@ -1079,26 +1506,33 @@ packages:
       integrity: sha512-DUOKC/IhbkdLKKiV89gw9DUauTV8U/8yJl1sjf6MtDmzevLKOF2duNJ495S3MFVjqZarr+qNGCPbkg4mu4PpLw==
   'file:projects/bounds.tgz':
     dependencies:
+      '@pixi-build-tools/rollup-configurator': 1.0.3_tslib@2.0.1+typescript@4.0.2
       '@pixi/math': 5.3.3
       pixi.js: 5.3.3
+      tslib: 2.0.1
+      typescript: 4.0.2
     dev: false
     name: '@rush-temp/bounds'
     resolution:
-      integrity: sha512-4YcLRxPFTQFRG12ppXZC92Y2e+F36TvlTi3Pc51l2DkBUABJcykRKUBgS+6FgzqvhXDvPoG3g8HQ4OnT4j5JwA==
+      integrity: sha512-6wdoUFv++bSynl5O9nLPE1+q6UBEhh+GQM6nVHLKOkAT41CV4SzS7AgMYITdXM86+QuIgkDGxy/hQcQNQ9BqDQ==
       tarball: 'file:projects/bounds.tgz'
     version: 0.0.0
   'file:projects/bvh.tgz':
     dependencies:
+      '@pixi-build-tools/rollup-configurator': 1.0.3_tslib@2.0.1+typescript@4.0.2
       '@pixi/core': 5.3.0
       '@pixi/math': 5.3.0
+      tslib: 2.0.1
+      typescript: 4.0.2
     dev: false
     name: '@rush-temp/bvh'
     resolution:
-      integrity: sha512-GrSUybsLYaQxzd9b3YMSnW1pRbOyTeN85ZQ14ZUBF3BRf5xVndwXNiW1YBbLo6hrzHj8ddj+WZ+4OvsPsO8+Ig==
+      integrity: sha512-0BmdQ5A+G7s4mbbPIUvSoEJm5zgKGMFIdOR+3DbNR+xD21xWn37wZl6rxXaPEDhHJOTKEL+yz+VZM9CwOIUBdg==
       tarball: 'file:projects/bvh.tgz'
     version: 0.0.0
   'file:projects/conic.tgz':
     dependencies:
+      '@pixi-build-tools/rollup-configurator': 1.0.3_tslib@2.0.1+typescript@4.0.2
       '@pixi/constants': 5.3.0
       '@pixi/core': 5.3.0
       '@pixi/display': 5.3.0
@@ -1106,141 +1540,183 @@ packages:
       gl-mat3: 2.0.0
       pixi-batch-renderer: 2.3.2_pixi.js@5.3.0
       pixi.js: 5.3.0
+      tslib: 2.0.1
+      typescript: 4.0.2
     dev: false
     name: '@rush-temp/conic'
     resolution:
-      integrity: sha512-5+v0mpbYQfEWJeSeHCxcqKUfAneZAlw/Swi/IXfeyrnNWdKjyfsG49rUuzrSIYsWha5VnoLqaknu+LRpJcO04w==
+      integrity: sha512-31uVw+a+G6N8rfv8NFh2JNZDPhCGwcAF2duNDYIwUukID6etzAmVQ9yYND4R64hh3ViFK9MowNTHZggfoFNJcQ==
       tarball: 'file:projects/conic.tgz'
     version: 0.0.0
   'file:projects/cull.tgz':
     dependencies:
+      '@pixi-build-tools/rollup-configurator': 1.0.3_tslib@2.0.1+typescript@4.0.2
       pixi.js: 5.3.0
+      tslib: 2.0.1
+      typescript: 4.0.2
     dev: false
     name: '@rush-temp/cull'
     resolution:
-      integrity: sha512-nLtc5E3liMhBJTfcTuw1mlfHDYuiu9QDJFbg9tVUDC+NzxWSAdnBjBTz26EODvgvj3dgYYauV+xtnv7XXYpkHQ==
+      integrity: sha512-ffPGQG1Lsm13DZbO8UlRfD1ng+SkH+pMaLaBozQDId7GFLdUPhxM7Pue5nvRn4SN2iK6Sz9Fa0+Yo+Nh9ZRGVg==
       tarball: 'file:projects/cull.tgz'
     version: 0.0.0
   'file:projects/data-half-edge-mesh.tgz':
+    dependencies:
+      '@pixi-build-tools/rollup-configurator': 1.0.3_tslib@2.0.1+typescript@4.0.2
+      tslib: 2.0.1
+      typescript: 4.0.2
     dev: false
     name: '@rush-temp/data-half-edge-mesh'
     resolution:
-      integrity: sha512-1wMp+0f73+vmNtWPOceHAPFyhnuuenr7sH23nR5vQsv4HMutI+1IeAPgOYybawRBIiSkMig9q5JBaGfzyrtUbQ==
+      integrity: sha512-ZbxEYP4R2mEH8DTzV4zpYUxTyb3kZ3C6PzbzTTWQT63066Csim2GjjAr99gMdpoBLnipqnHt38v/XjpISch0zw==
       tarball: 'file:projects/data-half-edge-mesh.tgz'
     version: 0.0.0
   'file:projects/filter-fft.tgz':
     dependencies:
+      '@pixi-build-tools/rollup-configurator': 1.0.3_tslib@2.0.1+typescript@4.0.2
       '@pixi/core': 5.3.0
+      tslib: 2.0.1
+      typescript: 4.0.2
     dev: false
     name: '@rush-temp/filter-fft'
     resolution:
-      integrity: sha512-VEGrmbc3lC4ZvBqRU5To9kgUs9mozge6+aXtL++37K3nfLvFeEYVbtzojswPkY8anitNx3AXAePgczJJvnB0yw==
+      integrity: sha512-sWb4DfUSbAatObu480Dzr/p+PULKYzdoNn2uftOmoGybdj39pFQMfT0k+eoC0HfPWOUQOS4coD4UEojtgqL7Gw==
       tarball: 'file:projects/filter-fft.tgz'
     version: 0.0.0
   'file:projects/instanced-renderer.tgz':
     dependencies:
+      '@pixi-build-tools/rollup-configurator': 1.0.3_tslib@2.0.1+typescript@4.0.2
       '@pixi/constants': 5.3.0
       '@pixi/core': 5.3.0
       '@pixi/utils': 5.3.0
+      tslib: 2.0.1
+      typescript: 4.0.2
     dev: false
     name: '@rush-temp/instanced-renderer'
     resolution:
-      integrity: sha512-ZsNdrCQml/lPJ6KmblUS/zhDP6QC0pLdiRQ6wNaG9LaIPTkRzYQ68dHpJWkUaJfpT2L9SmQFwzxPVvUsp0UMiA==
+      integrity: sha512-8vaf72OJVJFa2/w8r9/qtSV+39jrAM4TxgzAO/W6Ct8OtpyBeQ3wW0MVtEUrHHVpA/TeuVuM6R3JiLbMV9CuvQ==
       tarball: 'file:projects/instanced-renderer.tgz'
     version: 0.0.0
   'file:projects/mixin-smart-mask.tgz':
     dependencies:
+      '@pixi-build-tools/rollup-configurator': 1.0.3_tslib@2.0.1+typescript@4.0.2
       '@pixi/display': 5.3.0
       '@pixi/graphics': 5.3.0
       '@pixi/math': 5.3.0
+      tslib: 2.0.1
+      typescript: 4.0.2
     dev: false
     name: '@rush-temp/mixin-smart-mask'
     resolution:
-      integrity: sha512-uHYzdE+32L5V1S2uiVKc+V2gkHBwLEj3pyTKtEqkcNWdG/hDQr3ErxIVvu88HRa43ZePCwP042YhWaf08HQPFw==
+      integrity: sha512-rqboLf3SbCWsJZbFYRk2ZbuxCYVHdiZFrnvnFjg3PyrezzMRqYMyl2tYNUfvDvl7BDQ9Ffzw1lvJT8XYIGqaGA==
       tarball: 'file:projects/mixin-smart-mask.tgz'
     version: 0.0.0
   'file:projects/object-pool.tgz':
     dependencies:
       '@microsoft/api-extractor': 7.7.13
+      '@pixi-build-tools/rollup-configurator': 1.0.3_tslib@2.0.1+typescript@4.0.2
       '@pixi/settings': 5.2.1
       '@pixi/ticker': 5.2.1
+      tslib: 2.0.1
+      typescript: 4.0.2
     dev: false
     name: '@rush-temp/object-pool'
     resolution:
-      integrity: sha512-uUOHNGuqDUfOZFE2HrfMCrbU5P6Tj+RHYL946I51OTzAvhjEEsfkFjb/CrNrakA6py2cvqjw3zB5yFxbyh7LAA==
+      integrity: sha512-8ZFwHSMdZ62ZtM4xyBIkHws5/8qLiuRdyTZJm4DbuVHxVYuY+e+HU+9FnouUhIySsL+5FGyCHve+C4ckvS7hzQ==
       tarball: 'file:projects/object-pool.tgz'
     version: 0.0.0
   'file:projects/ooo-renderer.tgz':
     dependencies:
+      '@pixi-build-tools/rollup-configurator': 1.0.3_tslib@2.0.1+typescript@4.0.2
       pixi-batch-renderer: 2.3.2_pixi.js@5.3.0
       pixi-spatial-hash: 1.0.0_pixi.js@5.3.0
       pixi.js: 5.3.0
+      tslib: 2.0.1
+      typescript: 4.0.2
     dev: false
     name: '@rush-temp/ooo-renderer'
     resolution:
-      integrity: sha512-btGy7iP3vL8Ecb/h48d4jRYSL3ySEbv2IfE9LfCHZUoEJYxWQXwUqdtLE0Vkej56IA2+cy2s/u3QhoaNA5r5Jg==
+      integrity: sha512-7DF4DZdvKwOoYUzTi5O5PcEO9rSSeuRUQj1QedzDEJel9HS5I7+Ic9yg9aTpOQZzhjHc5xP9wy3zU/1LKY6EsA==
       tarball: 'file:projects/ooo-renderer.tgz'
     version: 0.0.0
   'file:projects/react-bindings.tgz':
     dependencies:
-      '@inlet/react-pixi': 5.0.3
+      '@inlet/react-pixi': 5.0.3_react@16.13.1
+      '@pixi-build-tools/rollup-configurator': 1.0.3_tslib@2.0.1+typescript@4.0.2
       '@pixi/display': 5.3.3
+      '@pixi/math': 5.3.3
       '@types/react': 16.9.46
+      react: 16.13.1
+      tslib: 2.0.1
+      typescript: 4.0.2
     dev: false
     name: '@rush-temp/react-bindings'
     resolution:
-      integrity: sha512-ZvZz0ziSwIdU7xQmUUQ6r2k5q35RMejdxiT9yrsz/UnN5GxWx72hqJXSzrPgTucPeDs7aJwoOcq0UQhQRBT2DA==
+      integrity: sha512-Z8lTL2Q5KJcTx96EPW7RLkx0uAnMeQJhCrLlhLB25NYG4uky2I+ievnmtjEiVX1p8HL5KO2JwYToPBmvauzH0A==
       tarball: 'file:projects/react-bindings.tgz'
     version: 0.0.0
   'file:projects/shader-preprocessor.tgz':
     dependencies:
+      '@pixi-build-tools/rollup-configurator': 1.0.3_tslib@2.0.1+typescript@4.0.2
       '@pixi/core': 5.3.0
       pixi.js: 5.3.0
+      tslib: 2.0.1
+      typescript: 4.0.2
     dev: false
     name: '@rush-temp/shader-preprocessor'
     resolution:
-      integrity: sha512-KISb+uBCWAsg8+l9aUGR/6a0sTsOdNvL4ur/gQXUVrlAw+JDo6+vgE627i4h0A31La/0kBAbNhhDTRC7aDmeLw==
+      integrity: sha512-G3ALXYRDs2LFj0a73/hvJCNk9MbGIp2UmVyjKpeVitTFBeNwY1qtgazeUSAIkyDHETXTq+PcHRwED9kjj3RRmA==
       tarball: 'file:projects/shader-preprocessor.tgz'
     version: 0.0.0
   'file:projects/system-g.tgz':
     dependencies:
+      '@pixi-build-tools/rollup-configurator': 1.0.3_tslib@2.0.1+typescript@4.0.2
       '@pixi/constants': 5.3.0
       '@pixi/core': 5.3.0
       '@pixi/math': 5.3.0
       '@pixi/utils': 5.3.0
+      tslib: 2.0.1
+      typescript: 4.0.2
     dev: false
     name: '@rush-temp/system-g'
     resolution:
-      integrity: sha512-ZWbN7UNSrdL1LLxonV1O2yeOLoeyhSIHjD/ZGYbpQ32hcaZ1rYlUozXtc9xaLbNjJ715Y7zeKd7LM6zEol2VGQ==
+      integrity: sha512-g6UIiF3Y2POiwLx58UQnjWQsc3OC2+Ufp//tZveszNWk6vQgo+Y2XWDqf2kzdXDPQMoaczBZqjAWwNduBi5PGQ==
       tarball: 'file:projects/system-g.tgz'
     version: 0.0.0
   'file:projects/transformer.tgz':
     dependencies:
+      '@pixi-build-tools/rollup-configurator': 1.0.3_tslib@2.0.1+typescript@4.0.2
       '@pixi/core': 5.3.3
       '@pixi/display': 5.3.3
       '@pixi/graphics': 5.3.3
       '@pixi/interaction': 5.3.3
       '@pixi/math': 5.3.3
       pixi.js: 5.3.3
+      tslib: 2.0.1
+      typescript: 4.0.2
     dev: false
     name: '@rush-temp/transformer'
     resolution:
-      integrity: sha512-M5AHm3RfYnfOLnWWOT6SiFMBaL4pmSnOAbtaSPBRvnSCHs3tVQDMwvWYO9R8UYK+fKUONE2LeCLkGiehIx/gyQ==
+      integrity: sha512-SbLevtEXMzRg6TkPAW/iFjFwnCn7UBIzwN0cYBpX2M9eJ6x1RsphESNn3senyk1AVhHh/bs++GFSVZtNnidF6A==
       tarball: 'file:projects/transformer.tgz'
     version: 0.0.0
   'file:projects/types.tgz':
     dependencies:
+      '@pixi-build-tools/rollup-configurator': 1.0.3_tslib@2.0.1+typescript@4.0.2
       '@pixi/math': 5.3.0
+      tslib: 2.0.1
+      typescript: 4.0.2
     dev: false
     name: '@rush-temp/types'
     resolution:
-      integrity: sha512-Xt7tbaR+vmukDAV8VoP+kuPmW6yxaBrc939PL7WxitBaIQ8JGd24/ahBDcuzkUy7jc/fb4mORcKA1Cz2BV231A==
+      integrity: sha512-BJ9gvxj9DwxjR/99sSrqPuryn/J3gazQsu5ZVttk4M+s64euugxAIg8C05e4uwJ+VHKfDwbpJU0h7aqKQHkGmg==
       tarball: 'file:projects/types.tgz'
     version: 0.0.0
 registry: ''
 specifiers:
-  '@inlet/react-pixi': ~5.0.3
+  '@inlet/react-pixi': ^5.0.0
   '@microsoft/api-extractor': 7.7.13
+  '@pixi-build-tools/rollup-configurator': 1.0.3
   '@pixi/interaction': ~5.3.3
   '@pixi/settings': 5.2.1
   '@pixi/ticker': 5.2.1
@@ -1260,6 +1736,9 @@ specifiers:
   '@rush-temp/system-g': 'file:./projects/system-g.tgz'
   '@rush-temp/transformer': 'file:./projects/transformer.tgz'
   '@rush-temp/types': 'file:./projects/types.tgz'
-  '@types/react': ~16.9.46
+  '@types/react': ^16.9.46
   gl-mat3: 2.0.0
   pixi-spatial-hash: 1.0.0
+  react: ^16.0.0
+  tslib: ~2.0.1
+  typescript: ~4.0.2

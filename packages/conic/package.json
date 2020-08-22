@@ -26,6 +26,7 @@
     "url": "git+https://github.com/SukantPal/pixi-essentials.git"
   },
   "scripts": {
+    "build": "rollup -c node_modules/@pixi-build-tools/rollup-configurator/index.js",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "bugs": {
@@ -47,6 +48,9 @@
     "@pixi/display": "^5.0.0",
     "@pixi/math": "^5.0.0",
     "pixi-batch-renderer": "2.3.2",
-    "pixi.js": "5.3.0"
+    "pixi.js": "5.3.0",
+    "@pixi-build-tools/rollup-configurator": "1.0.3",
+    "tslib": "~2.0.1",
+    "typescript": "~4.0.2"
   }
 }

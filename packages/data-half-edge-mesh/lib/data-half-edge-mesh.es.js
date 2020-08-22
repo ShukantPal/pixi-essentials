@@ -2,12 +2,12 @@
  
 /*!
  * @pixi-essentials/data-half-edge-mesh - v1.0.2
- * Compiled Thu, 20 Aug 2020 23:24:32 UTC
+ * Compiled Sat, 22 Aug 2020 21:46:46 UTC
  *
  * @pixi-essentials/data-half-edge-mesh is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
  * 
- * Copyright 2019-2020, Shukant K. Pal, All Rights Reserved
+ * Copyright 2019-2020, Shukant K. Pal <shukantpal@outlook.com>, All Rights Reserved
  */
 /**
  * Iterator for traversing over the edges forming a loop around a face. It loops in the counterclockwise

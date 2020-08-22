@@ -2,12 +2,12 @@
  
 /*!
  * @pixi-essentials/shader-preprocessor - v1.0.1
- * Compiled Thu, 20 Aug 2020 23:24:32 UTC
+ * Compiled Sat, 22 Aug 2020 21:46:45 UTC
  *
  * @pixi-essentials/shader-preprocessor is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
  * 
- * Copyright 2019-2020, Shukant K. Pal, All Rights Reserved
+ * Copyright 2019-2020, Shukant Pal <shukantpal@outlook.com>, All Rights Reserved
  */
 import { Program, Shader } from '@pixi/core';
 

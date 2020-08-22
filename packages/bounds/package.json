@@ -6,6 +6,7 @@
   "module": "lib/bounds.es.js",
   "bundle": "dist/bounds.js",
   "scripts": {
+    "build": "rollup -c node_modules/@pixi-build-tools/rollup-configurator/index.js",
     "compile": "rm -rf compile && tsc && api-extractor run"
   },
   "repository": {
@@ -29,7 +30,10 @@
   },
   "devDependencies": {
     "@pixi/math": "^5.3.3",
-    "pixi.js": "~5.3.3"
+    "pixi.js": "~5.3.3",
+    "@pixi-build-tools/rollup-configurator": "1.0.3",
+    "tslib": "~2.0.1",
+    "typescript": "~4.0.2"
   },
   "publishConfig": {
     "access": "public"
