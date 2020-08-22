@@ -14,7 +14,7 @@
 		"performance"
 	],
 	"scripts": {
-		"build": "rollup -c node_modules/@pixi-build-tools/rollup-configurator/index.js"
+		"build": "rollup -c node_modules/@pixi-build-tools/rollup-configurator/index.js --silent"
 	},
 	"author": "Shukant Pal <shukantpal@outlook.com>",
 	"homepage": "https://github.com/SukantPal/pixi-essentials/tree/master/packages/smart-mask#readme",

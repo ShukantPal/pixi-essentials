@@ -7,7 +7,7 @@
   "bundle": "dist/react-bindings.js",
   "namespace": "ReactPixi",
   "scripts": {
-    "build": "rollup -c node_modules/@pixi-build-tools/rollup-configurator/index.js"
+    "build": "rollup -c node_modules/@pixi-build-tools/rollup-configurator/index.js --silent"
   },
   "repository": {
     "type": "git",

@@ -32,7 +32,7 @@
     "url": "git+https://github.com/SukantPal/pixi-essentials.git"
   },
   "scripts": {
-    "build": "rollup -c node_modules/@pixi-build-tools/rollup-configurator/index.js",
+    "build": "rollup -c node_modules/@pixi-build-tools/rollup-configurator/index.js --silent",
     "compile": "rm -rf compile && tsc && api-extractor run"
   },
   "bugs": {
