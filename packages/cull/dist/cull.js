@@ -2,7 +2,7 @@
  
 /*!
  * @pixi-essentials/cull - v1.0.6
- * Compiled Sat, 22 Aug 2020 21:46:45 UTC
+ * Compiled Sat, 22 Aug 2020 22:41:53 UTC
  *
  * @pixi-essentials/cull is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license

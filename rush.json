@@ -110,6 +110,18 @@
       "projectFolder": "packages/types",
       "reviewCategory": "production",
       "shouldPublish": true
+    },
+    {
+      "packageName": "@pixi-essentials/eslint-config",
+      "projectFolder": "tools/eslint-config",
+      "reviewCategory": "production",
+      "shouldPublish": false
+    },
+    {
+      "packageName": "@pixi-essentials/unit-tests",
+      "projectFolder": "tools/unit-tests",
+      "reviewCategory": "production",
+      "shouldPublish": false
     }
   ]
 }

@@ -1,4 +1,6 @@
-{
+require('@rushstack/eslint-patch/modern-module-resolution');
+
+module.exports = {
     "env": {
         "browser": true,
         "es6": true
@@ -12,9 +14,6 @@
         "ecmaVersion": 2018,
         "sourceType": "module"
     },
-    "plugins": [
-        "@typescript-eslint"
-    ],
     "rules": {
         "@typescript-eslint/triple-slash-reference": [
             "off"
@@ -29,4 +28,4 @@
     "extends": [
         "@pixi/eslint-config"
     ]
-}
+};

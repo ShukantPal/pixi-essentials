@@ -48,6 +48,8 @@
 		"@pixi/math": "^5.0.0",
 		"@pixi-build-tools/rollup-configurator": "1.0.3",
 		"tslib": "~2.0.1",
-		"typescript": "~4.0.2"
+		"typescript": "~4.0.2",
+		"eslint": "~7.7.0",
+		"@pixi-essentials/eslint-config": "~1.0.0"
 	}
 }
