@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/transformer
 
-This log was last generated on Thu, 20 Aug 2020 15:34:06 GMT and should not be manually modified.
+This log was last generated on Sun, 23 Aug 2020 16:15:49 GMT and should not be manually modified.
+
+## 2.0.6
+Sun, 23 Aug 2020 16:15:49 GMT
+
+### Patches
+
+- Patch stuttering problem occuring due to delayed calculation of handle positions.
 
 ## 2.0.5
 Thu, 20 Aug 2020 15:34:06 GMT

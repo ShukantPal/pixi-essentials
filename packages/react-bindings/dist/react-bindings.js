@@ -2,7 +2,7 @@
  
 /*!
  * @pixi-essentials/react-bindings - v1.0.5
- * Compiled Sat, 22 Aug 2020 23:15:49 UTC
+ * Compiled Sun, 23 Aug 2020 16:15:29 UTC
  *
  * @pixi-essentials/react-bindings is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license

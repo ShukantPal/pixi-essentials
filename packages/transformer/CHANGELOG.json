@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/transformer",
   "entries": [
     {
+      "version": "2.0.6",
+      "tag": "@pixi-essentials/transformer_v2.0.6",
+      "date": "Sun, 23 Aug 2020 16:15:49 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Patch stuttering problem occuring due to delayed calculation of handle positions."
+          }
+        ]
+      }
+    },
+    {
       "version": "2.0.5",
       "tag": "@pixi-essentials/transformer_v2.0.5",
       "date": "Thu, 20 Aug 2020 15:34:06 GMT",

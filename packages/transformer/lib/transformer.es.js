@@ -2,7 +2,7 @@
  
 /*!
  * @pixi-essentials/transformer - v2.0.5
- * Compiled Sat, 22 Aug 2020 23:15:48 UTC
+ * Compiled Sun, 23 Aug 2020 16:15:28 UTC
  *
  * @pixi-essentials/transformer is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -352,6 +352,7 @@ var tempBounds = new OrientedBounds();
 var tempRect = new Rectangle();
 var tempHull = [new Point(), new Point(), new Point(), new Point()];
 var tempPointer = new Point();
+var emitMatrix = new Matrix(); // Used to pass to event handlers
 // Pool for allocating an arbitrary number of points
 var pointPool = ObjectPoolFactory.build(Point);
 /**
@@ -1151,10 +1152,11 @@ var Transformer = /** @class */ (function (_super) {
         for (var i = 0, j = group.length; i < j; i++) {
             multiplyTransform(group[i], delta, false);
         }
+        emitMatrix.copyFrom(delta);
         if (!skipUpdate) {
             this.updateGroupBounds();
         }
-        this.emit('transformchange', delta);
+        this.emit('transformchange', emitMatrix);
     };
     /**
      * Recalculates {@code this.groupBounds} at the same angle.
@@ -1164,6 +1166,7 @@ var Transformer = /** @class */ (function (_super) {
     Transformer.prototype.updateGroupBounds = function (rotation) {
         if (rotation === void 0) { rotation = this.groupBounds.rotation; }
         Transformer.calculateGroupOrientedBounds(this.group, rotation, this.groupBounds);
+        this.drawHandles(this.groupBounds);
     };
     /**
      * Snaps the given {@code angle} to one of the snapping angles, if possible.

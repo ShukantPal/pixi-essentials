@@ -2,7 +2,7 @@
  
 /*!
  * @pixi-essentials/transformer - v2.0.5
- * Compiled Sat, 22 Aug 2020 23:15:48 UTC
+ * Compiled Sun, 23 Aug 2020 16:15:28 UTC
  *
  * @pixi-essentials/transformer is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -543,6 +543,7 @@ this.PIXI = this.PIXI || {};
     var tempRect = new math.Rectangle();
     var tempHull = [new math.Point(), new math.Point(), new math.Point(), new math.Point()];
     var tempPointer = new math.Point();
+    var emitMatrix = new math.Matrix(); // Used to pass to event handlers
     // Pool for allocating an arbitrary number of points
     var pointPool = objectPool.ObjectPoolFactory.build(math.Point);
     /**
@@ -1342,10 +1343,11 @@ this.PIXI = this.PIXI || {};
             for (var i = 0, j = group.length; i < j; i++) {
                 multiplyTransform(group[i], delta, false);
             }
+            emitMatrix.copyFrom(delta);
             if (!skipUpdate) {
                 this.updateGroupBounds();
             }
-            this.emit('transformchange', delta);
+            this.emit('transformchange', emitMatrix);
         };
         /**
          * Recalculates {@code this.groupBounds} at the same angle.
@@ -1355,6 +1357,7 @@ this.PIXI = this.PIXI || {};
         Transformer.prototype.updateGroupBounds = function (rotation) {
             if (rotation === void 0) { rotation = this.groupBounds.rotation; }
             Transformer.calculateGroupOrientedBounds(this.group, rotation, this.groupBounds);
+            this.drawHandles(this.groupBounds);
         };
         /**
          * Snaps the given {@code angle} to one of the snapping angles, if possible.
