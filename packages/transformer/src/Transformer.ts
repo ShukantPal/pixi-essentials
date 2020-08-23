@@ -23,6 +23,7 @@ const tempBounds = new OrientedBounds();
 const tempRect = new Rectangle();
 const tempHull = [new Point(), new Point(), new Point(), new Point()];
 const tempPointer = new Point();
+const emitMatrix = new Matrix();// Used to pass to event handlers
 
 // Pool for allocating an arbitrary number of points
 const pointPool = ObjectPoolFactory.build(Point as any);
@@ -1139,12 +1140,14 @@ export class Transformer extends Container
             multiplyTransform(group[i], delta, false);
         }
 
+        emitMatrix.copyFrom(delta);
+
         if (!skipUpdate)
         {
             this.updateGroupBounds();
         }
 
-        this.emit('transformchange', delta);
+        this.emit('transformchange', emitMatrix);
     }
 
     /**
@@ -1155,6 +1158,7 @@ export class Transformer extends Container
     private updateGroupBounds(rotation: number = this.groupBounds.rotation): void
     {
         Transformer.calculateGroupOrientedBounds(this.group, rotation, this.groupBounds);
+        this.drawHandles(this.groupBounds);
     }
 
     /**
