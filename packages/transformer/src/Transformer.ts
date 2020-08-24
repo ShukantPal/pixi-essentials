@@ -146,6 +146,7 @@ const DEFAULT_ROTATION_SNAPS = [
     Math.PI / 2,
     Math.PI * 3 / 4,
     Math.PI,
+    0,
     -Math.PI / 4,
     -Math.PI / 2,
     -Math.PI * 3 / 4,
@@ -768,7 +769,7 @@ export class Transformer extends Container
 
         const matrix = tempMatrix.identity();
 
-        if (xDir !== 0)
+        if (xDir !== 0 && sx !== 0)
         {
             // Origin of horizontal scaling - a point which does not move after applying the transform
             // eslint-disable-next-line no-nested-ternary
@@ -781,7 +782,7 @@ export class Transformer extends Container
                 .translate(hsOrigin.x, hsOrigin.y);
         }
 
-        if (yDir !== 0)
+        if (yDir !== 0 && sy !== 0)
         {
             // Origin of vertical scaling - a point which does not move after applying the transform
             // eslint-disable-next-line no-nested-ternary

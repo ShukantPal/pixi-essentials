@@ -1,8 +1,8 @@
 /* eslint-disable */
  
 /*!
- * @pixi-essentials/transformer - v2.0.5
- * Compiled Sun, 23 Aug 2020 16:15:28 UTC
+ * @pixi-essentials/transformer - v2.0.6
+ * Compiled Mon, 24 Aug 2020 18:29:07 UTC
  *
  * @pixi-essentials/transformer is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -430,6 +430,7 @@ var DEFAULT_ROTATION_SNAPS = [
     Math.PI / 2,
     Math.PI * 3 / 4,
     Math.PI,
+    0,
     -Math.PI / 4,
     -Math.PI / 2,
     -Math.PI * 3 / 4,
@@ -616,7 +617,7 @@ var Transformer = /** @class */ (function (_super) {
             var sx = 1 + (du * xDir / innerBounds.width);
             var sy = 1 + (dv * yDir / innerBounds.height);
             var matrix = tempMatrix$2.identity();
-            if (xDir !== 0) {
+            if (xDir !== 0 && sx !== 0) {
                 // Origin of horizontal scaling - a point which does not move after applying the transform
                 // eslint-disable-next-line no-nested-ternary
                 var hsOrigin = !_this.centeredScaling ? (xDir === 1 ? bounds.topLeft : bounds.topRight) : bounds.center;
@@ -626,7 +627,7 @@ var Transformer = /** @class */ (function (_super) {
                     .rotate(angle)
                     .translate(hsOrigin.x, hsOrigin.y);
             }
-            if (yDir !== 0) {
+            if (yDir !== 0 && sy !== 0) {
                 // Origin of vertical scaling - a point which does not move after applying the transform
                 // eslint-disable-next-line no-nested-ternary
                 var vsOrigin = !_this.centeredScaling ? (yDir === 1 ? bounds.topLeft : bounds.bottomLeft) : bounds.center;

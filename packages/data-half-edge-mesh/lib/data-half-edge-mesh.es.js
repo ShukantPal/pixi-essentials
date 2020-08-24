@@ -2,7 +2,7 @@
  
 /*!
  * @pixi-essentials/data-half-edge-mesh - v1.0.2
- * Compiled Sat, 22 Aug 2020 23:15:48 UTC
+ * Compiled Mon, 24 Aug 2020 18:29:06 UTC
  *
  * @pixi-essentials/data-half-edge-mesh is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
