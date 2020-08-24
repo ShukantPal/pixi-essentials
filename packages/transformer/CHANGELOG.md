@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/transformer
 
-This log was last generated on Mon, 24 Aug 2020 19:11:36 GMT and should not be manually modified.
+This log was last generated on Mon, 24 Aug 2020 19:21:37 GMT and should not be manually modified.
+
+## 2.0.8
+Mon, 24 Aug 2020 19:21:37 GMT
+
+### Patches
+
+- Remove console.log() statement in scaleGroup()
 
 ## 2.0.7
 Mon, 24 Aug 2020 19:11:36 GMT

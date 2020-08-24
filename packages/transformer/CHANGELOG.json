@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/transformer",
   "entries": [
     {
+      "version": "2.0.8",
+      "tag": "@pixi-essentials/transformer_v2.0.8",
+      "date": "Mon, 24 Aug 2020 19:21:37 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Remove console.log() statement in scaleGroup()"
+          }
+        ]
+      }
+    },
+    {
       "version": "2.0.7",
       "tag": "@pixi-essentials/transformer_v2.0.7",
       "date": "Mon, 24 Aug 2020 19:11:36 GMT",
