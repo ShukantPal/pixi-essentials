@@ -201,7 +201,6 @@ const DEFAULT_WIREFRAME_STYLE: ITransformerStyle = {
  */
 export interface ITransformerOptions
 {
-    allowNegativeScale: boolean;
     centeredScaling: boolean;
     enabledHandles?: Array<Handle>;
     group: DisplayObject[];
@@ -237,7 +236,6 @@ export class Transformer extends Container
 {
     public group: DisplayObject[];
 
-    public allowNegativeScaling: boolean;
     public centeredScaling: boolean;
     public projectionTransform: Matrix;
     public rotationSnaps: number[];
@@ -324,11 +322,6 @@ export class Transformer extends Container
          * The group of display-objects under transformation.
          */
         this.group = options.group || [];
-
-        /**
-         * This will allow the group it be "flipped" using the scale handles.
-         */
-        this.allowNegativeScaling = !!options.allowNegativeScale;
 
         /**
          * This will prevent the wireframe's center from shifting on scaling.
