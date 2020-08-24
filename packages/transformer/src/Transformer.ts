@@ -201,10 +201,11 @@ const DEFAULT_WIREFRAME_STYLE: ITransformerStyle = {
  */
 export interface ITransformerOptions
 {
+    allowNegativeScale: boolean;
     centeredScaling: boolean;
     enabledHandles?: Array<Handle>;
     group: DisplayObject[];
-    handleConstructor: typeof DisplayObject;
+    handleConstructor: typeof TransformerHandle;
     handleStyle: Partial<ITransformerHandleStyle>;
     rotateEnabled?: boolean;
     rotationSnaps?: number[];
@@ -236,6 +237,7 @@ export class Transformer extends Container
 {
     public group: DisplayObject[];
 
+    public allowNegativeScaling: boolean;
     public centeredScaling: boolean;
     public projectionTransform: Matrix;
     public rotationSnaps: number[];
@@ -322,6 +324,11 @@ export class Transformer extends Container
          * The group of display-objects under transformation.
          */
         this.group = options.group || [];
+
+        /**
+         * This will allow the group it be "flipped" using the scale handles.
+         */
+        this.allowNegativeScaling = !!options.allowNegativeScale;
 
         /**
          * This will prevent the wireframe's center from shifting on scaling.
@@ -432,18 +439,22 @@ export class Transformer extends Container
         };
         const scaleHandles = SCALE_HANDLES.reduce((scaleHandles, handleKey: ScaleHandle) =>
         {
-            const handleDelta = (pointerPosition: Point): void =>
-            {
-                this.scaleGroup(handleKey as ScaleHandle, pointerPosition);
-            };
-
-            scaleHandles[handleKey] = new HandleConstructor(
+            const handle = new HandleConstructor(
                 handleKey,
                 handleStyle,
-                handleDelta,
+                null,
                 this.commitGroup,
                 HANDLE_TO_CURSOR[handleKey]);
-            scaleHandles[handleKey].visible = this._scaleEnabled;
+
+            handle.onHandleDelta = (pointerPosition: Point): void =>
+            {
+                // Scale handles can be swapped with each other, i.e. handle.handle can change!
+                this.scaleGroup(handle.handle as ScaleHandle, pointerPosition);
+            };
+
+            handle.visible = this._scaleEnabled;
+
+            scaleHandles[handleKey] = handle;
             this.addChild(scaleHandles[handleKey]);
 
             return scaleHandles;
@@ -737,6 +748,7 @@ export class Transformer extends Container
         const xDir = SCALE_COMPONENTS[handle].x;
         const yDir = SCALE_COMPONENTS[handle].y;
 
+        const handles = this.handles;
         const bounds = this.groupBounds;
         const angle = bounds.rotation;
         const innerBounds = bounds.innerBounds;
@@ -767,7 +779,11 @@ export class Transformer extends Container
         const sx = 1 + (du * xDir / innerBounds.width);
         const sy = 1 + (dv * yDir / innerBounds.height);
 
+        console.log(sx, sy, handle);
+
         const matrix = tempMatrix.identity();
+
+        // NOTE: Do not apply scaling when sx,sy = 0 to prevent matrices from being degenerate.
 
         if (xDir !== 0 && sx !== 0)
         {
@@ -793,6 +809,26 @@ export class Transformer extends Container
                 .scale(1, sy)
                 .rotate(angle)
                 .translate(vsOrigin.x, vsOrigin.y);
+        }
+
+        // Handle flips along y-axis; flips along x-axis do not need to be handled because they introduce a 180° rotation.
+        if (sy < 0)
+        {
+            switch (handle)
+            {
+                case 'topLeft':
+                case 'bottomLeft':
+                    this.swapHandles(handles.topLeft, handles.bottomLeft);
+                    break;
+                case 'topCenter':
+                case 'bottomCenter':
+                    this.swapHandles(handles.topCenter, handles.bottomCenter);
+                    break;
+                case 'topRight':
+                case 'bottomRight':
+                    this.swapHandles(handles.topRight, handles.bottomRight);
+                    break;
+            }
         }
 
         this.prependTransform(matrix);
@@ -1188,6 +1224,24 @@ export class Transformer extends Container
         }
 
         return angle;
+    }
+
+    /**
+     * Swap the handles represented by the two {@code TransformerHandle} instances.
+     *
+     * @param handle0
+     * @param handle1
+     */
+    private swapHandles(handle0: TransformerHandle, handle1: TransformerHandle): void
+    {
+        const key0 = handle0.handle;
+        const key1 = handle1.handle;
+
+        handle0.handle = key1;
+        handle1.handle = key0;
+
+        this.handles[key0] = handle1;
+        this.handles[key1] = handle0;
     }
 
     /**

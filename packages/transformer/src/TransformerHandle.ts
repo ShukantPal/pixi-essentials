@@ -107,6 +107,16 @@ export class TransformerHandle extends Graphics
         this.on('mouseupoutside', this.onPointerUp, this);
     }
 
+    get handle(): Handle
+    {
+        return this._handle;
+    }
+    set handle(handle: Handle)
+    {
+        this._handle = handle;
+        this._dirty = true;
+    }
+
     /**
      * The currently applied handle style.
      */
@@ -142,7 +152,8 @@ export class TransformerHandle extends Graphics
 
         const radius = style.radius;
 
-        this.lineStyle(style.outlineThickness, style.outlineColor)
+        this.clear()
+            .lineStyle(style.outlineThickness, style.outlineColor)
             .beginFill(style.color);
 
         if (style.shape === 'square')
