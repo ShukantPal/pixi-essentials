@@ -1,6 +1,9 @@
 node_modules
 compile
 
+packages/*/lib
+packages/*/dist
+
 # Logs
 *.log
 npm-debug.log*
