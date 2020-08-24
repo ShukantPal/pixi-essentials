@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/transformer
 
-This log was last generated on Sun, 23 Aug 2020 16:15:49 GMT and should not be manually modified.
+This log was last generated on Mon, 24 Aug 2020 19:11:36 GMT and should not be manually modified.
+
+## 2.0.7
+Mon, 24 Aug 2020 19:11:36 GMT
+
+### Patches
+
+- Fix bugs with negative scaling (flipping), clear transformer handles when redrawing, do not allow a scaling factor of 0.
 
 ## 2.0.6
 Sun, 23 Aug 2020 16:15:49 GMT
