@@ -802,8 +802,10 @@ export class Transformer extends Container
                 .translate(vsOrigin.x, vsOrigin.y);
         }
 
-        // Handle flips along y-axis; flips along x-axis do not need to be handled because they introduce a 180° rotation.
-        if (sy < 0)
+        // Handles flips along x & y axis. Handles are always flipped along the y-axis, however. This is
+        // because a negative x-scale adds 180° to the rotation - as a result, the handles are automatically
+        // flipped along the x-axis but also the y-axis - and this needs to be reversed (by flipping again).
+        if (sy < 0 || sx < 0)
         {
             switch (handle)
             {
@@ -1227,9 +1229,15 @@ export class Transformer extends Container
     {
         const key0 = handle0.handle;
         const key1 = handle1.handle;
+        const x0 = handle0.x;
+        const x1 = handle1.x;
+        const y0 = handle0.y;
+        const y1 = handle1.y;
 
         handle0.handle = key1;
         handle1.handle = key0;
+        handle0.position.set(x1, y1);
+        handle1.position.set(x0, y0);
 
         this.handles[key0] = handle1;
         this.handles[key1] = handle0;
