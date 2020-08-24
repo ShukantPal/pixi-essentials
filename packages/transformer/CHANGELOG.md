@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/transformer
 
-This log was last generated on Mon, 24 Aug 2020 19:21:37 GMT and should not be manually modified.
+This log was last generated on Mon, 24 Aug 2020 20:29:11 GMT and should not be manually modified.
+
+## 2.0.10
+Mon, 24 Aug 2020 20:29:11 GMT
+
+### Patches
+
+- Patch handle swapping correctly when flipping along x-axis using a non-middle handles.
 
 ## 2.0.8
 Mon, 24 Aug 2020 19:21:37 GMT

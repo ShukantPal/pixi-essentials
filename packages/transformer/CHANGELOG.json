@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/transformer",
   "entries": [
     {
+      "version": "2.0.10",
+      "tag": "@pixi-essentials/transformer_v2.0.10",
+      "date": "Mon, 24 Aug 2020 20:29:11 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Patch handle swapping correctly when flipping along x-axis using a non-middle handles."
+          }
+        ]
+      }
+    },
+    {
       "version": "2.0.8",
       "tag": "@pixi-essentials/transformer_v2.0.8",
       "date": "Mon, 24 Aug 2020 19:21:37 GMT",
