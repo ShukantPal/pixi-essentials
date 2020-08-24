@@ -772,8 +772,6 @@ export class Transformer extends Container
         const sx = 1 + (du * xDir / innerBounds.width);
         const sy = 1 + (dv * yDir / innerBounds.height);
 
-        console.log(sx, sy, handle);
-
         const matrix = tempMatrix.identity();
 
         // NOTE: Do not apply scaling when sx,sy = 0 to prevent matrices from being degenerate.
