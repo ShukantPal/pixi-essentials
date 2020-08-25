@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/transformer
 
-This log was last generated on Mon, 24 Aug 2020 20:29:11 GMT and should not be manually modified.
+This log was last generated on Tue, 25 Aug 2020 14:04:16 GMT and should not be manually modified.
+
+## 2.0.11
+Tue, 25 Aug 2020 14:04:16 GMT
+
+### Patches
+
+- Patch flipping behaviour when both x,y axes are flipped
 
 ## 2.0.10
 Mon, 24 Aug 2020 20:29:11 GMT

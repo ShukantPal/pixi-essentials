@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/transformer",
   "entries": [
     {
+      "version": "2.0.11",
+      "tag": "@pixi-essentials/transformer_v2.0.11",
+      "date": "Tue, 25 Aug 2020 14:04:16 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Patch flipping behaviour when both x,y axes are flipped"
+          }
+        ]
+      }
+    },
+    {
       "version": "2.0.10",
       "tag": "@pixi-essentials/transformer_v2.0.10",
       "date": "Mon, 24 Aug 2020 20:29:11 GMT",
