@@ -805,7 +805,9 @@ export class Transformer extends Container
         // Handles flips along x & y axis. Handles are always flipped along the y-axis, however. This is
         // because a negative x-scale adds 180° to the rotation - as a result, the handles are automatically
         // flipped along the x-axis but also the y-axis - and this needs to be reversed (by flipping again).
-        if (sy < 0 || sx < 0)
+        //
+        // NOTE: When both x & y axes are flipped, then there is no need for swapping b/c they cancel out.
+        if ((sy < 0 || sx < 0) && !(sy < 0 && sx < 0))
         {
             switch (handle)
             {
@@ -1229,6 +1231,8 @@ export class Transformer extends Container
     {
         const key0 = handle0.handle;
         const key1 = handle1.handle;
+        const cursor0 = handle0.cursor;
+        const cursor1 = handle1.cursor;
         const x0 = handle0.x;
         const x1 = handle1.x;
         const y0 = handle0.y;
@@ -1238,6 +1242,8 @@ export class Transformer extends Container
         handle1.handle = key0;
         handle0.position.set(x1, y1);
         handle1.position.set(x0, y0);
+        handle0.cursor = cursor1;
+        handle1.cursor = cursor0;
 
         this.handles[key0] = handle1;
         this.handles[key1] = handle0;
