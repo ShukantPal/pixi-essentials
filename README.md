@@ -4,16 +4,33 @@
 
 :point_right: This project is a collection of essential packages for building performant, enterprise-level applications on top of the PixiJS library. It includes several optimization plugins, frequency-domain filters, display-object libraries, and mixins on the core API.
 
+## General :package:
+
 | Package            | Brief |
 | -----------------------------------------------| ----------------------------------------------------------------------------------------------------------------------------------------------------|
-| **@pixi-essentials/bounds**| This package contains utilities for handling bounding boxes. This includes axis-aligned and oriented bounding boxes.  |
-| **@pixi-essentials/conic**| This renders antialiased quadric curves (including conic sections, quadratic bézier curves) in a resolution-independent manner. Its shader does not require any geometry tessellation and modifying the conic curve does not introduce extra computation. |
-| **@pixi-essentials/cull** | This is an optimized, recursive scene graph culling package. It sets the visibility objects based on whether they are outside of the screen or not. |
-| **@pixi-essentials/mixin-smart-mask** | This packages ensures that masks are only applied when required, based on the bounds of the target display-object and the mask. It can significantly improve batching efficiency if your scene graph heavily relies on masking. |
-| **@pixi-essentials/object-pool** | This is an object pool custom-tailored for PixiJS applications. It exclusively features an auto-GC mechanism that prevents the pool from staying too large relative to your application's need.|
-| **@pixi-essentials/ooo-renderer** | This is an optimized batch renderer that can re-order display-object renders to increase batching efficiency. It uses the same API surface as [pixi-batch-renderer]{@link https://github.com/pixijs/pixi-batch-renderer} |
-| **@pixi-essentials/react-bindings**                 | This contains React components for essential display-objects, with [@inlet/react-pixi](https://github.com/inlet/react-pixi) |
-| **@pixi-essentials/plugin-g** | This is a plugin containing useful geometry manipulation utilities, The package also contains various types of useful geometries |
-| **@pixi-essentials/shader-preprocessor** | (WIP) This package provides compile-time %macro% preprocessing. You can dynamically generate shaders based on the macros value set provided & a shader template.|
-| **@pixi-essentials/transformer** | The `Transformer` display-object is an interactive interface for editing the transforms of display-object groups by scaling & rotating them |
-| **@pixi-essentials/uber** | (TODO) This package provides a basic mechanism to generate a uber-shader that can shade multiple types of objects in one draw call. It is designed to be used along with [pixi-batch-renderer](https://github.com/pixijs/pixi-batch-renderer).|
+| @pixi-essentials/bounds | axis-aligned, oriented bounding boxes |
+| @pixi-essentials/plugin-g | (unreleased) This is a plugin containing useful geometry manipulation utilities, The package also contains various types of useful geometries |
+| @pixi-essentials/shader-preprocessor | (unreleased) This package provides compile-time %macro% preprocessing. You can dynamically generate shaders based on the macros value set provided & a shader template.|
+
+## Performance Optimizations :racehorse:
+
+| Package                   | Brief          |
+| ------------------------- | -------------- |
+| @pixi-essentials/cull | prevents rendering of objects outside of the viewable screen |
+| @pixi-essentials/mixin-smart-mask| skips masking objects when do so has no effect    |
+| @pixi-essentials/object-pool | object-pool for PixiJS applications, with niche features like array-allocation and garbage collection |
+| @pixi-essentials/ooo-renderer | (unreleased) reorders display object rendering to maximize batching efficiency while preserving local z-order |
+| @pixi-essentials/uber | (unreleased) uber-shader support |
+
+## DisplayObject Kits :paintbrush:
+
+| Package                   | Brief          |
+| ------------------------- | -------------- |
+| @pixi-essentials/conic | resolution-independent filled quadric curve rendering |
+| @pixi-essentials/transformer | interactive interface for editing the transforms in groups |
+
+## Integrations :atom_symbol:
+
+| Package                   | Brief          |
+| ------------------------- | -------------- |
+| @pixi-essentials/react-bindings | This contains React components for essential display-objects, with [@inlet/react-pixi](https://github.com/inlet/react-pixi) |
