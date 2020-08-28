@@ -2,7 +2,6 @@ dependencies:
   '@inlet/react-pixi': 5.0.3_react@16.13.1
   '@microsoft/api-extractor': 7.7.13
   '@pixi-build-tools/floss-rush-monorepo': 1.0.1
-  '@pixi-build-tools/rollup-configurator': 1.0.3_tslib@2.0.1+typescript@4.0.2
   '@pixi/eslint-config': 1.0.1_eslint@7.7.0+typescript@4.0.2
   '@pixi/interaction': 5.3.3
   '@pixi/settings': 5.2.1
@@ -13,7 +12,8 @@ dependencies:
   '@rush-temp/conic': 'file:projects/conic.tgz'
   '@rush-temp/cull': 'file:projects/cull.tgz'
   '@rush-temp/data-half-edge-mesh': 'file:projects/data-half-edge-mesh.tgz'
-  '@rush-temp/eslint-config': 'file:projects/eslint-config.tgz'
+  '@rush-temp/diagnostic-geometry': 'file:projects/diagnostic-geometry.tgz_tslib@2.0.1+typescript@4.0.2'
+  '@rush-temp/eslint-config': 'file:projects/eslint-config.tgz_eslint@7.7.0+typescript@4.0.2'
   '@rush-temp/filter-fft': 'file:projects/filter-fft.tgz'
   '@rush-temp/instanced-renderer': 'file:projects/instanced-renderer.tgz'
   '@rush-temp/mixin-smart-mask': 'file:projects/mixin-smart-mask.tgz'
@@ -182,6 +182,23 @@ packages:
       typescript: '*'
     resolution:
       integrity: sha512-gfF5912SRZR4cW3pjg/ljXDmmEY0inUwmpfobjxTBRE/PHtpMv9+mAuvT4iWXkM3aawLW8u5p3ICAN9LEMcy7A==
+  /@pixi-build-tools/rollup-configurator/1.0.4_tslib@2.0.1+typescript@4.0.2:
+    dependencies:
+      '@pixi-build-tools/globals': 1.0.2
+      '@rollup/plugin-commonjs': 15.0.0
+      rollup-plugin-node-resolve: 5.2.0
+      rollup-plugin-replace: 2.2.0
+      rollup-plugin-sourcemaps: 0.6.2
+      rollup-plugin-string: 3.0.0
+      rollup-plugin-terser: 7.0.0
+      rollup-plugin-typescript: 1.0.1_tslib@2.0.1+typescript@4.0.2
+    dev: false
+    peerDependencies:
+      rollup: '*'
+      tslib: '*'
+      typescript: '*'
+    resolution:
+      integrity: sha512-q+VtWbsvrL7y37SK4pZt+5sSijk2nGUpxAB7uyU8WtC5AtQm1TDul5sBEUp+Lyl2wPnG2bCYfqIvgPm2qGDxvg==
   /@pixi/accessibility/5.3.0:
     dependencies:
       '@pixi/core': 5.3.0
@@ -3127,6 +3144,12 @@ packages:
       pixi.js: ^5.1.1
     resolution:
       integrity: sha512-Wn1wf6KtkHvZRkdGJwQ1nY9LXI/FW+iPAlDq8Xpmrr8pwXTPY0EK8eAvM2uCpZXTu0iCN5oE5/lFLg98nF+YmQ==
+  /pixi-batch-renderer/2.3.3:
+    dev: false
+    peerDependencies:
+      pixi.js: ^5.1.1
+    resolution:
+      integrity: sha512-kHKGs8qU0b83Xi5pobAmmd8CbFz+oX0L1fBPkUUWvNMOK7goR7A4XRT15If16ZB8m2RPpqTl2GPErHDiMd8r6w==
   /pixi-spatial-hash/1.0.0:
     dev: false
     peerDependencies:
@@ -4239,7 +4262,7 @@ packages:
     dev: false
     name: '@rush-temp/bounds'
     resolution:
-      integrity: sha512-zLmmc5zU3DUatemfavdnmne6f/XU+kI/Q9bSLytSqSe7PPIcwy6HDJuhWyjc3uLUjpGk22Fz82rq9uUksLQDyg==
+      integrity: sha512-JlEsjW4NS/56L2bEIzYyiVq72cDsxLdapitB8IG6++PW7BoOLcqFu0Yis0whIn+UVVG6Hg3ZZ1N1AYLBrBRfyA==
       tarball: 'file:projects/bounds.tgz'
     version: 0.0.0
   'file:projects/bvh.tgz':
@@ -4256,7 +4279,7 @@ packages:
     dev: false
     name: '@rush-temp/bvh'
     resolution:
-      integrity: sha512-UqZ3dsLVnFdzaX+CRkiQGPfN6PqIIK4pAh7R3UC3eyqF3THqv+sQjwGUq29oCTcWgDnwTiQ2l36YdiSadKX2yw==
+      integrity: sha512-CcSAITDaZCX3u7v4Z4kgIrDvK2eoFcdEAlaAeqSO6B1PD/KFkOeX1cbMnSVTbJ9DvdVURTlug5iE1zheYYhmLA==
       tarball: 'file:projects/bvh.tgz'
     version: 0.0.0
   'file:projects/conic.tgz':
@@ -4278,7 +4301,7 @@ packages:
     dev: false
     name: '@rush-temp/conic'
     resolution:
-      integrity: sha512-VgkEANsfP3i3Cq7PPVZKb8zPDQaIVV1Q4GTMyfX0mqimN2VLgaCe06t6F+bw4P+5Os4Pne4TEeh1qlV1fNNYRA==
+      integrity: sha512-+tqnY56g6cu7xF7LBJbQ3EN43o2Ye47kX4gAkvExH8/J/FjE8v4GEuVxpdDMBY0vePyNhXnkoGTunY+f9IhwTQ==
       tarball: 'file:projects/conic.tgz'
     version: 0.0.0
   'file:projects/cull.tgz':
@@ -4294,7 +4317,7 @@ packages:
     dev: false
     name: '@rush-temp/cull'
     resolution:
-      integrity: sha512-zzNj+oTbnvhm17+6jD5jHgnoJ7vXnA3io5nncTXWlEsUe1zXmP8mcQRjhuFbUUBE3TQj5/mQXB/tXYlprYrGRQ==
+      integrity: sha512-6ioSS0FR9tD27GTCjZ0ufnbKkFiTOcsjCfO8ADTXzg0tV+WOagRoNTqgTBR5x8T3iqbedCxXKXqbrwllcrthEw==
       tarball: 'file:projects/cull.tgz'
     version: 0.0.0
   'file:projects/data-half-edge-mesh.tgz':
@@ -4309,16 +4332,39 @@ packages:
     dev: false
     name: '@rush-temp/data-half-edge-mesh'
     resolution:
-      integrity: sha512-Yo8M/ZUOdXRbbG1F2+SXP5BQ4grVuTuFCJaN9lGhdsaxkjwT87d/f9XbDb+uuFP6NX+DkezRwEyhuiA3w8KfFw==
+      integrity: sha512-DkmmL++fLgL2QRQ5qS3Xrk6B2lorlcJbz8TUjoSou2BSnWlPiGPCVSgsfHd93Cg2uPKZt+IyifUzIkRagX92dw==
       tarball: 'file:projects/data-half-edge-mesh.tgz'
     version: 0.0.0
-  'file:projects/eslint-config.tgz':
+  'file:projects/diagnostic-geometry.tgz_tslib@2.0.1+typescript@4.0.2':
     dependencies:
-      '@rushstack/eslint-patch': 1.0.3
+      '@pixi-build-tools/rollup-configurator': 1.0.4_tslib@2.0.1+typescript@4.0.2
+      '@pixi/core': 5.3.3
+      '@pixi/display': 5.3.3
+      pixi-batch-renderer: 2.3.3
     dev: false
-    name: '@rush-temp/eslint-config'
+    id: 'file:projects/diagnostic-geometry.tgz'
+    name: '@rush-temp/diagnostic-geometry'
+    peerDependencies:
+      tslib: '*'
+      typescript: '*'
     resolution:
-      integrity: sha512-lH8jNAVbInSjPhkPbK02hppUjodbDioNRuf2Z34rUXqK+56JFQCRHx8HGCm0ZezlamnuSm25zc6oimbVouhB3g==
+      integrity: sha512-RaJ4RMiOC26J91O+i6JXM7iD+FVSsunO0rWn0SdwVZlFOA1afOyLOCkI8uazm7SdlSZUA/1v+D1U1Q7fX1zRkA==
+      tarball: 'file:projects/diagnostic-geometry.tgz'
+    version: 0.0.0
+  'file:projects/eslint-config.tgz_eslint@7.7.0+typescript@4.0.2':
+    dependencies:
+      '@pixi/eslint-config': 1.0.1_eslint@7.7.0+typescript@4.0.2
+      '@rushstack/eslint-patch': 1.0.3
+      '@typescript-eslint/eslint-plugin': 3.9.1_bfaa9f11a80e0b0e07bd4175641995de
+      '@typescript-eslint/parser': 3.9.1_eslint@7.7.0+typescript@4.0.2
+    dev: false
+    id: 'file:projects/eslint-config.tgz'
+    name: '@rush-temp/eslint-config'
+    peerDependencies:
+      eslint: '*'
+      typescript: '*'
+    resolution:
+      integrity: sha512-fkQrI6q0D93OwvOBKVqgM63Pp0tCgvaEgY9mHDukXBoHkRMCoAWdOK5x5lJJbQi9HXWTyqICjbbEDcz0aJ35Jw==
       tarball: 'file:projects/eslint-config.tgz'
     version: 0.0.0
   'file:projects/filter-fft.tgz':
@@ -4334,7 +4380,7 @@ packages:
     dev: false
     name: '@rush-temp/filter-fft'
     resolution:
-      integrity: sha512-jowQdP6oSRAnY1hknDnbPaycfbQtj+jcYQG9p9QeQvckVtsrwyZ+VXmfrx8Sq/ERXp2Hr088ayx2j/oNlOd4Tw==
+      integrity: sha512-usNXSfAYOZETfMBmcnt89k5W8ej/zY3nm19hP9M8QDajo5yrnw2+18ZGo2NRZwbhNGuERqbLQOXAf4Pa4gpR7g==
       tarball: 'file:projects/filter-fft.tgz'
     version: 0.0.0
   'file:projects/instanced-renderer.tgz':
@@ -4352,7 +4398,7 @@ packages:
     dev: false
     name: '@rush-temp/instanced-renderer'
     resolution:
-      integrity: sha512-zx7NWy8BmryhbFmXt1zCD6UY6ReyvhsDxW8P+LMbTGmxyzILowXB03cfOr4+3DebGXfRjH8hRh6z8+4lwNjFRg==
+      integrity: sha512-sOoJVG/kBZPwaJNQfp+Hd411hxQv24Y0AF8jJrN0FqzOa900ZLoJUq/OAz1Nj3JB2bsdo5hFvWqvvTS/AGD6kg==
       tarball: 'file:projects/instanced-renderer.tgz'
     version: 0.0.0
   'file:projects/mixin-smart-mask.tgz':
@@ -4370,7 +4416,7 @@ packages:
     dev: false
     name: '@rush-temp/mixin-smart-mask'
     resolution:
-      integrity: sha512-img7XPXU/aiX6yI5g0O4Q7iRvzksoku373q1kE8SI/GyxMNdGC1VM4GthJUR6OtMauKowuxVB7xAYzWpZAm8rg==
+      integrity: sha512-pgNouE/oZeoZ7JI3DTeGKKD5zVnVrp/TNxpr0T3QQxHE+7ZuKNMoqiy079V1BaoVvFZSPHPGTlymsIk39BLAYw==
       tarball: 'file:projects/mixin-smart-mask.tgz'
     version: 0.0.0
   'file:projects/object-pool.tgz':
@@ -4388,7 +4434,7 @@ packages:
     dev: false
     name: '@rush-temp/object-pool'
     resolution:
-      integrity: sha512-7r6X/nZ5uDwDHMAmt2Q6uoLMvVwfghXsZ0/qoEpPCqOr4ePPCOIOin0/xxeopEs+hrnQZTt5FmempV5G6OkkBA==
+      integrity: sha512-ewOnPzYPEgpNiJ10tRZTjYSe0LP2VxQs5UkvPcpTEr/RrA0p1VuL1IbusiPSJ1sg6Wjlqvhm5hFlwUy/SIm2Sg==
       tarball: 'file:projects/object-pool.tgz'
     version: 0.0.0
   'file:projects/ooo-renderer.tgz':
@@ -4406,7 +4452,7 @@ packages:
     dev: false
     name: '@rush-temp/ooo-renderer'
     resolution:
-      integrity: sha512-4MRy3SRvN3qqEvLxcplikpbajL7iwvFzrFuwZRrrmaz2NmLCUV2vfWtu90mqvg8SAdshPOztEglErCxjQioIqg==
+      integrity: sha512-clZP8WhJKZIymRY9voq+z7LgEEFzizUUdnBTuNp0TfEQOsN6+cEKyvS/V1Msv30xIBiOQUT9XyXt+f0dIz4gWQ==
       tarball: 'file:projects/ooo-renderer.tgz'
     version: 0.0.0
   'file:projects/react-bindings.tgz':
@@ -4426,7 +4472,7 @@ packages:
     dev: false
     name: '@rush-temp/react-bindings'
     resolution:
-      integrity: sha512-BGc+nwOvm5zgQ6l3vYZsHyzRiJQ/z1HQsRG4Ayfb4P6VyrYMBNzrYZF+juIfxvAND8bGSYd/JlY5mrIySvl15Q==
+      integrity: sha512-xAZUI6esKLtGWNYnZrZPPjILYrke+NTCabxYWABdrrM4jYuacB28QRN2bcfx8di5Kb51uff4e+BBHrSI6zkarQ==
       tarball: 'file:projects/react-bindings.tgz'
     version: 0.0.0
   'file:projects/shader-preprocessor.tgz':
@@ -4443,7 +4489,7 @@ packages:
     dev: false
     name: '@rush-temp/shader-preprocessor'
     resolution:
-      integrity: sha512-2X6ohvVkv2ftxOk35VJK4yqJO+hq3kflcPYJwVc57VtGiGIm6gV3yyyyGg7z+AiB+mw2K1hIaUDUF74sVbAclQ==
+      integrity: sha512-xyF/Ar9TjkvizaFNSFsRiFABMxn2AgLAlpV+6B6Qi2ngcoaGj6q+M8hTiHfVnS6+3oLRbbVq8NxZllo5hmoubQ==
       tarball: 'file:projects/shader-preprocessor.tgz'
     version: 0.0.0
   'file:projects/system-g.tgz':
@@ -4462,7 +4508,7 @@ packages:
     dev: false
     name: '@rush-temp/system-g'
     resolution:
-      integrity: sha512-PareeLzwEtqrmbfu2kTUanpvWwPMYYgg3ck8sy3O5OUBuZnf0GH2TE4y1pI84caYa65jmrseIyB95ODnm/qwmQ==
+      integrity: sha512-u2icU/hHJ5iE3kZBwm4Db6jYihCJahjYMqhjzR1y/lM1N1MPv8/uR1u1OsGgVcFuCJf3r/3NxR2iDN/Rp5qQog==
       tarball: 'file:projects/system-g.tgz'
     version: 0.0.0
   'file:projects/transformer.tgz':
@@ -4483,7 +4529,7 @@ packages:
     dev: false
     name: '@rush-temp/transformer'
     resolution:
-      integrity: sha512-aGCV3SxJj/jHXErkQG12pSOQwD4pD8JwBthlCqRo+vFTk7KIiiwZEfeUR4reWieOtR/DL/2KhCCo6ZfrJveBpA==
+      integrity: sha512-MIuJ2JYEa67gCp0mwyQFSRelkid/40n7xc64Rw4kZKnVJjMH5rGKZRUHeJ3D81resw3D9hDQ5skbx0EKb0ssDQ==
       tarball: 'file:projects/transformer.tgz'
     version: 0.0.0
   'file:projects/types.tgz':
@@ -4499,7 +4545,7 @@ packages:
     dev: false
     name: '@rush-temp/types'
     resolution:
-      integrity: sha512-PVr9/6qFlDYQPiS6SuTvLQvgOIuSkQTAdCd3Cd2lxt5vlBCHgAbV4i22eT0ORCvFLS1hIxKxztUbKnP/hTqYRw==
+      integrity: sha512-wgmDdIbgwLzpAIQ6IsQ+SMpY9pBGWZezpnhTSdP+v552l/Z0YzGXeShTZO0MWg4LLUPHJ/FNvjRB3fq0sicG8Q==
       tarball: 'file:projects/types.tgz'
     version: 0.0.0
   'file:projects/unit-tests.tgz_typescript@4.0.2':
@@ -4525,7 +4571,6 @@ specifiers:
   '@inlet/react-pixi': ^5.0.0
   '@microsoft/api-extractor': 7.7.13
   '@pixi-build-tools/floss-rush-monorepo': 1.0.1
-  '@pixi-build-tools/rollup-configurator': 1.0.3
   '@pixi/eslint-config': ~1.0.1
   '@pixi/interaction': ~5.3.3
   '@pixi/settings': 5.2.1
@@ -4536,6 +4581,7 @@ specifiers:
   '@rush-temp/conic': 'file:./projects/conic.tgz'
   '@rush-temp/cull': 'file:./projects/cull.tgz'
   '@rush-temp/data-half-edge-mesh': 'file:./projects/data-half-edge-mesh.tgz'
+  '@rush-temp/diagnostic-geometry': 'file:./projects/diagnostic-geometry.tgz'
   '@rush-temp/eslint-config': 'file:./projects/eslint-config.tgz'
   '@rush-temp/filter-fft': 'file:./projects/filter-fft.tgz'
   '@rush-temp/instanced-renderer': 'file:./projects/instanced-renderer.tgz'

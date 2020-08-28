@@ -52,6 +52,12 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@pixi-essentials/diagnostic-geometry",
+      "projectFolder": "packages/diagnostic-geometry",
+      "reviewCategory": "development",
+      "shouldPublish": false
+    },
+    {
       "packageName": "@pixi-essentials/filter-fft",
       "projectFolder": "packages/filter-fft",
       "reviewCategory": "production",

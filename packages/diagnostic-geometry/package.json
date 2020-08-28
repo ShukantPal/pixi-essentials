@@ -1,0 +1,34 @@
+{
+  "name": "@pixi-essentials/diagnostic-geometry",
+  "version": "1.0.0",
+  "description": "Diagnose your scene graph's geometry",
+  "main": "lib/diagnostic-geometry.js",
+  "module": "lib/diagnostic-geometry.es.js",
+  "bundle": "dist/diagnostic-geometry.js",
+  "namespace": "PIXI.diagnostic",
+  "scripts": {
+    "build": "rollup -c node_modules/@pixi-build-tools/rollup-configurator/index.js --silent",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SukantPal/pixi-essentials.git"
+  },
+  "keywords": [
+    "pixijs",
+    "diagnostic",
+    "help"
+  ],
+  "author": "Shukant K. Pal <shukantpal@outlook.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SukantPal/pixi-essentials/issues"
+  },
+  "homepage": "https://github.com/SukantPal/pixi-essentials#readme",
+  "devDependencies": {
+    "pixi-batch-renderer": "^2.3.3",
+    "@pixi/display": "^5.0.0",
+    "@pixi/core": "^5.3.3",
+    "@pixi-build-tools/rollup-configurator": "~1.0.4"
+  }
+}
