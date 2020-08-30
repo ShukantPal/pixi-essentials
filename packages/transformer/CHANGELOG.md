@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/transformer
 
-This log was last generated on Tue, 25 Aug 2020 14:04:16 GMT and should not be manually modified.
+This log was last generated on Sun, 30 Aug 2020 19:24:19 GMT and should not be manually modified.
+
+## 2.0.12
+Sun, 30 Aug 2020 19:24:19 GMT
+
+### Patches
+
+- commitGroup when translation is done! This fixes the problem where transformcommit was not fired after the user dragged the transformer!
 
 ## 2.0.11
 Tue, 25 Aug 2020 14:04:16 GMT
