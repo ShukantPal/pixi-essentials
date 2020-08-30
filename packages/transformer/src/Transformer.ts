@@ -1154,6 +1154,7 @@ export class Transformer extends Container
         this._pointerDragging = false;
         this._pointerDown = false;
 
+        this.commitGroup();
         e.stopPropagation();
     }
 
