@@ -2,9 +2,9 @@ const { Container, Graphics, Rectangle } = require('pixi.js');
 const { Cull } = require('../');
 const expect = require('chai').expect;
 
-describe('Cull', function ()
+describe('Cull', () =>
 {
-    it('should cull out display-objects outside of the screen', function ()
+    it('should cull out display-objects outside of the screen', () =>
     {
         const cull = new Cull({ recursive: true, toggle: 'renderable' });
 
@@ -24,7 +24,7 @@ describe('Cull', function ()
         expect(rect3.renderable).to.equal(false);
     });
 
-    it('should not recalculate transforms when skipUpdate is passed', function ()
+    it('should not recalculate transforms when skipUpdate is passed', () =>
     {
         const cull = new Cull({ recursive: true });
 

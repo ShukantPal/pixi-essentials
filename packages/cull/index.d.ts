@@ -56,17 +56,34 @@ export declare class Cull {
     clear(): this;
     /**
      * @param rect - the rectangle outside of which display-objects should be culled
-     * @param skipUpdate - whether to skip transform update
+     * @param skipUpdate - whether to skip unculling, transform update, bounds calculation. It is
+     *  highly recommended you enable this by calling _this.uncull()_ and _root.getBounds(false)_ manually
+     *  before your render loop.
      * @return this
      */
     cull(rect: Rectangle, skipUpdate?: boolean): this;
     /**
      * Sets all display-objects to the unculled state.
      *
+     * This happens regardless of whether the culling toggle was set by {@code this.cull} or manually. This
+     * is why it is recommended to one of `visible` or `renderable` for normal use and the other for culling.
+     *
      * @return this
      */
     uncull(): this;
-    protected cullRecursive(rect: Rectangle, displayObject: DisplayObject): void;
+    /**
+     * Recursively culls the subtree of {@code displayObject}.
+     *
+     * @param rect - the visiblity rectangle
+     * @param displayObject - the root of the subtree to cull
+     * @param skipUpdate - whether to skip bounds calculation. However, transforms are expected to be updated by the caller.
+     */
+    protected cullRecursive(rect: Rectangle, displayObject: DisplayObject, skipUpdate?: boolean): void;
+    /**
+     * Recursively unculls the subtree of {@code displayObject}.
+     *
+     * @param displayObject
+     */
     protected uncullRecursive(displayObject: DisplayObject): void;
 }
 

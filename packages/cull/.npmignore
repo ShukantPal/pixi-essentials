@@ -1,0 +1,12 @@
+.rush
+compile
+src
+test
+.eslintrc.json
+api-extractor.json
+CHANGELOG.json
+CHANGELOG.md
+*.log
+*-lock.yaml
+*-lock.json
+tsconfig.json
