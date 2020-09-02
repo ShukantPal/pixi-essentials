@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/transformer
 
-This log was last generated on Sun, 30 Aug 2020 19:24:19 GMT and should not be manually modified.
+This log was last generated on Wed, 02 Sep 2020 16:11:04 GMT and should not be manually modified.
+
+## 2.0.13
+Wed, 02 Sep 2020 16:11:04 GMT
+
+### Patches
+
+- Prevent Transformer from capturing interaction events when translateEnabled = false. Skip redrawing the Transformer when it is not visible or renderable.
 
 ## 2.0.12
 Sun, 30 Aug 2020 19:24:19 GMT

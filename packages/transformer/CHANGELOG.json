@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/transformer",
   "entries": [
     {
+      "version": "2.0.13",
+      "tag": "@pixi-essentials/transformer_v2.0.13",
+      "date": "Wed, 02 Sep 2020 16:11:04 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Prevent Transformer from capturing interaction events when translateEnabled = false. Skip redrawing the Transformer when it is not visible or renderable."
+          }
+        ]
+      }
+    },
+    {
       "version": "2.0.12",
       "tag": "@pixi-essentials/transformer_v2.0.12",
       "date": "Sun, 30 Aug 2020 19:24:19 GMT",
