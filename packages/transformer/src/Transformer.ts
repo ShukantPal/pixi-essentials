@@ -913,7 +913,10 @@ export class Transformer extends Container
      */
     render(renderer: Renderer): void
     {
-        this.draw();
+        if (this.renderable && this.visible)
+        {
+            this.draw();
+        }
 
         super.render(renderer);
     }
@@ -929,6 +932,11 @@ export class Transformer extends Container
         // Updates occur right here!
         this.wireframe.clear()
             .lineStyle(thickness, color);
+
+        if (this.translateEnabled)
+        {
+            this.wireframe.beginFill(0xffffff, 1e-4);
+        }
 
         for (let i = 0, j = targets.length; i < j; i++)
         {
@@ -965,9 +973,7 @@ export class Transformer extends Container
 
         // Fill polygon with ultra-low alpha to capture pointer events.
         this.wireframe
-            .beginFill(0xffffff, 1e-4)
-            .drawPolygon(hull)
-            .endFill();
+            .drawPolygon(hull);
     }
 
     /**
