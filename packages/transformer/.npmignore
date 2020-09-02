@@ -1,0 +1,5 @@
+.rush
+compile
+src
+*.json
+*.log
