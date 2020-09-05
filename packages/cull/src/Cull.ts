@@ -119,7 +119,7 @@ export class Cull
      */
     cull(rect: Rectangle, skipUpdate = false): this
     {
-        if (skipUpdate)
+        if (!skipUpdate)
         {
             this.uncull();
         }
