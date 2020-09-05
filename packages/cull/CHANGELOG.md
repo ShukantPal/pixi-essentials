@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/cull
 
-This log was last generated on Mon, 31 Aug 2020 17:21:56 GMT and should not be manually modified.
+This log was last generated on Sat, 05 Sep 2020 00:23:48 GMT and should not be manually modified.
+
+## 1.0.8
+Sat, 05 Sep 2020 00:23:48 GMT
+
+### Patches
+
+- Fix objects not being unculled problem when not using skipUpdate
 
 ## 1.0.7
 Mon, 31 Aug 2020 17:21:56 GMT
