@@ -284,7 +284,7 @@ export class Transformer extends Container
      * @param {object}[options]
      * @param {DisplayObject[]}[options.group] - the group of display-objects being transformed
      * @param {boolean}[options.enabledHandles] - specifically define which handles are to be enabled
-     * @param {typeof TransformerHandle}[options.handleConstructor] - a custom transformer-handle class
+     * @param {TransformerHandleClass}[options.handleConstructor] - a custom transformer-handle class
      * @param {object}[options.handleStyle] - styling options for the handle. These cannot be modified afterwards!
      * @param {number}[options.handleStyle.color=0xffffff] - handle color
      * @param {string}[options.handleStyle.outlineColor=0x000000] - color of the handle outline (stroke)
