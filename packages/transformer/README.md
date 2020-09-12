@@ -13,6 +13,18 @@ npm install @pixi-essentials/transformer
 + Standard usage: https://codepen.io/sukantpal/pen/dyMMmZm
 + Usage with @pixi-essentials/react-bindings: https://codepen.io/sukantpal/pen/ZEWWoWX
 
+## Transform options :page_with_curl:
+
+| Property           | Default         | Description                                                                                 |
+| ------------------ | --------------- | ------------------------------------------------------------------------------------------- |
+| boxScalingEnabled  | false           | Scaling by dragging the edges of the bounding-box (also called the wireframe)               |
+| centeredScaling    | false           | Whether scaling object should keep its center invariant (instead of the side being dragged) |
+| rotateEnabled      | true            | Enables the rotator handle above the top-edge of the wireframe                              |
+| scaleEnabled       | true            | Enables the 8 scaling handles (topLeft, topCenter, topRight, middleLeft, middleRight, bottomLeft, bottomCenter, bottomRight) |
+| skewEnabled        | false           | Enables the 2 skewing handles                                                               |
+| translateEnabled   | true            | Enables translation by dragging the wireframe. The transformer will capture all mouse events in the group's bounds |
+
+
 ## Usage :page_facing_up:
 
 ```js
