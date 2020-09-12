@@ -8,6 +8,7 @@ import { AxisAlignedBounds, OrientedBounds } from '@pixi-essentials/bounds';
 import { ObjectPoolFactory } from '@pixi-essentials/object-pool';
 import { TransformerHandle } from './TransformerHandle';
 import { createHorizontalSkew, createVerticalSkew } from './utils/skewTransform';
+import { distanceToLine } from './utils/distanceToLine';
 import { decomposeTransform } from './utils/decomposeTransform';
 import { multiplyTransform } from './utils/multiplyTransform';
 
@@ -137,6 +138,13 @@ const HANDLES = [
 ];
 
 /**
+ * The default tolerance for scaling by dragging the bounding-box edges.
+ *
+ * @ignore
+ */
+const DEFAULT_BOX_SCALING_TOLERANCE = 2;
+
+/**
  * The default snap angles for rotation, in radians.
  *
  * @ignore
@@ -201,6 +209,8 @@ const DEFAULT_WIREFRAME_STYLE: ITransformerStyle = {
  */
 export interface ITransformerOptions
 {
+    boxScalingEnabled?: boolean;
+    boxScalingTolerance: number;
     centeredScaling: boolean;
     enabledHandles?: Array<Handle>;
     group: DisplayObject[];
@@ -223,7 +233,7 @@ export interface ITransformerOptions
  * {@code Transformer} provides an interactive interface for editing the transforms in a group. It supports translating,
  * scaling, rotating, and skewing display-objects both through interaction and code.
  *
- * A transformer operates in world-space, and it is best to not to position, scale, rotate, or skew one. If you do so, the
+ * A transformer operates in world-space, and it is best to not position, scale, rotate, or skew one. If you do so, the
  * wireframe itself will not distort (i.e. will adapt _against_ your transforms). However, the wireframe may become
  * thinner/thicker and the handles will scale & rotate. For example, setting `transformer.scale.set(2)` will make the handles
  * twice as big, but will not scale the wireframe (assuming the display-object group itself has not been
@@ -236,6 +246,8 @@ export class Transformer extends Container
 {
     public group: DisplayObject[];
 
+    public boxScalingEnabled: boolean;
+    public boxScalingTolerance: number;
     public centeredScaling: boolean;
     public projectionTransform: Matrix;
     public rotationSnaps: number[];
@@ -256,6 +268,7 @@ export class Transformer extends Container
     protected _skewEnabled: boolean;
     protected _skewX: number;
     protected _skewY: number;
+    protected _transformHandle: Handle;
     protected _transformType: 'translate' | 'scale' | 'rotate' | 'skew' | 'none';
     protected _handleStyle: Partial<ITransformerHandleStyle>;
     protected _wireframeStyle: Partial<ITransformerStyle>;
@@ -324,6 +337,11 @@ export class Transformer extends Container
         this.group = options.group || [];
 
         /**
+         * The padding around the bounding-box to capture dragging on the edges.
+         */
+        this.boxScalingTolerance = options.boxScalingTolerance || DEFAULT_BOX_SCALING_TOLERANCE;
+
+        /**
          * This will prevent the wireframe's center from shifting on scaling.
          */
         this.centeredScaling = !!options.centeredScaling;
@@ -368,6 +386,7 @@ export class Transformer extends Container
             ? options.skewSnapTolerance
             : DEFAULT_SKEW_SNAP_TOLERANCE;
 
+        this.boxScalingEnabled = options.boxScalingEnabled === true;
         this._rotateEnabled = options.rotateEnabled !== false;
         this._scaleEnabled = options.scaleEnabled !== false;
         this._skewEnabled = options.skewEnabled === true;
@@ -390,6 +409,7 @@ export class Transformer extends Container
          * Draws the bounding boxes
          */
         this.wireframe = this.addChild(new Graphics());
+        this.wireframe.cursor = 'none';
 
         /**
          * The horizontal skew value. Rotating the group by 𝜽 will also change this value by 𝜽.
@@ -670,6 +690,7 @@ export class Transformer extends Container
      */
     translateGroup = (delta: Point): void =>
     {
+        this._transformHandle = null;
         this._transformType = 'translate';
 
         // Translation matrix
@@ -688,6 +709,7 @@ export class Transformer extends Container
      */
     rotateGroup = (handle: RotateHandle, pointerPosition: Point): void =>
     {
+        this._transformHandle = handle;
         this._transformType = 'rotate';
 
         const bounds = this.groupBounds;
@@ -735,6 +757,7 @@ export class Transformer extends Container
      */
     scaleGroup = (handle: ScaleHandle, pointerPosition: Point): void =>
     {
+        this._transformHandle = handle;
         this._transformType = 'scale';
 
         // Directions along x,y axes that will produce positive scaling
@@ -837,6 +860,7 @@ export class Transformer extends Container
      */
     skewGroup = (handle: SkewHandle, pointerPosition: Point): void =>
     {
+        this._transformHandle = handle;
         this._transformType = 'skew';
 
         const bounds = this.groupBounds;
@@ -895,6 +919,7 @@ export class Transformer extends Container
      */
     commitGroup = (): void =>
     {
+        this._transformHandle = null;
         this._transformType = 'none';
 
         if (this.transientGroupTilt !== false && this.group.length > 1)
@@ -1118,35 +1143,86 @@ export class Transformer extends Container
         }
 
         const lastPointerPosition = this._pointerPosition;
-        const currentPointerPosition = tempPoint.copyFrom(e.data.global);
+        const currentPointerPosition = pointPool.allocate().copyFrom(e.data.global);
 
         const cx = currentPointerPosition.x;
         const cy = currentPointerPosition.y;
 
         // Translate group by difference
-        if (this._pointerDragging && this.translateEnabled)
+        if (this._pointerDragging)
         {
-            const [worldOrigin, worldDestination, worldDelta] = tempHull;
+            switch (this._transformHandle)
+            {
+                case 'topCenter':
+                case 'middleLeft':
+                case 'middleRight':
+                case 'bottomCenter':
+                    this.scaleGroup(this._transformHandle, currentPointerPosition.clone());
+                    break;
+                default: {
+                    if (this.translateEnabled)
+                    {
+                        const [worldOrigin, worldDestination, worldDelta] = tempHull;
 
-            // HINT: The pointer has moved from lastPointerPosition to currentPointerPosition in the transformer's
-            // world space. However, we want to translate the display-object's in their world space; to do this,
-            // we project (0,0) and the delta into their world-space, and take the difference.
-            worldOrigin.set(0, 0);
-            worldDestination.set(
-                currentPointerPosition.x - lastPointerPosition.x,
-                currentPointerPosition.y - lastPointerPosition.y);
-            this.projectionTransform.applyInverse(worldOrigin, worldOrigin);
-            this.projectionTransform.applyInverse(worldDestination, worldDestination);
+                        // HINT: The pointer has moved from lastPointerPosition to currentPointerPosition in the
+                        // transformer's world space. However, we want to translate the display-object's in their
+                        // world space; to do this, we project (0,0) and the delta into their world-space, and take
+                        // the difference.
+                        worldOrigin.set(0, 0);
+                        worldDestination.set(
+                            currentPointerPosition.x - lastPointerPosition.x,
+                            currentPointerPosition.y - lastPointerPosition.y);
+                        this.projectionTransform.applyInverse(worldOrigin, worldOrigin);
+                        this.projectionTransform.applyInverse(worldDestination, worldDestination);
 
-            worldDelta.set(worldDestination.x - worldOrigin.x, worldDestination.y - worldOrigin.y);
+                        worldDelta.set(worldDestination.x - worldOrigin.x, worldDestination.y - worldOrigin.y);
 
-            this.translateGroup(worldDelta);
+                        this.translateGroup(worldDelta);
+                    }
+                }
+            }
+        }
+        else
+        {
+            const [
+                topLeft,
+                topRight,
+                bottomRight,
+                bottomLeft,
+            ] = this.groupBounds.hull;
+
+            this.projectionTransform.applyInverse(currentPointerPosition, currentPointerPosition);
+
+            const x = currentPointerPosition.x;
+            const y = currentPointerPosition.y;
+
+            const topProximity = distanceToLine(x, y, topLeft, topRight);
+            const leftProximity = distanceToLine(x, y, topLeft, bottomLeft);
+            const rightProximity = distanceToLine(x, y, topRight, bottomRight);
+            const bottomProximity = distanceToLine(x, y, bottomLeft, bottomRight);
+            const minProximity = Math.min(topProximity, leftProximity, rightProximity, bottomProximity);
+
+            if (this.boxScalingEnabled && minProximity < this.boxScalingTolerance)
+            {
+                switch (minProximity)
+                {
+                    case topProximity: this._transformHandle = 'topCenter'; break;
+                    case leftProximity: this._transformHandle = 'middleLeft'; break;
+                    case rightProximity: this._transformHandle = 'middleRight'; break;
+                    case bottomProximity: this._transformHandle = 'bottomCenter'; break;
+                }
+            }
+            else
+            {
+                this._transformHandle = null;
+            }
         }
 
         this._pointerPosition.x = cx;
         this._pointerPosition.y = cy;
         this._pointerDragging = true;
 
+        pointPool.release(currentPointerPosition);
         e.stopPropagation();
     }
 
@@ -1254,6 +1330,15 @@ export class Transformer extends Container
 
         this.handles[key0] = handle1;
         this.handles[key1] = handle0;
+
+        if (this._transformHandle === key0)
+        {
+            this._transformHandle = key1;
+        }
+        else if (this._transformHandle === key1)
+        {
+            this._transformHandle = key0;
+        }
     }
 
     /**

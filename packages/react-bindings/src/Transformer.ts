@@ -1,6 +1,6 @@
 import { DisplayObject } from '@pixi/display';
 import { Matrix } from '@pixi/math';
-import { PixiComponent } from '@inlet/react-pixi';
+import { PixiComponent, applyDefaultProps } from '@inlet/react-pixi';
 import { Transformer as TransformerImpl, TransformerHandle as TransformerHandleImpl } from '@pixi-essentials/transformer';
 import { applyEventProps } from './utils/applyEventProps';
 
@@ -15,6 +15,8 @@ const IDENTITY_MATRIX = Matrix.IDENTITY;// Prevent reinstantation each time
  * @internal
  */
 export type TransformerProps = {
+    boxScalingTolerance?: number;
+    boxScalingEnabled?: boolean;
     centeredScaling?: boolean;
     enabledHandles?: Array<string>;
     group?: DisplayObject[];
@@ -52,10 +54,13 @@ export const Transformer: React.FC<TransformerProps> = PixiComponent<Transformer
     create: (props: TransformerProps): TransformerImpl => new TransformerImpl(props as any),
     applyProps(instance: TransformerImpl, oldProps: TransformerProps, newProps: TransformerProps): void
     {
+        applyDefaultProps(instance, oldProps, newProps);
         applyEventProps(instance, HANDLER_TO_EVENT, oldProps, newProps);
 
         instance.group = newProps.group || [];
 
+        instance.boxScalingEnabled = newProps.boxScalingEnabled === true;
+        instance.boxScalingTolerance = newProps.boxScalingTolerance || instance.boxScalingTolerance;
         instance.centeredScaling = newProps.centeredScaling;
         instance.enabledHandles = newProps.enabledHandles as any;
         instance.projectionTransform.copyFrom(newProps.projectionTransform || IDENTITY_MATRIX);

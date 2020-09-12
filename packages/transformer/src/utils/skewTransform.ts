@@ -5,6 +5,7 @@ import { Matrix } from '@pixi/math';
 const tempMatrix = new Matrix();
 
 /**
+ * @ignore
  * @param angle
  * @returns a horizontal skew matrix
  */
@@ -18,6 +19,7 @@ export function createHorizontalSkew(angle: number): Matrix
 }
 
 /**
+ * @ignore
  * @param angle
  * @returns a vertical skew matrix
  */

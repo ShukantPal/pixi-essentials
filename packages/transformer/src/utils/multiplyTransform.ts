@@ -11,6 +11,7 @@ const tempParentMatrix = new Matrix();
 /**
  * Multiplies the transformation matrix {@code transform} to the display-object's transform.
  *
+ * @ignore
  * @param displayObject
  * @param transform
  * @param skipUpdate
