@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/transformer",
   "entries": [
     {
+      "version": "2.1.1",
+      "tag": "@pixi-essentials/transformer_v2.1.1",
+      "date": "Sat, 12 Sep 2020 16:36:52 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Patch to capture box-scaling even when translateEnabled=false"
+          }
+        ]
+      }
+    },
+    {
       "version": "2.1.0",
       "tag": "@pixi-essentials/transformer_v2.1.0",
       "date": "Sat, 12 Sep 2020 15:13:14 GMT",

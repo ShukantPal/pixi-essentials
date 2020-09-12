@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/transformer
 
-This log was last generated on Sat, 12 Sep 2020 15:13:14 GMT and should not be manually modified.
+This log was last generated on Sat, 12 Sep 2020 16:36:52 GMT and should not be manually modified.
+
+## 2.1.1
+Sat, 12 Sep 2020 16:36:52 GMT
+
+### Patches
+
+- Patch to capture box-scaling even when translateEnabled=false
 
 ## 2.1.0
 Sat, 12 Sep 2020 15:13:14 GMT
