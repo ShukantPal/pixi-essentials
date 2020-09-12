@@ -979,6 +979,15 @@ export class Transformer extends Container
 
         // Update cached groupBounds
         this.groupBounds.copyFrom(groupBounds);
+
+        if (this.boxScalingEnabled)
+        {
+            this.wireframe
+                .closePath()
+                .beginFill(0xffffff, 1e-4)
+                .lineStyle();
+            this.drawBoxScalingTolerance(groupBounds);
+        }
     }
 
     /**
@@ -999,6 +1008,44 @@ export class Transformer extends Container
         // Fill polygon with ultra-low alpha to capture pointer events.
         this.wireframe
             .drawPolygon(hull);
+    }
+
+    /**
+     * Draws around edges of the bounding box to capture pointer events within
+     * {@link Transformer#boxScalingTolerance}.
+     *
+     * @param bounds
+     */
+    protected drawBoxScalingTolerance(bounds: OrientedBounds): void
+    {
+        bounds.innerBounds.pad(-this.boxScalingTolerance);
+
+        // Inner four corners
+        const innerHull = pointPool.allocateArray(4);
+
+        innerHull.forEach((innerCorner, i) =>
+        {
+            this.toTransformerLocal(bounds.hull[i], innerCorner);
+        });
+
+        bounds.innerBounds.pad(2 * this.boxScalingTolerance);
+
+        // Outer four corners
+        const outerHull = pointPool.allocateArray(4);
+
+        outerHull.forEach((outerCorner, i) =>
+        {
+            this.toTransformerLocal(bounds.hull[i], outerCorner);
+        });
+
+        // Left at original
+        bounds.innerBounds.pad(-this.boxScalingTolerance);
+
+        this.wireframe
+            .drawPolygon(outerHull)
+            .beginHole()
+            .drawPolygon(innerHull)
+            .endHole();
     }
 
     /**
