@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/react-bindings
 
-This log was last generated on Thu, 20 Aug 2020 23:25:30 GMT and should not be manually modified.
+This log was last generated on Sat, 12 Sep 2020 15:13:14 GMT and should not be manually modified.
+
+## 1.0.6
+Sat, 12 Sep 2020 15:13:14 GMT
+
+### Patches
+
+- boxScalingEnabled, boxScalingTolerance for <Transformer /> component
 
 ## 1.0.5
 Thu, 20 Aug 2020 23:25:30 GMT

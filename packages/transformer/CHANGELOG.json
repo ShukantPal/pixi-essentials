@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/transformer",
   "entries": [
     {
+      "version": "2.1.0",
+      "tag": "@pixi-essentials/transformer_v2.1.0",
+      "date": "Sat, 12 Sep 2020 15:13:14 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Box scaling feature added - allow user to scale the object by dragging the bounding-box edges"
+          }
+        ]
+      }
+    },
+    {
       "version": "2.0.13",
       "tag": "@pixi-essentials/transformer_v2.0.13",
       "date": "Wed, 02 Sep 2020 16:11:04 GMT",

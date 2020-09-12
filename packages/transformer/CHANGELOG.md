@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/transformer
 
-This log was last generated on Wed, 02 Sep 2020 16:11:04 GMT and should not be manually modified.
+This log was last generated on Sat, 12 Sep 2020 15:13:14 GMT and should not be manually modified.
+
+## 2.1.0
+Sat, 12 Sep 2020 15:13:14 GMT
+
+### Minor changes
+
+- Box scaling feature added - allow user to scale the object by dragging the bounding-box edges
 
 ## 2.0.13
 Wed, 02 Sep 2020 16:11:04 GMT
