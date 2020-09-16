@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/react-bindings
 
-This log was last generated on Sat, 12 Sep 2020 15:13:14 GMT and should not be manually modified.
+This log was last generated on Wed, 16 Sep 2020 15:53:04 GMT and should not be manually modified.
+
+## 1.0.7
+Wed, 16 Sep 2020 15:53:04 GMT
+
+### Patches
+
+- Remove redundant files from npm package
 
 ## 1.0.6
 Sat, 12 Sep 2020 15:13:14 GMT
