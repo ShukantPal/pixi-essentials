@@ -25,6 +25,11 @@
     "url": "https://github.com/SukantPal/pixi-essentials/issues"
   },
   "homepage": "https://github.com/SukantPal/pixi-essentials#readme",
+  "files": [
+    "lib",
+    "dist",
+    "index.d.ts"
+  ],
   "dependencies": {
     "@pixi-essentials/transformer": "^2.1.1",
     "@pixi/display": "^5.3.3",
