@@ -51,7 +51,8 @@
     "tslib": "~2.0.1",
     "typescript": "~4.0.2",
     "eslint": "~7.7.0",
-    "@pixi-essentials/eslint-config": "~1.0.0"
+    "@pixi-essentials/eslint-config": "~1.0.0",
+    "rollup": "~2.27.0"
   },
   "gitHead": "104ab46612eb8d95bde256620b0cd989ec341e96",
   "publishConfig": {

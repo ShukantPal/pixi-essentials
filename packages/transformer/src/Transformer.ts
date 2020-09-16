@@ -1096,8 +1096,9 @@ export class Transformer extends Container
                 .lineTo(handles.rotator.position.x, handles.rotator.position.y);
         }
 
-        if (this._scaleEnabled)
+        if (this._scaleEnabled || this.boxScalingEnabled)
         {
+            // NOTE: We recalculate these even if only boxScalingEnabled is set, as scaleGroup relies on them
             // Scale handles
             handles.topLeft.position.copyFrom(topLeft);
             handles.topCenter.position.set((topLeft.x + topRight.x) / 2, (topLeft.y + topRight.y) / 2);
