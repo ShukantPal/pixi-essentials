@@ -238,6 +238,8 @@ export interface ITransformerOptions
  * thinner/thicker and the handles will scale & rotate. For example, setting `transformer.scale.set(2)` will make the handles
  * twice as big, but will not scale the wireframe (assuming the display-object group itself has not been
  * scaled up).
+ * 
+ * To enable scaling via dragging the edges of the wireframe, set `boxScalingEnabled` to `true`.
  *
  * NOTE: The transformer needs to capture all interaction events that would otherwise go to the display-objects in the
  * group. Hence, it must be placed after them in the scene graph.
