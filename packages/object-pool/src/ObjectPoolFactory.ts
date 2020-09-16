@@ -1,6 +1,11 @@
 import { ObjectPool } from './ObjectPool';
 
-const poolMap: Map<typeof Object, ObjectPool<any>> = new Map();
+/**
+ * This stores existing object pool created for specific types.
+ * 
+ * @ignore
+ */
+const poolMap: Map<Object, ObjectPool<any>> = new Map();
 
 /**
  * Factory for creating pools of objects with default constructors. It will store the pool of
@@ -26,7 +31,7 @@ export class ObjectPoolFactory
     /**
      * @param {Class} Type
      */
-    static build(Type: typeof Object): ObjectPool<any>
+    static build<T>(Type: { new(): T }): ObjectPool<any>
     {
         let pool = poolMap.get(Type);
 
