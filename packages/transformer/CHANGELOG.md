@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/transformer
 
-This log was last generated on Wed, 16 Sep 2020 15:53:04 GMT and should not be manually modified.
+This log was last generated on Wed, 16 Sep 2020 16:09:33 GMT and should not be manually modified.
+
+## 2.1.4
+Wed, 16 Sep 2020 16:09:33 GMT
+
+### Patches
+
+- Rebuild @pixi-essentials/transformer 😅
 
 ## 2.1.3
 Wed, 16 Sep 2020 15:53:04 GMT
