@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/react-bindings
 
-This log was last generated on Wed, 16 Sep 2020 15:53:04 GMT and should not be manually modified.
+This log was last generated on Thu, 17 Sep 2020 18:39:18 GMT and should not be manually modified.
+
+## 1.0.8
+Thu, 17 Sep 2020 18:39:18 GMT
+
+### Patches
+
+- Add support for &lt;Transformer /&gt; box-rotation
 
 ## 1.0.7
 Wed, 16 Sep 2020 15:53:04 GMT

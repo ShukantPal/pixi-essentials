@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/react-bindings",
   "entries": [
     {
+      "version": "1.0.8",
+      "tag": "@pixi-essentials/react-bindings_v1.0.8",
+      "date": "Thu, 17 Sep 2020 18:39:18 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Add support for &lt;Transformer /&gt; box-rotation"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.0.7",
       "tag": "@pixi-essentials/react-bindings_v1.0.7",
       "date": "Wed, 16 Sep 2020 15:53:04 GMT",

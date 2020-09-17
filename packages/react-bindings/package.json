@@ -1,6 +1,6 @@
 {
   "name": "@pixi-essentials/react-bindings",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "React components for display-objects provided by pixi-essentials, for usage with @inlet/react-pixi.",
   "main": "lib/react-bindings.js",
   "module": "lib/react-bindings.es.js",
