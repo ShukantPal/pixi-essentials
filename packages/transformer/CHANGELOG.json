@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/transformer",
   "entries": [
     {
+      "version": "2.2.1",
+      "tag": "@pixi-essentials/transformer_v2.2.1",
+      "date": "Thu, 17 Sep 2020 19:03:40 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Adds cursors for box-scaling by making the box-scaling regions interactive"
+          }
+        ]
+      }
+    },
+    {
       "version": "2.2.0",
       "tag": "@pixi-essentials/transformer_v2.2.0",
       "date": "Thu, 17 Sep 2020 18:23:47 GMT",

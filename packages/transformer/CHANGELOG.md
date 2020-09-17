@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/transformer
 
-This log was last generated on Thu, 17 Sep 2020 18:23:47 GMT and should not be manually modified.
+This log was last generated on Thu, 17 Sep 2020 19:03:40 GMT and should not be manually modified.
+
+## 2.2.1
+Thu, 17 Sep 2020 19:03:40 GMT
+
+### Patches
+
+- Adds cursors for box-scaling by making the box-scaling regions interactive
 
 ## 2.2.0
 Thu, 17 Sep 2020 18:23:47 GMT
