@@ -40,6 +40,7 @@ export class TransformerWireframe extends Graphics
             this.addChild(new Graphics()),
             this.addChild(new Graphics()),
         ];
+        this.boxScalingHandles.forEach((scalingHandle) => { scalingHandle.interactive = true; });
         this.boxScalingHandles[0].cursor = HANDLE_TO_CURSOR.topCenter;
         this.boxScalingHandles[1].cursor = HANDLE_TO_CURSOR.middleRight;
         this.boxScalingHandles[2].cursor = HANDLE_TO_CURSOR.bottomCenter;
