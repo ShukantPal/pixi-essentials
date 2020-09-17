@@ -2,6 +2,8 @@
 import { AxisAlignedBounds } from './AxisAlignedBounds';
 import { Matrix, ObservablePoint, Point } from '@pixi/math';
 
+const tempPoint = new Point();
+
 /**
  * An oriented bounding box is a rotated rectangle.
  *
@@ -161,6 +163,24 @@ export class OrientedBounds
 
         return this.innerBounds.equals(bounds.innerBounds)
             && this.rotation === bounds.rotation;
+    }
+
+    /**
+     * Whether this bounding box contains the given point
+     *
+     * @param point
+     */
+    contains(point: Point | number, y?: number): boolean
+    {
+        if (typeof point === 'number')
+        {
+            point = tempPoint.set(point, y);
+        }
+
+        // Point in the coordinate space of inner bounds
+        const localPoint = this._matrix.applyInverse(point, tempPoint);
+
+        return this.innerBounds.contains(localPoint.x, localPoint.y);
     }
 
     /**

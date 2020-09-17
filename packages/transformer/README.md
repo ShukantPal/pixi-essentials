@@ -17,6 +17,7 @@ npm install @pixi-essentials/transformer
 
 | Property           | Default         | Description                                                                                 |
 | ------------------ | --------------- | ------------------------------------------------------------------------------------------- |
+| boxRotationEnabled | false           | Rotation by dragging near outside the four corners of the bounding box                      |
 | boxScalingEnabled  | false           | Scaling by dragging the edges of the bounding-box (also called the wireframe)               |
 | centeredScaling    | false           | Whether scaling object should keep its center invariant (instead of the side being dragged) |
 | rotateEnabled      | true            | Enables the rotator handle above the top-edge of the wireframe                              |
