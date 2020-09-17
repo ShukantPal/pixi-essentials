@@ -1,6 +1,6 @@
 {
   "name": "@pixi-essentials/transformer",
-  "version": "2.1.4",
+  "version": "2.2.0",
   "description": "Interactive display-object to edit the transformation matrices of display-objects",
   "main": "lib/transformer.js",
   "module": "lib/transformer.es.js",
@@ -30,7 +30,7 @@
     "index.d.ts"
   ],
   "dependencies": {
-    "@pixi-essentials/bounds": "~2.0.0",
+    "@pixi-essentials/bounds": "~2.0.1",
     "@pixi-essentials/object-pool": "~0.0.5",
     "@pixi/core": "~5.3.3",
     "@pixi/display": "~5.3.3",
