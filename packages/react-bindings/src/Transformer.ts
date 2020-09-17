@@ -15,8 +15,10 @@ const IDENTITY_MATRIX = Matrix.IDENTITY;// Prevent reinstantation each time
  * @internal
  */
 export type TransformerProps = {
-    boxScalingTolerance?: number;
     boxScalingEnabled?: boolean;
+    boxScalingTolerance?: number;
+    boxRotationEnabled?: boolean;
+    boxRotationTolerance?: number;
     centeredScaling?: boolean;
     enabledHandles?: Array<string>;
     group?: DisplayObject[];
@@ -60,7 +62,11 @@ export const Transformer: React.FC<TransformerProps> = PixiComponent<Transformer
         instance.group = newProps.group || [];
 
         instance.boxScalingEnabled = newProps.boxScalingEnabled === true;
-        instance.boxScalingTolerance = newProps.boxScalingTolerance || instance.boxScalingTolerance;
+        instance.boxScalingTolerance = newProps.boxScalingTolerance !== undefined
+            ? newProps.boxScalingTolerance : instance.boxScalingTolerance;
+        instance.boxRotationEnabled = newProps.boxRotationEnabled === true;
+        instance.boxRotationTolerance = newProps.boxRotationTolerance !== undefined
+            ? newProps.boxRotationTolerance : instance.boxRotationTolerance;
         instance.centeredScaling = newProps.centeredScaling;
         instance.enabledHandles = newProps.enabledHandles as any;
         instance.projectionTransform.copyFrom(newProps.projectionTransform || IDENTITY_MATRIX);
