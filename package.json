@@ -27,5 +27,8 @@
   "bugs": {
     "url": "https://github.com/SukantPal/pixi-essentials/issues"
   },
-  "homepage": "https://github.com/SukantPal/pixi-essentials#readme"
+  "homepage": "https://github.com/SukantPal/pixi-essentials#readme",
+  "dependencies": {
+    "d-path-parser": "^1.0.0"
+  }
 }

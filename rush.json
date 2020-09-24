@@ -106,6 +106,12 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@pixi-essentials/scene-svg",
+      "projectFolder": "packages/scene-svg",
+      "reviewCategory": "production",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@pixi-essentials/transformer",
       "projectFolder": "packages/transformer",
       "reviewCategory": "production",

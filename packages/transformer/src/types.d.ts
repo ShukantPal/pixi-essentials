@@ -7,7 +7,10 @@ declare module '@pixi/display' {
 
 declare module '@pixi/graphics' {
     export {
+        LINE_JOIN,
+        LINE_CAP,
         Graphics,
+        GRAPHICS_CURVES,
     } from 'pixi.js';
 }
 
