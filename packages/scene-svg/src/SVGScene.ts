@@ -116,7 +116,7 @@ export class SVGScene extends DisplayObject
         const fill = element.getAttribute('fill');
         const opacity = element.getAttribute('opacity');
         const stroke = element.getAttribute('stroke');
-        const strokeWidth = element.getAttribute('strokeWidth');
+        const strokeWidth = element.getAttribute('stroke-width') || (stroke ? '1' : '0');
         const strokeLineCap = element.getAttribute('stroke-linecap');
         const strokeLineJoin = element.getAttribute('stroke-linejoin');
         const strokeMiterLimit = element.getAttribute('stroke-miterlimit');
@@ -137,7 +137,7 @@ export class SVGScene extends DisplayObject
         }
 
         node.lineTextureStyle({
-            width: stroke === null && strokeWidth === null ? 1 : parseFloat(strokeWidth),
+            width: parseFloat(strokeWidth),
             color: stroke === null ? 0 : this._hexToUint(stroke),
             cap: strokeLineCap === null ? LINE_CAP.SQUARE : strokeLineCap as unknown as LINE_CAP,
             join: strokeLineJoin === null ? LINE_JOIN.MITER : strokeLineJoin as unknown as LINE_JOIN,

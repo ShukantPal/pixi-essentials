@@ -20,7 +20,7 @@ export class SVGPathNode extends SVGGraphicsNode
         const sweep = endAngle - startAngle;
         const n = 20;
 
-        const delta = (anticlockwise ? 1 : -1) * sweep / (n - 1);
+        const delta = (anticlockwise ? -1 : 1) * Math.abs(sweep) / (n - 1);
 
         tempMatrix.identity()
             .translate(-cx, -cy)
@@ -35,7 +35,8 @@ export class SVGPathNode extends SVGGraphicsNode
 
             const { x, y } = xAxisRotation !== 0 ? tempMatrix.apply({ x: xr, y: yr }) : { x: xr, y: yr };
 
-            if (i === 0) {
+            if (i === 0)
+            {
                 this._initCurve(x, y);
                 continue;
             }
@@ -57,7 +58,6 @@ export class SVGPathNode extends SVGGraphicsNode
     ): this
     {
         // See https://www.w3.org/TR/SVG2/implnote.html#ArcImplementationNotes
-
         const points = this.currentPath.points;
         const startX = points[points.length - 2];
         const startY = points[points.length - 1];
@@ -68,13 +68,24 @@ export class SVGPathNode extends SVGGraphicsNode
             .identity()
             .translate(-midX, -midY)
             .rotate(-xAxisRotation);
-
         const { x: xr, y: yr } = matrix.apply({ x: startX, y: startY });
-        const sgn = (anticlockwise !== largeArc) ? 1 : -1;
+
+        const a = Math.pow(xr / rx, 2) + Math.pow(yr / ry, 2);
+
+        if (a > 1)
+        {
+            // Ensure radii are large enough to connect start to end point.
+            rx = Math.sqrt(a) * rx;
+            ry = Math.sqrt(a) * ry;
+        }
+
+        const sgn = (anticlockwise === largeArc) ? 1 : -1;
         const rx2 = rx * rx;
         const ry2 = ry * ry;
         const coef = sgn * Math.sqrt(
-            ((rx2 * ry2) - (rx2 * yr * yr) - (ry2 * xr * xr))
+            // use Math.abs to prevent numerical imprecision from creating very small -ve
+            // values (which should be zero instead). Otherwise, NaNs are possible
+            Math.abs((rx2 * ry2) - (rx2 * yr * yr) - (ry2 * xr * xr))
             / ((rx2 * yr * yr) + (ry2 * xr * xr)),
         );
         const cxr = coef * (rx * yr / ry);
@@ -86,13 +97,22 @@ export class SVGPathNode extends SVGGraphicsNode
         const yn1 = (yr - cyr) / ry;
         const nl = Math.sqrt((xn1 * xn1) + (yn1 * yn1));
 
-        const startAngle = Math.acos(xn1 / nl);
+        const startAngle = (yn1 >= 0 ? 1 : -1) * Math.acos(xn1 / nl);
 
         const xn2 = (-xr - cxr) / rx;
         const yn2 = (-yr - cyr) / ry;
         const n2l = Math.sqrt((xn2 * xn2) + (yn2 * yn2));
 
-        const endAngle = Math.acos(xn2 / n2l);
+        let endAngle = (yn2 >= 0 ? 1 : -1) * Math.acos(xn2 / n2l);
+
+        if (endAngle > startAngle && anticlockwise)
+        {
+            endAngle -= Math.PI * 2;
+        }
+        else if (startAngle > endAngle && !anticlockwise)
+        {
+            endAngle += Math.PI * 2;
+        }
 
         this.ellipticArc(
             cx, cy,
@@ -108,8 +128,6 @@ export class SVGPathNode extends SVGGraphicsNode
 
     drawSVGPathElement(element: SVGPathElement): this
     {
-        window.graphic = this;
-
         const d = element.getAttribute('d');
 
         // Parse path commands using d-path-parser. This is an inefficient solution that causes excess memory allocation
@@ -225,14 +243,26 @@ export class SVGPathNode extends SVGGraphicsNode
                 }
                 case 'A':
                     this.ellipticArcTo(
-                        command.end.x,
-                        command.end.y,
+                        x = command.end.x,
+                        y = command.end.y,
                         command.radii.x,
                         command.radii.y,
-                        command.rotation,
+                        (command.rotation || 0) * Math.PI / 180,
                         !command.clockwise,
                         command.large,
                     );
+                    break;
+                case 'a':
+                    this.ellipticArcTo(
+                        x += command.end.x,
+                        y += command.end.y,
+                        command.radii.x,
+                        command.radii.y,
+                        (command.rotation || 0) * Math.PI / 180,
+                        !command.clockwise,
+                        command.large,
+                    );
+
                     break;
                 default: {
                     // eslint-disable-next-line no-console
