@@ -7,6 +7,19 @@ const tempMatrix = new Matrix();
 
 export class SVGPathNode extends SVGGraphicsNode
 {
+    /**
+     * Draws an elliptical arc.
+     *
+     * @param cx - The x-coordinate of the center of the ellipse.
+     * @param cy - The y-coordinate of the center of the ellipse.
+     * @param rx - The radius along the x-axis.
+     * @param ry - The radius along the y-axis.
+     * @param startAngle - The starting eccentric angle, in radians (0 is at the 3 o'clock position of the arc's circle).
+     * @param endAngle - The ending eccentric angle, in radians.
+     * @param xAxisRotation - The angle of the whole ellipse w.r.t. x-axis.
+     * @param anticlockwise - Specifies whether the drawing should be counterclockwise or clockwise.
+     * @return This Graphics object. Good for chaining method calls.
+     */
     ellipticArc(
         cx: number,
         cy: number,
@@ -17,10 +30,10 @@ export class SVGPathNode extends SVGGraphicsNode
         xAxisRotation = 0,
         anticlockwise = false): this
     {
-        const sweep = endAngle - startAngle;
+        const sweepAngle = endAngle - startAngle;
         const n = 20;
 
-        const delta = (anticlockwise ? -1 : 1) * Math.abs(sweep) / (n - 1);
+        const delta = (anticlockwise ? -1 : 1) * Math.abs(sweepAngle) / (n - 1);
 
         tempMatrix.identity()
             .translate(-cx, -cy)
@@ -47,6 +60,23 @@ export class SVGPathNode extends SVGGraphicsNode
         return this;
     }
 
+    /**
+     * Draws an elliptical arc to the specified point.
+     *
+     * If rx = 0 or ry = 0, then a line is drawn. If the radii provided are too small to draw the arc, then
+     * they are scaled up appropriately.
+     *
+     * @param endX - the x-coordinate of the ending point.
+     * @param endY - the y-coordinate of the ending point.
+     * @param rx - The radius along the x-axis.
+     * @param ry - The radius along the y-axis.
+     * @param xAxisRotation - The angle of the ellipse as a whole w.r.t/ x-axis.
+     * @param anticlockwise - Specifies whether the arc should be drawn counterclockwise or clockwise.
+     * @param largeArc - Specifies whether the larger arc of two possible should be choosen.
+     * @return This Graphics object. Good for chaining method calls.
+     * @see https://svgwg.org/svg2-draft/paths.html#PathDataEllipticalArcCommands
+     * @see https://www.w3.org/TR/SVG2/implnote.html#ArcImplementationNotes
+     */
     ellipticArcTo(
         endX: number,
         endY: number,
@@ -57,6 +87,11 @@ export class SVGPathNode extends SVGGraphicsNode
         largeArc = false,
     ): this
     {
+        if (rx === 0 || ry === 0)
+        {
+            return this.lineTo(endX, endY) as this;
+        }
+
         // See https://www.w3.org/TR/SVG2/implnote.html#ArcImplementationNotes
         const points = this.currentPath.points;
         const startX = points[points.length - 2];
@@ -64,13 +99,14 @@ export class SVGPathNode extends SVGGraphicsNode
         const midX = (startX + endX) / 2;
         const midY = (startY + endY) / 2;
 
+        // Transform into a rotated frame with the origin at the midpoint.
         const matrix = tempMatrix
             .identity()
             .translate(-midX, -midY)
             .rotate(-xAxisRotation);
-        const { x: xr, y: yr } = matrix.apply({ x: startX, y: startY });
+        const { x: xRotated, y: yRotated } = matrix.apply({ x: startX, y: startY });
 
-        const a = Math.pow(xr / rx, 2) + Math.pow(yr / ry, 2);
+        const a = Math.pow(xRotated / rx, 2) + Math.pow(yRotated / ry, 2);
 
         if (a > 1)
         {
@@ -79,32 +115,37 @@ export class SVGPathNode extends SVGGraphicsNode
             ry = Math.sqrt(a) * ry;
         }
 
-        const sgn = (anticlockwise === largeArc) ? 1 : -1;
         const rx2 = rx * rx;
         const ry2 = ry * ry;
+
+        // Calculate the center of the ellipse in this rotated space.
+        // See implementation notes for the equations: https://svgwg.org/svg2-draft/implnote.html#ArcImplementationNotes
+        const sgn = (anticlockwise === largeArc) ? 1 : -1;
         const coef = sgn * Math.sqrt(
             // use Math.abs to prevent numerical imprecision from creating very small -ve
             // values (which should be zero instead). Otherwise, NaNs are possible
-            Math.abs((rx2 * ry2) - (rx2 * yr * yr) - (ry2 * xr * xr))
-            / ((rx2 * yr * yr) + (ry2 * xr * xr)),
+            Math.abs((rx2 * ry2) - (rx2 * yRotated * yRotated) - (ry2 * xRotated * xRotated))
+            / ((rx2 * yRotated * yRotated) + (ry2 * xRotated * xRotated)),
         );
-        const cxr = coef * (rx * yr / ry);
-        const cyr = -coef * (ry * xr / rx);
-        const { x: cx, y: cy } = matrix.applyInverse({ x: cxr, y: cyr });
+        const cxRotated = coef * (rx * yRotated / ry);
+        const cyRotated = -coef * (ry * xRotated / rx);
 
-        // Calculate startAngle, endAngle
-        const xn1 = (xr - cxr) / rx;
-        const yn1 = (yr - cyr) / ry;
-        const nl = Math.sqrt((xn1 * xn1) + (yn1 * yn1));
+        // Calculate the center of the ellipse back in local space.
+        const { x: cx, y: cy } = matrix.applyInverse({ x: cxRotated, y: cyRotated });
 
-        const startAngle = (yn1 >= 0 ? 1 : -1) * Math.acos(xn1 / nl);
+        // Calculate startAngle
+        const x1Norm = (xRotated - cxRotated) / rx;
+        const y1Norm = (yRotated - cyRotated) / ry;
+        const dist1Norm = Math.sqrt((x1Norm ** 2) + (y1Norm ** 2));
+        const startAngle = (y1Norm >= 0 ? 1 : -1) * Math.acos(x1Norm / dist1Norm);
 
-        const xn2 = (-xr - cxr) / rx;
-        const yn2 = (-yr - cyr) / ry;
-        const n2l = Math.sqrt((xn2 * xn2) + (yn2 * yn2));
+        // Calculate endAngle
+        const x2Norm = (-xRotated - cxRotated) / rx;
+        const y2Norm = (-yRotated - cyRotated) / ry;
+        const dist2Norm = Math.sqrt((x2Norm ** 2) + (y2Norm ** 2));
+        let endAngle = (y2Norm >= 0 ? 1 : -1) * Math.acos(x2Norm / dist2Norm);
 
-        let endAngle = (yn2 >= 0 ? 1 : -1) * Math.acos(xn2 / n2l);
-
+        // Ensure endAngle is on the correct side of startAngle
         if (endAngle > startAngle && anticlockwise)
         {
             endAngle -= Math.PI * 2;
@@ -114,6 +155,7 @@ export class SVGPathNode extends SVGGraphicsNode
             endAngle += Math.PI * 2;
         }
 
+        // Draw the ellipse!
         this.ellipticArc(
             cx, cy,
             rx, ry,
