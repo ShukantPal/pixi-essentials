@@ -10,6 +10,7 @@ import { LINE_CAP, LINE_JOIN } from '@pixi/graphics';
 
 type SVGDisplayNode =
     SVGGraphicsNode |
+    SVGPathNode |
     SVGImageNode;
 
 const tempMatrix = new Matrix();
@@ -73,13 +74,15 @@ export class SVGScene extends DisplayObject
     {
         switch (element.nodeName.toLowerCase())
         {
-            case 'path':
-                return new SVGPathNode();
             case 'circle':
             case 'polyline':
             case 'polygon':
             case 'rect':
                 return new SVGGraphicsNode();
+            case 'image':
+                return new SVGImageNode();
+            case 'path':
+                return new SVGPathNode();
             default:
                 return null;
         }
@@ -148,6 +151,9 @@ export class SVGScene extends DisplayObject
         {
             case 'circle':
                 (node as SVGGraphicsNode).drawSVGCircleElement(element as SVGCircleElement);
+                break;
+            case 'image':
+                (node as SVGImageNode).drawSVGImageElement(element as SVGImageElement);
                 break;
             case 'path':
                 (node as SVGPathNode).drawSVGPathElement(element as SVGPathElement);

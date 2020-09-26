@@ -9,6 +9,9 @@ const tempMatrix = new Matrix();
 const _segmentsCount: (length: number, defaultSegments?: number) => number 
     = (GRAPHICS_CURVES as any)._segmentsCount.bind(GRAPHICS_CURVES);
 
+/**
+ * Draws SVG &lt;path /&gt; elements.
+ */
 export class SVGPathNode extends SVGGraphicsNode
 {
     /**
