@@ -1,9 +1,13 @@
 import { GRAPHICS_CURVES } from '@pixi/graphics';
+import { EllipticArcUtils } from './utils/EllipticArcUtils';
 import { Matrix } from '@pixi/math';
 import { SVGGraphicsNode } from './SVGGraphicsNode';
 import dPathParser from 'd-path-parser';
 
 const tempMatrix = new Matrix();
+
+const _segmentsCount: (length: number, defaultSegments?: number) => number 
+    = (GRAPHICS_CURVES as any)._segmentsCount.bind(GRAPHICS_CURVES);
 
 export class SVGPathNode extends SVGGraphicsNode
 {
@@ -31,8 +35,9 @@ export class SVGPathNode extends SVGGraphicsNode
         anticlockwise = false): this
     {
         const sweepAngle = endAngle - startAngle;
-        const n = 20;
-
+        const n = GRAPHICS_CURVES.adaptive 
+            ? _segmentsCount(EllipticArcUtils.calculateArcLength(rx, ry, startAngle, endAngle - startAngle))
+            : 20;
         const delta = (anticlockwise ? -1 : 1) * Math.abs(sweepAngle) / (n - 1);
 
         tempMatrix.identity()
