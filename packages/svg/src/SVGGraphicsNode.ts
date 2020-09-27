@@ -1,5 +1,6 @@
 import { Texture } from '@pixi/core';
-import { LINE_CAP, LINE_JOIN, Graphics } from '@pixi/graphics';
+import { LINE_CAP, LINE_JOIN } from '@pixi/graphics';
+import { SVGRenderNode } from './SVGRenderNode';
 
 import type { Matrix } from '@pixi/math';
 import { DashedLineStyle } from './styles/DashedLineStyle';
@@ -23,7 +24,7 @@ interface ILineStyleOptions {
     dashOffset?: number;
 }
 
-export class SVGGraphicsNode extends Graphics
+export class SVGGraphicsNode extends SVGRenderNode
 {
     constructor()
     {
@@ -78,7 +79,7 @@ export class SVGGraphicsNode extends Graphics
         return this;
     }
 
-    drawSVGCircleElement(element: SVGCircleElement): void
+    embedCircle(element: SVGCircleElement): void
     {
         element.cx.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PX);
         element.cy.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PX);
@@ -91,7 +92,7 @@ export class SVGGraphicsNode extends Graphics
         this.drawCircle(cx, cy, r);
     }
 
-    drawSVGRectElement(element: SVGRectElement): void
+    embedRect(element: SVGRectElement): void
     {
         element.x.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PX);
         element.y.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PX);
@@ -106,7 +107,7 @@ export class SVGGraphicsNode extends Graphics
         this.drawRect(x, y, width, height);
     }
 
-    drawSVGPolygonElement(element: SVGPolygonElement): void
+    embedPolygon(element: SVGPolygonElement): void
     {
         const points = element.getAttribute('points')
             .split(/[ ,]/g)
@@ -122,7 +123,7 @@ export class SVGGraphicsNode extends Graphics
         this.closePath();
     }
 
-    drawSVGPolylineElement(element: SVGPolylineElement): void
+    embedPolyline(element: SVGPolylineElement): void
     {
         const points = element.getAttribute('points')
             .split(/[ ,]/g)

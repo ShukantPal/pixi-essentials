@@ -1,17 +1,16 @@
 import { DisplayObject, Container } from '@pixi/display';
+import { LINE_CAP, LINE_JOIN } from '@pixi/graphics';
 import { Matrix } from '@pixi/math';
+import { PaintProvider } from './styles/PaintProvider';
 import { SVGGraphicsNode } from './SVGGraphicsNode';
 import { SVGImageNode } from './SVGImageNode';
 import { SVGPathNode } from './SVGPathNode';
 import color from 'tinycolor2';
 
+import type { Paint } from './styles/Paint';
 import type { Renderer } from '@pixi/core';
-import { LINE_CAP, LINE_JOIN } from '@pixi/graphics';
-
-type SVGDisplayNode =
-    SVGGraphicsNode |
-    SVGPathNode |
-    SVGImageNode;
+import type { SVGRenderNode } from './SVGRenderNode';
+import { InheritedPaint } from './styles/InheritedPaint';
 
 const tempMatrix = new Matrix();
 
@@ -31,9 +30,20 @@ export class SVGScene extends DisplayObject
      */
     public root: Container;
 
+    /**
+     * The width of the rendered scene in local space.
+     */
     protected _width: number;
 
+    /**
+     * The height of the rendered scene in local space.
+     */
     protected _height: number;
+
+    /**
+     * Maps content element to their paint.
+     */
+    private _elementToPaint: Map<SVGElement, Paint>;
 
     /**
      * @param content - the SVG node to render
@@ -47,9 +57,17 @@ export class SVGScene extends DisplayObject
         this._width = 0;
         this._height = 0;
 
+        this._elementToPaint = new Map();
+
         this.populateScene(this.root, content);
     }
 
+    /**
+     * Calculates the bounds of this scene, which is defined by the set `width` and `height`. The contents
+     * of this scene are scaled to fit these bounds, and don't affect them whatsoever.
+     *
+     * @override
+     */
     calculateBounds(): void
     {
         this._bounds.addFrameMatrix(this.worldTransform, 0, 0, this.width, this.height);
@@ -70,22 +88,77 @@ export class SVGScene extends DisplayObject
         this.root.disableTempParent(null);
     }
 
-    protected createNode(element: SVGElement): SVGGraphicsNode
+    protected createNode(element: SVGElement): SVGRenderNode
     {
+        let renderNode: SVGRenderNode = null;
+
         switch (element.nodeName.toLowerCase())
         {
             case 'circle':
             case 'polyline':
             case 'polygon':
             case 'rect':
-                return new SVGGraphicsNode();
+                renderNode = new SVGGraphicsNode();
+                break;
             case 'image':
-                return new SVGImageNode();
+                renderNode = new SVGImageNode();
+                break;
             case 'path':
-                return new SVGPathNode();
+                renderNode = new SVGPathNode();
+                break;
             default:
-                return null;
+                renderNode = null;
+                break;
         }
+
+        return renderNode;
+    }
+
+    /**
+     * Creates a `Paint` object for the given element. This should only be used when sharing the `Paint`
+     * is not desired; otherwise, use {@link SVGScene.queryPaint}.
+     *
+     * @param element
+     */
+    protected createPaint(element: SVGElement): Paint
+    {
+        const paintProvider = new PaintProvider(element);
+
+        // Handle <use /> element that inherited Paint.
+        if (element.tagName === 'use')
+        {
+            const useTargetURL = element.getAttribute('href') || element.getAttribute('xlink:href');
+
+            if (!useTargetURL) return paintProvider;
+
+            const useTarget = this.content.querySelector(useTargetURL);
+
+            if (!useTarget || !(useTarget instanceof SVGElement)) return paintProvider;
+
+            const useTargetPaint = this.queryPaint(useTarget);
+
+            return new InheritedPaint(useTargetPaint, paintProvider);
+        }
+
+        return paintProvider;
+    }
+
+    /**
+     * Returns the cached paint of a content element.
+     *
+     * @param ref - A reference to the content element.
+     */
+    protected queryPaint(ref: SVGElement): Paint
+    {
+        let queryHit = this._elementToPaint.get(ref);
+
+        if (!queryHit)
+        {
+            queryHit = this.createPaint(ref);
+            this._elementToPaint.set(ref, queryHit);
+        }
+
+        return queryHit;
     }
 
     protected _hexToUint(hex: string): number
@@ -116,18 +189,20 @@ export class SVGScene extends DisplayObject
 
     protected drawIntoNode(node: SVGGraphicsNode, element: SVGGraphicsElement): void
     {
-        const fill = element.getAttribute('fill');
-        const opacity = element.getAttribute('opacity');
-        const stroke = element.getAttribute('stroke');
-        const strokeWidth = element.getAttribute('stroke-width') || (stroke ? '1' : '0');
-        const strokeLineCap = element.getAttribute('stroke-linecap');
-        const strokeLineJoin = element.getAttribute('stroke-linejoin');
-        const strokeMiterLimit = element.getAttribute('stroke-miterlimit');
-        const strokeDashArray = element
-            .getAttribute('stroke-dasharray')
-            ?.split(',')
-            .map((num) => parseFloat(num.trim()));
-        const strokeDashOffset = element.getAttribute('stroke-dashoffset');
+        // Paint
+        const {
+            fill,
+            opacity,
+            stroke,
+            strokeDashArray,
+            strokeDashOffset,
+            strokeLineCap,
+            strokeLineJoin,
+            strokeMiterLimit,
+            strokeWidth,
+        } = this.queryPaint(element);
+
+        // Transform
         const transform = element.transform.baseVal.consolidate();
         const transformMatrix = transform ? transform.matrix : tempMatrix.identity();
 
@@ -137,7 +212,7 @@ export class SVGScene extends DisplayObject
         }
         else if (fill !== null)
         {
-            node.beginFill(this._hexToUint(fill), opacity !== null ? parseFloat(opacity) : 1);
+            node.beginFill(fill, opacity);
         }
         else
         {
@@ -145,34 +220,34 @@ export class SVGScene extends DisplayObject
         }
 
         node.lineTextureStyle({
-            width: parseFloat(strokeWidth),
-            color: stroke === null ? 0 : this._hexToUint(stroke),
+            color: stroke,
             cap: strokeLineCap === null ? LINE_CAP.SQUARE : strokeLineCap as unknown as LINE_CAP,
-            join: strokeLineJoin === null ? LINE_JOIN.MITER : strokeLineJoin as unknown as LINE_JOIN,
-            miterLimit: strokeMiterLimit === null ? 150 : parseFloat(strokeMiterLimit),
             dashArray: strokeDashArray,
-            dashOffset: strokeDashOffset === null ? parseFloat(strokeDashOffset) : 0,
+            dashOffset: strokeDashOffset === null ? strokeDashOffset : 0,
+            join: strokeLineJoin === null ? LINE_JOIN.MITER : strokeLineJoin as unknown as LINE_JOIN,
+            miterLimit: strokeMiterLimit === null ? 150 : strokeMiterLimit,
+            width: strokeWidth,
         });
 
         switch (element.nodeName.toLowerCase())
         {
             case 'circle':
-                (node as SVGGraphicsNode).drawSVGCircleElement(element as SVGCircleElement);
+                (node as SVGGraphicsNode).embedCircle(element as SVGCircleElement);
                 break;
             case 'image':
-                (node as SVGImageNode).drawSVGImageElement(element as SVGImageElement);
+                (node as SVGImageNode).embedImage(element as SVGImageElement);
                 break;
             case 'path':
-                (node as SVGPathNode).drawSVGPathElement(element as SVGPathElement);
+                (node as SVGPathNode).embedPath(element as SVGPathElement);
                 break;
             case 'polyline':
-                (node as SVGGraphicsNode).drawSVGPolylineElement(element as SVGPolylineElement);
+                (node as SVGGraphicsNode).embedPolyline(element as SVGPolylineElement);
                 break;
             case 'polygon':
-                (node as SVGGraphicsNode).drawSVGPolygonElement(element as SVGPolygonElement);
+                (node as SVGGraphicsNode).embedPolygon(element as SVGPolygonElement);
                 break;
             case 'rect':
-                (node as SVGGraphicsNode).drawSVGRectElement(element as SVGRectElement);
+                (node as SVGGraphicsNode).embedRect(element as SVGRectElement);
                 break;
         }
 
@@ -209,7 +284,7 @@ export class SVGScene extends DisplayObject
 
         if (element instanceof SVGGraphicsElement)
         {
-            this.drawIntoNode(node, element);
+            this.drawIntoNode(node as SVGGraphicsNode, element);
         }
 
         for (let i = 0, j = element.children.length; i < j; i++)

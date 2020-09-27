@@ -22,7 +22,7 @@ export class SVGImageNode extends SVGGraphicsNode
      */
     protected _texture: Texture;
 
-    drawSVGImageElement(element: SVGImageElement): void
+    embedImage(element: SVGImageElement): void
     {
         if (!this._canvas)
         {

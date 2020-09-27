@@ -1,0 +1,59 @@
+import type { LINE_CAP, LINE_JOIN } from '@pixi/graphics';
+
+/**
+ * Internal, parsed form of painting attributes.
+ *
+ * @see https://www.w3.org/TR/SVG2/painting.html#Introduction
+ */
+export interface Paint
+{
+    /**
+     * The interior paint for the shape.
+     */
+    readonly fill: number | 'none';
+
+    /**
+     * The opacity of the fill.
+     */
+    readonly opacity: number;
+
+    /**
+     * The color of the stroke outline applied on the shape.
+     */
+    readonly stroke: number;
+
+    /**
+     * The dash pattern for stroking the shape.
+     */
+    readonly strokeDashArray: number[];
+
+    /**
+     * The distance into the dash pattern at which the stroking is started.
+     */
+    readonly strokeDashOffset: number;
+
+    /**
+     * The line caps applied at the end of the stroke. This is not applied for closed shapes.
+     */
+    readonly strokeLineCap: LINE_CAP;
+
+    /**
+     * The line join applied at the joint to line segments.
+     */
+    readonly strokeLineJoin: LINE_JOIN;
+
+    /**
+     * The maximum miter distance.
+     */
+    readonly strokeMiterLimit: number;
+
+    /**
+     * The width of the stroke outline applied on the shape.
+     */
+    readonly strokeWidth: number;
+
+    /**
+     * Flags when the paint is updated.
+     */
+    readonly dirtyId: number;
+}

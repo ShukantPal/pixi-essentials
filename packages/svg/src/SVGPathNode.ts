@@ -176,7 +176,12 @@ export class SVGPathNode extends SVGGraphicsNode
         return this;
     }
 
-    drawSVGPathElement(element: SVGPathElement): this
+    /**
+     * Embeds the `SVGPathElement` into this node.
+     *
+     * @param element - the path to draw
+     */
+    embedPath(element: SVGPathElement): this
     {
         const d = element.getAttribute('d');
 
