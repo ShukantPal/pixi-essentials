@@ -5,12 +5,12 @@ import { PaintProvider } from './styles/PaintProvider';
 import { SVGGraphicsNode } from './SVGGraphicsNode';
 import { SVGImageNode } from './SVGImageNode';
 import { SVGPathNode } from './SVGPathNode';
-import color from 'tinycolor2';
+import { SVGUseNode } from './SVGUseNode';
 
 import type { Paint } from './styles/Paint';
 import type { Renderer } from '@pixi/core';
 import type { SVGRenderNode } from './SVGRenderNode';
-import { InheritedPaint } from './styles/InheritedPaint';
+import { InheritedPaintProvider } from './styles/InheritedPaintProvider';
 
 const tempMatrix = new Matrix();
 
@@ -88,9 +88,9 @@ export class SVGScene extends DisplayObject
         this.root.disableTempParent(null);
     }
 
-    protected createNode(element: SVGElement): SVGRenderNode
+    protected createNode(element: SVGElement): Container
     {
-        let renderNode: SVGRenderNode = null;
+        let renderNode = null;
 
         switch (element.nodeName.toLowerCase())
         {
@@ -105,6 +105,9 @@ export class SVGScene extends DisplayObject
                 break;
             case 'path':
                 renderNode = new SVGPathNode();
+                break;
+            case 'use':
+                renderNode = new SVGUseNode();
                 break;
             default:
                 renderNode = null;
@@ -137,7 +140,7 @@ export class SVGScene extends DisplayObject
 
             const useTargetPaint = this.queryPaint(useTarget);
 
-            return new InheritedPaint(useTargetPaint, paintProvider);
+            return new InheritedPaintProvider(useTargetPaint, paintProvider);
         }
 
         return paintProvider;
@@ -161,33 +164,15 @@ export class SVGScene extends DisplayObject
         return queryHit;
     }
 
-    protected _hexToUint(hex: string): number
-    {
-        if (!hex)
-        {
-            return 0;
-        }
-
-        if (hex[0] === '#')
-        {
-            // Remove the hash
-            hex = hex.substr(1);
-
-            // Convert shortcolors fc9 to ffcc99
-            if (hex.length === 3)
-            {
-                hex = hex.replace(/([a-f0-9])/ig, '$1$1');
-            }
-
-            return parseInt(hex, 16);
-        }
-
-        const { r, g, b } = color(hex).toRgb();
-
-        return (r << 16) + (g << 8) + b;
-    }
-
-    protected drawIntoNode(node: SVGGraphicsNode, element: SVGGraphicsElement): void
+    /**
+     * Embeds a content `element` into the rendering `node`.
+     *
+     * @param node - The node in this scene that will render the `element`.
+     * @param element - The content `element` to be rendered. This must be an element of the SVG document
+     *  fragment under `this.content`.
+     * @param paint - A paint object to use instead of the paint from the element's attributes.
+     */
+    protected drawIntoNode(node: Container, element: SVGGraphicsElement, paint?: Paint): void
     {
         // Paint
         const {
@@ -200,34 +185,37 @@ export class SVGScene extends DisplayObject
             strokeLineJoin,
             strokeMiterLimit,
             strokeWidth,
-        } = this.queryPaint(element);
+        } = paint || this.queryPaint(element);
 
         // Transform
         const transform = element.transform.baseVal.consolidate();
         const transformMatrix = transform ? transform.matrix : tempMatrix.identity();
 
-        if (fill === 'none')
+        if (node instanceof SVGGraphicsNode)
         {
-            node.beginFill(0, 0);
-        }
-        else if (fill !== null)
-        {
-            node.beginFill(fill, opacity);
-        }
-        else
-        {
-            node.beginFill(0);
-        }
+            if (fill === 'none')
+            {
+                node.beginFill(0, 0);
+            }
+            else if (fill !== null)
+            {
+                node.beginFill(fill, opacity === null ? 1 : opacity);
+            }
+            else
+            {
+                node.beginFill(0);
+            }
 
-        node.lineTextureStyle({
-            color: stroke,
-            cap: strokeLineCap === null ? LINE_CAP.SQUARE : strokeLineCap as unknown as LINE_CAP,
-            dashArray: strokeDashArray,
-            dashOffset: strokeDashOffset === null ? strokeDashOffset : 0,
-            join: strokeLineJoin === null ? LINE_JOIN.MITER : strokeLineJoin as unknown as LINE_JOIN,
-            miterLimit: strokeMiterLimit === null ? 150 : strokeMiterLimit,
-            width: strokeWidth,
-        });
+            node.lineTextureStyle({
+                color: stroke === null ? 0 : stroke,
+                cap: strokeLineCap === null ? LINE_CAP.SQUARE : strokeLineCap as unknown as LINE_CAP,
+                dashArray: strokeDashArray,
+                dashOffset: strokeDashOffset === null ? strokeDashOffset : 0,
+                join: strokeLineJoin === null ? LINE_JOIN.MITER : strokeLineJoin as unknown as LINE_JOIN,
+                miterLimit: strokeMiterLimit === null ? 150 : strokeMiterLimit,
+                width: strokeWidth === null ? (stroke ? 1 : 0) : strokeWidth, // eslint-disable-line no-nested-ternary
+            });
+        }
 
         switch (element.nodeName.toLowerCase())
         {
@@ -249,6 +237,18 @@ export class SVGScene extends DisplayObject
             case 'rect':
                 (node as SVGGraphicsNode).embedRect(element as SVGRectElement);
                 break;
+            case 'use': {
+                const useElement = element as SVGUseElement;
+                const useTargetURL = useElement.getAttribute('href') || useElement.getAttribute('xlink:href');
+                const useTarget = this.content.querySelector(useTargetURL);
+                const usePaint = this.queryPaint(useElement);
+
+                const refNode = this.createNode(useTarget as SVGGraphicsElement) as SVGGraphicsNode;
+
+                (node as SVGUseNode).ref = refNode;
+                this.drawIntoNode(refNode, useTarget as SVGGraphicsElement, usePaint);
+                refNode.transform.setFromMatrix(Matrix.IDENTITY);// clear transform
+            }
         }
 
         node.transform.setFromMatrix(tempMatrix.set(
@@ -284,7 +284,7 @@ export class SVGScene extends DisplayObject
 
         if (element instanceof SVGGraphicsElement)
         {
-            this.drawIntoNode(node as SVGGraphicsNode, element);
+            this.drawIntoNode(node, element);
         }
 
         for (let i = 0, j = element.children.length; i < j; i++)

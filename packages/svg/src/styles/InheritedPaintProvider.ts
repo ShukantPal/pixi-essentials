@@ -6,7 +6,7 @@ import type { PaintProvider } from './PaintProvider';
  * Inherited paint, used for &lt;use /&gt; elements. The properties used on the inherited paint do not
  * override those on the parent.
  */
-export class InheritedPaint implements Paint
+export class InheritedPaintProvider implements Paint
 {
     public parent: Paint;
     public provider: PaintProvider;

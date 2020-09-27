@@ -31,25 +31,38 @@ export class PaintProvider implements Paint
         this.element = element;
 
         const fill = element.getAttribute('fill');
+        const opacity = element.getAttribute('opacity');
+        const stroke = element.getAttribute('stroke');
+        const strokeDashArray = element.getAttribute('stroke-dasharray');
+        const strokeDashOffset = element.getAttribute('stroke-dashoffset');
+        const strokeLineCap = element.getAttribute('stroke-linecap');
+        const strokeLineJoin = element.getAttribute('stroke-linejoin');
+        const strokeMiterLimit = element.getAttribute('stroke-miterlimit');
+        const strokeWidth = element.getAttribute('stroke-width');
 
-        this.fill = fill === 'none' ? 'none' : this.parseColor(fill || '0');
-        this.opacity = parseFloat(element.getAttribute('opacity') || '1');
-        this.stroke = this.parseColor(element.getAttribute('stroke') || '0');
-        this.strokeWidth = parseFloat(element.getAttribute('stroke-width') || (this.stroke ? '1' : '0'));
-        this.strokeLineCap = parseFloat(element.getAttribute('stroke-linecap') || `${LINE_CAP.BUTT}`);
-        this.strokeLineJoin = parseFloat(element.getAttribute('stroke-linejoin') || `${LINE_JOIN.MITER}`);
-        this.strokeMiterLimit = parseFloat(element.getAttribute('stroke-miterlimit') || '0');
-        this.strokeDashArray = element
-            .getAttribute('stroke-dasharray')
-            ?.split(',')
-            .map((num) => parseFloat(num.trim()));
-        this.strokeDashOffset = parseFloat(element.getAttribute('stroke-dashoffset') || '0');
+        /* eslint-disable-next-line no-nested-ternary */
+        this.fill = fill !== null ? (fill === 'none' ? 'none' : this.parseColor(fill)) : null;
+        this.opacity = opacity && parseFloat(opacity);
+        this.stroke = stroke && this.parseColor(element.getAttribute('stroke'));
+        this.strokeDashArray = strokeDashArray
+            && strokeDashArray
+                ?.split(',')
+                .map((num) => parseFloat(num.trim()));
+        this.strokeDashOffset = strokeDashOffset && parseFloat(strokeDashOffset);
+        this.strokeLineCap = strokeLineCap as unknown as LINE_CAP;
+        this.strokeLineJoin = strokeLineJoin as unknown as LINE_JOIN;
+        this.strokeMiterLimit = strokeMiterLimit && parseFloat(strokeMiterLimit);
+        this.strokeWidth = strokeWidth && parseFloat(strokeWidth);
     }
 
     /**
      * Parses the color attribute into an RGBA hexadecimal equivalent.
      *
+     * Copyright (C) Matt Karl.
+     *
+     * @author Matt Karl (@bigtimebuddy)
      * @param colorString
+     * @see https://github.com/bigtimebuddy/pixi-svg/blob/89e4ab834fa4ef05b64741596516c732eae34daa/src/SVG.js#L106
      */
     parseColor(colorString: string): number
     {
