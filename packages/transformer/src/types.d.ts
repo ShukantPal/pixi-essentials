@@ -10,7 +10,11 @@ declare module '@pixi/graphics' {
         LINE_JOIN,
         LINE_CAP,
         Graphics,
+        GraphicsData,
+        GraphicsGeometry,
         GRAPHICS_CURVES,
+        LineStyle,
+        Polygon
     } from 'pixi.js';
 }
 
@@ -20,6 +24,7 @@ declare module '@pixi/math' {
         Matrix,
         Transform,
         Rectangle,
+        SHAPES,
     } from 'pixi.js';
 }
 

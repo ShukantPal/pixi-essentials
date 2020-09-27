@@ -1,7 +1,83 @@
-import { Graphics } from '@pixi/graphics';
+import { Texture } from '@pixi/core';
+import { LINE_CAP, LINE_JOIN, Graphics } from '@pixi/graphics';
+
+import type { Matrix } from '@pixi/math';
+import { DashedLineStyle } from './styles/DashedLineStyle';
+import { SVGGraphicsGeometry } from './SVGGraphicsGeometry';
+
+interface ILineStyleOptions {
+    color?: number;
+    alpha?: number;
+    texture?: Texture;
+    matrix?: Matrix;
+
+    width?: number;
+    alignment?: number;
+    native?: boolean;
+    cap?: LINE_CAP;
+    join?: LINE_JOIN;
+    miterLimit?: number;
+
+    // additions
+    dashArray?: number[];
+    dashOffset?: number;
+}
 
 export class SVGGraphicsNode extends Graphics
 {
+    constructor()
+    {
+        super();
+
+        (this as any)._geometry = new SVGGraphicsGeometry();
+        (this as any)._geometry.refCount++;
+
+        this._lineStyle = new DashedLineStyle();
+    }
+
+    public lineTextureStyle(options: ILineStyleOptions): this
+    {
+        // Apply defaults
+        options = Object.assign({
+            width: 0,
+            texture: Texture.WHITE,
+            color: (options && options.texture) ? 0xFFFFFF : 0x0,
+            alpha: 1,
+            matrix: null,
+            alignment: 0.5,
+            native: false,
+            cap: LINE_CAP.BUTT,
+            join: LINE_JOIN.MITER,
+            miterLimit: 10,
+            dashArray: null,
+            dashOffset: 0,
+        }, options);
+
+        if (this.currentPath)
+        {
+            this.startPoly();
+        }
+
+        const visible = options.width > 0 && options.alpha > 0;
+
+        if (!visible)
+        {
+            this._lineStyle.reset();
+        }
+        else
+        {
+            if (options.matrix)
+            {
+                options.matrix = options.matrix.clone();
+                options.matrix.invert();
+            }
+
+            Object.assign(this._lineStyle, { visible }, options);
+        }
+
+        return this;
+    }
+
     drawSVGCircleElement(element: SVGCircleElement): void
     {
         element.cx.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PX);

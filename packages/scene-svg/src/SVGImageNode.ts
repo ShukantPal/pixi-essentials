@@ -60,8 +60,6 @@ export class SVGImageNode extends SVGGraphicsNode
             this._texture.update();
         };
 
-        document.body.appendChild(this._canvas);
-
         // SVGImageElement does not support resolution, and so the texture must have resolution = 1.
         this._texture.baseTexture.setRealSize(width, height, 1);
         this._texture.update();

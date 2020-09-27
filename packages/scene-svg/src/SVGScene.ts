@@ -123,6 +123,11 @@ export class SVGScene extends DisplayObject
         const strokeLineCap = element.getAttribute('stroke-linecap');
         const strokeLineJoin = element.getAttribute('stroke-linejoin');
         const strokeMiterLimit = element.getAttribute('stroke-miterlimit');
+        const strokeDashArray = element
+            .getAttribute('stroke-dasharray')
+            ?.split(',')
+            .map((num) => parseFloat(num.trim()));
+        const strokeDashOffset = element.getAttribute('stroke-dashoffset');
         const transform = element.transform.baseVal.consolidate();
         const transformMatrix = transform ? transform.matrix : tempMatrix.identity();
 
@@ -145,6 +150,8 @@ export class SVGScene extends DisplayObject
             cap: strokeLineCap === null ? LINE_CAP.SQUARE : strokeLineCap as unknown as LINE_CAP,
             join: strokeLineJoin === null ? LINE_JOIN.MITER : strokeLineJoin as unknown as LINE_JOIN,
             miterLimit: strokeMiterLimit === null ? 150 : parseFloat(strokeMiterLimit),
+            dashArray: strokeDashArray,
+            dashOffset: strokeDashOffset === null ? parseFloat(strokeDashOffset) : 0,
         });
 
         switch (element.nodeName.toLowerCase())
