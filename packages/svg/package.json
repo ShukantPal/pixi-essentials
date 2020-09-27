@@ -1,5 +1,5 @@
 {
-  "name": "@pixi-essentials/scene-svg",
+  "name": "@pixi-essentials/svg",
   "version": "1.0.0",
   "description": "Draws editable SVG element trees using PixiJS display objects.",
   "main": "lib/svg.js",

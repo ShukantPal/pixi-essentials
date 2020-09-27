@@ -21,8 +21,8 @@ dependencies:
   '@rush-temp/object-pool': 'file:projects/object-pool.tgz'
   '@rush-temp/ooo-renderer': 'file:projects/ooo-renderer.tgz'
   '@rush-temp/react-bindings': 'file:projects/react-bindings.tgz'
-  '@rush-temp/scene-svg': 'file:projects/scene-svg.tgz_tslib@2.0.1+typescript@4.0.2'
   '@rush-temp/shader-preprocessor': 'file:projects/shader-preprocessor.tgz'
+  '@rush-temp/svg': 'file:projects/svg.tgz_tslib@2.0.1+typescript@4.0.2'
   '@rush-temp/system-g': 'file:projects/system-g.tgz'
   '@rush-temp/transformer': 'file:projects/transformer.tgz'
   '@rush-temp/types': 'file:projects/types.tgz'
@@ -4800,27 +4800,6 @@ packages:
       integrity: sha512-jPbo6zuMBmfnYULLJ0TXun7diwGT68ZJFI1UlS+4BH/1GCWhrcUie3oeSmqH9apCZcENm0lQrLj2aAhIIwatRA==
       tarball: 'file:projects/react-bindings.tgz'
     version: 0.0.0
-  'file:projects/scene-svg.tgz_tslib@2.0.1+typescript@4.0.2':
-    dependencies:
-      '@pixi-build-tools/rollup-configurator': 1.0.5_a4e9e86a3b0568f234b271c5fdbe4ae7
-      '@pixi/core': 5.3.3
-      '@pixi/display': 5.3.3
-      '@pixi/graphics': 5.3.3
-      '@pixi/sprite': 5.3.3
-      d-path-parser: 1.0.0
-      eslint: 7.9.0
-      rollup: 2.28.1
-      tinycolor2: 1.4.1
-    dev: false
-    id: 'file:projects/scene-svg.tgz'
-    name: '@rush-temp/scene-svg'
-    peerDependencies:
-      tslib: '*'
-      typescript: '*'
-    resolution:
-      integrity: sha512-e2TSoexN6APDLvmBmE/tjhD3TS5pN/4AAoSVPbG02Hdjzjcod++vIUMC2f6VOK5sViMSMgoy6qkpGXyCALR5KA==
-      tarball: 'file:projects/scene-svg.tgz'
-    version: 0.0.0
   'file:projects/shader-preprocessor.tgz':
     dependencies:
       '@pixi-build-tools/rollup-configurator': 1.0.3_bd43b22ed3185156b2e6b042fe75b9c6
@@ -4838,6 +4817,28 @@ packages:
     resolution:
       integrity: sha512-t3rwxsWnqkG0JSL3hIDEW92iAZAX+/SODooAT2J1cIQC1tsFnYeKCWhtUTN/mPDcN/LmEYRiWaggfPJ139PucQ==
       tarball: 'file:projects/shader-preprocessor.tgz'
+    version: 0.0.0
+  'file:projects/svg.tgz_tslib@2.0.1+typescript@4.0.2':
+    dependencies:
+      '@pixi-build-tools/rollup-configurator': 1.0.5_a4e9e86a3b0568f234b271c5fdbe4ae7
+      '@pixi/core': 5.3.3
+      '@pixi/display': 5.3.3
+      '@pixi/graphics': 5.3.3
+      '@pixi/math': 5.3.3
+      '@pixi/sprite': 5.3.3
+      d-path-parser: 1.0.0
+      eslint: 7.9.0
+      rollup: 2.28.1
+      tinycolor2: 1.4.1
+    dev: false
+    id: 'file:projects/svg.tgz'
+    name: '@rush-temp/svg'
+    peerDependencies:
+      tslib: '*'
+      typescript: '*'
+    resolution:
+      integrity: sha512-k1JBM5bmAgAKLwnzB9HGTQvRW4PdbtvK7n3hETnUNIWkU9fq/0BMz4QfQpNfT1UFnHNqLiS/UQf3GjwJw59Cbg==
+      tarball: 'file:projects/svg.tgz'
     version: 0.0.0
   'file:projects/system-g.tgz':
     dependencies:
@@ -4941,8 +4942,8 @@ specifiers:
   '@rush-temp/object-pool': 'file:./projects/object-pool.tgz'
   '@rush-temp/ooo-renderer': 'file:./projects/ooo-renderer.tgz'
   '@rush-temp/react-bindings': 'file:./projects/react-bindings.tgz'
-  '@rush-temp/scene-svg': 'file:./projects/scene-svg.tgz'
   '@rush-temp/shader-preprocessor': 'file:./projects/shader-preprocessor.tgz'
+  '@rush-temp/svg': 'file:./projects/svg.tgz'
   '@rush-temp/system-g': 'file:./projects/system-g.tgz'
   '@rush-temp/transformer': 'file:./projects/transformer.tgz'
   '@rush-temp/types': 'file:./projects/types.tgz'

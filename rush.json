@@ -106,8 +106,8 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@pixi-essentials/scene-svg",
-      "projectFolder": "packages/scene-svg",
+      "packageName": "@pixi-essentials/svg",
+      "projectFolder": "packages/svg",
       "reviewCategory": "production",
       "shouldPublish": true
     },
