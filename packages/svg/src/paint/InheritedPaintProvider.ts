@@ -22,7 +22,7 @@ export class InheritedPaintProvider implements Paint
         return this.parent.dirtyId + this.provider.dirtyId;
     }
 
-    get fill(): number | 'none'
+    get fill(): number | string
     {
         return (this.parent && (typeof this.parent.fill === 'number' || this.parent.fill === 'none'))
             ? this.parent.fill : this.provider.fill;
@@ -33,7 +33,7 @@ export class InheritedPaintProvider implements Paint
         return (this.parent && typeof this.parent.opacity === 'number') ? this.parent.opacity : this.provider.opacity;
     }
 
-    get stroke(): number
+    get stroke(): number | string
     {
         return (this.parent && typeof this.parent.stroke === 'number') ? this.parent.stroke : this.provider.stroke;
     }

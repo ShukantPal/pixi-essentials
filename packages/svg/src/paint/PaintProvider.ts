@@ -11,9 +11,9 @@ export class PaintProvider implements Paint
 {
     public element: SVGElement;
 
-    public fill: number | 'none';
+    public fill: number | string;
     public opacity: number;
-    public stroke: number;
+    public stroke: number | string;
     public strokeDashArray: number[];
     public strokeDashOffset: number;
     public strokeLineCap: LINE_CAP;
@@ -41,9 +41,9 @@ export class PaintProvider implements Paint
         const strokeWidth = element.getAttribute('stroke-width');
 
         /* eslint-disable-next-line no-nested-ternary */
-        this.fill = fill !== null ? (fill === 'none' ? 'none' : this.parseColor(fill)) : null;
+        this.fill = fill !== null ? (fill === 'none' ? 'none' : PaintProvider.parseColor(fill)) : null;
         this.opacity = opacity && parseFloat(opacity);
-        this.stroke = stroke && this.parseColor(element.getAttribute('stroke'));
+        this.stroke = stroke && PaintProvider.parseColor(element.getAttribute('stroke'));
         this.strokeDashArray = strokeDashArray
             && strokeDashArray
                 ?.split(',')
@@ -56,19 +56,24 @@ export class PaintProvider implements Paint
     }
 
     /**
-     * Parses the color attribute into an RGBA hexadecimal equivalent.
+     * Parses the color attribute into an RGBA hexadecimal equivalent, if encoded. If the `colorString` is `none` or
+     * is a `url(#id)` reference, it is returned as is.
      *
-     * Copyright (C) Matt Karl.
-     *
-     * @author Matt Karl (@bigtimebuddy)
      * @param colorString
      * @see https://github.com/bigtimebuddy/pixi-svg/blob/89e4ab834fa4ef05b64741596516c732eae34daa/src/SVG.js#L106
      */
-    parseColor(colorString: string): number
+    public static parseColor(colorString: string): number | string
     {
+        /* Modifications have been made. */
+        /* Copyright (C) Matt Karl. */
+
         if (!colorString)
         {
             return 0;
+        }
+        if (colorString === 'none' || colorString.startsWith('url'))
+        {
+            return colorString;
         }
 
         if (colorString[0] === '#')

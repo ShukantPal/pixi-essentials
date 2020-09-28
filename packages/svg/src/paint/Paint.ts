@@ -10,7 +10,7 @@ export interface Paint
     /**
      * The interior paint for the shape.
      */
-    readonly fill: number | 'none';
+    readonly fill: number | string;
 
     /**
      * The opacity of the fill.
@@ -20,7 +20,7 @@ export interface Paint
     /**
      * The color of the stroke outline applied on the shape.
      */
-    readonly stroke: number;
+    readonly stroke: number | string;
 
     /**
      * The dash pattern for stroking the shape.

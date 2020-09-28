@@ -31,6 +31,14 @@ export class GradientFactory
      * This method can be called inside a render cycle, and will preserve the renderer state. However, the current implementation
      * causes a batch renderer flush.
      * 
+     * @param renderer - The renderer to use for drawing the gradient.
+     * @param renderTexture - The texture to render the gradient into.
+     * @param options - The gradient parameters.
+     * @param options.x0 - The x-coordinate of the gradient's start point.
+     * @param options.y0 - The y-coordinate of the gradient's start point.
+     * @param options.x1 - The x-coordinate of the gradient's end point.
+     * @param options.y1 - The y-coordinate of the gradient's end point.
+     * @param options.colorStops - The color stops along the gradient pattern.
      * @todo This implementation is currently using the Canvas API (slow). It will be converted to a WebGL shader.
      * @todo This implementation causes a batch renderer flush. This will be optimized in a future release.
      */

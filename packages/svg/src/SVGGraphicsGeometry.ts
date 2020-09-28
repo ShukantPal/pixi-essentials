@@ -2,7 +2,7 @@ import { GraphicsGeometry } from '@pixi/graphics';
 import { buildDashedLine } from './utils/buildDashedLine';
 
 import type { GraphicsData } from '@pixi/graphics';
-import type { DashedLineStyle } from './styles/DashedLineStyle';
+import type { DashedLineStyle } from './style/DashedLineStyle';
 
 export class SVGGraphicsGeometry extends GraphicsGeometry
 {

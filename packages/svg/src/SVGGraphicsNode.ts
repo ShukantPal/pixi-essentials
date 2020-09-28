@@ -1,10 +1,12 @@
-import { Texture } from '@pixi/core';
+import { DashedLineStyle } from './style/DashedLineStyle';
 import { LINE_CAP, LINE_JOIN } from '@pixi/graphics';
-import { SVGRenderNode } from './SVGRenderNode';
+import { Graphics } from '@pixi/graphics';
+import { SVGGraphicsGeometry } from './SVGGraphicsGeometry';
+import { Texture } from '@pixi/core';
 
 import type { Matrix } from '@pixi/math';
-import { DashedLineStyle } from './styles/DashedLineStyle';
-import { SVGGraphicsGeometry } from './SVGGraphicsGeometry';
+import type { PaintServer } from './paint/PaintServer';
+import type { Renderer } from '@pixi/core';
 
 interface ILineStyleOptions {
     color?: number;
@@ -24,8 +26,10 @@ interface ILineStyleOptions {
     dashOffset?: number;
 }
 
-export class SVGGraphicsNode extends SVGRenderNode
+export class SVGGraphicsNode extends Graphics
 {
+    paintServers: PaintServer[];
+
     constructor()
     {
         super();
@@ -34,6 +38,8 @@ export class SVGGraphicsNode extends SVGRenderNode
         (this as any)._geometry.refCount++;
 
         this._lineStyle = new DashedLineStyle();
+
+        this.paintServers = [];
     }
 
     public lineTextureStyle(options: ILineStyleOptions): this
@@ -130,5 +136,18 @@ export class SVGGraphicsNode extends SVGRenderNode
             .map((p) => parseInt(p, 10));
 
         this.drawPolygon(points);
+    }
+
+    render(renderer: Renderer): void
+    {
+        const paintServers = this.paintServers;
+
+        // Ensure paint servers are updated
+        for (let i = 0, j = paintServers.length; i < j; i++)
+        {
+            paintServers[i].resolvePaint(renderer);
+        }
+
+        super.render(renderer);
     }
 }

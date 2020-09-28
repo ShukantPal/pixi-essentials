@@ -1,16 +1,17 @@
 import { DisplayObject, Container } from '@pixi/display';
+import { InheritedPaintProvider } from './paint/InheritedPaintProvider';
 import { LINE_CAP, LINE_JOIN } from '@pixi/graphics';
 import { Matrix } from '@pixi/math';
-import { PaintProvider } from './styles/PaintProvider';
+import { PaintProvider } from './paint/PaintProvider';
+import { PaintServer } from './paint/PaintServer';
+import { RenderTexture, Texture } from '@pixi/core';
 import { SVGGraphicsNode } from './SVGGraphicsNode';
 import { SVGImageNode } from './SVGImageNode';
 import { SVGPathNode } from './SVGPathNode';
 import { SVGUseNode } from './SVGUseNode';
 
-import type { Paint } from './styles/Paint';
+import type { Paint } from './paint/Paint';
 import type { Renderer } from '@pixi/core';
-import type { SVGRenderNode } from './SVGRenderNode';
-import { InheritedPaintProvider } from './styles/InheritedPaintProvider';
 
 const tempMatrix = new Matrix();
 
@@ -147,6 +148,21 @@ export class SVGScene extends DisplayObject
     }
 
     /**
+     * Creates a lazy paint texture for the paint server.
+     *
+     * @param paintServer - The paint server to be rendered.
+     */
+    protected createPaintServer(paintServer: SVGGradientElement): Texture
+    {
+        const renderTexture = RenderTexture.create({
+            width: 128,
+            height: 128,
+        });
+
+        return new PaintServer(paintServer, renderTexture);
+    }
+
+    /**
      * Returns the cached paint of a content element.
      *
      * @param ref - A reference to the content element.
@@ -197,23 +213,64 @@ export class SVGScene extends DisplayObject
             {
                 node.beginFill(0, 0);
             }
-            else if (fill !== null)
+            else if (typeof fill === 'number')
             {
                 node.beginFill(fill, opacity === null ? 1 : opacity);
             }
-            else
+            else if (!fill)
             {
                 node.beginFill(0);
             }
+            else
+            {
+                const ref = fill
+                    .replace('url(', '')
+                    .slice(1, -2);// Remove single quotes + the ending ')' parenthesis
+                const paintElement = this.content.querySelector(ref);
+
+                if (paintElement && paintElement instanceof SVGGradientElement)
+                {
+                    const paintServer = this.createPaintServer(paintElement);
+                    const paintTexture = paintServer.paintTexture;
+
+                    node.paintServers.push(paintServer);
+                    node.beginTextureFill({
+                        texture: paintTexture,
+                        alpha: opacity === null ? 1 : opacity,
+                    });
+                }
+            }
+
+            let strokeTexture: Texture;
+
+            if (typeof stroke === 'string' && stroke.startsWith('url'))
+            {
+                const ref = stroke
+                    .replace('url(', '')
+                    .slice(1, -2);// Remove single quotes + the ending ')' parenthesis
+                const paintElement = this.content.querySelector(ref);
+
+                if (paintElement && paintElement instanceof SVGGradientElement)
+                {
+                    const paintServer = this.createPaintServer(paintElement);
+                    const paintTexture = paintServer.paintTexture;
+
+                    node.paintServers.push(paintServer);
+                    strokeTexture = paintTexture;
+                }
+            }
 
             node.lineTextureStyle({
-                color: stroke === null ? 0 : stroke,
+                /* eslint-disable no-nested-ternary */
+                color: stroke === null ? 0 : (typeof stroke === 'number' ? stroke : 0xffffff),
                 cap: strokeLineCap === null ? LINE_CAP.SQUARE : strokeLineCap as unknown as LINE_CAP,
                 dashArray: strokeDashArray,
                 dashOffset: strokeDashOffset === null ? strokeDashOffset : 0,
                 join: strokeLineJoin === null ? LINE_JOIN.MITER : strokeLineJoin as unknown as LINE_JOIN,
                 miterLimit: strokeMiterLimit === null ? 150 : strokeMiterLimit,
-                width: strokeWidth === null ? (stroke ? 1 : 0) : strokeWidth, // eslint-disable-line no-nested-ternary
+                texture: strokeTexture || Texture.WHITE,
+                width: strokeWidth === null ? (stroke ? 1 : 0) : strokeWidth,
+                /* eslint-enable no-nested-ternary */
             });
         }
 
@@ -263,6 +320,8 @@ export class SVGScene extends DisplayObject
             transformMatrix instanceof Matrix ? transformMatrix.tx : transformMatrix.e,
             transformMatrix instanceof Matrix ? transformMatrix.ty : transformMatrix.f,
         ));
+
+        // TODO: paint server textures need to be resized
     }
 
     protected populateScene(root: Container, element: SVGElement): void
