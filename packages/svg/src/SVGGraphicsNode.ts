@@ -85,9 +85,9 @@ export class SVGGraphicsNode extends SVGRenderNode
         element.cy.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PX);
         element.r.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PX);
 
-        const cx = element.cx.baseVal.value;
-        const cy = element.cy.baseVal.value;
-        const r = element.r.baseVal.value;
+        const cx = element.cx.baseVal.valueInSpecifiedUnits;
+        const cy = element.cy.baseVal.valueInSpecifiedUnits;
+        const r = element.r.baseVal.valueInSpecifiedUnits;
 
         this.drawCircle(cx, cy, r);
     }
@@ -99,10 +99,10 @@ export class SVGGraphicsNode extends SVGRenderNode
         element.width.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PX);
         element.height.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PX);
 
-        const x = element.x.baseVal.value;
-        const y = element.y.baseVal.value;
-        const width = element.width.baseVal.value;
-        const height = element.height.baseVal.value;
+        const x = element.x.baseVal.valueInSpecifiedUnits;
+        const y = element.y.baseVal.valueInSpecifiedUnits;
+        const width = element.width.baseVal.valueInSpecifiedUnits;
+        const height = element.height.baseVal.valueInSpecifiedUnits;
 
         this.drawRect(x, y, width, height);
     }

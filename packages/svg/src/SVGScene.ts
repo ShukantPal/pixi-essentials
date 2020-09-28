@@ -248,6 +248,10 @@ export class SVGScene extends DisplayObject
                 (node as SVGUseNode).ref = refNode;
                 this.drawIntoNode(refNode, useTarget as SVGGraphicsElement, usePaint);
                 refNode.transform.setFromMatrix(Matrix.IDENTITY);// clear transform
+
+                (node as SVGUseNode).embedUse(useElement);
+
+                return;
             }
         }
 

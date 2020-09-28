@@ -1,4 +1,5 @@
 import { Texture } from '@pixi/core';
+import { Matrix } from '@pixi/math';
 import { SVGGraphicsNode } from './SVGGraphicsNode';
 
 /**
@@ -31,11 +32,15 @@ export class SVGImageNode extends SVGGraphicsNode
             this._texture = Texture.from(this._canvas);
         }
 
+        element.x.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PX);
+        element.y.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PX);
         element.width.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PX);
         element.height.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PX);
 
-        const width = element.width.baseVal.value;
-        const height = element.height.baseVal.value;
+        const x = element.x.baseVal.valueInSpecifiedUnits;
+        const y = element.y.baseVal.valueInSpecifiedUnits;
+        const width = element.width.baseVal.valueInSpecifiedUnits;
+        const height = element.height.baseVal.valueInSpecifiedUnits;
 
         this._canvas.width = width;
         this._canvas.height = height;
@@ -64,8 +69,8 @@ export class SVGImageNode extends SVGGraphicsNode
         this._texture.baseTexture.setRealSize(width, height, 1);
         this._texture.update();
 
-        this.beginTextureFill({ texture: this._texture });
-        this.drawRect(0, 0, width, height);
+        this.beginTextureFill({ texture: this._texture, matrix: new Matrix().translate(x, y) });
+        this.drawRect(x, y, width, height);
         this.endFill();
     }
 }
