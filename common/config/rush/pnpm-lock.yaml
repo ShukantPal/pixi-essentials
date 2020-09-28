@@ -16,6 +16,7 @@ dependencies:
   '@rush-temp/diagnostic-geometry': 'file:projects/diagnostic-geometry.tgz_tslib@2.0.1+typescript@4.0.2'
   '@rush-temp/eslint-config': 'file:projects/eslint-config.tgz_typescript@4.0.2'
   '@rush-temp/filter-fft': 'file:projects/filter-fft.tgz'
+  '@rush-temp/gradients': 'file:projects/gradients.tgz'
   '@rush-temp/instanced-renderer': 'file:projects/instanced-renderer.tgz'
   '@rush-temp/mixin-smart-mask': 'file:projects/mixin-smart-mask.tgz'
   '@rush-temp/object-pool': 'file:projects/object-pool.tgz'
@@ -3851,6 +3852,15 @@ packages:
       fsevents: 2.1.3
     resolution:
       integrity: sha512-DOtVoqOZt3+FjPJWLU8hDIvBjUylc9s6IZvy76XklxzcLvAQLtVAG/bbhsMhcWnYxC0TKKcf1QQ/tg29zeID0Q==
+  /rollup/2.28.2:
+    dev: false
+    engines:
+      node: '>=10.0.0'
+    hasBin: true
+    optionalDependencies:
+      fsevents: 2.1.3
+    resolution:
+      integrity: sha512-8txbsFBFLmm9Xdt4ByTOGa9Muonmc8MfNjnGAR8U8scJlF1ZW7AgNZa7aqBXaKtlvnYP/ab++fQIq9dB9NWUbg==
   /run-async/2.4.1:
     dev: false
     engines:
@@ -4703,6 +4713,18 @@ packages:
       integrity: sha512-rsBkYLqA4LWx/nO5vQtTGrLQNZ5Dg4OPidCbbKf20ZJLcr0mT6vA5ty8PQfJXSGnrR9gRFyxeHNtsrankyp0aQ==
       tarball: 'file:projects/filter-fft.tgz'
     version: 0.0.0
+  'file:projects/gradients.tgz':
+    dependencies:
+      '@pixi/core': 5.3.3
+      '@pixi/math': 5.3.3
+      '@pixi/sprite': 5.3.3
+      rollup: 2.28.2
+    dev: false
+    name: '@rush-temp/gradients'
+    resolution:
+      integrity: sha512-ONRkUhuNbSpu4Gc2xumDauMxsAtHrChPgvTwvCUeCtsNa433c1bCMdRQhTOpiEOtlaies7J9tTrVdLnwif50nw==
+      tarball: 'file:projects/gradients.tgz'
+    version: 0.0.0
   'file:projects/instanced-renderer.tgz':
     dependencies:
       '@pixi-build-tools/rollup-configurator': 1.0.3_bd43b22ed3185156b2e6b042fe75b9c6
@@ -4937,6 +4959,7 @@ specifiers:
   '@rush-temp/diagnostic-geometry': 'file:./projects/diagnostic-geometry.tgz'
   '@rush-temp/eslint-config': 'file:./projects/eslint-config.tgz'
   '@rush-temp/filter-fft': 'file:./projects/filter-fft.tgz'
+  '@rush-temp/gradients': 'file:./projects/gradients.tgz'
   '@rush-temp/instanced-renderer': 'file:./projects/instanced-renderer.tgz'
   '@rush-temp/mixin-smart-mask': 'file:./projects/mixin-smart-mask.tgz'
   '@rush-temp/object-pool': 'file:./projects/object-pool.tgz'
