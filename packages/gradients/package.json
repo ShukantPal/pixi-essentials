@@ -1,0 +1,27 @@
+{
+  "name": "@pixi-essentials/gradients",
+  "version": "1.0.0",
+  "description": "Generates textures with color gradients",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SukantPal/pixi-essentials.git"
+  },
+  "keywords": [
+    "gradients",
+    "linear-gradient",
+    "radial-gradient",
+    "webgl",
+    "pixijs",
+    "color-gradients"
+  ],
+  "author": "Shukant K. Pal <shukantpal@outlook.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SukantPal/pixi-essentials/issues"
+  },
+  "homepage": "https://github.com/SukantPal/pixi-essentials#readme"
+}
