@@ -43,10 +43,16 @@ export class SVGScene extends DisplayObject
     protected _height: number;
 
     /**
-     * Maps content element to their paint. These paints do not inherit from their parent element. You must
+     * Maps content elements to their paint. These paints do not inherit from their parent element. You must
      * compose an {@link InheritedPaintProvider} manually.
      */
     private _elementToPaint: Map<SVGElement, Paint>;
+
+    /**
+     * Maps `SVGMaskElement` elements to their nodes. These are not added to the scene graph directly and are
+     * only referenced as a `mask`.
+     */
+    private _elementToMask: Map<SVGElement, Container>;
 
     /**
      * @param content - the SVG node to render
@@ -56,13 +62,13 @@ export class SVGScene extends DisplayObject
         super();
 
         this.content = content;
-        this.root = new Container();
         this._width = 0;
         this._height = 0;
 
         this._elementToPaint = new Map();
+        this._elementToMask = new Map();
 
-        this.populateScene(this.root, content);
+        this.root = this.populateScene(content);
     }
 
     /**
@@ -111,6 +117,9 @@ export class SVGScene extends DisplayObject
             case 'path':
                 renderNode = new SVGPathNode();
                 break;
+            case 'svg':
+                renderNode = new Container();
+                break;
             case 'use':
                 renderNode = new SVGUseNode();
                 break;
@@ -146,6 +155,16 @@ export class SVGScene extends DisplayObject
         });
 
         return new PaintServer(paintServer, renderTexture);
+    }
+
+    protected queryMask(ref: SVGMaskElement): Container
+    {
+        let queryHit = this._elementToMask.get(ref);
+
+        if (!queryHit)
+        {
+            // queryHit = this.populateScene()
+        }
     }
 
     /**
@@ -304,7 +323,7 @@ export class SVGScene extends DisplayObject
                 const useTarget = this.content.querySelector(useTargetURL);
                 const usePaint = this.queryPaint(useElement);
 
-                const contentNode = this.populateScene(node, useTarget as SVGGraphicsElement, {
+                const contentNode = this.populateScene(useTarget as SVGGraphicsElement, {
                     basePaint: usePaint,
                 }) as SVGGraphicsNode;
 
@@ -334,25 +353,12 @@ export class SVGScene extends DisplayObject
     }
 
     protected populateScene(
-        root: Container,
         element: SVGElement,
         options?: {
             basePaint?: Paint;
         },
     ): Container
     {
-        if (element.nodeName.toLowerCase() === 'svg')
-        {
-            for (let i = 0, j = element.children.length; i < j; i++)
-            {
-                // eslint-disable-next-line
-                // @ts-ignore
-                this.populateScene(root, element.children[i]);
-            }
-
-            return null;
-        }
-
         const node = this.createNode(element);
 
         if (!node)
@@ -373,9 +379,14 @@ export class SVGScene extends DisplayObject
         {
             // eslint-disable-next-line
             // @ts-ignore
-            this.populateScene(node, element.children[i], {
+            const childNode = this.populateScene(element.children[i], {
                 basePaint: paint,
             });
+
+            if (childNode)
+            {
+                node.addChild(childNode);
+            }
         }
 
         if (node instanceof SVGGraphicsNode)
@@ -406,10 +417,6 @@ export class SVGScene extends DisplayObject
                 geometry.updateBatches();
             }
         }
-
-        // eslint-disable-next-line
-        // @ts-ignore
-        root.addChild(node);
 
         return node;
     }
