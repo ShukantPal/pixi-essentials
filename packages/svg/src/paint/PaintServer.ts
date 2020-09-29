@@ -59,6 +59,10 @@ export class PaintServer
         {
             this.linearGradient(renderer);
         }
+        else if (this.paintServer instanceof SVGRadialGradientElement)
+        {
+            this.radialGradient(renderer);
+        }
     }
 
     /**
@@ -85,6 +89,38 @@ export class PaintServer
                 x1: linearGradient.x2.baseVal.valueInSpecifiedUnits * paintTexture.width / 100,
                 y1: linearGradient.y2.baseVal.valueInSpecifiedUnits * paintTexture.height / 100,
                 colorStops: this.createColorStops(linearGradient.children),
+            },
+        );
+    }
+
+    /**
+     * Renders `this.paintServer` as a `SVGRadialGradientElement`.
+     *
+     * @param renderer - The renderer being used to render the paint texture.
+     */
+    private radialGradient(renderer: Renderer): RenderTexture
+    {
+        const radialGradient = this.paintServer as SVGRadialGradientElement;
+        const paintTexture = this.paintTexture;
+
+        radialGradient.fx.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PERCENTAGE);
+        radialGradient.fy.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PERCENTAGE);
+        radialGradient.fr.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PERCENTAGE);
+        radialGradient.cx.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PERCENTAGE);
+        radialGradient.cy.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PERCENTAGE);
+        radialGradient.r.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PERCENTAGE);
+
+        return GradientFactory.createRadialGradient(
+            renderer,
+            paintTexture,
+            {
+                x0: radialGradient.fx.baseVal.valueInSpecifiedUnits * paintTexture.width / 100,
+                y0: radialGradient.fy.baseVal.valueInSpecifiedUnits * paintTexture.height / 100,
+                r0: radialGradient.fr.baseVal.valueInSpecifiedUnits * paintTexture.width / 100,
+                x1: radialGradient.cx.baseVal.valueInSpecifiedUnits * paintTexture.height / 100,
+                y1: radialGradient.cy.baseVal.valueInSpecifiedUnits * paintTexture.width / 100,
+                r1: radialGradient.r.baseVal.valueInSpecifiedUnits * paintTexture.width / 100,
+                colorStops: this.createColorStops(radialGradient.children),
             },
         );
     }
