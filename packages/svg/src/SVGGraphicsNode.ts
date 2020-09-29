@@ -26,6 +26,21 @@ interface ILineStyleOptions {
     dashOffset?: number;
 }
 
+/**
+ * This node can be used to directly embed the following elements:
+ *
+ * | Interface           | Element            |
+ * | ------------------- | ------------------ |
+ * | SVGGElement         | &lt;g /&gt;        |
+ * | SVGCircleElement    | &lt;circle /&gt;   |
+ * | SVGLineElement      | &lt;line /&gt;     |
+ * | SVGPolylineElement  | &lt;polyline /&gt; |
+ * | SVGPolygonElement   | &lt;polygon /&gt;  |
+ * | SVGRectElement      | &lt;rect /&gt;     |
+ *
+ * It also provides an implementation for dashed stroking, by adding the `dashArray` and `dashOffset` properties
+ * to `LineStyle`.
+ */
 export class SVGGraphicsNode extends Graphics
 {
     paintServers: PaintServer[];

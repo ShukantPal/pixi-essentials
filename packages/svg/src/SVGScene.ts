@@ -1,7 +1,7 @@
 import { DisplayObject, Container } from '@pixi/display';
 import { InheritedPaintProvider } from './paint/InheritedPaintProvider';
-import { LINE_CAP, LINE_JOIN } from '@pixi/graphics';
-import { Matrix } from '@pixi/math';
+import { LINE_CAP, LINE_JOIN, GraphicsData, Graphics } from '@pixi/graphics';
+import { Matrix, Rectangle } from '@pixi/math';
 import { PaintProvider } from './paint/PaintProvider';
 import { PaintServer } from './paint/PaintServer';
 import { RenderTexture, Texture } from '@pixi/core';
@@ -14,6 +14,7 @@ import type { Paint } from './paint/Paint';
 import type { Renderer } from '@pixi/core';
 
 const tempMatrix = new Matrix();
+const tempRect = new Rectangle();
 
 /**
  * {@link SVGScene} can be used to build an interactive viewer for scalable vector graphics images. You must specify the size
@@ -42,7 +43,8 @@ export class SVGScene extends DisplayObject
     protected _height: number;
 
     /**
-     * Maps content element to their paint.
+     * Maps content element to their paint. These paints do not inherit from their parent element. You must
+     * compose an {@link InheritedPaintProvider} manually.
      */
     private _elementToPaint: Map<SVGElement, Paint>;
 
@@ -96,6 +98,7 @@ export class SVGScene extends DisplayObject
         switch (element.nodeName.toLowerCase())
         {
             case 'circle':
+            case 'g':
             case 'line':
             case 'polyline':
             case 'polygon':
@@ -127,25 +130,7 @@ export class SVGScene extends DisplayObject
      */
     protected createPaint(element: SVGElement): Paint
     {
-        const paintProvider = new PaintProvider(element);
-
-        // Handle <use /> element that inherited Paint.
-        if (element.tagName === 'use')
-        {
-            const useTargetURL = element.getAttribute('href') || element.getAttribute('xlink:href');
-
-            if (!useTargetURL) return paintProvider;
-
-            const useTarget = this.content.querySelector(useTargetURL);
-
-            if (!useTarget || !(useTarget instanceof SVGElement)) return paintProvider;
-
-            const useTargetPaint = this.queryPaint(useTarget);
-
-            return new InheritedPaintProvider(useTargetPaint, paintProvider);
-        }
-
-        return paintProvider;
+        return new PaintProvider(element);
     }
 
     /**
@@ -187,11 +172,25 @@ export class SVGScene extends DisplayObject
      * @param node - The node in this scene that will render the `element`.
      * @param element - The content `element` to be rendered. This must be an element of the SVG document
      *  fragment under `this.content`.
-     * @param paint - A paint object to use instead of the paint from the element's attributes.
+     * @param options - Additional options
+     * @param {Paint} [options.basePaint] - the base paint that the element's paint should inherit from
      */
-    protected drawIntoNode(node: Container, element: SVGGraphicsElement, paint?: Paint): void
+    protected embedIntoNode(
+        node: Container,
+        element: SVGGraphicsElement,
+        options: {
+            basePaint?: Paint;
+        } = {},
+    ): {
+        paint: Paint;
+    }
     {
+        const {
+            basePaint,
+        } = options;
+
         // Paint
+        const paint = basePaint ? new InheritedPaintProvider(basePaint, this.queryPaint(element)) : this.queryPaint(element);
         const {
             fill,
             opacity,
@@ -202,7 +201,7 @@ export class SVGScene extends DisplayObject
             strokeLineJoin,
             strokeMiterLimit,
             strokeWidth,
-        } = paint || this.queryPaint(element);
+        } = paint;
 
         // Transform
         const transform = element.transform.baseVal.consolidate();
@@ -238,6 +237,7 @@ export class SVGScene extends DisplayObject
                     node.beginTextureFill({
                         texture: paintTexture,
                         alpha: opacity === null ? 1 : opacity,
+                        matrix: new Matrix(),
                     });
                 }
             }
@@ -304,15 +304,18 @@ export class SVGScene extends DisplayObject
                 const useTarget = this.content.querySelector(useTargetURL);
                 const usePaint = this.queryPaint(useElement);
 
-                const refNode = this.createNode(useTarget as SVGGraphicsElement) as SVGGraphicsNode;
+                const contentNode = this.populateScene(node, useTarget as SVGGraphicsElement, {
+                    basePaint: usePaint,
+                }) as SVGGraphicsNode;
 
-                (node as SVGUseNode).ref = refNode;
-                this.drawIntoNode(refNode, useTarget as SVGGraphicsElement, usePaint);
-                refNode.transform.setFromMatrix(Matrix.IDENTITY);// clear transform
+                (node as SVGUseNode).ref = contentNode;
+                contentNode.transform.setFromMatrix(Matrix.IDENTITY);// clear transform
 
                 (node as SVGUseNode).embedUse(useElement);
 
-                return;
+                return {
+                    paint,
+                };
             }
         }
 
@@ -325,10 +328,18 @@ export class SVGScene extends DisplayObject
             transformMatrix instanceof Matrix ? transformMatrix.ty : transformMatrix.f,
         ));
 
-        // TODO: paint server textures need to be resized
+        return {
+            paint,
+        };
     }
 
-    protected populateScene(root: Container, element: SVGElement): void
+    protected populateScene(
+        root: Container,
+        element: SVGElement,
+        options?: {
+            basePaint?: Paint;
+        },
+    ): Container
     {
         if (element.nodeName.toLowerCase() === 'svg')
         {
@@ -339,31 +350,68 @@ export class SVGScene extends DisplayObject
                 this.populateScene(root, element.children[i]);
             }
 
-            return;
+            return null;
         }
 
         const node = this.createNode(element);
 
         if (!node)
         {
-            return;
+            return null;
         }
+
+        let paint;
 
         if (element instanceof SVGGraphicsElement)
         {
-            this.drawIntoNode(node, element);
+            const opts = this.embedIntoNode(node, element, options);
+
+            paint = opts.paint;
         }
 
         for (let i = 0, j = element.children.length; i < j; i++)
         {
             // eslint-disable-next-line
             // @ts-ignore
-            this.populateScene(node, element.children[i]);
+            this.populateScene(node, element.children[i], {
+                basePaint: paint,
+            });
+        }
+
+        if (node instanceof SVGGraphicsNode)
+        {
+            const bbox = node.getBounds(false, tempRect);
+            const { x, y } = bbox;
+            const w = Math.ceil(bbox.width);
+            const h = Math.ceil(bbox.height);
+
+            node.paintServers.forEach(({ paintTexture }) =>
+            {
+                paintTexture.resize(w, h, true);
+            });
+
+            const geometry = node.geometry;
+            const graphicsData: GraphicsData[] = (geometry as any).graphicsData;
+
+            if (graphicsData)
+            {
+                graphicsData.forEach((data) =>
+                {
+                    if (data.fillStyle.matrix)
+                    {
+                        data.fillStyle.matrix.invert().translate(x, y).invert();
+                    }
+                });
+
+                geometry.updateBatches();
+            }
         }
 
         // eslint-disable-next-line
         // @ts-ignore
         root.addChild(node);
+
+        return node;
     }
 
     get width(): number

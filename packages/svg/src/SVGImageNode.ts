@@ -69,7 +69,7 @@ export class SVGImageNode extends SVGGraphicsNode
         this._texture.baseTexture.setRealSize(width, height, 1);
         this._texture.update();
 
-        this.beginTextureFill({ texture: this._texture, matrix: new Matrix().translate(x, y) });
+        this.beginTextureFill({ texture: this._texture, matrix: new Matrix() });
         this.drawRect(x, y, width, height);
         this.endFill();
     }

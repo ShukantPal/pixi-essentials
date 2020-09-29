@@ -63,6 +63,10 @@ export class GradientFactory
         const { x0, y0, x1, y1, colorStops } = options;
 
         const canvas = document.createElement('canvas');
+
+        canvas.width = renderTexture.width;
+        canvas.height = renderTexture.height;
+
         const context = canvas.getContext('2d');
 
         const gradient = context.createLinearGradient(x0, y0, x1, y1);
@@ -128,6 +132,10 @@ export class GradientFactory
         const { x0, y0, r0, x1, y1, r1, colorStops } = options;
 
         const canvas = document.createElement('canvas');
+
+        canvas.width = renderTexture.width;
+        canvas.height = renderTexture.height;
+
         const context = canvas.getContext('2d');
 
         const gradient = context.createRadialGradient(x0, y0, r0, x1, y1, r1);
