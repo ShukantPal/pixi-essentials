@@ -96,6 +96,7 @@ export class SVGScene extends DisplayObject
         switch (element.nodeName.toLowerCase())
         {
             case 'circle':
+            case 'line':
             case 'polyline':
             case 'polygon':
             case 'rect':
@@ -281,6 +282,9 @@ export class SVGScene extends DisplayObject
                 break;
             case 'image':
                 (node as SVGImageNode).embedImage(element as SVGImageElement);
+                break;
+            case 'line':
+                (node as SVGGraphicsNode).embedLine(element as SVGLineElement);
                 break;
             case 'path':
                 (node as SVGPathNode).embedPath(element as SVGPathElement);

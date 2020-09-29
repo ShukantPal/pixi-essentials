@@ -85,6 +85,11 @@ export class SVGGraphicsNode extends Graphics
         return this;
     }
 
+    /**
+     * Embeds the `SVGCircleElement` into this node.
+     *
+     * @param element - The circle element to draw.
+     */
     embedCircle(element: SVGCircleElement): void
     {
         element.cx.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PX);
@@ -98,6 +103,32 @@ export class SVGGraphicsNode extends Graphics
         this.drawCircle(cx, cy, r);
     }
 
+    /**
+     * Embeds the `SVGLineElement` into this node.
+     *
+     * @param element - The line element to draw.
+     */
+    embedLine(element: SVGLineElement): void
+    {
+        element.x1.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PX);
+        element.y1.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PX);
+        element.x2.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PX);
+        element.y2.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PX);
+
+        const x1 = element.x1.baseVal.valueInSpecifiedUnits;
+        const y1 = element.y1.baseVal.valueInSpecifiedUnits;
+        const x2 = element.x2.baseVal.valueInSpecifiedUnits;
+        const y2 = element.y2.baseVal.valueInSpecifiedUnits;
+
+        this.moveTo(x1, y1);
+        this.lineTo(x2, y2);
+    }
+
+    /**
+     * Embeds the `SVGRectElement` into this node.
+     *
+     * @param element - The rectangle element to draw.
+     */
     embedRect(element: SVGRectElement): void
     {
         element.x.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PX);
@@ -113,6 +144,11 @@ export class SVGGraphicsNode extends Graphics
         this.drawRect(x, y, width, height);
     }
 
+    /**
+     * Embeds the `SVGPolygonElement` element into this node.
+     *
+     * @param element - The polygon element to draw.
+     */
     embedPolygon(element: SVGPolygonElement): void
     {
         const points = element.getAttribute('points')
@@ -129,6 +165,11 @@ export class SVGGraphicsNode extends Graphics
         this.closePath();
     }
 
+    /**
+     * Embeds the `SVGPolylineElement` element into this node.
+     *
+     * @param element - The polyline element to draw.
+     */
     embedPolyline(element: SVGPolylineElement): void
     {
         const points = element.getAttribute('points')
@@ -138,6 +179,9 @@ export class SVGGraphicsNode extends Graphics
         this.drawPolygon(points);
     }
 
+    /**
+     * @override
+     */
     render(renderer: Renderer): void
     {
         const paintServers = this.paintServers;
