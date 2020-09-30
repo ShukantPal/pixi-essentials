@@ -42,11 +42,13 @@
     "@pixi/graphics": "~5.3.3",
     "rollup": "~2.28.1",
     "@pixi-build-tools/rollup-configurator": "~1.0.5",
-    "@pixi/math": "~5.3.3"
+    "@pixi/math": "~5.3.3",
+    "@pixi/filter-color-matrix": "~5.3.3"
   },
   "peerDependencies": {
     "@pixi/core": "~5.3.3",
     "@pixi/display": "~5.3.3",
+    "@pixi/filter-color-matrix": "~5.3.3",
     "@pixi/math": "~5.3.3",
     "@pixi/graphics": "~5.3.3",
     "@pixi/sprite": "~5.3.3"

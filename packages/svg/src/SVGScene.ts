@@ -1,5 +1,6 @@
 import { DisplayObject, Container } from '@pixi/display';
 import { InheritedPaintProvider } from './paint/InheritedPaintProvider';
+import { MaskServer } from './mask/MaskServer';
 import { LINE_CAP, LINE_JOIN, GraphicsData, Graphics } from '@pixi/graphics';
 import { Matrix, Rectangle } from '@pixi/math';
 import { PaintProvider } from './paint/PaintProvider';
@@ -33,6 +34,12 @@ export class SVGScene extends DisplayObject
     public root: Container;
 
     /**
+     * Display objects that don't render to the screen, but are required to update before the rendering
+     * nodes, e.g. mask sprites.
+     */
+    public renderServers: Container;
+
+    /**
      * The width of the rendered scene in local space.
      */
     protected _width: number;
@@ -52,7 +59,7 @@ export class SVGScene extends DisplayObject
      * Maps `SVGMaskElement` elements to their nodes. These are not added to the scene graph directly and are
      * only referenced as a `mask`.
      */
-    private _elementToMask: Map<SVGElement, Container>;
+    private _elementToMask: Map<SVGElement, MaskServer>;
 
     /**
      * @param content - the SVG node to render
@@ -68,7 +75,10 @@ export class SVGScene extends DisplayObject
         this._elementToPaint = new Map();
         this._elementToMask = new Map();
 
+        this.renderServers = new Container();
         this.root = this.populateScene(content);
+
+        this.root.addChildAt(this.renderServers, 0);
     }
 
     /**
@@ -114,11 +124,12 @@ export class SVGScene extends DisplayObject
             case 'image':
                 renderNode = new SVGImageNode();
                 break;
-            case 'path':
-                renderNode = new SVGPathNode();
-                break;
+            case 'mask':
             case 'svg':
                 renderNode = new Container();
+                break;
+            case 'path':
+                renderNode = new SVGPathNode();
                 break;
             case 'use':
                 renderNode = new SVGUseNode();
@@ -135,16 +146,25 @@ export class SVGScene extends DisplayObject
      * Creates a `Paint` object for the given element. This should only be used when sharing the `Paint`
      * is not desired; otherwise, use {@link SVGScene.queryPaint}.
      *
+     * This will return `null` if the passed element is not an instance of `SVGElement`.
+     *
+     * @alpha
      * @param element
      */
     protected createPaint(element: SVGElement): Paint
     {
+        if (!(element instanceof SVGElement))
+        {
+            return null;
+        }
+
         return new PaintProvider(element);
     }
 
     /**
      * Creates a lazy paint texture for the paint server.
      *
+     * @alpha
      * @param paintServer - The paint server to be rendered.
      */
     protected createPaintServer(paintServer: SVGGradientElement): Texture
@@ -157,19 +177,62 @@ export class SVGScene extends DisplayObject
         return new PaintServer(paintServer, renderTexture);
     }
 
-    protected queryMask(ref: SVGMaskElement): Container
+    /**
+     * Creates a lazy luminance mask for the `SVGMaskElement` or its rendering node.
+     *
+     * @param ref - The `SVGMaskElement` or its rendering node, if already generated.
+     */
+    protected createMask(ref: SVGMaskElement | Container): MaskServer
+    {
+        if (ref instanceof SVGElement)
+        {
+            ref = this.populateScene(ref, {
+                basePaint: this.queryInheritedPaint(ref),
+            });
+        }
+
+        const localBounds = ref.getLocalBounds();
+
+        ref.getBounds();
+
+        const maskTexture = RenderTexture.create({
+            width: localBounds.width,
+            height: localBounds.height,
+        });
+
+        const maskSprite = new MaskServer(maskTexture);
+
+        // Lazily render mask when needed.
+        maskSprite.addChild(ref);
+
+        return maskSprite;
+    }
+
+    /**
+     * Returns the rendering node for a mask.
+     *
+     * @alpha
+     * @param ref - The mask element whose rendering node is needed.
+     */
+    protected queryMask(ref: SVGMaskElement): MaskServer
     {
         let queryHit = this._elementToMask.get(ref);
 
         if (!queryHit)
         {
-            // queryHit = this.populateScene()
+            queryHit = this.createMask(ref);
+
+            this._elementToMask.set(ref, queryHit);
         }
+
+        return queryHit;
     }
 
     /**
-     * Returns the cached paint of a content element.
+     * Returns the cached paint of a content element. The returned paint will not account for any paint
+     * attributes inherited from ancestor elements.
      *
+     * @alpha
      * @param ref - A reference to the content element.
      */
     protected queryPaint(ref: SVGElement): Paint
@@ -186,8 +249,39 @@ export class SVGScene extends DisplayObject
     }
 
     /**
+     * Returns an (uncached) inherited paint of a content element.
+     *
+     * @alpha
+     * @param ref
+     */
+    protected queryInheritedPaint(ref: SVGElement): Paint
+    {
+        const paint = this.queryPaint(ref);
+        const parentPaint = ref.parentElement && this.queryPaint(ref.parentElement as unknown as SVGElement);
+
+        if (!parentPaint)
+        {
+            return paint;
+        }
+
+        return new InheritedPaintProvider(parentPaint, paint);
+    }
+
+    protected parseReference(url: string): string
+    {
+        if (url.startsWith('url')) {
+            return url.slice(5, -2);
+        }
+
+        return url;
+    }
+
+    /**
      * Embeds a content `element` into the rendering `node`.
      *
+     * This is **not** a stable API.
+     *
+     * @alpha
      * @param node - The node in this scene that will render the `element`.
      * @param element - The content `element` to be rendered. This must be an element of the SVG document
      *  fragment under `this.content`.
@@ -196,7 +290,7 @@ export class SVGScene extends DisplayObject
      */
     protected embedIntoNode(
         node: Container,
-        element: SVGGraphicsElement,
+        element: SVGGraphicsElement | SVGMaskElement,
         options: {
             basePaint?: Paint;
         } = {},
@@ -223,7 +317,7 @@ export class SVGScene extends DisplayObject
         } = paint;
 
         // Transform
-        const transform = element.transform.baseVal.consolidate();
+        const transform = element instanceof SVGGraphicsElement ? element.transform.baseVal.consolidate() : null;
         const transformMatrix = transform ? transform.matrix : tempMatrix.identity();
 
         if (node instanceof SVGGraphicsNode)
@@ -331,21 +425,42 @@ export class SVGScene extends DisplayObject
                 contentNode.transform.setFromMatrix(Matrix.IDENTITY);// clear transform
 
                 (node as SVGUseNode).embedUse(useElement);
-
-                return {
-                    paint,
-                };
             }
         }
 
-        node.transform.setFromMatrix(tempMatrix.set(
-            transformMatrix.a,
-            transformMatrix.b,
-            transformMatrix.c,
-            transformMatrix.d,
-            transformMatrix instanceof Matrix ? transformMatrix.tx : transformMatrix.e,
-            transformMatrix instanceof Matrix ? transformMatrix.ty : transformMatrix.f,
-        ));
+        if (!(element instanceof SVGUseElement))
+        {
+            node.transform.setFromMatrix(tempMatrix.set(
+                transformMatrix.a,
+                transformMatrix.b,
+                transformMatrix.c,
+                transformMatrix.d,
+                transformMatrix instanceof Matrix ? transformMatrix.tx : transformMatrix.e,
+                transformMatrix instanceof Matrix ? transformMatrix.ty : transformMatrix.f,
+            ));
+        }
+
+        if (element instanceof SVGMaskElement)
+        {
+            this._elementToMask.set(element, this.createMask(node));
+        }
+
+        const maskURL = element.getAttribute('mask');
+
+        if (maskURL)
+        {
+            const maskElement: SVGMaskElement = this.content.querySelector(this.parseReference(maskURL));
+
+            if (maskElement)
+            {
+                const maskServer = this.queryMask(maskElement);
+                const maskSprite = maskServer.createMask(node);
+
+                this.renderServers.addChild(maskServer);
+                node.mask = maskSprite;
+                node.addChild(maskSprite);
+            }
+        }
 
         return {
             paint,
@@ -368,7 +483,7 @@ export class SVGScene extends DisplayObject
 
         let paint;
 
-        if (element instanceof SVGGraphicsElement)
+        if (element instanceof SVGGraphicsElement || element instanceof SVGMaskElement)
         {
             const opts = this.embedIntoNode(node, element, options);
 
@@ -416,6 +531,12 @@ export class SVGScene extends DisplayObject
 
                 geometry.updateBatches();
             }
+        }
+
+        if (element instanceof SVGMaskElement)
+        {
+            // Mask elements are *not* a part of the scene graph.
+            return null;
         }
 
         return node;

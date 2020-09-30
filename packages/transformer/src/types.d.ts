@@ -33,3 +33,9 @@ declare module '@pixi/interaction' {
         InteractionEvent,
     } from 'pixi.js';
 }
+
+declare module '@pixi/sprite' {
+    export {
+        Sprite
+    } from 'pixi.js';
+}
