@@ -51,7 +51,7 @@ export class SVGImageNode extends SVGGraphicsNode
         const imageOrigin = new URL(imageURL).origin;
         let imageElement: HTMLImageElement | SVGImageElement = element;
 
-        if (imageOrigin && imageOrigin !== 'null' && imageOrigin !== baseURL)
+        if (imageOrigin && imageOrigin !== baseURL)
         {
             imageElement = document.createElement('img');
 

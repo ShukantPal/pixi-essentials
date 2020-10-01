@@ -269,8 +269,15 @@ export class SVGScene extends DisplayObject
 
     protected parseReference(url: string): string
     {
-        if (url.startsWith('url')) {
-            return url.slice(5, -2);
+        if (url.startsWith('url'))
+        {
+            let contents = url.slice(4, -1);
+
+            if (contents.startsWith('\'') && contents.endsWith('\'')) {
+                contents = contents.slice(1, -1);
+            }
+
+            return contents;
         }
 
         return url;
@@ -359,9 +366,7 @@ export class SVGScene extends DisplayObject
 
             if (typeof stroke === 'string' && stroke.startsWith('url'))
             {
-                const ref = stroke
-                    .replace('url(', '')
-                    .slice(1, -2);// Remove single quotes + the ending ')' parenthesis
+                const ref = this.parseReference(stroke);
                 const paintElement = this.content.querySelector(ref);
 
                 if (paintElement && paintElement instanceof SVGGradientElement)
@@ -503,7 +508,7 @@ export class SVGScene extends DisplayObject
 
         if (node instanceof SVGGraphicsNode)
         {
-            const bbox = node.getBounds(false, tempRect);
+            const bbox = node.getLocalBounds(tempRect);
             const { x, y } = bbox;
             const w = Math.ceil(bbox.width);
             const h = Math.ceil(bbox.height);

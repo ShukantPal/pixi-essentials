@@ -41,7 +41,7 @@ export class InheritedPaintProvider implements Paint
 
     get stroke(): number | string
     {
-        return (typeof this.provider.stroke === 'number') ? this.provider.stroke : this.parent.stroke;
+        return this.provider.stroke !== null ? this.provider.stroke : this.parent.stroke;
     }
 
     get strokeDashArray(): number[]
