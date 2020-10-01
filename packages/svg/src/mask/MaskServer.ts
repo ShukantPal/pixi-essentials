@@ -25,7 +25,7 @@ export class MaskSprite extends Sprite
 }
 
 /**
- * A `LuminanceMaskSprite` will lazily render its content's luminance into its render-texture's alpha
+ * A `MaskServer` will lazily render its content's luminance into its render-texture's alpha
  * channel using the luminance-alpha filter. The `dirtyId` flag can be used to make it re-render its
  * contents. It is intended to be used as a sprite-mask, where black pixels are invisible and white
  * pixels are visible (i.e. black pixels are filtered to alpha = 0, while white pixels are filtered

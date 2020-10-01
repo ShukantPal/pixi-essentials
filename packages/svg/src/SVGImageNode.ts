@@ -7,6 +7,7 @@ import { SVGGraphicsNode } from './SVGGraphicsNode';
  */
 export class SVGImageNode extends SVGGraphicsNode
 {
+    id = Math.random();
     /**
      * The canvas used into which the `SVGImageElement` is drawn. This is because WebGL does not support
      * using `SVGImageElement` as an `ImageSource` for textures.
@@ -50,7 +51,7 @@ export class SVGImageNode extends SVGGraphicsNode
         const imageOrigin = new URL(imageURL).origin;
         let imageElement: HTMLImageElement | SVGImageElement = element;
 
-        if (imageOrigin && imageOrigin !== baseURL)
+        if (imageOrigin && imageOrigin !== 'null' && imageOrigin !== baseURL)
         {
             imageElement = document.createElement('img');
 

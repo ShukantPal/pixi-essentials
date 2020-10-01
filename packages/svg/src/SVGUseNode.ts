@@ -23,6 +23,8 @@ export class SVGUseNode extends Container
         // const width = element.width.baseVal.valueInSpecifiedUnits;
         // const height = element.height.baseVal.valueInSpecifiedUnits;
 
+        console.log(element);
+
         this.position.set(x, y);
     }
 

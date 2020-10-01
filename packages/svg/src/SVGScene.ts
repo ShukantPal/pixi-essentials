@@ -428,17 +428,14 @@ export class SVGScene extends DisplayObject
             }
         }
 
-        if (!(element instanceof SVGUseElement))
-        {
-            node.transform.setFromMatrix(tempMatrix.set(
-                transformMatrix.a,
-                transformMatrix.b,
-                transformMatrix.c,
-                transformMatrix.d,
-                transformMatrix instanceof Matrix ? transformMatrix.tx : transformMatrix.e,
-                transformMatrix instanceof Matrix ? transformMatrix.ty : transformMatrix.f,
-            ));
-        }
+        node.transform.setFromMatrix(tempMatrix.set(
+            transformMatrix.a,
+            transformMatrix.b,
+            transformMatrix.c,
+            transformMatrix.d,
+            transformMatrix instanceof Matrix ? transformMatrix.tx : transformMatrix.e,
+            transformMatrix instanceof Matrix ? transformMatrix.ty : transformMatrix.f,
+        ));
 
         if (element instanceof SVGMaskElement)
         {
