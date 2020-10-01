@@ -318,13 +318,32 @@ export class SVGGraphicsNode extends Graphics
         element.y.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PX);
         element.width.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PX);
         element.height.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PX);
+        element.rx.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PX);
+        element.ry.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PX);
 
         const x = element.x.baseVal.valueInSpecifiedUnits;
         const y = element.y.baseVal.valueInSpecifiedUnits;
         const width = element.width.baseVal.valueInSpecifiedUnits;
         const height = element.height.baseVal.valueInSpecifiedUnits;
+        const rx = element.rx.baseVal.valueInSpecifiedUnits;
+        const ry = element.ry.baseVal.valueInSpecifiedUnits;
 
-        this.drawRect(x, y, width, height);
+        if (rx === 0 && ry === 0)
+        {
+            this.drawRect(x, y, width, height);
+        }
+        else
+        {
+            this.moveTo(x, y - ry);
+            this.ellipticArcTo(x + rx, y, rx, ry, 0, true, false);
+            this.lineTo(x + width - rx, y);
+            this.ellipticArcTo(x + width, y + ry, rx, ry, 0, true, false);
+            this.lineTo(x + width, y + height - ry);
+            this.ellipticArcTo(x + width - rx, y + height, rx, ry, 0, true, false);
+            this.lineTo(x + rx, y + height);
+            this.ellipticArcTo(x, y + height - ry, rx, ry, 0, true, false);
+            this.closePath();
+        }
     }
 
     /**
