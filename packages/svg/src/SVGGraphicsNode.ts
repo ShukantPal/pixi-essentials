@@ -326,22 +326,22 @@ export class SVGGraphicsNode extends Graphics
         const width = element.width.baseVal.valueInSpecifiedUnits;
         const height = element.height.baseVal.valueInSpecifiedUnits;
         const rx = element.rx.baseVal.valueInSpecifiedUnits;
-        const ry = element.ry.baseVal.valueInSpecifiedUnits;
+        const ry = element.ry.baseVal.valueInSpecifiedUnits || rx;
 
-        if (rx === 0 && ry === 0)
+        if (rx === 0 || ry === 0)
         {
             this.drawRect(x, y, width, height);
         }
         else
         {
-            this.moveTo(x, y - ry);
-            this.ellipticArcTo(x + rx, y, rx, ry, 0, true, false);
+            this.moveTo(x, y + ry);
+            this.ellipticArcTo(x + rx, y, rx, ry, 0, false, false);
             this.lineTo(x + width - rx, y);
-            this.ellipticArcTo(x + width, y + ry, rx, ry, 0, true, false);
+            this.ellipticArcTo(x + width, y + ry, rx, ry, 0, false, false);
             this.lineTo(x + width, y + height - ry);
-            this.ellipticArcTo(x + width - rx, y + height, rx, ry, 0, true, false);
+            this.ellipticArcTo(x + width - rx, y + height, rx, ry, 0, false, false);
             this.lineTo(x + rx, y + height);
-            this.ellipticArcTo(x, y + height - ry, rx, ry, 0, true, false);
+            this.ellipticArcTo(x, y + height - ry, rx, ry, 0, false, false);
             this.closePath();
         }
     }
@@ -378,7 +378,12 @@ export class SVGGraphicsNode extends Graphics
             .split(/[ ,]/g)
             .map((p) => parseInt(p, 10));
 
-        this.drawPolygon(points);
+        this.moveTo(points[0], points[1]);
+
+        for (let i = 2; i < points.length; i += 2)
+        {
+            this.lineTo(points[i], points[i + 1]);
+        }
     }
 
     /**
