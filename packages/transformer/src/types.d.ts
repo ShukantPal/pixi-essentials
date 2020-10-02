@@ -39,3 +39,16 @@ declare module '@pixi/sprite' {
         Sprite
     } from 'pixi.js';
 }
+
+declare module '@pixi/text' {
+    export {
+        Text
+    } from 'pixi.js';
+}
+
+declare module '@pixi/text-bitmap' {
+    export {
+        BitmapFont,
+        BitmapText
+    } from 'pixi.js';
+}

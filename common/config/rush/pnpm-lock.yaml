@@ -7,6 +7,7 @@ dependencies:
   '@pixi/interaction': 5.3.3
   '@pixi/settings': 5.2.1
   '@pixi/sprite': 5.3.3
+  '@pixi/text': 5.3.3
   '@pixi/ticker': 5.2.1
   '@pixi/utils': 5.3.0
   '@rush-temp/bounds': 'file:projects/bounds.tgz'
@@ -4944,6 +4945,8 @@ packages:
       '@pixi/graphics': 5.3.3
       '@pixi/math': 5.3.3
       '@pixi/sprite': 5.3.3
+      '@pixi/text': 5.3.3
+      '@pixi/text-bitmap': 5.3.3
       d-path-parser: 1.0.0
       eslint: 7.9.0
       rollup: 2.28.1
@@ -4955,7 +4958,7 @@ packages:
       tslib: '*'
       typescript: '*'
     resolution:
-      integrity: sha512-qNSuDRuc5TcZQzjDJg3WXElKV+T4SfUk38QwEJ8n779olDOtUzK5cLU9J2RiLP9nmKuhgk2BuLb/BYjJL1I3Vw==
+      integrity: sha512-GnmD0tkQ/318B6rfK++UFPZh99Y9Oxi0firEOCz+H0TKiLIS5e19GPAgWdCQ6oSZDrwdWqsBRWmvhDGDXKQwFw==
       tarball: 'file:projects/svg.tgz'
     version: 0.0.0
   'file:projects/system-g.tgz':
@@ -5046,6 +5049,7 @@ specifiers:
   '@pixi/interaction': ~5.3.3
   '@pixi/settings': 5.2.1
   '@pixi/sprite': ~5.3.3
+  '@pixi/text': ~5.3.3
   '@pixi/ticker': 5.2.1
   '@pixi/utils': ^5.1.0
   '@rush-temp/bounds': 'file:./projects/bounds.tgz'

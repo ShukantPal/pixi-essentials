@@ -1,7 +1,7 @@
 import { DisplayObject, Container } from '@pixi/display';
 import { InheritedPaintProvider } from './paint/InheritedPaintProvider';
 import { MaskServer } from './mask/MaskServer';
-import { LINE_CAP, LINE_JOIN, GraphicsData, Graphics } from '@pixi/graphics';
+import { LINE_CAP, LINE_JOIN, GraphicsData } from '@pixi/graphics';
 import { Matrix, Rectangle } from '@pixi/math';
 import { PaintProvider } from './paint/PaintProvider';
 import { PaintServer } from './paint/PaintServer';
@@ -9,6 +9,7 @@ import { RenderTexture, Texture } from '@pixi/core';
 import { SVGGraphicsNode } from './SVGGraphicsNode';
 import { SVGImageNode } from './SVGImageNode';
 import { SVGPathNode } from './SVGPathNode';
+import { SVGTextNode } from './SVGTextNode';
 import { SVGUseNode } from './SVGUseNode';
 
 import type { Paint } from './paint/Paint';
@@ -130,6 +131,9 @@ export class SVGScene extends DisplayObject
                 break;
             case 'path':
                 renderNode = new SVGPathNode();
+                break;
+            case 'text':
+                renderNode = new SVGTextNode();
                 break;
             case 'use':
                 renderNode = new SVGUseNode();
@@ -416,6 +420,9 @@ export class SVGScene extends DisplayObject
             case 'rect':
                 (node as SVGGraphicsNode).embedRect(element as SVGRectElement);
                 break;
+            case 'text':
+                (node as SVGTextNode).embedText(element as SVGTextElement);
+                break;
             case 'use': {
                 const useElement = element as SVGUseElement;
                 const useTargetURL = useElement.getAttribute('href') || useElement.getAttribute('xlink:href');
@@ -462,6 +469,11 @@ export class SVGScene extends DisplayObject
                 node.mask = maskSprite;
                 node.addChild(maskSprite);
             }
+        }
+
+        if (element instanceof SVGTextElement && node instanceof SVGTextNode)
+        {
+            node.y -= node.style.fontSize;
         }
 
         return {
