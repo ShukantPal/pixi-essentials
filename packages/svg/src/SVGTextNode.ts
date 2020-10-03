@@ -3,6 +3,7 @@ import { SVGTextEngineImpl } from './SVGTextEngineImpl';
 
 import type { DisplayObject } from '@pixi/display';
 import type { SVGTextEngine } from './SVGTextEngine';
+import type { TextStyle } from '@pixi/text';
 
 /**
  * Draws SVG &lt;text /&gt; elements.
@@ -57,8 +58,8 @@ export class SVGTextNode extends Container
         {
             const childNode = childNodes.item(i);
 
-            let textContent;
-            let textStyle = style;
+            let textContent: string;
+            let textStyle: Partial<TextStyle>;
 
             /* eslint-disable-next-line no-undef */
             if (childNode instanceof globalThis.Text)

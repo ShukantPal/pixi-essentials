@@ -182,8 +182,6 @@ function round(
 function buildDash(points: number[], style: LineStyle, graphicsGeometry: GraphicsGeometry): void
 {
     // get first and last point.. figure out the middle!
-    const firstPoint = new Point(points[0], points[1]);
-    const lastPoint = new Point(points[points.length - 2], points[points.length - 1]);
 
     const verts = graphicsGeometry.points;
     const length = points.length / 2;
