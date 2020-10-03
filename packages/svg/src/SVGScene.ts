@@ -473,7 +473,7 @@ export class SVGScene extends DisplayObject
 
         if (element instanceof SVGTextElement && node instanceof SVGTextNode)
         {
-            node.y -= node.style.fontSize;
+           // node.y -= node.style.fontSize;
         }
 
         return {

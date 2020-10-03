@@ -20,6 +20,7 @@ declare module '@pixi/graphics' {
 
 declare module '@pixi/math' {
     export {
+        IPointData,
         Point,
         Matrix,
         Transform,
@@ -42,7 +43,9 @@ declare module '@pixi/sprite' {
 
 declare module '@pixi/text' {
     export {
-        Text
+        Text,
+        TextMetrics,
+        TextStyle
     } from 'pixi.js';
 }
 
