@@ -1,0 +1,47 @@
+{
+  "name": "@pixi-essentials/gradients",
+  "version": "1.0.0",
+  "description": "Generates textures with color gradients",
+  "main": "lib/gradients.js",
+  "module": "lib/gradients.es.js",
+  "bundle": "dist/gradients.js",
+  "scripts": {
+    "build": "rollup -c node_modules/@pixi-build-tools/rollup-configurator/index.js --silent",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SukantPal/pixi-essentials.git"
+  },
+  "keywords": [
+    "gradients",
+    "linear-gradient",
+    "radial-gradient",
+    "webgl",
+    "pixijs",
+    "color-gradients"
+  ],
+  "author": "Shukant K. Pal <shukantpal@outlook.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SukantPal/pixi-essentials/issues"
+  },
+  "files": [
+    "dist",
+    "lib",
+    "index.d.ts"
+  ],
+  "homepage": "https://github.com/SukantPal/pixi-essentials#readme",
+  "peerDependencies": {
+    "@pixi/core": "~5.3.3",
+    "@pixi/math": "~5.3.3",
+    "@pixi/sprite": "~5.3.3"
+  },
+  "devDependencies": {
+    "@pixi/core": "~5.3.3",
+    "@pixi/math": "~5.3.3",
+    "@pixi/sprite": "~5.3.3",
+    "rollup": "~2.28.2",
+    "@pixi-build-tools/rollup-configurator": "~1.0.5"
+  }
+}

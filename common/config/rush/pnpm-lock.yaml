@@ -2,9 +2,12 @@ dependencies:
   '@inlet/react-pixi': 5.0.3_react@16.13.1
   '@microsoft/api-extractor': 7.7.13
   '@pixi-build-tools/floss-rush-monorepo': 1.0.1
-  '@pixi/eslint-config': 1.0.1_eslint@7.7.0+typescript@4.0.2
+  '@pixi/eslint-config': 1.0.1_typescript@4.0.2
+  '@pixi/filter-color-matrix': 5.3.3
   '@pixi/interaction': 5.3.3
   '@pixi/settings': 5.2.1
+  '@pixi/sprite': 5.3.3
+  '@pixi/text': 5.3.3
   '@pixi/ticker': 5.2.1
   '@pixi/utils': 5.3.0
   '@rush-temp/bounds': 'file:projects/bounds.tgz'
@@ -13,29 +16,31 @@ dependencies:
   '@rush-temp/cull': 'file:projects/cull.tgz'
   '@rush-temp/data-half-edge-mesh': 'file:projects/data-half-edge-mesh.tgz'
   '@rush-temp/diagnostic-geometry': 'file:projects/diagnostic-geometry.tgz_tslib@2.0.1+typescript@4.0.2'
-  '@rush-temp/eslint-config': 'file:projects/eslint-config.tgz_eslint@7.7.0+typescript@4.0.2'
+  '@rush-temp/eslint-config': 'file:projects/eslint-config.tgz_typescript@4.0.2'
   '@rush-temp/filter-fft': 'file:projects/filter-fft.tgz'
+  '@rush-temp/gradients': 'file:projects/gradients.tgz_tslib@2.0.1+typescript@4.0.2'
   '@rush-temp/instanced-renderer': 'file:projects/instanced-renderer.tgz'
   '@rush-temp/mixin-smart-mask': 'file:projects/mixin-smart-mask.tgz'
   '@rush-temp/object-pool': 'file:projects/object-pool.tgz'
   '@rush-temp/ooo-renderer': 'file:projects/ooo-renderer.tgz'
   '@rush-temp/react-bindings': 'file:projects/react-bindings.tgz'
   '@rush-temp/shader-preprocessor': 'file:projects/shader-preprocessor.tgz'
+  '@rush-temp/svg': 'file:projects/svg.tgz_tslib@2.0.1+typescript@4.0.2'
   '@rush-temp/system-g': 'file:projects/system-g.tgz'
   '@rush-temp/transformer': 'file:projects/transformer.tgz'
   '@rush-temp/types': 'file:projects/types.tgz'
   '@rush-temp/unit-tests': 'file:projects/unit-tests.tgz_typescript@4.0.2'
   '@rushstack/eslint-patch': 1.0.3
   '@types/react': 16.9.46
-  '@typescript-eslint/eslint-plugin': 3.9.1_bfaa9f11a80e0b0e07bd4175641995de
-  '@typescript-eslint/parser': 3.9.1_eslint@7.7.0+typescript@4.0.2
+  '@typescript-eslint/eslint-plugin': 3.9.1_cedbebc65d131f3e9fc3a92790e43e33
+  '@typescript-eslint/parser': 3.9.1_typescript@4.0.2
+  d-path-parser: 1.0.0
   electron: 9.2.1
-  eslint: 7.7.0
   floss: 3.0.0_electron@9.2.1
   gl-mat3: 2.0.0
   pixi-spatial-hash: 1.0.0
   react: 16.13.1
-  rollup: 2.27.0
+  tinycolor2: 1.4.1
   tslib: 2.0.1
   typescript: 4.0.2
 lockfileVersion: 5.1
@@ -75,6 +80,23 @@ packages:
       global-tunnel-ng: 2.7.1
     resolution:
       integrity: sha512-vAuHUbfvBQpYTJ5wB7uVIDq5c/Ry0fiTBMs7lnEYAo/qXXppIVcWdfBr57u6eRnKdVso7KSiH6p/LbQAG6Izrg==
+  /@eslint/eslintrc/0.1.3:
+    dependencies:
+      ajv: 6.12.4
+      debug: 4.1.1
+      espree: 7.3.0
+      globals: 12.4.0
+      ignore: 4.0.6
+      import-fresh: 3.2.1
+      js-yaml: 3.13.1
+      lodash: 4.17.19
+      minimatch: 3.0.4
+      strip-json-comments: 3.1.1
+    dev: false
+    engines:
+      node: ^10.12.0 || >=12.0.0
+    resolution:
+      integrity: sha512-4YVwPkANLeNtRjMekzux1ci8hIaH5eGKktGqR0d3LWsKNn5B2X/1Z6Trxy7jQXl9EBGE6Yj02O+t09FMeRllaA==
   /@inlet/react-pixi/5.0.3_react@16.13.1:
     dependencies:
       fbjs: 1.0.0
@@ -202,6 +224,44 @@ packages:
       typescript: '*'
     resolution:
       integrity: sha512-q+VtWbsvrL7y37SK4pZt+5sSijk2nGUpxAB7uyU8WtC5AtQm1TDul5sBEUp+Lyl2wPnG2bCYfqIvgPm2qGDxvg==
+  /@pixi-build-tools/rollup-configurator/1.0.5_59de5be7c04292495dd056ece477ba21:
+    dependencies:
+      '@pixi-build-tools/globals': 1.0.2
+      '@rollup/plugin-commonjs': 15.0.0_rollup@2.28.2
+      rollup: 2.28.2
+      rollup-plugin-node-resolve: 5.2.0_rollup@2.28.2
+      rollup-plugin-replace: 2.2.0
+      rollup-plugin-sourcemaps: 0.6.2_rollup@2.28.2
+      rollup-plugin-string: 3.0.0
+      rollup-plugin-terser: 7.0.0_rollup@2.28.2
+      rollup-plugin-typescript: 1.0.1_tslib@2.0.1+typescript@4.0.2
+    dev: false
+    peerDependencies:
+      rollup: '*'
+      tslib: '*'
+      typescript: '*'
+    resolution:
+      integrity: sha512-6dr4eWUfK+dl4llrlzKCMR6c4/EVgFPk/CVR3v5a3K947puf/54Jm6elp1R8NMY6cmVFIpT2+5ATIs7Lta8yNQ==
+  /@pixi-build-tools/rollup-configurator/1.0.5_a4e9e86a3b0568f234b271c5fdbe4ae7:
+    dependencies:
+      '@pixi-build-tools/globals': 1.0.2
+      '@rollup/plugin-commonjs': 15.0.0_rollup@2.28.1
+      rollup: 2.28.1
+      rollup-plugin-node-resolve: 5.2.0_rollup@2.28.1
+      rollup-plugin-replace: 2.2.0
+      rollup-plugin-sourcemaps: 0.6.2_rollup@2.28.1
+      rollup-plugin-string: 3.0.0
+      rollup-plugin-terser: 7.0.0_rollup@2.28.1
+      rollup-plugin-typescript: 1.0.1_tslib@2.0.1+typescript@4.0.2
+      tslib: 2.0.1
+      typescript: 4.0.2
+    dev: false
+    peerDependencies:
+      rollup: '*'
+      tslib: '*'
+      typescript: '*'
+    resolution:
+      integrity: sha512-6dr4eWUfK+dl4llrlzKCMR6c4/EVgFPk/CVR3v5a3K947puf/54Jm6elp1R8NMY6cmVFIpT2+5ATIs7Lta8yNQ==
   /@pixi/accessibility/5.3.0:
     dependencies:
       '@pixi/core': 5.3.0
@@ -282,6 +342,17 @@ packages:
     dependencies:
       '@typescript-eslint/eslint-plugin': 2.34.0_c5d39578830b936d3d96d54496a1fb75
       '@typescript-eslint/parser': 2.34.0_eslint@7.7.0+typescript@4.0.2
+      typescript: 4.0.2
+    dev: false
+    peerDependencies:
+      eslint: '*'
+      typescript: ^3.8.3
+    resolution:
+      integrity: sha512-VWJansY/GywVKN9yMgRQW/ZftCl5rElvSO/FdYzSwzhaePt2qbPR6+XWmNo2JiEDkf8ZXgBt0N22dQrb5R5BlQ==
+  /@pixi/eslint-config/1.0.1_typescript@4.0.2:
+    dependencies:
+      '@typescript-eslint/eslint-plugin': 2.34.0_87565894ca99c159b2bbb00810156f90
+      '@typescript-eslint/parser': 2.34.0_typescript@4.0.2
       typescript: 4.0.2
     dev: false
     peerDependencies:
@@ -889,12 +960,72 @@ packages:
       rollup: ^2.22.0
     resolution:
       integrity: sha512-8uAdikHqVyrT32w1zB9VhW6uGwGjhKgnDNP4pQJsjdnyF4FgCj6/bmv24c7v2CuKhq32CcyCwRzMPEElaKkn0w==
+  /@rollup/plugin-commonjs/15.0.0_rollup@2.28.1:
+    dependencies:
+      '@rollup/pluginutils': 3.1.0_rollup@2.28.1
+      commondir: 1.0.1
+      estree-walker: 2.0.1
+      glob: 7.1.6
+      is-reference: 1.2.1
+      magic-string: 0.25.7
+      resolve: 1.17.0
+      rollup: 2.28.1
+    dev: false
+    engines:
+      node: '>= 8.0.0'
+    peerDependencies:
+      rollup: ^2.22.0
+    resolution:
+      integrity: sha512-8uAdikHqVyrT32w1zB9VhW6uGwGjhKgnDNP4pQJsjdnyF4FgCj6/bmv24c7v2CuKhq32CcyCwRzMPEElaKkn0w==
+  /@rollup/plugin-commonjs/15.0.0_rollup@2.28.2:
+    dependencies:
+      '@rollup/pluginutils': 3.1.0_rollup@2.28.2
+      commondir: 1.0.1
+      estree-walker: 2.0.1
+      glob: 7.1.6
+      is-reference: 1.2.1
+      magic-string: 0.25.7
+      resolve: 1.17.0
+      rollup: 2.28.2
+    dev: false
+    engines:
+      node: '>= 8.0.0'
+    peerDependencies:
+      rollup: ^2.22.0
+    resolution:
+      integrity: sha512-8uAdikHqVyrT32w1zB9VhW6uGwGjhKgnDNP4pQJsjdnyF4FgCj6/bmv24c7v2CuKhq32CcyCwRzMPEElaKkn0w==
   /@rollup/pluginutils/3.1.0_rollup@2.27.0:
     dependencies:
       '@types/estree': 0.0.39
       estree-walker: 1.0.1
       picomatch: 2.2.2
       rollup: 2.27.0
+    dev: false
+    engines:
+      node: '>= 8.0.0'
+    peerDependencies:
+      rollup: ^1.20.0||^2.0.0
+    resolution:
+      integrity: sha512-GksZ6pr6TpIjHm8h9lSQ8pi8BE9VeubNT0OMJ3B5uZJ8pz73NPiqOtCog/x2/QzM1ENChPKxMDhiQuRHsqc+lg==
+  /@rollup/pluginutils/3.1.0_rollup@2.28.1:
+    dependencies:
+      '@types/estree': 0.0.39
+      estree-walker: 1.0.1
+      picomatch: 2.2.2
+      rollup: 2.28.1
+    dev: false
+    engines:
+      node: '>= 8.0.0'
+    peerDependencies:
+      rollup: ^1.20.0||^2.0.0
+    resolution:
+      integrity: sha512-GksZ6pr6TpIjHm8h9lSQ8pi8BE9VeubNT0OMJ3B5uZJ8pz73NPiqOtCog/x2/QzM1ENChPKxMDhiQuRHsqc+lg==
+  /@rollup/pluginutils/3.1.0_rollup@2.28.2:
+    dependencies:
+      '@types/estree': 0.0.39
+      estree-walker: 1.0.1
+      picomatch: 2.2.2
+      rollup: 2.28.2
     dev: false
     engines:
       node: '>= 8.0.0'
@@ -1058,6 +1189,26 @@ packages:
     dev: false
     resolution:
       integrity: sha512-auApPaJf3NPfe18hSoJkp8EbZzer2ISk7o8mCC3M9he/a04+gbMF97NkpD2S8riMGvm4BMRI59/SZQSaLTKpsQ==
+  /@typescript-eslint/eslint-plugin/2.34.0_87565894ca99c159b2bbb00810156f90:
+    dependencies:
+      '@typescript-eslint/experimental-utils': 2.34.0_typescript@4.0.2
+      '@typescript-eslint/parser': 2.34.0_typescript@4.0.2
+      functional-red-black-tree: 1.0.1
+      regexpp: 3.1.0
+      tsutils: 3.17.1_typescript@4.0.2
+      typescript: 4.0.2
+    dev: false
+    engines:
+      node: ^8.10.0 || ^10.13.0 || >=11.10.1
+    peerDependencies:
+      '@typescript-eslint/parser': ^2.0.0
+      eslint: ^5.0.0 || ^6.0.0
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    resolution:
+      integrity: sha512-4zY3Z88rEE99+CNvTbXSyovv2z9PNOVffTWD2W8QF5s2prBQtwN2zadqERcrHpcR7O/+KMI3fcTAmUUhK/iQcQ==
   /@typescript-eslint/eslint-plugin/2.34.0_c5d39578830b936d3d96d54496a1fb75:
     dependencies:
       '@typescript-eslint/experimental-utils': 2.34.0_eslint@7.7.0+typescript@4.0.2
@@ -1102,11 +1253,48 @@ packages:
         optional: true
     resolution:
       integrity: sha512-XIr+Mfv7i4paEdBf0JFdIl9/tVxyj+rlilWIfZ97Be0lZ7hPvUbS5iHt9Glc8kRI53dsr0PcAEudbf8rO2wGgg==
+  /@typescript-eslint/eslint-plugin/3.9.1_cedbebc65d131f3e9fc3a92790e43e33:
+    dependencies:
+      '@typescript-eslint/experimental-utils': 3.9.1_typescript@4.0.2
+      '@typescript-eslint/parser': 3.9.1_typescript@4.0.2
+      debug: 4.1.1
+      functional-red-black-tree: 1.0.1
+      regexpp: 3.1.0
+      semver: 7.3.2
+      tsutils: 3.17.1_typescript@4.0.2
+      typescript: 4.0.2
+    dev: false
+    engines:
+      node: ^10.12.0 || >=12.0.0
+    peerDependencies:
+      '@typescript-eslint/parser': ^3.0.0
+      eslint: ^5.0.0 || ^6.0.0 || ^7.0.0
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    resolution:
+      integrity: sha512-XIr+Mfv7i4paEdBf0JFdIl9/tVxyj+rlilWIfZ97Be0lZ7hPvUbS5iHt9Glc8kRI53dsr0PcAEudbf8rO2wGgg==
   /@typescript-eslint/experimental-utils/2.34.0_eslint@7.7.0+typescript@4.0.2:
     dependencies:
       '@types/json-schema': 7.0.5
       '@typescript-eslint/typescript-estree': 2.34.0_typescript@4.0.2
       eslint: 7.7.0
+      eslint-scope: 5.1.0
+      eslint-utils: 2.1.0
+      typescript: 4.0.2
+    dev: false
+    engines:
+      node: ^8.10.0 || ^10.13.0 || >=11.10.1
+    peerDependencies:
+      eslint: '*'
+      typescript: '*'
+    resolution:
+      integrity: sha512-eS6FTkq+wuMJ+sgtuNTtcqavWXqsflWcfBnlYhg/nS4aZ1leewkXGbvBhaapn1q6qf4M71bsR1tez5JTRMuqwA==
+  /@typescript-eslint/experimental-utils/2.34.0_typescript@4.0.2:
+    dependencies:
+      '@types/json-schema': 7.0.5
+      '@typescript-eslint/typescript-estree': 2.34.0_typescript@4.0.2
       eslint-scope: 5.1.0
       eslint-utils: 2.1.0
     dev: false
@@ -1123,6 +1311,21 @@ packages:
       '@typescript-eslint/types': 3.9.1
       '@typescript-eslint/typescript-estree': 3.9.1_typescript@4.0.2
       eslint: 7.7.0
+      eslint-scope: 5.1.0
+      eslint-utils: 2.1.0
+    dev: false
+    engines:
+      node: ^10.12.0 || >=12.0.0
+    peerDependencies:
+      eslint: '*'
+      typescript: '*'
+    resolution:
+      integrity: sha512-lkiZ8iBBaYoyEKhCkkw4SAeatXyBq9Ece5bZXdLe1LWBUwTszGbmbiqmQbwWA8cSYDnjWXp9eDbXpf9Sn0hLAg==
+  /@typescript-eslint/experimental-utils/3.9.1_typescript@4.0.2:
+    dependencies:
+      '@types/json-schema': 7.0.5
+      '@typescript-eslint/types': 3.9.1
+      '@typescript-eslint/typescript-estree': 3.9.1_typescript@4.0.2
       eslint-scope: 5.1.0
       eslint-utils: 2.1.0
       typescript: 4.0.2
@@ -1153,6 +1356,24 @@ packages:
         optional: true
     resolution:
       integrity: sha512-03ilO0ucSD0EPTw2X4PntSIRFtDPWjrVq7C3/Z3VQHRC7+13YB55rcJI3Jt+YgeHbjUdJPcPa7b23rXCBokuyA==
+  /@typescript-eslint/parser/2.34.0_typescript@4.0.2:
+    dependencies:
+      '@types/eslint-visitor-keys': 1.0.0
+      '@typescript-eslint/experimental-utils': 2.34.0_typescript@4.0.2
+      '@typescript-eslint/typescript-estree': 2.34.0_typescript@4.0.2
+      eslint-visitor-keys: 1.3.0
+      typescript: 4.0.2
+    dev: false
+    engines:
+      node: ^8.10.0 || ^10.13.0 || >=11.10.1
+    peerDependencies:
+      eslint: ^5.0.0 || ^6.0.0
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    resolution:
+      integrity: sha512-03ilO0ucSD0EPTw2X4PntSIRFtDPWjrVq7C3/Z3VQHRC7+13YB55rcJI3Jt+YgeHbjUdJPcPa7b23rXCBokuyA==
   /@typescript-eslint/parser/3.9.1_eslint@7.7.0+typescript@4.0.2:
     dependencies:
       '@types/eslint-visitor-keys': 1.0.0
@@ -1160,6 +1381,25 @@ packages:
       '@typescript-eslint/types': 3.9.1
       '@typescript-eslint/typescript-estree': 3.9.1_typescript@4.0.2
       eslint: 7.7.0
+      eslint-visitor-keys: 1.3.0
+      typescript: 4.0.2
+    dev: false
+    engines:
+      node: ^10.12.0 || >=12.0.0
+    peerDependencies:
+      eslint: ^5.0.0 || ^6.0.0 || ^7.0.0
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    resolution:
+      integrity: sha512-y5QvPFUn4Vl4qM40lI+pNWhTcOWtpZAJ8pOEQ21fTTW4xTJkRplMjMRje7LYTXqVKKX9GJhcyweMz2+W1J5bMg==
+  /@typescript-eslint/parser/3.9.1_typescript@4.0.2:
+    dependencies:
+      '@types/eslint-visitor-keys': 1.0.0
+      '@typescript-eslint/experimental-utils': 3.9.1_typescript@4.0.2
+      '@typescript-eslint/types': 3.9.1
+      '@typescript-eslint/typescript-estree': 3.9.1_typescript@4.0.2
       eslint-visitor-keys: 1.3.0
       typescript: 4.0.2
     dev: false
@@ -1601,6 +1841,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-ofovWglpqoqbfLNOTBNZLSbMuGrblAf1efvvArGKOZMBrIoJeu5UsAipQolkijtyQx5MtAzT/J9IHj/CEY1mJw==
+  /d-path-parser/1.0.0:
+    dev: false
+    resolution:
+      integrity: sha1-h7+0G0TFWWK0775doxUCte6LCrc=
   /debug/2.6.9:
     dependencies:
       ms: 2.0.0
@@ -1895,6 +2139,51 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-1KUxLzos0ZVsyL81PnRN335nDtQ8/vZUD6uMtWbF+5zDtjKcsklIi78XoE0MVL93QvWTu+E5y44VyyCsOMBrIg==
+  /eslint/7.9.0:
+    dependencies:
+      '@babel/code-frame': 7.10.4
+      '@eslint/eslintrc': 0.1.3
+      ajv: 6.12.4
+      chalk: 4.1.0
+      cross-spawn: 7.0.3
+      debug: 4.1.1
+      doctrine: 3.0.0
+      enquirer: 2.3.6
+      eslint-scope: 5.1.0
+      eslint-utils: 2.1.0
+      eslint-visitor-keys: 1.3.0
+      espree: 7.3.0
+      esquery: 1.3.1
+      esutils: 2.0.3
+      file-entry-cache: 5.0.1
+      functional-red-black-tree: 1.0.1
+      glob-parent: 5.1.1
+      globals: 12.4.0
+      ignore: 4.0.6
+      import-fresh: 3.2.1
+      imurmurhash: 0.1.4
+      is-glob: 4.0.1
+      js-yaml: 3.13.1
+      json-stable-stringify-without-jsonify: 1.0.1
+      levn: 0.4.1
+      lodash: 4.17.19
+      minimatch: 3.0.4
+      natural-compare: 1.4.0
+      optionator: 0.9.1
+      progress: 2.0.3
+      regexpp: 3.1.0
+      semver: 7.3.2
+      strip-ansi: 6.0.0
+      strip-json-comments: 3.1.1
+      table: 5.4.6
+      text-table: 0.2.0
+      v8-compile-cache: 2.1.1
+    dev: false
+    engines:
+      node: ^10.12.0 || >=12.0.0
+    hasBin: true
+    resolution:
+      integrity: sha512-V6QyhX21+uXp4T+3nrNfI3hQNBDa/P8ga7LoQOenwrlEFXrEnUEE+ok1dMtaS3b6rmLXhT1TkTIsG75HMLbknA==
   /espree/7.3.0:
     dependencies:
       acorn: 7.4.0
@@ -3500,6 +3789,34 @@ packages:
       rollup: '>=1.11.0'
     resolution:
       integrity: sha512-jUlyaDXts7TW2CqQ4GaO5VJ4PwwaV8VUGA7+km3n6k6xtOEacf61u0VXwN80phY/evMcaS+9eIeJ9MOyDxt5Zw==
+  /rollup-plugin-node-resolve/5.2.0_rollup@2.28.1:
+    dependencies:
+      '@types/resolve': 0.0.8
+      builtin-modules: 3.1.0
+      is-module: 1.0.0
+      resolve: 1.17.0
+      rollup: 2.28.1
+      rollup-pluginutils: 2.8.2
+    deprecated: This package has been deprecated and is no longer maintained. Please use @rollup/plugin-node-resolve.
+    dev: false
+    peerDependencies:
+      rollup: '>=1.11.0'
+    resolution:
+      integrity: sha512-jUlyaDXts7TW2CqQ4GaO5VJ4PwwaV8VUGA7+km3n6k6xtOEacf61u0VXwN80phY/evMcaS+9eIeJ9MOyDxt5Zw==
+  /rollup-plugin-node-resolve/5.2.0_rollup@2.28.2:
+    dependencies:
+      '@types/resolve': 0.0.8
+      builtin-modules: 3.1.0
+      is-module: 1.0.0
+      resolve: 1.17.0
+      rollup: 2.28.2
+      rollup-pluginutils: 2.8.2
+    deprecated: This package has been deprecated and is no longer maintained. Please use @rollup/plugin-node-resolve.
+    dev: false
+    peerDependencies:
+      rollup: '>=1.11.0'
+    resolution:
+      integrity: sha512-jUlyaDXts7TW2CqQ4GaO5VJ4PwwaV8VUGA7+km3n6k6xtOEacf61u0VXwN80phY/evMcaS+9eIeJ9MOyDxt5Zw==
   /rollup-plugin-replace/2.2.0:
     dependencies:
       magic-string: 0.25.7
@@ -3521,6 +3838,32 @@ packages:
       rollup: '>=0.31.2'
     resolution:
       integrity: sha512-9AwTKg3yRykwzemfLt71ySe0LvrAci+bpsOL1LaTYFk5BX4HF6X7DQfpHa74ANfSja3hyjiQkXCR8goSOnW//Q==
+  /rollup-plugin-sourcemaps/0.6.2_rollup@2.28.1:
+    dependencies:
+      '@rollup/pluginutils': 3.1.0_rollup@2.28.1
+      rollup: 2.28.1
+      source-map-resolve: 0.6.0
+    dev: false
+    engines:
+      node: '>=10.0.0'
+    peerDependencies:
+      '@types/node': '>=10.0.0'
+      rollup: '>=0.31.2'
+    resolution:
+      integrity: sha512-9AwTKg3yRykwzemfLt71ySe0LvrAci+bpsOL1LaTYFk5BX4HF6X7DQfpHa74ANfSja3hyjiQkXCR8goSOnW//Q==
+  /rollup-plugin-sourcemaps/0.6.2_rollup@2.28.2:
+    dependencies:
+      '@rollup/pluginutils': 3.1.0_rollup@2.28.2
+      rollup: 2.28.2
+      source-map-resolve: 0.6.0
+    dev: false
+    engines:
+      node: '>=10.0.0'
+    peerDependencies:
+      '@types/node': '>=10.0.0'
+      rollup: '>=0.31.2'
+    resolution:
+      integrity: sha512-9AwTKg3yRykwzemfLt71ySe0LvrAci+bpsOL1LaTYFk5BX4HF6X7DQfpHa74ANfSja3hyjiQkXCR8goSOnW//Q==
   /rollup-plugin-string/3.0.0:
     dependencies:
       rollup-pluginutils: 2.8.2
@@ -3532,6 +3875,30 @@ packages:
       '@babel/code-frame': 7.10.4
       jest-worker: 26.3.0
       rollup: 2.27.0
+      serialize-javascript: 4.0.0
+      terser: 5.2.1
+    dev: false
+    peerDependencies:
+      rollup: ^2.0.0
+    resolution:
+      integrity: sha512-p/N3lLiFusCjYTLfVkoaiRTOGr5AESEaljMPH12MhOtoMkmTBhIAfuadrcWy4am1U0vU4WTxO9fi0K09O4CboQ==
+  /rollup-plugin-terser/7.0.0_rollup@2.28.1:
+    dependencies:
+      '@babel/code-frame': 7.10.4
+      jest-worker: 26.3.0
+      rollup: 2.28.1
+      serialize-javascript: 4.0.0
+      terser: 5.2.1
+    dev: false
+    peerDependencies:
+      rollup: ^2.0.0
+    resolution:
+      integrity: sha512-p/N3lLiFusCjYTLfVkoaiRTOGr5AESEaljMPH12MhOtoMkmTBhIAfuadrcWy4am1U0vU4WTxO9fi0K09O4CboQ==
+  /rollup-plugin-terser/7.0.0_rollup@2.28.2:
+    dependencies:
+      '@babel/code-frame': 7.10.4
+      jest-worker: 26.3.0
+      rollup: 2.28.2
       serialize-javascript: 4.0.0
       terser: 5.2.1
     dev: false
@@ -3567,6 +3934,24 @@ packages:
       fsevents: 2.1.3
     resolution:
       integrity: sha512-1WlbhNdzhLjdhh2wsf6CDxmuBAYG+5O53fYqCcGv8aJOoX/ymCfCY6oZnvllXZzaC/Ng+lPPwq9EMbHOKc5ozA==
+  /rollup/2.28.1:
+    dev: false
+    engines:
+      node: '>=10.0.0'
+    hasBin: true
+    optionalDependencies:
+      fsevents: 2.1.3
+    resolution:
+      integrity: sha512-DOtVoqOZt3+FjPJWLU8hDIvBjUylc9s6IZvy76XklxzcLvAQLtVAG/bbhsMhcWnYxC0TKKcf1QQ/tg29zeID0Q==
+  /rollup/2.28.2:
+    dev: false
+    engines:
+      node: '>=10.0.0'
+    hasBin: true
+    optionalDependencies:
+      fsevents: 2.1.3
+    resolution:
+      integrity: sha512-8txbsFBFLmm9Xdt4ByTOGa9Muonmc8MfNjnGAR8U8scJlF1ZW7AgNZa7aqBXaKtlvnYP/ab++fQIq9dB9NWUbg==
   /run-async/2.4.1:
     dev: false
     engines:
@@ -3964,6 +4349,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-QFQRqOfmM5/mTbmiNN4R3DHgK9Q=
+  /tinycolor2/1.4.1:
+    dev: false
+    resolution:
+      integrity: sha1-9PrTM0R7wLB9TcjpIJ2POaisd+g=
   /tmp/0.0.33:
     dependencies:
       os-tmpdir: 1.0.2
@@ -4383,21 +4772,19 @@ packages:
       integrity: sha512-lgLBfynuTwhRasegxmj5EVu/PMor+sMOdr9Hf26LkQJfZsdqt+Z0B/4E5wGzd9gyQmfqeTjIhUN/T0z5OBW0HQ==
       tarball: 'file:projects/diagnostic-geometry.tgz'
     version: 0.0.0
-  'file:projects/eslint-config.tgz_eslint@7.7.0+typescript@4.0.2':
+  'file:projects/eslint-config.tgz_typescript@4.0.2':
     dependencies:
-      '@pixi/eslint-config': 1.0.1_eslint@7.7.0+typescript@4.0.2
+      '@pixi/eslint-config': 1.0.1_typescript@4.0.2
       '@rushstack/eslint-patch': 1.0.3
-      '@typescript-eslint/eslint-plugin': 3.9.1_bfaa9f11a80e0b0e07bd4175641995de
-      '@typescript-eslint/parser': 3.9.1_eslint@7.7.0+typescript@4.0.2
-      rollup: 2.27.0
+      '@typescript-eslint/eslint-plugin': 3.9.1_cedbebc65d131f3e9fc3a92790e43e33
+      '@typescript-eslint/parser': 3.9.1_typescript@4.0.2
     dev: false
     id: 'file:projects/eslint-config.tgz'
     name: '@rush-temp/eslint-config'
     peerDependencies:
-      eslint: '*'
       typescript: '*'
     resolution:
-      integrity: sha512-0KISmbYY7f9gyt49pBuP74hZtG/k5Z6TJzOpxHqdvZZybNYU7z1oocqL9s8onYWw0c1iHkozxIZUxyjGGH6zoQ==
+      integrity: sha512-fkQrI6q0D93OwvOBKVqgM63Pp0tCgvaEgY9mHDukXBoHkRMCoAWdOK5x5lJJbQi9HXWTyqICjbbEDcz0aJ35Jw==
       tarball: 'file:projects/eslint-config.tgz'
     version: 0.0.0
   'file:projects/filter-fft.tgz':
@@ -4416,6 +4803,23 @@ packages:
     resolution:
       integrity: sha512-rsBkYLqA4LWx/nO5vQtTGrLQNZ5Dg4OPidCbbKf20ZJLcr0mT6vA5ty8PQfJXSGnrR9gRFyxeHNtsrankyp0aQ==
       tarball: 'file:projects/filter-fft.tgz'
+    version: 0.0.0
+  'file:projects/gradients.tgz_tslib@2.0.1+typescript@4.0.2':
+    dependencies:
+      '@pixi-build-tools/rollup-configurator': 1.0.5_59de5be7c04292495dd056ece477ba21
+      '@pixi/core': 5.3.3
+      '@pixi/math': 5.3.3
+      '@pixi/sprite': 5.3.3
+      rollup: 2.28.2
+    dev: false
+    id: 'file:projects/gradients.tgz'
+    name: '@rush-temp/gradients'
+    peerDependencies:
+      tslib: '*'
+      typescript: '*'
+    resolution:
+      integrity: sha512-x0tcPxEHvDGJv6vYeBt7ePmCYECaj1pv+TCRHrW2lT/9v9KwYMZ1tHU0weDf9iFJ/ZT0HwxKbC8Nm4HslBvO8A==
+      tarball: 'file:projects/gradients.tgz'
     version: 0.0.0
   'file:projects/instanced-renderer.tgz':
     dependencies:
@@ -4511,7 +4915,7 @@ packages:
     dev: false
     name: '@rush-temp/react-bindings'
     resolution:
-      integrity: sha512-jPE1F2eY2xrD2FpKpmq8qXJ3pcwrRy9UbObQx7GdIG1iNy8cGayCnmYRvA2yMyulTBzMPl0Pt5zml5DIa/mz+A==
+      integrity: sha512-jPbo6zuMBmfnYULLJ0TXun7diwGT68ZJFI1UlS+4BH/1GCWhrcUie3oeSmqH9apCZcENm0lQrLj2aAhIIwatRA==
       tarball: 'file:projects/react-bindings.tgz'
     version: 0.0.0
   'file:projects/shader-preprocessor.tgz':
@@ -4531,6 +4935,31 @@ packages:
     resolution:
       integrity: sha512-t3rwxsWnqkG0JSL3hIDEW92iAZAX+/SODooAT2J1cIQC1tsFnYeKCWhtUTN/mPDcN/LmEYRiWaggfPJ139PucQ==
       tarball: 'file:projects/shader-preprocessor.tgz'
+    version: 0.0.0
+  'file:projects/svg.tgz_tslib@2.0.1+typescript@4.0.2':
+    dependencies:
+      '@pixi-build-tools/rollup-configurator': 1.0.5_a4e9e86a3b0568f234b271c5fdbe4ae7
+      '@pixi/core': 5.3.3
+      '@pixi/display': 5.3.3
+      '@pixi/filter-color-matrix': 5.3.3
+      '@pixi/graphics': 5.3.3
+      '@pixi/math': 5.3.3
+      '@pixi/sprite': 5.3.3
+      '@pixi/text': 5.3.3
+      '@pixi/text-bitmap': 5.3.3
+      d-path-parser: 1.0.0
+      eslint: 7.9.0
+      rollup: 2.28.1
+      tinycolor2: 1.4.1
+    dev: false
+    id: 'file:projects/svg.tgz'
+    name: '@rush-temp/svg'
+    peerDependencies:
+      tslib: '*'
+      typescript: '*'
+    resolution:
+      integrity: sha512-GnmD0tkQ/318B6rfK++UFPZh99Y9Oxi0firEOCz+H0TKiLIS5e19GPAgWdCQ6oSZDrwdWqsBRWmvhDGDXKQwFw==
+      tarball: 'file:projects/svg.tgz'
     version: 0.0.0
   'file:projects/system-g.tgz':
     dependencies:
@@ -4571,7 +5000,7 @@ packages:
     dev: false
     name: '@rush-temp/transformer'
     resolution:
-      integrity: sha512-kQMGowZQDvCNULiolhIUyTmn5asnDVP1lYjfarzjq6+h1JXtZa9Qbpn9hN1EYm6OE/FHB07rWHd8spLxy8Wf6A==
+      integrity: sha512-JVo2uLCFVc0XHFUlPdtZTpLeZZIZuJGirp4NmaubsWcnMUWwPX8hNLq6CQx+PTNmVrxBjtJIhLKmF79dFsbegg==
       tarball: 'file:projects/transformer.tgz'
     version: 0.0.0
   'file:projects/types.tgz':
@@ -4607,7 +5036,7 @@ packages:
     peerDependencies:
       typescript: '*'
     resolution:
-      integrity: sha512-vxSB4+lLz3vCloiKm03t84PsOnO8ZRtnFAUDu8M/7dxYszgOh3hNRVsGoKDbZs0XdQJFAM/pGfx8IK384C2nhA==
+      integrity: sha512-G2uzajjs53EDwd9CdQYym2nR+GwdTav1L96CNMq3OsbryN6XMl1TGTRs0qUEXF8bbhVeanVmUy6eQ/m1FCqiPA==
       tarball: 'file:projects/unit-tests.tgz'
     version: 0.0.0
 registry: ''
@@ -4616,8 +5045,11 @@ specifiers:
   '@microsoft/api-extractor': 7.7.13
   '@pixi-build-tools/floss-rush-monorepo': 1.0.1
   '@pixi/eslint-config': ~1.0.1
+  '@pixi/filter-color-matrix': ~5.3.3
   '@pixi/interaction': ~5.3.3
   '@pixi/settings': 5.2.1
+  '@pixi/sprite': ~5.3.3
+  '@pixi/text': ~5.3.3
   '@pixi/ticker': 5.2.1
   '@pixi/utils': ^5.1.0
   '@rush-temp/bounds': 'file:./projects/bounds.tgz'
@@ -4628,12 +5060,14 @@ specifiers:
   '@rush-temp/diagnostic-geometry': 'file:./projects/diagnostic-geometry.tgz'
   '@rush-temp/eslint-config': 'file:./projects/eslint-config.tgz'
   '@rush-temp/filter-fft': 'file:./projects/filter-fft.tgz'
+  '@rush-temp/gradients': 'file:./projects/gradients.tgz'
   '@rush-temp/instanced-renderer': 'file:./projects/instanced-renderer.tgz'
   '@rush-temp/mixin-smart-mask': 'file:./projects/mixin-smart-mask.tgz'
   '@rush-temp/object-pool': 'file:./projects/object-pool.tgz'
   '@rush-temp/ooo-renderer': 'file:./projects/ooo-renderer.tgz'
   '@rush-temp/react-bindings': 'file:./projects/react-bindings.tgz'
   '@rush-temp/shader-preprocessor': 'file:./projects/shader-preprocessor.tgz'
+  '@rush-temp/svg': 'file:./projects/svg.tgz'
   '@rush-temp/system-g': 'file:./projects/system-g.tgz'
   '@rush-temp/transformer': 'file:./projects/transformer.tgz'
   '@rush-temp/types': 'file:./projects/types.tgz'
@@ -4642,12 +5076,12 @@ specifiers:
   '@types/react': ^16.9.46
   '@typescript-eslint/eslint-plugin': ~3.9.1
   '@typescript-eslint/parser': ~3.9.1
+  d-path-parser: ~1.0.0
   electron: ~9.2.1
-  eslint: ~7.7.0
   floss: ~3.0.0
   gl-mat3: 2.0.0
   pixi-spatial-hash: 1.0.0
   react: ^16.0.0
-  rollup: ~2.27.0
+  tinycolor2: ~1.4.1
   tslib: ~2.0.1
   typescript: ~4.0.2

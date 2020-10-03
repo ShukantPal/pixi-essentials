@@ -64,6 +64,12 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@pixi-essentials/gradients",
+      "projectFolder": "packages/gradients",
+      "reviewCategory": "production",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@pixi-essentials/instanced-renderer",
       "projectFolder": "packages/instanced-renderer",
       "reviewCategory": "production",
@@ -102,6 +108,12 @@
     {
       "packageName": "@pixi-essentials/system-g",
       "projectFolder": "packages/system-g",
+      "reviewCategory": "production",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@pixi-essentials/svg",
+      "projectFolder": "packages/svg",
       "reviewCategory": "production",
       "shouldPublish": true
     },
