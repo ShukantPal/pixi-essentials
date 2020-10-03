@@ -1,6 +1,6 @@
 {
   "name": "@pixi-essentials/svg",
-  "version": "0.0.1-alpha.0",
+  "version": "0.0.1",
   "description": "Draws editable SVG element trees using PixiJS display objects.",
   "main": "lib/svg.js",
   "module": "lib/svg.es.js",
@@ -58,7 +58,7 @@
   "dependencies": {
     "d-path-parser": "^1.0.0",
     "tinycolor2": "^1.4.1",
-    "@pixi-essentials/gradients": "^0.0.1-alpha.0"
+    "@pixi-essentials/gradients": "^0.0.1"
   },
   "publishConfig": {
     "access": "public"

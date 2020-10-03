@@ -1,0 +1,22 @@
+{
+  "name": "@pixi-essentials/svg",
+  "entries": [
+    {
+      "version": "0.0.1",
+      "tag": "@pixi-essentials/svg_v0.0.1",
+      "date": "Sat, 03 Oct 2020 01:37:43 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "First release candidate"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@pixi-essentials/gradients\" from `^0.0.1-alpha.0` to `^0.0.1`"
+          }
+        ]
+      }
+    }
+  ]
+}

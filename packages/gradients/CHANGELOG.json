@@ -1,0 +1,17 @@
+{
+  "name": "@pixi-essentials/gradients",
+  "entries": [
+    {
+      "version": "0.0.1",
+      "tag": "@pixi-essentials/gradients_v0.0.1",
+      "date": "Sat, 03 Oct 2020 01:37:43 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "First release candidate"
+          }
+        ]
+      }
+    }
+  ]
+}
