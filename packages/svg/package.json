@@ -1,6 +1,6 @@
 {
   "name": "@pixi-essentials/svg",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Draws editable SVG element trees using PixiJS display objects.",
   "main": "lib/svg.js",
   "module": "lib/svg.es.js",
