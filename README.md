@@ -9,6 +9,7 @@
 | Package            | Brief |
 | -----------------------------------------------| ----------------------------------------------------------------------------------------------------------------------------------------------------|
 | @pixi-essentials/bounds | axis-aligned, oriented bounding boxes |
+| @pixi-essentials/gradients | generates color-gradient textures |
 | @pixi-essentials/plugin-g | (unreleased) This is a plugin containing useful geometry manipulation utilities, The package also contains various types of useful geometries |
 | @pixi-essentials/shader-preprocessor | (unreleased) This package provides compile-time %macro% preprocessing. You can dynamically generate shaders based on the macros value set provided & a shader template.|
 
@@ -28,6 +29,7 @@
 | ------------------------- | -------------- |
 | @pixi-essentials/conic | resolution-independent filled quadric curve rendering |
 | @pixi-essentials/transformer | interactive interface for editing the transforms in groups |
+| @pixi-essentials/svg   | a feature-rich SVG implementation |
 
 ## Integrations :atom_symbol:
 
