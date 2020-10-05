@@ -8,6 +8,8 @@ import type { TextStyle } from '@pixi/text';
  * Text engines are allowed to have async behaviour so that fonts can be loaded before text metrics are measured.
  *
  * It is expected an implementation inherits from {@link PIXI.DisplayObject}.
+ *
+ * @see SVGTextEngineImpl
  */
 export interface SVGTextEngine
 {
