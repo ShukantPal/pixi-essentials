@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/svg",
   "entries": [
     {
+      "version": "0.0.3",
+      "tag": "@pixi-essentials/svg_v0.0.3",
+      "date": "Mon, 05 Oct 2020 16:11:24 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Async-pattern for SVGTextEngine"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.2",
       "tag": "@pixi-essentials/svg_v0.0.2",
       "date": "Sun, 04 Oct 2020 23:25:53 GMT",
