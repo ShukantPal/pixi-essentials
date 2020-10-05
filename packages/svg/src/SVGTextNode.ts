@@ -13,7 +13,7 @@ export class SVGTextNode extends Container
     /**
      * The SVG text rendering engine to be used by default in `SVGTextNode`. This API is not stable and
      * can change anytime.
-     * 
+     *
      * @alpha
      */
     static defaultEngine: { new(): SVGTextEngine & DisplayObject } = SVGTextEngineImpl;
@@ -36,8 +36,12 @@ export class SVGTextNode extends Container
      *
      * @param element - The `SVGTextElement` to embed.
      */
-    embedText(element: SVGTextElement): void
+    async embedText(element: SVGTextElement): Promise<void>
     {
+        const engine = this.engine;
+
+        await engine.clear();
+
         const fill = element.getAttribute('fill');
         const fontFamily = `${element.getAttribute('font-family') || 'serif'}, serif`;
         const fontSize = parseFloat(element.getAttribute('font-size'));
@@ -96,7 +100,14 @@ export class SVGTextNode extends Container
                 continue;
             }
 
-            textPosition = this.engine.put(childNode, { x: textPosition.x, y: textPosition.y }, textContent, textStyle);
+            textPosition = await engine.put(
+                childNode, {
+                    x: textPosition.x,
+                    y: textPosition.y,
+                },
+                textContent,
+                textStyle,
+            );
         }
     }
 }

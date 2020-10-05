@@ -39,13 +39,19 @@ export class SVGTextEngineImpl extends Sprite implements SVGTextEngine
         this.updateId = 0;
     }
 
-    clear(): void
+    async clear(): Promise<void>
     {
         this.contentList.clear();
         this.dirtyId++;
     }
 
-    put(id: any, position: IPointData, content: string, style: Partial<TextStyle>, matrix?: Matrix): IPointData
+    async put(
+        id: any,
+        position: IPointData,
+        content: string,
+        style: Partial<TextStyle>,
+        matrix?: Matrix,
+    ): Promise<IPointData>
     {
         this.contentList.set(id, {
             position,

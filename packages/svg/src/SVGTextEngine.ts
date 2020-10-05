@@ -5,7 +5,9 @@ import type { TextStyle } from '@pixi/text';
  * The `SVGTextEngine` interface is used to layout text content authored in SVG files. The @pixi-essentials/svg
  * package provides {@link SVGTextEngineImpl} as a default implementation for users.
  *
- * **Contract**: It is expected an implementation inherits from {@link PIXI.DisplayObject}.
+ * Text engines are allowed to have async behaviour so that fonts can be loaded before text metrics are measured.
+ *
+ * It is expected an implementation inherits from {@link PIXI.DisplayObject}.
  */
 export interface SVGTextEngine
 {
@@ -13,7 +15,7 @@ export interface SVGTextEngine
      * Clears the text content laid out already. This should reset the state of the engine to before any calls
      * to {@link SVGTextEngine.put} were made.
      */
-    clear(): void;
+    clear(): Promise<void>;
 
     /**
      * Puts the text {@code content} into the local space of the engine at {@code position}. {@code matrix} can
@@ -25,5 +27,5 @@ export interface SVGTextEngine
      * @param style - The text styling applied.
      * @param matrix
      */
-    put(id: any, position: IPointData, content: string, style: Partial<TextStyle>, matrix?: Matrix): IPointData;
+    put(id: any, position: IPointData, content: string, style: Partial<TextStyle>, matrix?: Matrix): Promise<IPointData>;
 }
