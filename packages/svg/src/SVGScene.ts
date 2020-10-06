@@ -160,6 +160,9 @@ export class SVGScene extends DisplayObject
 
         // Calculate bounds in the SVG scene graph. This ensures they are updated whenever the transform changes.
         this.root.calculateBounds();
+
+        // Prevent redundant recalculations.
+        this._transformDirty = false;
     }
 
     /**
