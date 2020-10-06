@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/svg
 
-This log was last generated on Tue, 06 Oct 2020 18:38:01 GMT and should not be manually modified.
+This log was last generated on Tue, 06 Oct 2020 18:57:40 GMT and should not be manually modified.
+
+## 0.0.5
+Tue, 06 Oct 2020 18:57:40 GMT
+
+### Patches
+
+- Add nodetransformdirty events to allow transform invalidation internally.
 
 ## 0.0.4
 Tue, 06 Oct 2020 18:38:01 GMT
