@@ -122,6 +122,7 @@ export class SVGTextEngineImpl extends Sprite implements SVGTextEngine
         if (this.updateId !== this.dirtyId)
         {
             this.updateText();
+            this.updateTransform();
         }
 
         super.render(renderer);
