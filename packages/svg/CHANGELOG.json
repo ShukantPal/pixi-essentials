@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/svg",
   "entries": [
     {
+      "version": "0.0.6",
+      "tag": "@pixi-essentials/svg_v0.0.6",
+      "date": "Tue, 06 Oct 2020 19:09:58 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Set _transformDirty to false after updating transform. Invoke updateTransform after updateText in SVGTextEngineImpl"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.5",
       "tag": "@pixi-essentials/svg_v0.0.5",
       "date": "Tue, 06 Oct 2020 18:57:40 GMT",
