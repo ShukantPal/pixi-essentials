@@ -58,7 +58,8 @@
   "dependencies": {
     "d-path-parser": "^1.0.0",
     "tinycolor2": "^1.4.1",
-    "@pixi-essentials/gradients": "^0.0.1"
+    "@pixi-essentials/gradients": "^0.0.1",
+    "@pixi-essentials/cull": "^1.0.8"
   },
   "publishConfig": {
     "access": "public"

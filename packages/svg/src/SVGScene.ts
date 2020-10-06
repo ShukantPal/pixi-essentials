@@ -1,3 +1,4 @@
+import { Cull } from '@pixi-essentials/cull';
 import { DisplayObject, Container } from '@pixi/display';
 import { InheritedPaintProvider } from './paint/InheritedPaintProvider';
 import { MaskServer } from './mask/MaskServer';
@@ -51,6 +52,11 @@ export class SVGScene extends DisplayObject
     protected _height: number;
 
     /**
+     * This is used to cull the SVG scene graph before rendering.
+     */
+    protected _cull: Cull;
+
+    /**
      * Maps content elements to their paint. These paints do not inherit from their parent element. You must
      * compose an {@link InheritedPaintProvider} manually.
      */
@@ -70,16 +76,15 @@ export class SVGScene extends DisplayObject
         super();
 
         this.content = content;
-        this._width = 0;
-        this._height = 0;
+        this._width = content.viewBox.baseVal.width;
+        this._height = content.viewBox.baseVal.height;
 
+        this._cull = new Cull({ recursive: true, toggle: 'renderable' });
         this._elementToPaint = new Map();
         this._elementToMask = new Map();
 
         this.renderServers = new Container();
-        this.root = this.populateScene(content);
-
-        this.root.addChildAt(this.renderServers, 0);
+        this.root = this.populateSceneRecursive(content);
     }
 
     /**
@@ -93,21 +98,61 @@ export class SVGScene extends DisplayObject
         this._bounds.addFrameMatrix(this.worldTransform, 0, 0, this.width, this.height);
     }
 
+    /**
+     * @override
+     */
     render(renderer: Renderer): void
     {
+        // Update render-server objects
+        this.renderServers.render(renderer);
+
+        // Cull the SVG scene graph
+        this._cull.cull(renderer.renderTexture.sourceFrame, true);
+
+        // Render the SVG scene graph
         this.root.render(renderer);
+
+        // Uncull the SVG scene graph. This ensures the scene graph is fully 'renderable'
+        // outside of a render cycle.
+        this._cull.uncull();
     }
 
+    /**
+     * @override
+     */
     updateTransform(): void
     {
         super.updateTransform();
+
+        const worldTransform = this.worldTransform;
+        const rootTransform = this.root.transform.worldTransform;
+
+        // Don't update transforms if they didn't change across frames. This is because the SVG scene graph is static.
+        if (rootTransform.a === worldTransform.a
+            && rootTransform.b === worldTransform.b
+            && rootTransform.c === worldTransform.c
+            && rootTransform.d === worldTransform.d
+            && rootTransform.tx === worldTransform.tx
+            && rootTransform.ty === worldTransform.ty
+            && (rootTransform as any)._worldID !== 0)
+        {
+            return;
+        }
 
         this.root.enableTempParent();
         this.root.transform.setFromMatrix(this.worldTransform);
         this.root.updateTransform();
         this.root.disableTempParent(null);
+
+        // Calculate bounds in the SVG scene graph. This ensures they are updated whenever the transform changes.
+        this.root.calculateBounds();
     }
 
+    /**
+     * Creates a display object that implements the corresponding `embed*` method for the given node.
+     *
+     * @param element - The element to be embedded in a display object.
+     */
     protected createNode(element: SVGElement): Container
     {
         let renderNode = null;
@@ -190,7 +235,7 @@ export class SVGScene extends DisplayObject
     {
         if (ref instanceof SVGElement)
         {
-            ref = this.populateScene(ref, {
+            ref = this.populateSceneRecursive(ref, {
                 basePaint: this.queryInheritedPaint(ref),
             });
         }
@@ -271,6 +316,12 @@ export class SVGScene extends DisplayObject
         return new InheritedPaintProvider(parentPaint, paint);
     }
 
+    /**
+     * Parses the internal URL reference into a selector (that can be used to find the
+     * referenced element using `this.content.querySelector`).
+     *
+     * @param url - The reference string, e.g. "url(#id)", "url('#id')", "#id"
+     */
     protected parseReference(url: string): string
     {
         if (url.startsWith('url'))
@@ -429,7 +480,7 @@ export class SVGScene extends DisplayObject
                 const useTarget = this.content.querySelector(useTargetURL);
                 const usePaint = this.queryPaint(useElement);
 
-                const contentNode = this.populateScene(useTarget as SVGGraphicsElement, {
+                const contentNode = this.populateSceneRecursive(useTarget as SVGGraphicsElement, {
                     basePaint: usePaint,
                 }) as SVGGraphicsNode;
 
@@ -471,17 +522,19 @@ export class SVGScene extends DisplayObject
             }
         }
 
-        if (element instanceof SVGTextElement && node instanceof SVGTextNode)
-        {
-           // node.y -= node.style.fontSize;
-        }
-
         return {
             paint,
         };
     }
 
-    protected populateScene(
+    /**
+     * Recursively populates a subscene graph that embeds {@code element}. The root of the subscene is returned.
+     *
+     * @param element - The SVGElement to be embedded.
+     * @param options - Inherited attributes from the element's parent, if any.
+     * @return The display object that embeds the element for rendering.
+     */
+    protected populateSceneRecursive(
         element: SVGElement,
         options?: {
             basePaint?: Paint;
@@ -495,7 +548,7 @@ export class SVGScene extends DisplayObject
             return null;
         }
 
-        let paint;
+        let paint: Paint;
 
         if (element instanceof SVGGraphicsElement || element instanceof SVGMaskElement)
         {
@@ -508,7 +561,7 @@ export class SVGScene extends DisplayObject
         {
             // eslint-disable-next-line
             // @ts-ignore
-            const childNode = this.populateScene(element.children[i], {
+            const childNode = this.populateSceneRecursive(element.children[i], {
                 basePaint: paint,
             });
 
@@ -556,22 +609,46 @@ export class SVGScene extends DisplayObject
         return node;
     }
 
+    /**
+     * Populates the entire SVG scene. This should only be called once after the {@link this.content} has been set.
+     *
+     * @param element - The root element of the SVG document fragment.
+     */
+    protected populateScene(): void
+    {
+        if (this.root)
+        {
+            this._cull.remove(this.root);
+        }
+
+        const root = this.populateSceneRecursive(this.content);
+
+        this.root = root;
+        this._cull.add(this.root);
+    }
+
+    /**
+     * The width at which the SVG scene is being rendered. By default, this is the viewbox width specified by
+     * the root element.
+     */
     get width(): number
     {
         return this._width;
     }
-
     set width(value: number)
     {
         this._width = value;
         this.scale.x = this._width / this.content.viewBox.baseVal.width;
     }
 
+    /**
+     * The height at which the SVG scene is being rendered. By default, this is the viewbox height specified by
+     * the root element.
+     */
     get height(): number
     {
         return this._height;
     }
-
     set height(value: number)
     {
         this._height = value;
