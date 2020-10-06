@@ -9,6 +9,13 @@ import { Texture } from '@pixi/core';
 import type { PaintServer } from './paint/PaintServer';
 import type { Renderer } from '@pixi/core';
 
+interface IFillStyleOptions {
+    color?: number;
+    alpha?: number;
+    texture?: Texture;
+    matrix?: Matrix;
+}
+
 interface ILineStyleOptions {
     color?: number;
     alpha?: number;

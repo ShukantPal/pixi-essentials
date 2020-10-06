@@ -365,7 +365,8 @@ export class SVGScene extends DisplayObject
      * @param element - The content `element` to be rendered. This must be an element of the SVG document
      *  fragment under `this.content`.
      * @param options - Additional options
-     * @param {Paint} [options.basePaint] - the base paint that the element's paint should inherit from
+     * @param {Paint} [options.basePaint] - The base paint that the element's paint should inherit from
+     * @return The base attributes of the element, like paint.
      */
     protected embedIntoNode(
         node: Container,
@@ -458,6 +459,7 @@ export class SVGScene extends DisplayObject
                 dashArray: strokeDashArray,
                 dashOffset: strokeDashOffset === null ? strokeDashOffset : 0,
                 join: strokeLineJoin === null ? LINE_JOIN.MITER : strokeLineJoin as unknown as LINE_JOIN,
+                matrix: new Matrix(),
                 miterLimit: strokeMiterLimit === null ? 150 : strokeMiterLimit,
                 texture: strokeTexture || Texture.WHITE,
                 width: strokeWidth === null ? (stroke ? 1 : 0) : strokeWidth,
@@ -611,7 +613,18 @@ export class SVGScene extends DisplayObject
                 {
                     if (data.fillStyle.matrix)
                     {
-                        data.fillStyle.matrix.invert().translate(x, y).invert();
+                        data.fillStyle.matrix
+                            .invert()
+                            .translate(x, y)
+                            .invert();
+                    }
+
+                    if (data.lineStyle.matrix)
+                    {
+                        data.lineStyle.matrix
+                            .invert()
+                            .translate(x, y)
+                            .invert();
                     }
                 });
 
