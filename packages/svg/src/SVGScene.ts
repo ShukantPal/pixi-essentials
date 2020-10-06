@@ -22,6 +22,13 @@ const tempRect = new Rectangle();
 /**
  * {@link SVGScene} can be used to build an interactive viewer for scalable vector graphics images. You must specify the size
  * of the svg viewer.
+ *
+ * ## SVG Scene Graph
+ *
+ * SVGScene has an internal, disconnected scene graph that is optimized for lazy updates. It will listen to the following
+ * events fired by a node:
+ *
+ * * `nodetransformdirty`: This will invalidate the transform calculations.
  */
 export class SVGScene extends DisplayObject
 {
@@ -69,6 +76,11 @@ export class SVGScene extends DisplayObject
     private _elementToMask: Map<SVGElement, MaskServer>;
 
     /**
+     * Flags whether any transform is dirty in the SVG scene graph.
+     */
+    protected _transformDirty: boolean;
+
+    /**
      * @param content - the SVG node to render
      */
     constructor(content: SVGSVGElement)
@@ -82,6 +94,7 @@ export class SVGScene extends DisplayObject
         this._cull = new Cull({ recursive: true, toggle: 'renderable' });
         this._elementToPaint = new Map();
         this._elementToMask = new Map();
+        this._transformDirty = true;
 
         this.renderServers = new Container();
         this.root = this.populateSceneRecursive(content);
@@ -134,7 +147,8 @@ export class SVGScene extends DisplayObject
             && rootTransform.d === worldTransform.d
             && rootTransform.tx === worldTransform.tx
             && rootTransform.ty === worldTransform.ty
-            && (rootTransform as any)._worldID !== 0)
+            && (rootTransform as any)._worldID !== 0
+            && !this._transformDirty)
         {
             return;
         }
@@ -548,6 +562,8 @@ export class SVGScene extends DisplayObject
             return null;
         }
 
+        node.on('nodetransformdirty', this.onNodeTransformDirty);
+
         let paint: Paint;
 
         if (element instanceof SVGGraphicsElement || element instanceof SVGMaskElement)
@@ -625,6 +641,14 @@ export class SVGScene extends DisplayObject
 
         this.root = root;
         this._cull.add(this.root);
+    }
+
+    /**
+     * Handles `nodetransformdirty` events fired by nodes. It will set {@link this._transformDirty} to true.
+     */
+    private onNodeTransformDirty = (): void =>
+    {
+        this._transformDirty = true;
     }
 
     /**

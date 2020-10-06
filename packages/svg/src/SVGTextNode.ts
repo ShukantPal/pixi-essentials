@@ -108,6 +108,9 @@ export class SVGTextNode extends Container
                 textContent,
                 textStyle,
             );
+
+            // Ensure transforms are updated as new text phrases are loaded.
+            this.emit('nodetransformdirty');
         }
     }
 }

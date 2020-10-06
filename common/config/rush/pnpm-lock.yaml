@@ -35,8 +35,8 @@ dependencies:
   '@typescript-eslint/eslint-plugin': 3.9.1_cedbebc65d131f3e9fc3a92790e43e33
   '@typescript-eslint/parser': 3.9.1_typescript@4.0.2
   d-path-parser: 1.0.0
-  electron: 9.2.1
-  floss: 3.0.0_electron@9.2.1
+  electron: 10.1.3
+  floss: 3.0.0_electron@10.1.3
   gl-mat3: 2.0.0
   pixi-spatial-hash: 1.0.0
   react: 16.13.1
@@ -1957,7 +1957,7 @@ packages:
     dev: false
     resolution:
       integrity: sha512-eZoZPPJcUHnfRZ0PjLvx2qBordSiO8ofC3vt+qACLM95u+4DovnbYNpQtJh0DNsWj8RnxrQytD4WA8gj5cRIaQ==
-  /electron/9.2.1:
+  /electron/10.1.3:
     dependencies:
       '@electron/get': 1.12.2
       '@types/node': 12.12.54
@@ -1968,7 +1968,7 @@ packages:
     hasBin: true
     requiresBuild: true
     resolution:
-      integrity: sha512-ZsetaQjXB8+9/EFW1FnfK4ukpkwXCxMEaiKiUZhZ0ZLFlLnFCpe0Bg4vdDf7e4boWGcnlgN1jAJpBw7w0eXuqA==
+      integrity: sha512-CR8LrlG47MdAp317SQ3vGYa2o2cIMdMSMPYH46OVitFLk35dwE9fn3VqvhUIXhCHYcNWIAPzMhkVHpkoFdKWuw==
   /emoji-regex/7.0.3:
     dev: false
     resolution:
@@ -2352,11 +2352,11 @@ packages:
     dev: false
     resolution:
       integrity: sha512-r5wGx7YeOwNWNlCA0wQ86zKyDLMQr+/RB8xy74M4hTphfmjlijTSSXGuH8rnvKZnfT9i+75zmd8jcKdMR4O6jA==
-  /floss/3.0.0_electron@9.2.1:
+  /floss/3.0.0_electron@10.1.3:
     dependencies:
       chalk: 2.4.2
       commander: 2.20.3
-      electron: 9.2.1
+      electron: 10.1.3
       mocha: 6.2.3
       resolve: 1.17.0
     dev: false
@@ -4818,7 +4818,7 @@ packages:
       tslib: '*'
       typescript: '*'
     resolution:
-      integrity: sha512-x0tcPxEHvDGJv6vYeBt7ePmCYECaj1pv+TCRHrW2lT/9v9KwYMZ1tHU0weDf9iFJ/ZT0HwxKbC8Nm4HslBvO8A==
+      integrity: sha512-usDFhsHjenTmMTAqJR5JiF88UQwFoW733zKG8Dvi5IcIkYyZK3RaomFGQQ+e39W6uYTbqbucSy8AcsBwGXchbg==
       tarball: 'file:projects/gradients.tgz'
     version: 0.0.0
   'file:projects/instanced-renderer.tgz':
@@ -4958,7 +4958,7 @@ packages:
       tslib: '*'
       typescript: '*'
     resolution:
-      integrity: sha512-GnmD0tkQ/318B6rfK++UFPZh99Y9Oxi0firEOCz+H0TKiLIS5e19GPAgWdCQ6oSZDrwdWqsBRWmvhDGDXKQwFw==
+      integrity: sha512-NvTExS2qU0G1U9aFizd4JQfL/uZnCQ5fyWQlBZB7uWEr252s6TImMEBgEK+9nZ0ZVvyx5m9lecqL8cB7f7z+LQ==
       tarball: 'file:projects/svg.tgz'
     version: 0.0.0
   'file:projects/system-g.tgz':
@@ -5026,9 +5026,9 @@ packages:
       '@pixi/eslint-config': 1.0.1_eslint@7.7.0+typescript@4.0.2
       '@typescript-eslint/eslint-plugin': 3.9.1_bfaa9f11a80e0b0e07bd4175641995de
       '@typescript-eslint/parser': 3.9.1_eslint@7.7.0+typescript@4.0.2
-      electron: 9.2.1
+      electron: 10.1.3
       eslint: 7.7.0
-      floss: 3.0.0_electron@9.2.1
+      floss: 3.0.0_electron@10.1.3
       rollup: 2.27.0
     dev: false
     id: 'file:projects/unit-tests.tgz'
@@ -5036,7 +5036,7 @@ packages:
     peerDependencies:
       typescript: '*'
     resolution:
-      integrity: sha512-G2uzajjs53EDwd9CdQYym2nR+GwdTav1L96CNMq3OsbryN6XMl1TGTRs0qUEXF8bbhVeanVmUy6eQ/m1FCqiPA==
+      integrity: sha512-tepBtpodfPsAOvOkzPYN2PpfhPlhTaAqO0LBmNf3UtKPzrBfcPpiR4MXJvU5E/w86gXcylKkI1FeFRnkXdhUZA==
       tarball: 'file:projects/unit-tests.tgz'
     version: 0.0.0
 registry: ''
@@ -5045,11 +5045,11 @@ specifiers:
   '@microsoft/api-extractor': 7.7.13
   '@pixi-build-tools/floss-rush-monorepo': 1.0.1
   '@pixi/eslint-config': ~1.0.1
-  '@pixi/filter-color-matrix': ~5.3.3
+  '@pixi/filter-color-matrix': ^5.3.3
   '@pixi/interaction': ~5.3.3
   '@pixi/settings': 5.2.1
-  '@pixi/sprite': ~5.3.3
-  '@pixi/text': ~5.3.3
+  '@pixi/sprite': ^5.3.3
+  '@pixi/text': ^5.3.3
   '@pixi/ticker': 5.2.1
   '@pixi/utils': ^5.1.0
   '@rush-temp/bounds': 'file:./projects/bounds.tgz'
@@ -5076,12 +5076,12 @@ specifiers:
   '@types/react': ^16.9.46
   '@typescript-eslint/eslint-plugin': ~3.9.1
   '@typescript-eslint/parser': ~3.9.1
-  d-path-parser: ~1.0.0
-  electron: ~9.2.1
+  d-path-parser: ^1.0.0
+  electron: ~10.1.3
   floss: ~3.0.0
   gl-mat3: 2.0.0
   pixi-spatial-hash: 1.0.0
   react: ^16.0.0
-  tinycolor2: ~1.4.1
+  tinycolor2: ^1.4.1
   tslib: ~2.0.1
   typescript: ~4.0.2
