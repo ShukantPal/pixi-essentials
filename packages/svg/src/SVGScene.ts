@@ -687,7 +687,7 @@ export class SVGScene extends DisplayObject
     private onNodeTransformDirty = (): void =>
     {
         this._transformDirty = true;
-    }
+    };
 
     /**
      * The width at which the SVG scene is being rendered. By default, this is the viewbox width specified by
