@@ -97,7 +97,8 @@ export class SVGScene extends DisplayObject
         this._transformDirty = true;
 
         this.renderServers = new Container();
-        this.root = this.populateSceneRecursive(content);
+
+        this.populateScene();
     }
 
     /**
