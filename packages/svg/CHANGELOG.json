@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/svg",
   "entries": [
     {
+      "version": "0.0.7",
+      "tag": "@pixi-essentials/svg_v0.0.7",
+      "date": "Wed, 07 Oct 2020 01:28:54 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Texture-size optimizations for image nodes and linear-gradient paint servers"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.6",
       "tag": "@pixi-essentials/svg_v0.0.6",
       "date": "Tue, 06 Oct 2020 19:09:58 GMT",

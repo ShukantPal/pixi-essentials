@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/svg
 
-This log was last generated on Tue, 06 Oct 2020 19:09:58 GMT and should not be manually modified.
+This log was last generated on Wed, 07 Oct 2020 01:28:54 GMT and should not be manually modified.
+
+## 0.0.7
+Wed, 07 Oct 2020 01:28:54 GMT
+
+### Patches
+
+- Texture-size optimizations for image nodes and linear-gradient paint servers
 
 ## 0.0.6
 Tue, 06 Oct 2020 19:09:58 GMT
