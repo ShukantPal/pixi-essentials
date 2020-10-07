@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/svg",
   "entries": [
     {
+      "version": "0.0.8",
+      "tag": "@pixi-essentials/svg_v0.0.8",
+      "date": "Wed, 07 Oct 2020 21:43:57 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Use populateScene instead of populateSceneRecursive to build scene graph at root."
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.7",
       "tag": "@pixi-essentials/svg_v0.0.7",
       "date": "Wed, 07 Oct 2020 01:28:54 GMT",

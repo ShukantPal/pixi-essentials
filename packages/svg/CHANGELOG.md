@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/svg
 
-This log was last generated on Wed, 07 Oct 2020 01:28:54 GMT and should not be manually modified.
+This log was last generated on Wed, 07 Oct 2020 21:43:57 GMT and should not be manually modified.
+
+## 0.0.8
+Wed, 07 Oct 2020 21:43:57 GMT
+
+### Patches
+
+- Use populateScene instead of populateSceneRecursive to build scene graph at root.
 
 ## 0.0.7
 Wed, 07 Oct 2020 01:28:54 GMT
