@@ -595,13 +595,12 @@ export class SVGScene extends DisplayObject
         if (node instanceof SVGGraphicsNode)
         {
             const bbox = node.getLocalBounds(tempRect);
-            const { x, y } = bbox;
-            const w = Math.ceil(bbox.width);
-            const h = Math.ceil(bbox.height);
+            const paintServers = node.paintServers;
+            const { x, y, width: bwidth, height: bheight } = bbox;
 
-            node.paintServers.forEach(({ paintTexture }) =>
+            node.paintServers.forEach((paintServer) =>
             {
-                paintTexture.resize(w, h, true);
+                paintServer.resolvePaintDimensions(bbox);
             });
 
             const geometry = node.geometry;
@@ -611,17 +610,40 @@ export class SVGScene extends DisplayObject
             {
                 graphicsData.forEach((data) =>
                 {
-                    if (data.fillStyle.matrix)
+                    const fillStyle = data.fillStyle;
+                    const lineStyle = data.lineStyle;
+
+                    if (fillStyle.texture && paintServers.find((server) => server.paintTexture === fillStyle.texture))
                     {
+                        const width = fillStyle.texture.width;
+                        const height = fillStyle.texture.height;
+
                         data.fillStyle.matrix
+                            .invert()
+                            .scale(bwidth / width, bheight / height)
+                            .invert();
+                    }
+                    if (fillStyle.matrix)
+                    {
+                        fillStyle.matrix
                             .invert()
                             .translate(x, y)
                             .invert();
                     }
 
-                    if (data.lineStyle.matrix)
+                    if (lineStyle.texture && paintServers.find((server) => server.paintTexture === lineStyle.texture))
                     {
+                        const width = lineStyle.texture.width;
+                        const height = lineStyle.texture.height;
+
                         data.lineStyle.matrix
+                            .invert()
+                            .scale(bwidth / width, bheight / height)
+                            .invert();
+                    }
+                    if (lineStyle.matrix)
+                    {
+                        lineStyle.matrix
                             .invert()
                             .translate(x, y)
                             .invert();

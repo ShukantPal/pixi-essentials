@@ -3,6 +3,20 @@ import { PaintProvider } from './PaintProvider';
 
 import type { Renderer, RenderTexture } from '@pixi/core';
 import type { ColorStop } from '@pixi-essentials/gradients';
+import type { Rectangle } from '@pixi/math';
+
+/**
+ * Converts the linear gradient's x1, x2, y1, y2 attributes into percentage units.
+ *
+ * @param linearGradient - The linear gradient element whose attributes are to be converted.
+ */
+function convertLinearGradientAxis(linearGradient: SVGLinearGradientElement): void
+{
+    linearGradient.x1.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PERCENTAGE);
+    linearGradient.y1.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PERCENTAGE);
+    linearGradient.x2.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PERCENTAGE);
+    linearGradient.y2.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PERCENTAGE);
+}
 
 /**
  * [Paint Servers]{@link https://svgwg.org/svg-next/pservers.html} are implemented as textures. This class is a lazy
@@ -49,6 +63,68 @@ export class PaintServer
     }
 
     /**
+     * Calculates the optimal texture dimensions for the paint texture, given the bounding box of the
+     * object applying it. The paint texture is resized accordingly.
+     *
+     * If the paint texture is sized smaller than the bounding box, then it is expected that it will
+     * be scaled up to fit it.
+     *
+     * @param bbox - The bounding box of the object applying the paint texture.
+     */
+    public resolvePaintDimensions(bbox: Rectangle): void
+    {
+        const bwidth = Math.ceil(bbox.width);
+        const bheight = Math.ceil(bbox.height);
+        const baspectRatio = bwidth / bheight;
+
+        const paintServer = this.paintServer;
+        const paintTexture = this.paintTexture;
+
+        if (paintServer instanceof SVGLinearGradientElement)
+        {
+            convertLinearGradientAxis(paintServer);
+
+            const colorStops = paintServer.children;
+            const x1 = paintServer.x1.baseVal.valueInSpecifiedUnits;
+            const y1 = paintServer.y1.baseVal.valueInSpecifiedUnits;
+            const x2 = paintServer.x2.baseVal.valueInSpecifiedUnits;
+            const y2 = paintServer.y2.baseVal.valueInSpecifiedUnits;
+
+            const mainAxisAngle = Math.atan2(y2 - y1, x2 - x1);
+            const mainAxisLength = colorStops.length === 1 ? 2 : 64;
+            let width = Math.max(1, mainAxisLength * Math.cos(mainAxisAngle));
+            let height = Math.max(1, mainAxisLength * Math.sin(mainAxisAngle));
+
+            if (width < bwidth && height < bheight)
+            {
+                // If the gradient is not parallel to x- or y- axis, then ensure that the texture's aspect ratio
+                // matches that of the bounding box. This will ensure scaling is equal along both axes, and the
+                // angle is not skewed due to scaling.
+                if (Math.abs(mainAxisAngle) > 1e-2
+                    && Math.abs(mainAxisAngle) % (Math.PI / 2) > 1e-2)
+                {
+                    const aspectRatio = width / height;
+
+                    if (aspectRatio > baspectRatio)
+                    {
+                        height = width / baspectRatio;
+                    }
+                    else
+                    {
+                        width = baspectRatio * height;
+                    }
+                }
+
+                paintTexture.resize(width, height, true);
+
+                return;
+            }
+        }
+
+        paintTexture.resize(bwidth, bheight, true);
+    }
+
+    /**
      * Renders the paint texture using the renderer immediately.
      *
      * @param renderer - The renderer to use for rendering to the paint texture.
@@ -75,10 +151,7 @@ export class PaintServer
         const linearGradient = this.paintServer as SVGLinearGradientElement;
         const paintTexture = this.paintTexture;
 
-        linearGradient.x1.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PERCENTAGE);
-        linearGradient.y1.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PERCENTAGE);
-        linearGradient.x2.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PERCENTAGE);
-        linearGradient.y2.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PERCENTAGE);
+        convertLinearGradientAxis(linearGradient);
 
         return GradientFactory.createLinearGradient(
             renderer,
