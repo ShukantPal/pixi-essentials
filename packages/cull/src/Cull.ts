@@ -204,10 +204,12 @@ export class Cull
             && bounds.right <= rect.right
             && bounds.bottom >= rect.bottom;
 
-        // Only cull children if this display-object is fully-visible. It is expected that the bounds
+        // Only cull children if this display-object is *not* fully-visible. It is expected that the bounds
         // of children lie inside of its own. Hence, further culling is only required if the display-object
-        // intersects with the boundaries of "rect".
+        // intersects with the boundaries of "rect". Otherwise, if the object is fully outside/inside the
+        // screen, the children don't need to be evaluated as they are presumed to be unculled.
         if (!fullyVisible
+                && displayObject[this._toggle]
                 && (displayObject as Container).children
                 && (displayObject as Container).children.length)
         {
