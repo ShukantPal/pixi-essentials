@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/cull
 
-This log was last generated on Sat, 05 Sep 2020 00:23:48 GMT and should not be manually modified.
+This log was last generated on Thu, 08 Oct 2020 21:31:01 GMT and should not be manually modified.
+
+## 1.0.9
+Thu, 08 Oct 2020 21:31:01 GMT
+
+### Patches
+
+- Fix culling optimization to cut off when object is fully outside of screen as well
 
 ## 1.0.8
 Sat, 05 Sep 2020 00:23:48 GMT

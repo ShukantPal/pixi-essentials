@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/cull",
   "entries": [
     {
+      "version": "1.0.9",
+      "tag": "@pixi-essentials/cull_v1.0.9",
+      "date": "Thu, 08 Oct 2020 21:31:01 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix culling optimization to cut off when object is fully outside of screen as well"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.0.8",
       "tag": "@pixi-essentials/cull_v1.0.8",
       "date": "Sat, 05 Sep 2020 00:23:48 GMT",
