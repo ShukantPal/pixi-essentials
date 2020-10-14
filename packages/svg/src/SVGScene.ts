@@ -684,6 +684,8 @@ export class SVGScene extends DisplayObject
 
     /**
      * Handles `nodetransformdirty` events fired by nodes. It will set {@link this._transformDirty} to true.
+     * 
+     * This will also emit `transformdirty`.
      */
     private onNodeTransformDirty = (): void =>
     {
