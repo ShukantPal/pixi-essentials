@@ -73,3 +73,9 @@ function loadSVG(src) {
 // Voila, you can now use this scene by adding it to your scene graph!
 const scene = new SVGScene(loadSVG(src));
 ```
+
+## Collaboration
+
+I'd like to thank [Strytegy](strytegy.com) for funding the initial development of this package.
+
+<a href="https://www.strytegy.com"><img src="https://i.imgur.com/3Ns1JJb.png" width="153.3px" /></a>
