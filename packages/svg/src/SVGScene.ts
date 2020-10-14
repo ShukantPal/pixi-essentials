@@ -688,6 +688,7 @@ export class SVGScene extends DisplayObject
     private onNodeTransformDirty = (): void =>
     {
         this._transformDirty = true;
+        this.emit('transformdirty', this);
     };
 
     /**
