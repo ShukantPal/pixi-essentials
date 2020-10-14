@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/svg
 
-This log was last generated on Wed, 07 Oct 2020 21:43:57 GMT and should not be manually modified.
+This log was last generated on Wed, 14 Oct 2020 21:17:15 GMT and should not be manually modified.
+
+## 0.0.9
+Wed, 14 Oct 2020 21:17:15 GMT
+
+### Patches
+
+- Emit transformdirty event when SVGScene has transform invalidations.
 
 ## 0.0.8
 Wed, 07 Oct 2020 21:43:57 GMT

@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/svg",
   "entries": [
     {
+      "version": "0.0.9",
+      "tag": "@pixi-essentials/svg_v0.0.9",
+      "date": "Wed, 14 Oct 2020 21:17:15 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Emit transformdirty event when SVGScene has transform invalidations."
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.8",
       "tag": "@pixi-essentials/svg_v0.0.8",
       "date": "Wed, 07 Oct 2020 21:43:57 GMT",
