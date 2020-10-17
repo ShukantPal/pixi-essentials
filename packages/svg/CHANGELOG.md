@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/svg
 
-This log was last generated on Wed, 14 Oct 2020 21:17:15 GMT and should not be manually modified.
+This log was last generated on Sat, 17 Oct 2020 18:36:10 GMT and should not be manually modified.
+
+## 0.0.10
+Sat, 17 Oct 2020 18:36:10 GMT
+
+### Patches
+
+- Add letterSpacing in the style passed by SVGTextNode.
 
 ## 0.0.9
 Wed, 14 Oct 2020 21:17:15 GMT

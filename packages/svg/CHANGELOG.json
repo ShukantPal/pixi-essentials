@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/svg",
   "entries": [
     {
+      "version": "0.0.10",
+      "tag": "@pixi-essentials/svg_v0.0.10",
+      "date": "Sat, 17 Oct 2020 18:36:10 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Add letterSpacing in the style passed by SVGTextNode."
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.9",
       "tag": "@pixi-essentials/svg_v0.0.9",
       "date": "Wed, 14 Oct 2020 21:17:15 GMT",
