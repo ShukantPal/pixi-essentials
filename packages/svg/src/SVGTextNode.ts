@@ -1,5 +1,6 @@
 import { Container } from '@pixi/display';
 import { SVGTextEngineImpl } from './SVGTextEngineImpl';
+import { parseMeasurement } from './utils/parseMeasurement';
 
 import type { DisplayObject } from '@pixi/display';
 import type { SVGTextEngine } from './SVGTextEngine';
@@ -46,12 +47,14 @@ export class SVGTextNode extends Container
         const fontFamily = `${element.getAttribute('font-family') || 'serif'}, serif`;
         const fontSize = parseFloat(element.getAttribute('font-size'));
         const fontWeight = element.getAttribute('font-weight') || 'normal';
+        const letterSpacing = parseMeasurement(element.getAttribute('letter-spacing'), fontSize || 0);
 
         const style = {
             fill: fill || 'black',
             fontFamily,
             fontSize,
             fontWeight,
+            letterSpacing,
             wordWrap: true,
             wordWrapWidth: 400,
         };
@@ -80,11 +83,13 @@ export class SVGTextNode extends Container
                 const fontFamily = element.getAttribute('font-family');
                 const fontSize = parseFloat(element.getAttribute('font-size'));
                 const fontWeight = element.getAttribute('font-weight');
+                const letterSpacing = parseMeasurement(element.getAttribute('font-size'), fontSize || style.fontSize || 0);
 
                 textStyle.fill = fill || style.fill;
                 textStyle.fontFamily = fontFamily ? `${fontFamily}, serif` : style.fontFamily;
                 textStyle.fontSize = !isNaN(fontSize) ? fontSize : style.fontSize;
                 textStyle.fontWeight = fontWeight || style.fontWeight;
+                textStyle.letterSpacing = letterSpacing;
 
                 if (childNode.x.baseVal.length > 0)
                 {
