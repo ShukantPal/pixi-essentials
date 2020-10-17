@@ -4,9 +4,6 @@ import { Point } from '@pixi/math';
 /**
  * Rectangle object is an area defined by its position, as indicated by its top-left corner
  * point (x, y) and by its width and its height.
- *
- * @class
- * @memberof PIXI
  */
 export class AxisAlignedBounds
 {
@@ -20,10 +17,10 @@ export class AxisAlignedBounds
     protected _hull: [Point, Point, Point, Point];
 
     /**
-     * @param {number} [x=0] - The X coordinate of the upper-left corner of the rectangle
-     * @param {number} [y=0] - The Y coordinate of the upper-left corner of the rectangle
-     * @param {number} [width=0] - The overall width of this rectangle
-     * @param {number} [height=0] - The overall height of this rectangle
+     * @param [x=0] - The X coordinate of the upper-left corner of the rectangle
+     * @param [y=0] - The Y coordinate of the upper-left corner of the rectangle
+     * @param [width=0] - The overall width of this rectangle
+     * @param [height=0] - The overall height of this rectangle
      */
     constructor(x = 0, y = 0, width = 0, height = 0)
     {
@@ -139,8 +136,6 @@ export class AxisAlignedBounds
 
     /**
      * returns the right edge of the rectangle
-     *
-     * @member {number}
      */
     get right(): number
     {
@@ -149,8 +144,6 @@ export class AxisAlignedBounds
 
     /**
      * returns the top edge of the rectangle
-     *
-     * @member {number}
      */
     get top(): number
     {
@@ -159,8 +152,6 @@ export class AxisAlignedBounds
 
     /**
      * returns the bottom edge of the rectangle
-     *
-     * @member {number}
      */
     get bottom(): number
     {
@@ -170,7 +161,7 @@ export class AxisAlignedBounds
     /**
      * Creates a clone of this Rectangle
      *
-     * @return {PIXI.Rectangle} a copy of the rectangle
+     * @return A copy of this AxisAlignedBounds.
      */
     clone(): AxisAlignedBounds
     {
@@ -292,8 +283,8 @@ export class AxisAlignedBounds
     /**
      * Enlarges rectangle that way its corners lie on grid
      *
-     * @param [resolution=1] resolution
-     * @param [eps=0.001] precision
+     * @param [resolution=1] - resolution
+     * @param [eps=0.001] - precision
      * @return Returns itself.
      */
     ceil(resolution = 1, eps = 0.001): this
