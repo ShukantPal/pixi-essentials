@@ -1,3 +1,6 @@
+/**
+ * @ignore 
+ */
 export function parseMeasurement(mes: string, fontSize = 1): number
 {
     if (!mes)
