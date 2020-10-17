@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/svg
 
-This log was last generated on Sat, 17 Oct 2020 19:19:14 GMT and should not be manually modified.
+This log was last generated on Sat, 17 Oct 2020 19:30:26 GMT and should not be manually modified.
+
+## 0.0.14
+Sat, 17 Oct 2020 19:30:26 GMT
+
+### Patches
+
+- Set default font size to 16
 
 ## 0.0.13
 Sat, 17 Oct 2020 19:19:14 GMT

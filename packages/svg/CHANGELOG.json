@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/svg",
   "entries": [
     {
+      "version": "0.0.14",
+      "tag": "@pixi-essentials/svg_v0.0.14",
+      "date": "Sat, 17 Oct 2020 19:30:26 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Set default font size to 16"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.13",
       "tag": "@pixi-essentials/svg_v0.0.13",
       "date": "Sat, 17 Oct 2020 19:19:14 GMT",
