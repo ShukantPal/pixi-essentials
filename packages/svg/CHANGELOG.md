@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/svg
 
-This log was last generated on Sat, 17 Oct 2020 18:36:10 GMT and should not be manually modified.
+This log was last generated on Sat, 17 Oct 2020 19:07:48 GMT and should not be manually modified.
+
+## 0.0.11
+Sat, 17 Oct 2020 19:07:48 GMT
+
+### Patches
+
+- Build last release :), and fallback to letter spacing of <text /> for <tspan /> elements, if not provided
 
 ## 0.0.10
 Sat, 17 Oct 2020 18:36:10 GMT
