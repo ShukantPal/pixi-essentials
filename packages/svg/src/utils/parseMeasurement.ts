@@ -1,4 +1,5 @@
 /**
+ * Parses font measurements, e.g. '14px', '.5em'
  * @ignore
  */
 export function parseMeasurement(mes: string, fontSize = 16): number
