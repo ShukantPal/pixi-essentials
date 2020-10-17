@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/svg",
   "entries": [
     {
+      "version": "0.0.13",
+      "tag": "@pixi-essentials/svg_v0.0.13",
+      "date": "Sat, 17 Oct 2020 19:19:14 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Letter spacing fix for <tspan />"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.12",
       "tag": "@pixi-essentials/svg_v0.0.12",
       "date": "Sat, 17 Oct 2020 19:12:54 GMT",
