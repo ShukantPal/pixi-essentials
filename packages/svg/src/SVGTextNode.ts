@@ -89,7 +89,7 @@ export class SVGTextNode extends Container
                 textStyle.fontFamily = fontFamily ? `${fontFamily}, serif` : style.fontFamily;
                 textStyle.fontSize = !isNaN(fontSize) ? fontSize : style.fontSize;
                 textStyle.fontWeight = fontWeight || style.fontWeight;
-                textStyle.letterSpacing = letterSpacing;
+                textStyle.letterSpacing = letterSpacing || style.letterSpacing;
 
                 if (childNode.x.baseVal.length > 0)
                 {
