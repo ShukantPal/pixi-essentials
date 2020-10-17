@@ -47,7 +47,7 @@ export class SVGTextNode extends Container
         const fontFamily = `${element.getAttribute('font-family') || 'serif'}, serif`;
         const fontSize = parseFloat(element.getAttribute('font-size'));
         const fontWeight = element.getAttribute('font-weight') || 'normal';
-        const letterSpacing = parseMeasurement(element.getAttribute('letter-spacing'), fontSize || 0);
+        const letterSpacing = parseMeasurement(element.getAttribute('letter-spacing'), fontSize);
 
         const style = {
             fill: fill || 'black',
@@ -84,11 +84,11 @@ export class SVGTextNode extends Container
                 const fontSize = parseFloat(element.getAttribute('font-size'));
                 const fontWeight = element.getAttribute('font-weight');
                 const letterSpacing = parseMeasurement(
-                    element.getAttribute('letter-spacing'), fontSize || style.fontSize || 0);
+                    element.getAttribute('letter-spacing'), fontSize || style.fontSize);
 
                 textStyle.fill = fill || style.fill;
                 textStyle.fontFamily = fontFamily ? `${fontFamily}, serif` : style.fontFamily;
-                textStyle.fontSize = !isNaN(fontSize) ? fontSize : style.fontSize;
+                textStyle.fontSize = typeof fontSize === 'number' && !isNaN(fontSize) ? fontSize : style.fontSize || 16;
                 textStyle.fontWeight = fontWeight || style.fontWeight;
                 textStyle.letterSpacing = letterSpacing || style.letterSpacing;
 

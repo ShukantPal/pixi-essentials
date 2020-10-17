@@ -1,7 +1,7 @@
 /**
  * @ignore
  */
-export function parseMeasurement(mes: string, fontSize = 1): number
+export function parseMeasurement(mes: string, fontSize = 16): number
 {
     if (!mes)
     {
