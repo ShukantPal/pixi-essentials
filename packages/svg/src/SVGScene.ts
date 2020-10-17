@@ -666,8 +666,6 @@ export class SVGScene extends DisplayObject
 
     /**
      * Populates the entire SVG scene. This should only be called once after the {@link this.content} has been set.
-     *
-     * @param element - The root element of the SVG document fragment.
      */
     protected populateScene(): void
     {
