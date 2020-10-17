@@ -3,6 +3,8 @@
 This package exports a scene for drawing SVG DOMs. It is the most feature-rich implementation built on top
 of PixiJS.
 
+It will automatically cull the SVG scene if you are using a viewport.
+
 ## Installation :package:
 
 ```bash
