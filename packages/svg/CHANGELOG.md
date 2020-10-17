@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/svg
 
-This log was last generated on Sat, 17 Oct 2020 19:38:34 GMT and should not be manually modified.
+This log was last generated on Sat, 17 Oct 2020 19:45:36 GMT and should not be manually modified.
+
+## 0.0.16
+Sat, 17 Oct 2020 19:45:36 GMT
+
+### Patches
+
+- Fixes bug where <tspan /> attributes where not being applied
 
 ## 0.0.15
 Sat, 17 Oct 2020 19:38:34 GMT

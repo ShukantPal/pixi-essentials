@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/svg",
   "entries": [
     {
+      "version": "0.0.16",
+      "tag": "@pixi-essentials/svg_v0.0.16",
+      "date": "Sat, 17 Oct 2020 19:45:36 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fixes bug where <tspan /> attributes where not being applied"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.15",
       "tag": "@pixi-essentials/svg_v0.0.15",
       "date": "Sat, 17 Oct 2020 19:38:34 GMT",
