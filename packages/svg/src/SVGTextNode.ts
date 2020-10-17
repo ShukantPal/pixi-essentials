@@ -83,7 +83,8 @@ export class SVGTextNode extends Container
                 const fontFamily = element.getAttribute('font-family');
                 const fontSize = parseFloat(element.getAttribute('font-size'));
                 const fontWeight = element.getAttribute('font-weight');
-                const letterSpacing = parseMeasurement(element.getAttribute('font-size'), fontSize || style.fontSize || 0);
+                const letterSpacing = parseMeasurement(
+                    element.getAttribute('letter-spacing'), fontSize || style.fontSize || 0);
 
                 textStyle.fill = fill || style.fill;
                 textStyle.fontFamily = fontFamily ? `${fontFamily}, serif` : style.fontFamily;
