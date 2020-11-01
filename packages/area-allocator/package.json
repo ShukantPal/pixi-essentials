@@ -1,0 +1,26 @@
+{
+  "name": "@pixi-essentials/area-allocator",
+  "version": "1.0.0",
+  "description": "Efficient texture area allocator for on-demand atlases",
+  "main": "lib/texture-allocator.js",
+  "peerDependencies": {"@pixi/math":"~5.3.3"},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SukantPal/pixi-essentials.git"
+  },
+  "keywords": [
+    "texture",
+    "pixijs",
+    "allocator",
+    "atlas"
+  ],
+  "author": "Shukant Pal <shukantpal@outlook.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SukantPal/pixi-essentials/issues"
+  },
+  "homepage": "https://github.com/SukantPal/pixi-essentials#readme"
+}

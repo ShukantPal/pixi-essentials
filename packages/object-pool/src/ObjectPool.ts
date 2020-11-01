@@ -21,7 +21,7 @@ export interface IObjectPoolOptions
  * @class
  * @public
  */
-export abstract class ObjectPool<T extends typeof Object>
+export abstract class ObjectPool<T>
 {
     protected _freeList: Array<T>;
     protected _freeCount: number;

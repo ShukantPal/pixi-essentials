@@ -27,6 +27,7 @@ dependencies:
   '@rush-temp/shader-preprocessor': 'file:projects/shader-preprocessor.tgz'
   '@rush-temp/svg': 'file:projects/svg.tgz_tslib@2.0.1+typescript@4.0.2'
   '@rush-temp/system-g': 'file:projects/system-g.tgz'
+  '@rush-temp/texture-allocator': 'file:projects/texture-allocator.tgz'
   '@rush-temp/transformer': 'file:projects/transformer.tgz'
   '@rush-temp/types': 'file:projects/types.tgz'
   '@rush-temp/unit-tests': 'file:projects/unit-tests.tgz_typescript@4.0.2'
@@ -4958,7 +4959,7 @@ packages:
       tslib: '*'
       typescript: '*'
     resolution:
-      integrity: sha512-NvTExS2qU0G1U9aFizd4JQfL/uZnCQ5fyWQlBZB7uWEr252s6TImMEBgEK+9nZ0ZVvyx5m9lecqL8cB7f7z+LQ==
+      integrity: sha512-bByXukcp6TPB2uSy7D3d54nfNwG7O7YRpHEpb8ZM38raGwprTXm2t+IChe+B7ICziApN6JHtM7/KQ/xfglIerw==
       tarball: 'file:projects/svg.tgz'
     version: 0.0.0
   'file:projects/system-g.tgz':
@@ -4980,6 +4981,15 @@ packages:
     resolution:
       integrity: sha512-q/PXzpbpk2VN5Tdhc88xvJm1A5Ts2ItbF6z6B2ru0CyQ9h4dJWn+TAtR7dpDA3LwlSfoopYy85B74MLwJK6k+w==
       tarball: 'file:projects/system-g.tgz'
+    version: 0.0.0
+  'file:projects/texture-allocator.tgz':
+    dependencies:
+      '@pixi/math': 5.3.3
+    dev: false
+    name: '@rush-temp/texture-allocator'
+    resolution:
+      integrity: sha512-FxdJV/xt7yT3Z57E9DWjXNiIWQfsbDkTOlXf5WDF5yxzYvtTjM7dcS1tDNmxFvy1XHNHPgDZnCFe7UhLuYYcHQ==
+      tarball: 'file:projects/texture-allocator.tgz'
     version: 0.0.0
   'file:projects/transformer.tgz':
     dependencies:
@@ -5069,6 +5079,7 @@ specifiers:
   '@rush-temp/shader-preprocessor': 'file:./projects/shader-preprocessor.tgz'
   '@rush-temp/svg': 'file:./projects/svg.tgz'
   '@rush-temp/system-g': 'file:./projects/system-g.tgz'
+  '@rush-temp/texture-allocator': 'file:./projects/texture-allocator.tgz'
   '@rush-temp/transformer': 'file:./projects/transformer.tgz'
   '@rush-temp/types': 'file:./projects/types.tgz'
   '@rush-temp/unit-tests': 'file:./projects/unit-tests.tgz'
