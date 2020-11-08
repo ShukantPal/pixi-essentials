@@ -1,0 +1,2 @@
+require('./Area');
+require('./GuilloteneAllocator');

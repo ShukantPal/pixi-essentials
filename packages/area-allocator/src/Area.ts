@@ -66,18 +66,36 @@ export class Area
         return openOffset | (closeOffset << 15) | (orientation << 30);
     }
 
-    static getOpenOffset(area: number): number
+    static getOpenOffset(area: AreaField): number
     {
-        return area & ~((1 << 15) - 1);
+        return area & ((1 << 15) - 1);
     }
 
-    static getCloseOffset(area: number): number
+    static getCloseOffset(area: AreaField): number
     {
-        return (area >> 15) & ~((1 << 15) - 1);
+        return (area >> 15) & ((1 << 15) - 1);
     }
 
-    static getOrientation(area: number): AreaOrientation
+    static getOrientation(area: AreaField): AreaOrientation
     {
         return (area >> 30) & 1;
+    }
+
+    static setOpenOffset(area: AreaField, offset: number): number
+    {
+        return Area.makeArea(
+            offset,
+            Area.getCloseOffset(area),
+            Area.getOrientation(area)
+        );
+    }
+
+    static setCloseOffset(area: AreaField, offset: number): number
+    {
+        return Area.makeArea(
+            Area.getOpenOffset(offset),
+            offset,
+            Area.getOrientation(area)
+        );
     }
 }
