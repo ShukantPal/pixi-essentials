@@ -1,3 +1,4 @@
+import { CanvasTextureAllocator } from '@pixi-essentials/texture-allocator';
 import { Cull } from '@pixi-essentials/cull';
 import { DisplayObject, Container } from '@pixi/display';
 import { InheritedPaintProvider } from './paint/InheritedPaintProvider';
@@ -14,6 +15,7 @@ import { SVGTextNode } from './SVGTextNode';
 import { SVGUseNode } from './SVGUseNode';
 
 import type { Paint } from './paint/Paint';
+import type { SVGSceneContext } from './SVGSceneContext';
 import type { Renderer } from '@pixi/core';
 
 const tempMatrix = new Matrix();
@@ -49,6 +51,11 @@ export class SVGScene extends DisplayObject
     public renderServers: Container;
 
     /**
+     * The scene context
+     */
+    protected _context: SVGSceneContext;
+
+    /**
      * The width of the rendered scene in local space.
      */
     protected _width: number;
@@ -81,13 +88,16 @@ export class SVGScene extends DisplayObject
     protected _transformDirty: boolean;
 
     /**
-     * @param content - the SVG node to render
+     * @param content - The SVG node to render
+     * @param context - This can be used to configure the scene
      */
-    constructor(content: SVGSVGElement)
+    constructor(content: SVGSVGElement, context?: Partial<SVGSceneContext>)
     {
         super();
 
         this.content = content;
+
+        this.initContext(context);
         this._width = content.viewBox.baseVal.width;
         this._height = content.viewBox.baseVal.height;
 
@@ -99,6 +109,14 @@ export class SVGScene extends DisplayObject
         this.renderServers = new Container();
 
         this.populateScene();
+    }
+
+    initContext(context?: Partial<SVGSceneContext>): void
+    {
+        context = context || {};
+        context.atlas = context.atlas || new CanvasTextureAllocator(2048, 2048);
+
+        this._context = context as SVGSceneContext;
     }
 
     /**
@@ -183,17 +201,17 @@ export class SVGScene extends DisplayObject
             case 'polyline':
             case 'polygon':
             case 'rect':
-                renderNode = new SVGGraphicsNode();
+                renderNode = new SVGGraphicsNode(this._context);
                 break;
             case 'image':
-                renderNode = new SVGImageNode();
+                renderNode = new SVGImageNode(this._context);
                 break;
             case 'mask':
             case 'svg':
                 renderNode = new Container();
                 break;
             case 'path':
-                renderNode = new SVGPathNode();
+                renderNode = new SVGPathNode(this._context);
                 break;
             case 'text':
                 renderNode = new SVGTextNode();
@@ -682,7 +700,7 @@ export class SVGScene extends DisplayObject
 
     /**
      * Handles `nodetransformdirty` events fired by nodes. It will set {@link this._transformDirty} to true.
-     * 
+     *
      * This will also emit `transformdirty`.
      */
     private onNodeTransformDirty = (): void =>

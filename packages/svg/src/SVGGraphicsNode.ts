@@ -8,6 +8,7 @@ import { Texture } from '@pixi/core';
 
 import type { PaintServer } from './paint/PaintServer';
 import type { Renderer } from '@pixi/core';
+import type { SVGSceneContext } from './SVGSceneContext';
 
 interface IFillStyleOptions {
     color?: number;
@@ -58,9 +59,13 @@ export class SVGGraphicsNode extends Graphics
 {
     paintServers: PaintServer[];
 
-    constructor()
+    protected context: SVGSceneContext;
+
+    constructor(context: SVGSceneContext)
     {
         super();
+
+        this.context = context;
 
         (this as any)._geometry = new SVGGraphicsGeometry();
         (this as any)._geometry.refCount++;

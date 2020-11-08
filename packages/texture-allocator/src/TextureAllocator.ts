@@ -31,12 +31,20 @@ export class TextureAllocator<T = Texture>
      * @param slabWidth - The width of base-texture slabs. This should be at most 2048.
      * @param slabHeight - The height of base-texture slabs. This should be at most 2048.
      */
-    constructor(slabWidth: number, slabHeight = 2048)
+    constructor(slabWidth = 2048, slabHeight = 2048)
     {
         this.slabWidth = slabWidth;
         this.slabHeight = slabHeight;
 
         this.textureSlabs = [];
+    }
+
+    get maxWidth() {
+        return this.slabWidth - (2 * this.calculatePadding(this.slabWidth, this.slabHeight));
+    }
+
+    get maxHeight() {
+        return this.slabHeight - (2 * this.calculatePadding(this.slabWidth, this.slabHeight));
     }
 
     /**
@@ -194,7 +202,7 @@ export class TextureAllocator<T = Texture>
         tempRect.pad(-padding);
 
         const baseTexture = slab.slab;
-        const issuedTexture = this.createTexture(baseTexture, tempRect);
+        const issuedTexture = this.createTexture(baseTexture, tempRect.clone());
 
         slab.managedTextures.push({
             area,

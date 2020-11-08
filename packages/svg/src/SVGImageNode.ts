@@ -25,15 +25,13 @@ export class SVGImageNode extends SVGGraphicsNode
      */
     protected _texture: Texture;
 
+    /**
+     * Embeds the given SVG image element into this node.
+     *
+     * @param element - The SVG image element to embed.
+     */
     embedImage(element: SVGImageElement): void
     {
-        if (!this._canvas)
-        {
-            this._canvas = document.createElement('canvas');
-            this._context = this._canvas.getContext('2d');
-            this._texture = Texture.from(this._canvas);
-        }
-
         element.x.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PX);
         element.y.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PX);
         element.width.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PX);
@@ -52,10 +50,14 @@ export class SVGImageNode extends SVGGraphicsNode
         const { a, b, c, d } = transformMatrix;
         const sx = Math.min(1, Math.sqrt((a * a) + (b * b)));
         const sy = Math.min(1, Math.sqrt((c * c) + (d * d)));
+        const twidth = Math.ceil(width * sx);
+        const theight = Math.ceil(height * sy);
 
-        this._canvas.width = Math.ceil(width * sx);
-        this._canvas.height = Math.ceil(height * sy);
+        // Initialize the texture & canvas
+        this.initTexture(twidth, theight);
 
+        // Load the image element
+        /* eslint-disable-next-line no-undef */
         const baseURL = globalThis?.location.href;
         const imageURL = element.getAttribute('href') || element.getAttribute('xlink:href');
         const imageOrigin = new URL(imageURL).origin;
@@ -64,24 +66,94 @@ export class SVGImageNode extends SVGGraphicsNode
         if (imageOrigin && imageOrigin !== baseURL)
         {
             imageElement = document.createElement('img');
-
             imageElement.crossOrigin = 'anonymous';
             imageElement.src = imageURL;
         }
 
-        // TODO: Handle previous image callback if this is being reused
+        // Draw the image when it loads
         imageElement.onload = (): void =>
         {
-            this._context.drawImage(imageElement, 0, 0, width * sx, height * sy);
-            this._texture.update();
+            this.drawTexture(imageElement);
         };
 
-        // SVGImageElement does not support resolution, and so the texture must have resolution = 1.
-        this._texture.baseTexture.setRealSize(width * sx, height * sy, 1);
-        this._texture.update();
-
-        this.beginTextureFill({ texture: this._texture, matrix: new Matrix().scale(1 / sx, 1 / sy) });
+        // Generate the quad geometry
+        this.beginTextureFill({
+            texture: this._texture,
+            matrix: new Matrix()
+                .scale(1 / sx, 1 / sy),
+        });
         this.drawRect(x, y, width, height);
         this.endFill();
+    }
+
+    /**
+     * Initializes {@code this._texture} by allocating it from the atlas. It is expected the texture size requested
+     * is less than the atlas's slab dimensions.
+     *
+     * @param width
+     * @param height
+     */
+    private initTexture(width: number, height: number): void
+    {
+        // If the texture already exists, nothing much to do.
+        if (this._texture)
+        {
+            if (this._texture.width <= this.context.atlas.maxWidth
+                && this._texture.height <= this.context.atlas.maxHeight)
+            {
+                this.context.atlas.free(this._texture);
+            }
+            else
+            {
+                // TODO: This does destroy it, right?
+                this._texture.destroy();
+            }
+        }
+
+        this._texture = null;
+        this._texture = this.context.atlas.allocate(width, height);
+
+        if (this._texture)
+        {
+            this._canvas = this._texture.baseTexture.resource.source as HTMLCanvasElement;
+            this._context = this._canvas.getContext('2d');
+        }
+        else // Allocation fails if the texture is too large. If so, create a standalone texture.
+        {
+            this._canvas = document.createElement('canvas');
+
+            this._canvas.width = width;
+            this._canvas.height = height;
+
+            this._context = this._canvas.getContext('2d');
+            this._texture = Texture.from(this._canvas);
+        }
+    }
+
+    /**
+     * Draws the image into this node's texture.
+     *
+     * @param image - The image element holding the image.
+     */
+    private drawTexture(image: HTMLImageElement | SVGImageElement): void
+    {
+        const destinationFrame = this._texture.frame;
+
+        this._context.clearRect(
+            destinationFrame.x,
+            destinationFrame.y,
+            destinationFrame.width,
+            destinationFrame.height,
+        );
+
+        this._context.drawImage(
+            image,
+            destinationFrame.x,
+            destinationFrame.y,
+            destinationFrame.width,
+            destinationFrame.height,
+        );
+
+        this._texture.update();
     }
 }

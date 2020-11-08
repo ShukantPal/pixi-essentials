@@ -152,7 +152,9 @@ export declare class TextureAllocator<T = Texture> {
      * @param slabWidth - The width of base-texture slabs. This should be at most 2048.
      * @param slabHeight - The height of base-texture slabs. This should be at most 2048.
      */
-    constructor(slabWidth: number, slabHeight?: number);
+    constructor(slabWidth?: number, slabHeight?: number);
+    get maxWidth(): number;
+    get maxHeight(): number;
     /**
      * Allocates a texture from this allocator.
      *
