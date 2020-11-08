@@ -13,6 +13,7 @@
 | @pixi-essentials/gradients | generates color-gradient textures |
 | @pixi-essentials/plugin-g | (unreleased) This is a plugin containing useful geometry manipulation utilities, The package also contains various types of useful geometries |
 | @pixi-essentials/shader-preprocessor | (unreleased) This package provides compile-time %macro% preprocessing. You can dynamically generate shaders based on the macros value set provided & a shader template.|
+| @pixi-essentials/texture-allocator | texture atlas allocator - supports render-texture, multiple image, and canvas-backed atlases |
 
 ## Performance Optimizations :racehorse:
 

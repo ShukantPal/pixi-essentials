@@ -28,6 +28,7 @@ dependencies:
   '@rush-temp/shader-preprocessor': 'file:projects/shader-preprocessor.tgz'
   '@rush-temp/svg': 'file:projects/svg.tgz'
   '@rush-temp/system-g': 'file:projects/system-g.tgz'
+  '@rush-temp/texture-allocator': 'file:projects/texture-allocator.tgz'
   '@rush-temp/transformer': 'file:projects/transformer.tgz'
   '@rush-temp/types': 'file:projects/types.tgz'
   '@rush-temp/unit-tests': 'file:projects/unit-tests.tgz'
@@ -5356,6 +5357,17 @@ packages:
       integrity: sha512-q/PXzpbpk2VN5Tdhc88xvJm1A5Ts2ItbF6z6B2ru0CyQ9h4dJWn+TAtR7dpDA3LwlSfoopYy85B74MLwJK6k+w==
       tarball: 'file:projects/system-g.tgz'
     version: 0.0.0
+  'file:projects/texture-allocator.tgz':
+    dependencies:
+      '@pixi/constants': 5.3.3
+      '@pixi/core': 5.3.3
+      '@pixi/math': 5.3.3
+    dev: false
+    name: '@rush-temp/texture-allocator'
+    resolution:
+      integrity: sha512-teQsd2nDXby2VpJkw8xPLpWdmn04hgm2PyCgBkxBR1IY2dG6vJSn6xlkB1DWwdYHRLjYXjrI0FWaT3cgVPWETw==
+      tarball: 'file:projects/texture-allocator.tgz'
+    version: 0.0.0
   'file:projects/transformer.tgz':
     dependencies:
       '@pixi-build-tools/rollup-configurator': 1.0.3_bd43b22ed3185156b2e6b042fe75b9c6
@@ -5441,6 +5453,7 @@ specifiers:
   '@rush-temp/shader-preprocessor': 'file:./projects/shader-preprocessor.tgz'
   '@rush-temp/svg': 'file:./projects/svg.tgz'
   '@rush-temp/system-g': 'file:./projects/system-g.tgz'
+  '@rush-temp/texture-allocator': 'file:./projects/texture-allocator.tgz'
   '@rush-temp/transformer': 'file:./projects/transformer.tgz'
   '@rush-temp/types': 'file:./projects/types.tgz'
   '@rush-temp/unit-tests': 'file:./projects/unit-tests.tgz'

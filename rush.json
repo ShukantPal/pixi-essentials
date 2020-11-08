@@ -124,6 +124,12 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@pixi-essentials/texture-allocator",
+      "projectFolder": "packages/texture-allocator",
+      "reviewCategory": "production",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@pixi-essentials/transformer",
       "projectFolder": "packages/transformer",
       "reviewCategory": "production",
