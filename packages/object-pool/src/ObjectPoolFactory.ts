@@ -1,11 +1,11 @@
 import { ObjectPool } from './ObjectPool';
 
 /**
- * This stores existing object pool created for specific types.
- * 
+ * This stores existing object pools created for class-constructed objects.
+ *
  * @ignore
  */
-const poolMap: Map<Object, ObjectPool<any>> = new Map();
+const poolMap: Map<{ new(): any }, ObjectPool<any>> = new Map();
 
 /**
  * Factory for creating pools of objects with default constructors. It will store the pool of
@@ -29,9 +29,12 @@ const poolMap: Map<Object, ObjectPool<any>> = new Map();
 export class ObjectPoolFactory
 {
     /**
-     * @param {Class} Type
+     * Builds an object-pool for objects constructed from the given class with a default constructor. If an
+     * object pool for that class was already created, an existing instance is returned.
+     *
+     * @param classConstructor
      */
-    static build<T>(Type: { new(): T }): ObjectPool<any>
+    static build<T>(Type: { new(): T }): ObjectPool<T>
     {
         let pool = poolMap.get(Type);
 
@@ -51,5 +54,21 @@ export class ObjectPoolFactory
         poolMap.set(Type, pool);
 
         return pool;
+    }
+
+    /**
+     * Builds an object-pool for objects built using a factory function. The factory function's context will be the
+     * object-pool.
+     *
+     * These types of pools are not cached and should only be used on internal data structures.
+     *
+     * @param factoryFunction
+     */
+    static buildFunctional<T>(factoryFunction: () => T): ObjectPool<T>
+    {
+        return new (class DefaultObjectPool extends ObjectPool<T>
+        {
+            create = factoryFunction;
+        })();
     }
 }
