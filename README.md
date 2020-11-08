@@ -8,6 +8,7 @@
 
 | Package            | Brief |
 | -----------------------------------------------| ----------------------------------------------------------------------------------------------------------------------------------------------------|
+| @pixi-essentials/area-allocator | 2D area allocator for managing texture space and likes |
 | @pixi-essentials/bounds | axis-aligned, oriented bounding boxes |
 | @pixi-essentials/gradients | generates color-gradient textures |
 | @pixi-essentials/plugin-g | (unreleased) This is a plugin containing useful geometry manipulation utilities, The package also contains various types of useful geometries |
