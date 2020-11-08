@@ -2,6 +2,23 @@
   "name": "@pixi-essentials/svg",
   "entries": [
     {
+      "version": "0.0.17",
+      "tag": "@pixi-essentials/svg_v0.0.17",
+      "date": "Sun, 08 Nov 2020 20:40:57 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Add SVGSceneContext, sharing a texture atlas amongst SVGImageNodes"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@pixi-essentials/texture-allocator\" from `~1.0.0` to `~1.0.1`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.16",
       "tag": "@pixi-essentials/svg_v0.0.16",
       "date": "Sat, 17 Oct 2020 19:45:36 GMT",

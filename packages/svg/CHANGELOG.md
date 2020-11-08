@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/svg
 
-This log was last generated on Sat, 17 Oct 2020 19:45:36 GMT and should not be manually modified.
+This log was last generated on Sun, 08 Nov 2020 20:40:57 GMT and should not be manually modified.
+
+## 0.0.17
+Sun, 08 Nov 2020 20:40:57 GMT
+
+### Patches
+
+- Add SVGSceneContext, sharing a texture atlas amongst SVGImageNodes
 
 ## 0.0.16
 Sat, 17 Oct 2020 19:45:36 GMT
