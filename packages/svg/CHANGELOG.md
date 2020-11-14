@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/svg
 
-This log was last generated on Sun, 08 Nov 2020 20:40:57 GMT and should not be manually modified.
+This log was last generated on Sat, 14 Nov 2020 19:14:09 GMT and should not be manually modified.
+
+## 0.0.18
+Sat, 14 Nov 2020 19:14:09 GMT
+
+### Patches
+
+- Add support for smooth quadratic bezier curve commands (t, T)
 
 ## 0.0.17
 Sun, 08 Nov 2020 20:40:57 GMT

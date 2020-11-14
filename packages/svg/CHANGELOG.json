@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/svg",
   "entries": [
     {
+      "version": "0.0.18",
+      "tag": "@pixi-essentials/svg_v0.0.18",
+      "date": "Sat, 14 Nov 2020 19:14:09 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Add support for smooth quadratic bezier curve commands (t, T)"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.17",
       "tag": "@pixi-essentials/svg_v0.0.17",
       "date": "Sun, 08 Nov 2020 20:40:57 GMT",
