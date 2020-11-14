@@ -42,6 +42,7 @@ export class SVGImageNode extends SVGGraphicsNode
         const y = element.y.baseVal.valueInSpecifiedUnits;
         const width = element.width.baseVal.valueInSpecifiedUnits;
         const height = element.height.baseVal.valueInSpecifiedUnits;
+        const opacity = Number.parseFloat(element.getAttribute('opacity') || '1');
 
         // Calculate scale. If the <image /> element is scaled down, then the texture can be rendered at a lower
         // resolution to save graphics memory.
@@ -79,6 +80,7 @@ export class SVGImageNode extends SVGGraphicsNode
         // Generate the quad geometry
         this.beginTextureFill({
             texture: this._texture,
+            alpha: opacity,
             matrix: new Matrix()
                 .scale(1 / sx, 1 / sy),
         });
