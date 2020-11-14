@@ -19,11 +19,13 @@ export class SVGPathNode extends SVGGraphicsNode
         // and should be optimized in the future.
         const commands = dPathParser(d.trim());
 
+        // Current point
         let x = 0;
         let y = 0;
 
         for (let i = 0, j = commands.length; i < j; i++)
         {
+            const lastCommand = commands[i - 1];
             const command = commands[i];
 
             // Taken from: https://github.com/bigtimebuddy/pixi-svg/blob/main/src/SVG.js
@@ -149,6 +151,43 @@ export class SVGPathNode extends SVGGraphicsNode
                     );
 
                     break;
+                case 't':
+                case 'T': {
+                    let cx: number;
+                    let cy: number;
+
+                    if (lastCommand && lastCommand.cp)
+                    {
+                        cx = (2 * x) - lastCommand.cp.x;
+                        cy = (2 * y) - lastCommand.cp.y;
+                    }
+                    else
+                    {
+                        cx = x;
+                        cy = y;
+                    }
+
+                    if (command.code === 't')
+                    {
+                        this.quadraticCurveTo(
+                            cx,
+                            cy,
+                            x += command.end.x,
+                            y += command.end.y,
+                        );
+                    }
+                    else
+                    {
+                        this.quadraticCurveTo(
+                            cx,
+                            cy,
+                            x = command.end.x,
+                            y = command.end.y,
+                        );
+                    }
+
+                    break;
+                }
                 default: {
                     // eslint-disable-next-line no-console
                     console.info('[PIXI.SVG] Draw command not supported:', command.code, command);
