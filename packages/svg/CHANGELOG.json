@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/svg",
   "entries": [
     {
+      "version": "0.0.20",
+      "tag": "@pixi-essentials/svg_v0.0.20",
+      "date": "Sat, 14 Nov 2020 19:53:46 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix bug when smooth quadratic command was used after relative command"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.19",
       "tag": "@pixi-essentials/svg_v0.0.19",
       "date": "Sat, 14 Nov 2020 19:44:14 GMT",

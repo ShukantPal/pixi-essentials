@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/svg
 
-This log was last generated on Sat, 14 Nov 2020 19:44:14 GMT and should not be manually modified.
+This log was last generated on Sat, 14 Nov 2020 19:53:46 GMT and should not be manually modified.
+
+## 0.0.20
+Sat, 14 Nov 2020 19:53:46 GMT
+
+### Patches
+
+- Fix bug when smooth quadratic command was used after relative command
 
 ## 0.0.19
 Sat, 14 Nov 2020 19:44:14 GMT
