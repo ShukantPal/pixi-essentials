@@ -158,8 +158,20 @@ export class SVGPathNode extends SVGGraphicsNode
 
                     if (lastCommand && lastCommand.cp)
                     {
-                        cx = (2 * x) - lastCommand.cp.x;
-                        cy = (2 * y) - lastCommand.cp.y;
+                        let lcx = lastCommand.cp.x;
+                        let lcy = lastCommand.cp.y;
+
+                        if (lastCommand.relative)
+                        {
+                            const lx = x - lastCommand.end.x;
+                            const ly = y - lastCommand.end.y;
+
+                            lcx += lx;
+                            lcy += ly;
+                        }
+
+                        cx = (2 * x) - lcx;
+                        cy = (2 * y) - lcy;
                     }
                     else
                     {
