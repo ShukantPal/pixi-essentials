@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/svg
 
-This log was last generated on Sat, 14 Nov 2020 19:14:09 GMT and should not be manually modified.
+This log was last generated on Sat, 14 Nov 2020 19:44:14 GMT and should not be manually modified.
+
+## 0.0.19
+Sat, 14 Nov 2020 19:44:14 GMT
+
+### Patches
+
+- Support opacity on SVG images
 
 ## 0.0.18
 Sat, 14 Nov 2020 19:14:09 GMT

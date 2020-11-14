@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/svg",
   "entries": [
     {
+      "version": "0.0.19",
+      "tag": "@pixi-essentials/svg_v0.0.19",
+      "date": "Sat, 14 Nov 2020 19:44:14 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Support opacity on SVG images"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.18",
       "tag": "@pixi-essentials/svg_v0.0.18",
       "date": "Sat, 14 Nov 2020 19:14:09 GMT",
