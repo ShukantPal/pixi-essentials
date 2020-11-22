@@ -15,7 +15,7 @@ const poolMap: Map<{ new(): any }, ObjectPool<any>> = new Map();
  * @public
  * @example
  * ```js
- * import { ObjectPool, ObjectPoolFactory } from 'pixi-object-pool';
+ * import { ObjectPool, ObjectPoolFactory } from '@pixi-essentials/object-pool';
  *
  * class AABB {}
  *

@@ -1,11 +1,83 @@
+import { Path, PATH } from './utils/Path';
 import { SVGGraphicsNode } from './SVGGraphicsNode';
+import { buildPath } from './utils/buildPath';
+
+// @ts-expect-error
+import { graphicsUtils } from '@pixi/graphics';
+// @ts-expect-error
 import dPathParser from 'd-path-parser';
+
+graphicsUtils.FILL_COMMANDS[PATH] = buildPath;
 
 /**
  * Draws SVG &lt;path /&gt; elements.
  */
 export class SVGPathNode extends SVGGraphicsNode
 {
+    private currentPath2: Path;
+
+    /*
+
+    private startPath(): void
+    {
+        if (this.currentPath2)
+        {
+            const pts = this.currentPath2.points;
+
+            if (pts.length > 0)
+            {
+                this.currentPath2.closeContour(pts[pts.length - 2], pts[pts.length - 1]);
+            }
+        }
+        else
+        {
+            this.currentPath2 = new Path();
+        }
+    }
+
+    private finishPath(): void
+    {
+        if (this.currentPath2)
+        {
+            this.currentPath2.closeContour();
+        }
+    }
+
+    // @ts-expect-error
+    get currentPath(): any
+    {
+        return this.currentPath2;
+    }
+    set currentPath(nothing: any)
+    {
+        if (nothing)
+        {
+            throw new Error('currentPath cannot be set');
+        }
+        // readonly
+    }
+
+    closePath(): any
+    {
+//        this.currentPath2.close;
+
+        return this;
+    }
+
+    checkPath(): void
+    {
+        if (this.currentPath2.points.find((e) => isNaN(e)) !== undefined)
+        {
+            throw new Error('NaN is bad');
+        }
+    }
+
+    // Redirect moveTo, lineTo, ... onto paths!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :P
+    startPoly = this.startPath;
+    finishPoly = this.finishPath;
+
+    // */
+
     /**
      * Embeds the `SVGPathElement` into this node.
      *
@@ -27,6 +99,11 @@ export class SVGPathNode extends SVGGraphicsNode
         {
             const lastCommand = commands[i - 1];
             const command = commands[i];
+
+            if (isNaN(x) || isNaN(y))
+            {
+                throw new Error('Data corruption');
+            }
 
             // Taken from: https://github.com/bigtimebuddy/pixi-svg/blob/main/src/SVG.js
             // Copyright Matt Karl
@@ -206,6 +283,12 @@ export class SVGPathNode extends SVGGraphicsNode
                     break;
                 }
             }
+        }
+
+        if (this.currentPath2)
+        {
+            this.drawShape(this.currentPath2 as any);
+            this.currentPath2 = null;
         }
 
         return this;
