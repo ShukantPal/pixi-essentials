@@ -1,5 +1,6 @@
 import { FILL_RULE } from './Path';
 import Tess2 from 'tess2';
+import * as libtess from 'libtess';
 
 import type { GraphicsGeometry } from '@pixi/graphics';
 import type { Path } from './Path';
@@ -19,18 +20,62 @@ export const buildPath = {
                 .filter((c) => c.length > 0)
                 .filter((c) => (c.find((e) => isNaN(e)) === undefined));
 
-            const {
-                vertices: pverts,
-                elements: pindices,
-            } = Tess2.tesselate({
-                contours,
-                windingRule: path.fillRule === FILL_RULE.NONZERO ? Tess2.WINDING_NONZERO : Tess2.WINDING_ODD,
-                elementType: Tess2.POLYGONS,
-                polySize: 3,
-                vertexSize: 2,
-            });
+            const tessy = new libtess.GluTesselator();
+            const outVerts = [];
 
-            console.log("__SUCESS_")
+            function vertexCallback(data, polyVertArray) {
+                // console.log(data[0], data[1]);
+                polyVertArray[polyVertArray.length] = data[0];
+                polyVertArray[polyVertArray.length] = data[1];
+            }
+            function begincallback(type) {
+                if (type !== libtess.primitiveType.GL_TRIANGLES) {
+                    console.log('expected TRIANGLES but got type: ' + type);
+                }
+            }
+            function errorcallback(errno) {
+                console.log('error callback');
+                console.log('error number: ' + errno);
+            }
+            // callback for when segments intersect and must be split
+            function combinecallback(coords, data, weight) {
+                // console.log('combine callback');
+                return [coords[0], coords[1], coords[2]];
+            }
+            function edgeCallback(flag) {
+                // don't really care about the flag, but need no-strip/no-fan behavior
+                // console.log('edge flag: ' + flag);
+            }
+        
+            // tessy.gluTessProperty(libtess.gluEnum.GLU_TESS_WINDING_RULE, libtess.windingRule.GLU_TESS_WINDING_POSITIVE);
+            tessy.gluTessCallback(libtess.gluEnum.GLU_TESS_VERTEX_DATA, vertexCallback);
+            tessy.gluTessCallback(libtess.gluEnum.GLU_TESS_BEGIN, begincallback);
+            tessy.gluTessCallback(libtess.gluEnum.GLU_TESS_ERROR, errorcallback);
+            tessy.gluTessCallback(libtess.gluEnum.GLU_TESS_COMBINE, combinecallback);
+            tessy.gluTessCallback(libtess.gluEnum.GLU_TESS_EDGE_FLAG, edgeCallback);
+
+            tessy.gluTessNormal(0, 0, 1);
+            tessy.gluTessBeginPolygon(outVerts);
+
+            for (let i = 0; i < contours.length; i++)
+            {
+                const contour = contours[i];
+
+                tessy.gluTessBeginContour();
+
+                for (let j = 0; j < contour.length;)
+                {
+                    const x = contour[j++];
+                    const y = contour[j++];
+                    const data = [x, y, 0];
+
+                    tessy.gluTessVertex(data, data);
+                }
+
+                tessy.gluTessEndContour();
+            }
+
+            tessy.gluTessEndPolygon();
 
             // @ts-expect-error
             const verts = graphicsGeometry.points;
@@ -38,13 +83,13 @@ export const buildPath = {
             const indices = graphicsGeometry.indices;
             const ibase = verts.length / 2;
 
-            for (let i = 0; i < pverts.length; i++)
+            for (let i = 0; i < outVerts.length;)
             {
-                verts.push(pverts[i]);
+                verts.push(outVerts[i++], outVerts[i++]);
             }
-            for (let i = 0; i < pindices.length; i++)
+            for (let i = 0; i < outVerts.length / 2; i++)
             {
-                indices.push(pindices[i] + ibase);
+                indices.push(i + ibase);
             }
         }
         catch (e)

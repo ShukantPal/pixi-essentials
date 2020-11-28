@@ -1,7 +1,7 @@
 {
   "name": "@pixi-essentials/svg",
   "version": "0.0.20",
-  "description": "Draws editable SVG element trees using PixiJS display objects.",
+  "description": "Native SVG Renderer on top of PixiJS",
   "main": "lib/svg.js",
   "module": "lib/svg.es.js",
   "bundle": "dist/svg.js",
@@ -61,7 +61,7 @@
     "@pixi-essentials/gradients": "^0.0.1",
     "@pixi-essentials/cull": "^1.0.9",
     "@pixi-essentials/texture-allocator": "~1.0.1",
-    "tess2": "~1.0.0"
+    "libtess": "~1.2.2"
   },
   "publishConfig": {
     "access": "public"

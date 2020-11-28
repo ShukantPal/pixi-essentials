@@ -16,7 +16,7 @@ export class SVGPathNode extends SVGGraphicsNode
 {
     private currentPath2: Path;
 
-    /*
+    //*
 
     private startPath(): void
     {
