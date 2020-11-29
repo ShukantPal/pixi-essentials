@@ -1,5 +1,6 @@
 declare module '@pixi/display' {
     export {
+        Bounds,
         DisplayObject,
         Container,
     } from 'pixi.js';
@@ -14,6 +15,7 @@ declare module '@pixi/graphics' {
         GraphicsGeometry,
         GRAPHICS_CURVES,
         LineStyle,
+        SHAPES,
         Polygon
     } from 'pixi.js';
 }
@@ -26,6 +28,10 @@ declare module '@pixi/math' {
         Transform,
         Rectangle,
         SHAPES,
+        RoundedRectangle,
+        Ellipse,
+        Circle,
+        Polygon,
     } from 'pixi.js';
 }
 
