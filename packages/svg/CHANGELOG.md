@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/svg
 
-This log was last generated on Sat, 14 Nov 2020 19:53:46 GMT and should not be manually modified.
+This log was last generated on Sun, 29 Nov 2020 20:04:09 GMT and should not be manually modified.
+
+## 0.1.1
+Sun, 29 Nov 2020 20:04:09 GMT
+
+### Patches
+
+- Fix incorrect current point after closepath command
 
 ## 0.0.20
 Sat, 14 Nov 2020 19:53:46 GMT
