@@ -1,5 +1,4 @@
 import { FILL_RULE } from './Path';
-import Tess2 from 'tess2';
 import * as libtess from 'libtess';
 
 import type { GraphicsGeometry } from '@pixi/graphics';
@@ -23,31 +22,41 @@ export const buildPath = {
             const tessy = new libtess.GluTesselator();
             const outVerts = [];
 
-            function vertexCallback(data, polyVertArray) {
+            /* eslint-disable no-inner-declarations, @typescript-eslint/no-unused-vars */
+            function vertexCallback(data: number[], polyVertArray: number[]): void
+            {
                 // console.log(data[0], data[1]);
                 polyVertArray[polyVertArray.length] = data[0];
                 polyVertArray[polyVertArray.length] = data[1];
             }
-            function begincallback(type) {
+            function begincallback(type: number): void
+            {
                 if (type !== libtess.primitiveType.GL_TRIANGLES) {
-                    console.log('expected TRIANGLES but got type: ' + type);
+                    console.warn(`expected TRIANGLES but got type: ${type}`);
                 }
             }
-            function errorcallback(errno) {
-                console.log('error callback');
-                console.log('error number: ' + errno);
+            function errorcallback(errno: number): void
+            {
+                console.error('error callback');
+                console.error(`error number: ${errno}`);
             }
             // callback for when segments intersect and must be split
-            function combinecallback(coords, data, weight) {
+            function combinecallback(coords: number[], _data: any, _weight: any): number[]
+            {
                 // console.log('combine callback');
                 return [coords[0], coords[1], coords[2]];
             }
-            function edgeCallback(flag) {
+            function edgeCallback(_flag: number): void
+            {
                 // don't really care about the flag, but need no-strip/no-fan behavior
                 // console.log('edge flag: ' + flag);
             }
-        
-            // tessy.gluTessProperty(libtess.gluEnum.GLU_TESS_WINDING_RULE, libtess.windingRule.GLU_TESS_WINDING_POSITIVE);
+            /* eslint-enable no-inner-declarations */
+
+            tessy.gluTessProperty(libtess.gluEnum.GLU_TESS_WINDING_RULE,
+                path.fillRule === FILL_RULE.EVENODD
+                    ? libtess.windingRule.GLU_TESS_WINDING_ODD
+                    : libtess.windingRule.GLU_TESS_WINDING_NONZERO);
             tessy.gluTessCallback(libtess.gluEnum.GLU_TESS_VERTEX_DATA, vertexCallback);
             tessy.gluTessCallback(libtess.gluEnum.GLU_TESS_BEGIN, begincallback);
             tessy.gluTessCallback(libtess.gluEnum.GLU_TESS_ERROR, errorcallback);

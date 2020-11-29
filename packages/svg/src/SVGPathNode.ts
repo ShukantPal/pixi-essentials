@@ -1,4 +1,4 @@
-import { Path, PATH } from './utils/Path';
+import { FILL_RULE, Path, PATH } from './utils/Path';
 import { SVGGraphicsNode } from './SVGGraphicsNode';
 import { buildPath } from './utils/buildPath';
 
@@ -16,8 +16,6 @@ export class SVGPathNode extends SVGGraphicsNode
 {
     private currentPath2: Path;
 
-    //*
-
     private startPath(): void
     {
         if (this.currentPath2)
@@ -26,7 +24,7 @@ export class SVGPathNode extends SVGGraphicsNode
 
             if (pts.length > 0)
             {
-                this.currentPath2.closeContour(pts[pts.length - 2], pts[pts.length - 1]);
+                this.currentPath2.closeContour();
             }
         }
         else
@@ -59,7 +57,8 @@ export class SVGPathNode extends SVGGraphicsNode
 
     closePath(): any
     {
-//        this.currentPath2.close;
+        this.currentPath2.points.push(this.currentPath2.points[0], this.currentPath2.points[1])
+        this.finishPath();
 
         return this;
     }
@@ -75,8 +74,6 @@ export class SVGPathNode extends SVGGraphicsNode
     // Redirect moveTo, lineTo, ... onto paths!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :P
     startPoly = this.startPath;
     finishPoly = this.finishPath;
-
-    // */
 
     /**
      * Embeds the `SVGPathElement` into this node.
@@ -139,7 +136,10 @@ export class SVGPathNode extends SVGGraphicsNode
                     this.lineTo(x, y += command.value);
                     break;
                 }
+                case 'z':
                 case 'Z': {
+                    x = this.currentPath2?.points[0] || 0;
+                    y = this.currentPath2?.points[1] || 0;
                     this.closePath();
                     break;
                 }
@@ -278,8 +278,7 @@ export class SVGPathNode extends SVGGraphicsNode
                     break;
                 }
                 default: {
-                    // eslint-disable-next-line no-console
-                    console.info('[PIXI.SVG] Draw command not supported:', command.code, command);
+                    console.warn('[PIXI.SVG] Draw command not supported:', command.code, command);
                     break;
                 }
             }
@@ -287,6 +286,7 @@ export class SVGPathNode extends SVGGraphicsNode
 
         if (this.currentPath2)
         {
+            this.currentPath2.fillRule = element.getAttribute('fill-rule') as FILL_RULE || this.currentPath2.fillRule;
             this.drawShape(this.currentPath2 as any);
             this.currentPath2 = null;
         }

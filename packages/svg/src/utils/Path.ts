@@ -43,7 +43,7 @@ export class Path
 
     clone(): Path
     {
-        const contours = this.contours.map(c => [...c]);
+        const contours = this.contours.map((c) => [...c]);
         const path = new Path();
 
         path.contours = contours;
@@ -51,9 +51,14 @@ export class Path
         return path;
     }
 
-    closeContour(x = 0, y = 0): void
+    closeContour(): void
     {
-        this.contours.push([x, y]);
+        if (this.points.length === 0)
+        {
+            return;
+        }
+
+        this.contours.push([]);
     }
 
     toString(): string
