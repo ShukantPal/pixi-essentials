@@ -3,6 +3,7 @@ import { SVGTextEngineImpl } from './SVGTextEngineImpl';
 import { parseMeasurement } from './utils/parseMeasurement';
 
 import type { DisplayObject } from '@pixi/display';
+import type { IPointData } from '@pixi/math';
 import type { SVGTextEngine } from './SVGTextEngine';
 import type { TextStyle } from '@pixi/text';
 
@@ -24,10 +25,16 @@ export class SVGTextNode extends Container
      */
     protected engine: SVGTextEngine & DisplayObject;
 
+    /**
+     * The current text position, where the next glyph will be placed.
+     */
+    protected currentTextPosition: IPointData;
+
     constructor()
     {
         super();
 
+        this.currentTextPosition = { x: 0, y: 0 };
         this.engine = new (SVGTextNode.defaultEngine)();
         this.addChild(this.engine);
     }
@@ -35,30 +42,34 @@ export class SVGTextNode extends Container
     /**
      * Embeds a `SVGTextElement` in this node.
      *
-     * @param element - The `SVGTextElement` to embed.
+     * @param {SVGTextElement} element - The `SVGTextElement` to embed.
      */
-    async embedText(element: SVGTextElement): Promise<void>
+    async embedText(element: SVGTextElement | SVGTSpanElement, style: Partial<TextStyle> = {}): Promise<void>
     {
         const engine = this.engine;
 
-        await engine.clear();
+        if (element instanceof SVGTextElement)
+        {
+            await engine.clear();
+
+            this.currentTextPosition.x = 0;
+            this.currentTextPosition.y = 0;
+        }
 
         const fill = element.getAttribute('fill');
-        const fontFamily = `${element.getAttribute('font-family') || 'serif'}, serif`;
+        const fontFamily = element.getAttribute('font-family');
         const fontSize = parseFloat(element.getAttribute('font-size'));
-        const fontWeight = element.getAttribute('font-weight') || 'normal';
+        const fontWeight = element.getAttribute('font-weight');
         const letterSpacing = parseMeasurement(element.getAttribute('letter-spacing'), fontSize);
 
-        const style = {
-            fill: fill || 'black',
-            fontFamily,
-            fontSize,
-            fontWeight,
-            letterSpacing,
-            wordWrap: true,
-            wordWrapWidth: 400,
-        };
-        let textPosition = { x: 0, y: 0 };
+        style.fill = fill || style.fill || 'black';
+        style.fontFamily = fontFamily || !style.fontFamily ? `${fontFamily || 'serif'}, serif` : style.fontFamily;
+        style.fontSize = !isNaN(fontSize) ? fontSize : style.fontSize;
+        style.fontWeight = fontWeight || style.fontWeight || 'normal';
+        style.letterSpacing = !isNaN(letterSpacing) ? letterSpacing : (style.letterSpacing || 0);
+        style.wordWrap = true;
+        style.wordWrapWidth = 400;
+
         const childNodes = element.childNodes;
 
         for (let i = 0, j = childNodes.length; i < j; i++)
@@ -73,50 +84,34 @@ export class SVGTextNode extends Container
             {
                 textContent = childNode.data;
                 textStyle = style;
+                
+
+                this.currentTextPosition = await engine.put(
+                    childNode,
+                    {
+                        x: this.currentTextPosition.x,
+                        y: this.currentTextPosition.y,
+                    },
+                    textContent,
+                    textStyle,
+                );
+
+                // Ensure transforms are updated as new text phrases are loaded.
+                this.emit('nodetransformdirty');
             }
             else if (childNode instanceof SVGTSpanElement)
             {
-                textContent = childNode.textContent;
-                textStyle = Object.assign({}, style);
-
-                const fill = childNode.getAttribute('fill');
-                const fontFamily = childNode.getAttribute('font-family');
-                const fontSize = parseFloat(childNode.getAttribute('font-size'));
-                const fontWeight = childNode.getAttribute('font-weight');
-                const letterSpacing = parseMeasurement(
-                    childNode.getAttribute('letter-spacing'), fontSize || style.fontSize);
-
-                textStyle.fill = fill || style.fill;
-                textStyle.fontFamily = fontFamily ? `${fontFamily}, serif` : style.fontFamily;
-                textStyle.fontSize = typeof fontSize === 'number' && !isNaN(fontSize) ? fontSize : style.fontSize || 16;
-                textStyle.fontWeight = fontWeight || style.fontWeight;
-                textStyle.letterSpacing = letterSpacing || style.letterSpacing;
-
                 if (childNode.x.baseVal.length > 0)
                 {
-                    textPosition.x = childNode.x.baseVal.getItem(0).value;
+                    this.currentTextPosition.x = childNode.x.baseVal.getItem(0).value;
                 }
                 if (childNode.y.baseVal.length > 0)
                 {
-                    textPosition.y = childNode.y.baseVal.getItem(0).value;
+                    this.currentTextPosition.y = childNode.y.baseVal.getItem(0).value;
                 }
-            }
-            else
-            {
-                continue;
-            }
 
-            textPosition = await engine.put(
-                childNode, {
-                    x: textPosition.x,
-                    y: textPosition.y,
-                },
-                textContent,
-                textStyle,
-            );
-
-            // Ensure transforms are updated as new text phrases are loaded.
-            this.emit('nodetransformdirty');
+                await this.embedText(childNode, { ...style });
+            }
         }
     }
 }
