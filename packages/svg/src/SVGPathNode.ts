@@ -1,6 +1,8 @@
 import { FILL_RULE, Path, PATH } from './utils/Path';
 import { SVGGraphicsNode } from './SVGGraphicsNode';
 import { buildPath } from './utils/buildPath';
+import { Graphics } from '@pixi/graphics';
+import { Text } from '@pixi/text';
 
 // @ts-expect-error
 import { graphicsUtils } from '@pixi/graphics';
@@ -183,6 +185,52 @@ export class SVGPathNode extends SVGGraphicsNode
                     break;
                 }
                 case 's':
+                case 'S': {
+                    const cp1 = { x, y };
+                    const lastCode = commands[i - 1] ? commands[i - 1].code : null;
+
+                    if (i > 0 && (lastCode === 's' || lastCode === 'S' || lastCode === 'c' || lastCode === 'C'))
+                    {
+                        const lastCommand = commands[i - 1];
+                        const lastCp2 = { ...(lastCommand.cp2 || lastCommand.cp) };
+
+                        if (commands[i - 1].relative)
+                        {
+                            lastCp2.x += (x - lastCommand.end.x);
+                            lastCp2.y += (y - lastCommand.end.y);
+                        }
+
+                        cp1.x = (2 * x) - lastCp2.x;
+                        cp1.y = (2 * y) - lastCp2.y;
+                    }
+
+                    const cp2 = { x: command.cp.x , y: command.cp.y };
+
+                    if (command.relative)
+                    {
+                        cp2.x += x;
+                        cp2.y += y;
+
+                        x += command.end.x;
+                        y += command.end.y;
+                    }
+                    else
+                    {
+                        x = command.end.x;
+                        y = command.end.y;
+                    }
+
+                    this.bezierCurveTo(
+                        cp1.x,
+                        cp1.y,
+                        cp2.x,
+                        cp2.y,
+                        x,
+                        y,
+                    );
+
+                    break;
+                }
                 case 'q': {
                     const currX = x;
                     const currY = y;
@@ -195,7 +243,6 @@ export class SVGPathNode extends SVGGraphicsNode
                     );
                     break;
                 }
-                case 'S':
                 case 'Q': {
                     this.quadraticCurveTo(
                         command.cp.x,

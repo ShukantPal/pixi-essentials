@@ -44,7 +44,7 @@
     "@pixi-build-tools/rollup-configurator": "^1.0.5",
     "@pixi/math": "^5.3.3",
     "@pixi/filter-color-matrix": "^5.3.3",
-    "@pixi/text": "^5.3.3"
+    "@pixi/text": "~5.3.3"
   },
   "peerDependencies": {
     "@pixi/core": "^5.3.3",
