@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/transformer",
   "entries": [
     {
+      "version": "2.2.2",
+      "tag": "@pixi-essentials/transformer_v2.2.2",
+      "date": "Sat, 05 Dec 2020 21:58:39 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Made boxScaling handle higher priority than boxRotation handles. Also, the outer tolerance of boxScaling handles was increased by 50% to account for long arrow cursors. These fix the problem where the object would rotate instead of scale at tiny sizes."
+          }
+        ]
+      }
+    },
+    {
       "version": "2.2.1",
       "tag": "@pixi-essentials/transformer_v2.2.1",
       "date": "Thu, 17 Sep 2020 19:03:40 GMT",
