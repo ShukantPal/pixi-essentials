@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/svg",
   "entries": [
     {
+      "version": "0.2.0",
+      "tag": "@pixi-essentials/svg_v0.2.0",
+      "date": "Sat, 05 Dec 2020 19:57:34 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Fix text layout algorithm by making it recursive, so it will work on nested &lt;tspan /&gt; elements. Add proper support for s/S smooth cubic bezier path commands, instead of treating them as quadratic bezier curves."
+          }
+        ]
+      }
+    },
+    {
       "version": "0.1.1",
       "tag": "@pixi-essentials/svg_v0.1.1",
       "date": "Sun, 29 Nov 2020 20:04:09 GMT",

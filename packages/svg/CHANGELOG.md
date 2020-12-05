@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/svg
 
-This log was last generated on Sun, 29 Nov 2020 20:04:09 GMT and should not be manually modified.
+This log was last generated on Sat, 05 Dec 2020 19:57:34 GMT and should not be manually modified.
+
+## 0.2.0
+Sat, 05 Dec 2020 19:57:34 GMT
+
+### Minor changes
+
+- Fix text layout algorithm by making it recursive, so it will work on nested &lt;tspan /&gt; elements. Add proper support for s/S smooth cubic bezier path commands, instead of treating them as quadratic bezier curves.
 
 ## 0.1.1
 Sun, 29 Nov 2020 20:04:09 GMT

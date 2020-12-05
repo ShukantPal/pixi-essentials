@@ -1,6 +1,6 @@
 {
   "name": "@pixi-essentials/svg",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Native SVG Renderer on top of PixiJS",
   "main": "lib/svg.js",
   "module": "lib/svg.es.js",
