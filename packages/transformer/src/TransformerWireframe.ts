@@ -74,6 +74,26 @@ export class TransformerWireframe extends Graphics
         const x = pointerPosition.x;
         const y = pointerPosition.y;
 
+        if (boxScalingEnabled)
+        {
+            const topProximity = distanceToLine(x, y, topLeft, topRight);
+            const leftProximity = distanceToLine(x, y, topLeft, bottomLeft);
+            const rightProximity = distanceToLine(x, y, topRight, bottomRight);
+            const bottomProximity = distanceToLine(x, y, bottomLeft, bottomRight);
+            const minProximity = Math.min(topProximity, leftProximity, rightProximity, bottomProximity);
+
+            if (minProximity < boxScalingTolerance)
+            {
+                switch (minProximity)
+                {
+                    case topProximity: return 'topCenter';
+                    case leftProximity: return 'middleLeft';
+                    case rightProximity: return 'middleRight';
+                    case bottomProximity: return 'bottomCenter';
+                }
+            }
+        }
+
         if (boxRotationEnabled && !groupBounds.contains(x, y))
         {
             const tlProximity = Math.sqrt(((topLeft.x - x) ** 2) + ((topLeft.y - y) ** 2));
@@ -91,26 +111,6 @@ export class TransformerWireframe extends Graphics
                     case trProximity: return 'boxRotateTopRight';
                     case blProximity: return 'boxRotateBottomLeft';
                     case brProximity: return 'boxRotateBottomRight';
-                }
-            }
-        }
-
-        if (boxScalingEnabled)
-        {
-            const topProximity = distanceToLine(x, y, topLeft, topRight);
-            const leftProximity = distanceToLine(x, y, topLeft, bottomLeft);
-            const rightProximity = distanceToLine(x, y, topRight, bottomRight);
-            const bottomProximity = distanceToLine(x, y, bottomLeft, bottomRight);
-            const minProximity = Math.min(topProximity, leftProximity, rightProximity, bottomProximity);
-
-            if (minProximity < boxScalingTolerance)
-            {
-                switch (minProximity)
-                {
-                    case topProximity: return 'topCenter';
-                    case leftProximity: return 'middleLeft';
-                    case rightProximity: return 'middleRight';
-                    case bottomProximity: return 'bottomCenter';
                 }
             }
         }
@@ -159,7 +159,8 @@ export class TransformerWireframe extends Graphics
             this.projectToLocal(bounds.hull[i], innerCorner);
         });
 
-        bounds.innerBounds.pad(2 * boxScalingTolerance);
+        // A little extra tolerance outside because of arrow cursors being longer
+        bounds.innerBounds.pad(2.5 * boxScalingTolerance);
 
         // Outer four corners
         const outerHull = pointPool.allocateArray(4);
@@ -169,8 +170,8 @@ export class TransformerWireframe extends Graphics
             this.projectToLocal(bounds.hull[i], outerCorner);
         });
 
-        // Left at original
-        bounds.innerBounds.pad(-this.transformer.boxScalingTolerance);
+        // Leave at original
+        bounds.innerBounds.pad(-1.5 * this.transformer.boxScalingTolerance);
 
         for (let i = 0; i < 4; i++)
         {

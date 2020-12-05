@@ -532,7 +532,8 @@ export class Transformer extends Container
                 )),
         };
 
-        this.handles = Object.assign({}, rotatorHandles, scaleHandles, skewHandles) as { [H in Handle]?: TransformerHandle };
+        // Scale handles have higher priority
+        this.handles = Object.assign({}, scaleHandles, rotatorHandles, skewHandles) as { [H in Handle]?: TransformerHandle };
         this.handles.middleCenter.visible = false;
         this.handles.skewHorizontal.visible = this._skewEnabled;
         this.handles.skewVertical.visible = this._skewEnabled;
@@ -1050,7 +1051,7 @@ export class Transformer extends Container
         {
             this.wireframe
                 .closePath()
-                .beginFill(0xffffff, 1e-4)
+                .beginFill(0xfff0ff, .1)
                 .lineStyle();
             this.wireframe.drawBoxScalingTolerance(groupBounds);
         }
@@ -1123,21 +1124,6 @@ export class Transformer extends Container
                 .lineTo(handles.rotator.position.x, handles.rotator.position.y);
 
             this.handleAnchors.rotator.copyFrom(handles.rotator.position);
-        }
-
-        if (this._scaleEnabled || this.boxScalingEnabled)
-        {
-            // NOTE: We recalculate these even if only boxScalingEnabled is set, as scaleGroup relies on them
-            // Scale handles
-            handles.topLeft.position.copyFrom(topLeft);
-            handles.topCenter.position.copyFrom(handleAnchors.topCenter);
-            handles.topRight.position.copyFrom(topRight);
-            handles.middleLeft.position.copyFrom(handleAnchors.middleLeft);
-            handles.middleCenter.position.copyFrom(handleAnchors.middleCenter);
-            handles.middleRight.position.copyFrom(handleAnchors.middleRight);
-            handles.bottomLeft.position.copyFrom(bottomLeft);
-            handles.bottomCenter.position.copyFrom(handleAnchors.bottomCenter);
-            handles.bottomRight.position.copyFrom(bottomRight);
         }
 
         if (this._skewEnabled)
