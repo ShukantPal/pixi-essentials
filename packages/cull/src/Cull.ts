@@ -194,10 +194,10 @@ export class Cull
             ? displayObject._bounds.getRectangle(tempRect)
             : displayObject.getBounds(true, tempRect);
 
-        displayObject[this._toggle] = bounds.right > rect.left
-            && bounds.left < rect.right
-            && bounds.bottom > rect.top
-            && bounds.top < rect.bottom;
+        displayObject[this._toggle] = bounds.right >= rect.left
+            && bounds.left <= rect.right
+            && bounds.bottom >= rect.top
+            && bounds.top <= rect.bottom;
 
         const fullyVisible = bounds.left >= rect.left
             && bounds.top >= rect.top
