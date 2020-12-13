@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/svg",
   "entries": [
     {
+      "version": "0.2.1",
+      "tag": "@pixi-essentials/svg_v0.2.1",
+      "date": "Sun, 13 Dec 2020 19:25:27 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix bounds calculation of SVGScene when applying custom width and height."
+          }
+        ]
+      }
+    },
+    {
       "version": "0.2.0",
       "tag": "@pixi-essentials/svg_v0.2.0",
       "date": "Sat, 05 Dec 2020 19:57:34 GMT",
