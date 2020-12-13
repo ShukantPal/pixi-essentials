@@ -127,7 +127,14 @@ export class SVGScene extends DisplayObject
      */
     calculateBounds(): void
     {
-        this._bounds.addFrameMatrix(this.worldTransform, 0, 0, this.width, this.height);
+        this._bounds.clear();
+        this._bounds.addFrameMatrix(
+            this.worldTransform,
+            0,
+            0,
+            this.content.viewBox.baseVal.width,
+            this.content.viewBox.baseVal.height,
+        );
     }
 
     /**
