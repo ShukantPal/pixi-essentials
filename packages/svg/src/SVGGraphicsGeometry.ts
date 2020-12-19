@@ -78,7 +78,7 @@ export class SVGGraphicsGeometry extends GraphicsGeometry
                     holes: [],
 
                     // @ts-expect-error
-                    shape: { points: contour, type: PATH },
+                    shape: { points: contour, type: SHAPES.POLY },
                     lineStyle,
                 });
             }

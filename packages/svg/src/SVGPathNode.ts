@@ -1,8 +1,6 @@
 import { FILL_RULE, Path, PATH } from './utils/Path';
 import { SVGGraphicsNode } from './SVGGraphicsNode';
 import { buildPath } from './utils/buildPath';
-import { Graphics } from '@pixi/graphics';
-import { Text } from '@pixi/text';
 
 // @ts-expect-error
 import { graphicsUtils } from '@pixi/graphics';

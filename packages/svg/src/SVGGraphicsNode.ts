@@ -10,13 +10,6 @@ import type { PaintServer } from './paint/PaintServer';
 import type { Renderer } from '@pixi/core';
 import type { SVGSceneContext } from './SVGSceneContext';
 
-interface IFillStyleOptions {
-    color?: number;
-    alpha?: number;
-    texture?: Texture;
-    matrix?: Matrix;
-}
-
 interface ILineStyleOptions {
     color?: number;
     alpha?: number;
@@ -142,8 +135,8 @@ export class SVGGraphicsNode extends Graphics
         anticlockwise = false): this
     {
         const sweepAngle = endAngle - startAngle;
-        const n = GRAPHICS_CURVES.adaptive 
-            ? _segmentsCount(EllipticArcUtils.calculateArcLength(rx, ry, startAngle, endAngle - startAngle))
+        const n = GRAPHICS_CURVES.adaptive
+            ? _segmentsCount(EllipticArcUtils.calculateArcLength(rx, ry, startAngle, endAngle - startAngle)) * 4
             : 20;
         const delta = (anticlockwise ? -1 : 1) * Math.abs(sweepAngle) / (n - 1);
 
@@ -296,6 +289,33 @@ export class SVGGraphicsNode extends Graphics
         const r = element.r.baseVal.valueInSpecifiedUnits;
 
         this.drawCircle(cx, cy, r);
+    }
+
+    /**
+     * Embeds the `SVGEllipseElement` into this node.
+     *
+     * @param element - The ellipse element to draw.
+     */
+    embedEllipse(element: SVGEllipseElement): void
+    {
+        element.cx.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PX);
+        element.cy.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PX);
+        element.rx.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PX);
+        element.ry.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PX);
+
+        const cx = element.cx.baseVal.valueInSpecifiedUnits;
+        const cy = element.cy.baseVal.valueInSpecifiedUnits;
+        const rx = element.rx.baseVal.valueInSpecifiedUnits;
+        const ry = element.ry.baseVal.valueInSpecifiedUnits;
+
+        this.ellipticArc(
+            cx,
+            cy,
+            rx,
+            ry,
+            0,
+            2 * Math.PI,
+        );
     }
 
     /**
