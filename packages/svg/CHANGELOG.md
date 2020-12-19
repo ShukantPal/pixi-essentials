@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/svg
 
-This log was last generated on Sun, 13 Dec 2020 19:25:27 GMT and should not be manually modified.
+This log was last generated on Sat, 19 Dec 2020 18:41:11 GMT and should not be manually modified.
+
+## 0.2.2
+Sat, 19 Dec 2020 18:41:11 GMT
+
+### Patches
+
+- Fix spikes in stroking of smaller subpaths; add support for &lt;ellipse /&gt; elements.
 
 ## 0.2.1
 Sun, 13 Dec 2020 19:25:27 GMT
