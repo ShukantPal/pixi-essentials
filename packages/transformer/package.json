@@ -5,6 +5,7 @@
   "main": "lib/transformer.js",
   "module": "lib/transformer.es.js",
   "bundle": "dist/transformer.js",
+  "types": "./index.d.ts",
   "scripts": {
     "build": "rollup -c node_modules/@pixi-build-tools/rollup-configurator/index.js --silent",
     "compile": "rm -rf compile && tsc && api-extractor run"

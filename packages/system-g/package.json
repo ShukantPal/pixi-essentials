@@ -19,6 +19,7 @@
   "main": "lib/plugin-g.js",
   "module": "lib/plugin-g.es.js",
   "bundle": "dist/plugin-g.js",
+  "types": "./index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "__tests__"

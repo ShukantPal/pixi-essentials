@@ -5,6 +5,7 @@
   "main": "lib/react-bindings.js",
   "module": "lib/react-bindings.es.js",
   "bundle": "dist/react-bindings.js",
+  "types": "./index.d.ts",
   "namespace": "ReactPixi",
   "scripts": {
     "build": "rollup -c node_modules/@pixi-build-tools/rollup-configurator/index.js --silent"

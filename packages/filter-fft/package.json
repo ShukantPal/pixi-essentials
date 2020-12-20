@@ -16,6 +16,7 @@
   "main": "lib/filter-fft.js",
   "module": "lib/filter-fft.es.js",
   "bundle": "lib/filter-fft.js",
+  "types": "./index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "__tests__"

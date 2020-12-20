@@ -18,6 +18,7 @@
   "main": "lib/pixi-object-pool.js",
   "module": "lib/pixi-object-pool.es.js",
   "bundle": "dist/pixi-object-pool.js",
+  "types": "./index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "test",
