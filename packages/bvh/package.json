@@ -17,6 +17,7 @@
   "main": "lib/system-bvh.js",
   "module": "lib/system-bvh.es.js",
   "bundle": "dist/system-bvh.js",
+  "types": "./index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "__tests__"

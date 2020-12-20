@@ -12,6 +12,7 @@
   "main": "lib/types.js",
   "module": "lib/types.es.js",
   "bundle": "dist/types.js",
+  "types": "./index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "__tests__"

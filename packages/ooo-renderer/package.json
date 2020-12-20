@@ -18,6 +18,7 @@
   "main": "lib/pixi-ooo-renderer.js",
   "module": "lib/pixi-ooo-renderer.es.js",
   "bundle": "dist/pixi-ooo-renderer.js",
+  "types": "./index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "__tests__"

@@ -14,6 +14,7 @@
   "main": "lib/conic.js",
   "module": "lib/conic.es.js",
   "bundle": "dist/conic.js",
+  "types": "./index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "__tests__"

@@ -12,6 +12,7 @@
   "main": "lib/cull.js",
   "module": "lib/cull.es.js",
   "bundle": "dist/cull.js",
+  "types": "./index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "__tests__"
