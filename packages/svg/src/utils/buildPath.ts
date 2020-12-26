@@ -86,9 +86,7 @@ export const buildPath = {
 
             tessy.gluTessEndPolygon();
 
-            // @ts-expect-error
             const verts = graphicsGeometry.points;
-            // @ts-expect-error
             const indices = graphicsGeometry.indices;
             const ibase = verts.length / 2;
 

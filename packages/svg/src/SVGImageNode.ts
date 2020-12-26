@@ -1,4 +1,4 @@
-import { Texture } from '@pixi/core';
+import { BaseImageResource, Texture } from '@pixi/core';
 import { Matrix } from '@pixi/math';
 import { SVGGraphicsNode } from './SVGGraphicsNode';
 
@@ -117,7 +117,7 @@ export class SVGImageNode extends SVGGraphicsNode
 
         if (this._texture)
         {
-            this._canvas = this._texture.baseTexture.resource.source as HTMLCanvasElement;
+            this._canvas = (this._texture.baseTexture.resource as BaseImageResource).source as HTMLCanvasElement;
             this._context = this._canvas.getContext('2d');
         }
         else // Allocation fails if the texture is too large. If so, create a standalone texture.

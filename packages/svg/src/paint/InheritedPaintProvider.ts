@@ -1,6 +1,5 @@
 import type { LINE_CAP, LINE_JOIN } from '@pixi/graphics';
 import type { Paint } from './Paint';
-import type { PaintProvider } from './PaintProvider';
 
 /**
  * Inherited paint, used for &lt;use /&gt; elements. The properties used on the inherited paint do not

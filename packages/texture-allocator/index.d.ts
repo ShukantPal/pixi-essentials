@@ -4,7 +4,7 @@ import { GLTexture } from '@pixi/core';
 import { Rectangle } from '@pixi/math';
 import { Renderer } from '@pixi/core';
 import { RenderTexture } from '@pixi/core';
-import { resources } from '@pixi/core';
+import { Resource } from '@pixi/core';
 import { Texture } from '@pixi/core';
 
 /**
@@ -40,7 +40,7 @@ export declare class AtlasAllocator extends TextureAllocator {
 /**
  * An {@code AtlasResource} is used by {@link AtlasAllocator} to manage texture sources
  */
-export declare class AtlasResource extends resources.Resource {
+export declare class AtlasResource extends Resource {
     /**
      * The list of managed resources in the atlas.
      */
@@ -135,7 +135,7 @@ export declare class RenderTextureAllocator extends TextureAllocator<RenderTextu
  * The texture allocator dynamically manages space on base-texture slabs. It can be used to generate
  * atlases on demand, which improve batching efficiency.
  */
-export declare class TextureAllocator<T = Texture> {
+export declare class TextureAllocator<T extends Texture = Texture> {
     /**
      * The width of texture slabs.
      */
@@ -203,7 +203,7 @@ export declare class TextureAllocator<T = Texture> {
      * @param padding - Padding required around the texture.
      * @return The issued texture, if successful; otherwise, `null`.
      */
-    protected issueTexture(slab: TextureSlab, width: number, height: number, padding?: number): Texture;
+    protected issueTexture(slab: TextureSlab, width: number, height: number, padding?: number): T;
 }
 
 /**

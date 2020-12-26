@@ -1,4 +1,5 @@
-import { DisplayObject, Container, Rectangle } from 'pixi.js';
+import { DisplayObject, Container } from '@pixi/display';
+import { Rectangle } from '@pixi/math';
 
 const tempRect = new Rectangle();
 

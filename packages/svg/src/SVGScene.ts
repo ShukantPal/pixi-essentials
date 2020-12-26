@@ -87,6 +87,8 @@ export class SVGScene extends DisplayObject
      */
     protected _transformDirty: boolean;
 
+    sortDirty = false;
+
     /**
      * @param content - The SVG node to render
      * @param context - This can be used to configure the scene
@@ -135,6 +137,11 @@ export class SVGScene extends DisplayObject
             this.content.viewBox.baseVal.width,
             this.content.viewBox.baseVal.height,
         );
+    }
+
+    removeChild()
+    {
+        // Just to implement DisplayObject
     }
 
     /**
@@ -260,7 +267,7 @@ export class SVGScene extends DisplayObject
      * @alpha
      * @param paintServer - The paint server to be rendered.
      */
-    protected createPaintServer(paintServer: SVGGradientElement): Texture
+    protected createPaintServer(paintServer: SVGGradientElement): PaintServer
     {
         const renderTexture = RenderTexture.create({
             width: 128,

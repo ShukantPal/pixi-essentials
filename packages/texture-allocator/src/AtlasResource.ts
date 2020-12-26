@@ -1,5 +1,5 @@
 import { ALPHA_MODES } from '@pixi/constants';
-import { BaseTexture, GLTexture, Renderer, resources } from '@pixi/core';
+import { BaseTexture, GLTexture, Resource, Renderer } from '@pixi/core';
 
 import type { Rectangle } from '@pixi/math';
 import type { Texture } from '@pixi/core';
@@ -43,7 +43,7 @@ export type AtlasResourceItem =
 /**
  * An {@code AtlasResource} is used by {@link AtlasAllocator} to manage texture sources
  */
-export class AtlasResource extends resources.Resource
+export class AtlasResource extends Resource
 {
     /**
      * The list of managed resources in the atlas.

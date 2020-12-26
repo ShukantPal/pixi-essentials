@@ -1,5 +1,5 @@
-import { DisplayObject } from 'pixi.js';
-import { Rectangle } from 'pixi.js';
+import { DisplayObject } from '@pixi/display';
+import { Rectangle } from '@pixi/math';
 
 /**
  * Provides a simple, configurable mechanism for culling a subtree of your scene graph.
@@ -88,11 +88,12 @@ export declare class Cull {
 }
 
 /**
- * The culling options for {@code Cull}
+ * The culling options for {@code Cull}.
  *
+ * @ignore
  * @public
  */
-declare interface ICullOptions {
+export declare interface ICullOptions {
     recursive: boolean;
     toggle: 'visible' | 'renderable';
 }

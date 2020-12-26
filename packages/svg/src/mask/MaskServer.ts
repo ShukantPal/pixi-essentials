@@ -79,7 +79,7 @@ export class MaskServer extends Sprite
 
             renderer.renderTexture.bind(this.texture as RenderTexture, localBounds);
             renderer.renderTexture.clear();
-            renderer.filter.push({ filterArea: localBounds }, [l2rFilter]);
+            renderer.filter.push({ filterArea: localBounds, getBounds: () => localBounds }, [l2rFilter]);
 
             for (let i = 0, j = children.length; i < j; i++)
             {

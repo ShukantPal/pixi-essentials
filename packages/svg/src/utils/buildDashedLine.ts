@@ -1,6 +1,7 @@
 import { GRAPHICS_CURVES, LINE_CAP, LINE_JOIN } from '@pixi/graphics';
 import { Point, SHAPES } from '@pixi/math';
 
+// @ts-expect-error We'll export Polygon later.
 import type { GraphicsData, GraphicsGeometry, LineStyle, Polygon } from '@pixi/graphics';
 
 function distanceTo(p0: Point, p1: Point): number

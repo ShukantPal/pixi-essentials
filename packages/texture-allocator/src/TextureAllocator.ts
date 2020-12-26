@@ -10,7 +10,7 @@ const tempRect = new Rectangle();
  * The texture allocator dynamically manages space on base-texture slabs. It can be used to generate
  * atlases on demand, which improve batching efficiency.
  */
-export class TextureAllocator<T = Texture>
+export class TextureAllocator<T extends Texture = Texture>
 {
     /**
      * The width of texture slabs.
@@ -177,7 +177,8 @@ export class TextureAllocator<T = Texture>
      */
     protected createTexture(baseTexture: BaseTexture, frame: Rectangle): T
     {
-        return new Texture(baseTexture, frame);
+        // Override this method to return correct texture type T.
+        return new Texture(baseTexture, frame) as T;
     }
 
     /**
@@ -189,7 +190,7 @@ export class TextureAllocator<T = Texture>
      * @param padding - Padding required around the texture.
      * @return The issued texture, if successful; otherwise, `null`.
      */
-    protected issueTexture(slab: TextureSlab, width: number, height: number, padding = 0): Texture
+    protected issueTexture(slab: TextureSlab, width: number, height: number, padding = 0): T
     {
         const area = slab.managedArea.allocate(width + 2 * padding, height + 2 * padding);
 
