@@ -2,6 +2,29 @@
   "name": "@pixi-essentials/svg",
   "entries": [
     {
+      "version": "0.2.3",
+      "tag": "@pixi-essentials/svg_v0.2.3",
+      "date": "Sat, 26 Dec 2020 22:47:29 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Upgrade to PixiJS 5.4.0 RC and generate a index.d.ts file."
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@pixi-essentials/gradients\" from `^0.0.1` to `^0.0.2`"
+          },
+          {
+            "comment": "Updating dependency \"@pixi-essentials/cull\" from `^1.0.9` to `^1.0.10`"
+          },
+          {
+            "comment": "Updating dependency \"@pixi-essentials/texture-allocator\" from `~1.0.2` to `~1.0.3`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.2.2",
       "tag": "@pixi-essentials/svg_v0.2.2",
       "date": "Sat, 19 Dec 2020 18:41:11 GMT",

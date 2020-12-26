@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/cull",
   "entries": [
     {
+      "version": "1.0.10",
+      "tag": "@pixi-essentials/cull_v1.0.10",
+      "date": "Sat, 26 Dec 2020 22:47:29 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Upgrade to PixiJS 5.4.0 and use scoped packages instead of the pixi.js bundle as peer dependencies."
+          }
+        ]
+      }
+    },
+    {
       "version": "1.0.9",
       "tag": "@pixi-essentials/cull_v1.0.9",
       "date": "Thu, 08 Oct 2020 21:31:01 GMT",

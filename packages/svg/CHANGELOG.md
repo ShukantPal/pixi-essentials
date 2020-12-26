@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/svg
 
-This log was last generated on Sat, 19 Dec 2020 18:41:11 GMT and should not be manually modified.
+This log was last generated on Sat, 26 Dec 2020 22:47:29 GMT and should not be manually modified.
+
+## 0.2.3
+Sat, 26 Dec 2020 22:47:29 GMT
+
+### Patches
+
+- Upgrade to PixiJS 5.4.0 RC and generate a index.d.ts file.
 
 ## 0.2.2
 Sat, 19 Dec 2020 18:41:11 GMT

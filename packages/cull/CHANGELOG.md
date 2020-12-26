@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/cull
 
-This log was last generated on Thu, 08 Oct 2020 21:31:01 GMT and should not be manually modified.
+This log was last generated on Sat, 26 Dec 2020 22:47:29 GMT and should not be manually modified.
+
+## 1.0.10
+Sat, 26 Dec 2020 22:47:29 GMT
+
+### Patches
+
+- Upgrade to PixiJS 5.4.0 and use scoped packages instead of the pixi.js bundle as peer dependencies.
 
 ## 1.0.9
 Thu, 08 Oct 2020 21:31:01 GMT
