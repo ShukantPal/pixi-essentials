@@ -6,7 +6,7 @@
   "module": "lib/area-allocator.es.js",
   "bundle": "dist/area-allocator.js",
   "types": "./index.d.ts",
-  "peerDependencies": {"@pixi/math":"~5.3.3"},
+  "peerDependencies": {"@pixi/math":"^5.3.3"},
   "scripts": {
     "build": "rollup -c node_modules/@pixi-build-tools/rollup-configurator/index.js --silent",
     "compile": "rm -rf compile && tsc && api-extractor run"
