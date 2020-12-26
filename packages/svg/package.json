@@ -61,7 +61,7 @@
     "tinycolor2": "^1.4.1",
     "@pixi-essentials/gradients": "^0.0.1",
     "@pixi-essentials/cull": "^1.0.9",
-    "@pixi-essentials/texture-allocator": "~1.0.1",
+    "@pixi-essentials/texture-allocator": "~1.0.2",
     "libtess": "~1.2.2"
   },
   "publishConfig": {

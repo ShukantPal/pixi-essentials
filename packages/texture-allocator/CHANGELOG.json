@@ -2,6 +2,23 @@
   "name": "@pixi-essentials/texture-allocator",
   "entries": [
     {
+      "version": "1.0.2",
+      "tag": "@pixi-essentials/texture-allocator_v1.0.2",
+      "date": "Sat, 26 Dec 2020 21:49:41 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Looser peer dependency versioning."
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@pixi-essentials/area-allocator\" from `~1.0.0` to `~1.0.1`"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.0.1",
       "tag": "@pixi-essentials/texture-allocator_v1.0.1",
       "date": "Sun, 08 Nov 2020 20:40:57 GMT",
