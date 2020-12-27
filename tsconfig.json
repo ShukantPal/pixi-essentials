@@ -30,6 +30,8 @@
         "**/scripts/**",
         "**/types/**",
         "bundles/**/*.d.ts",
-        "rollup.config.js"
+        "rollup.config.js",
+        "*.vert",
+        "*.frag"
     ]
 }

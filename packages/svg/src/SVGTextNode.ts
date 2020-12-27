@@ -84,7 +84,6 @@ export class SVGTextNode extends Container
             {
                 textContent = childNode.data;
                 textStyle = style;
-                
 
                 this.currentTextPosition = await engine.put(
                     childNode,

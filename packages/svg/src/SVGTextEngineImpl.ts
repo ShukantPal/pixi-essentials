@@ -53,12 +53,15 @@ export class SVGTextEngineImpl extends Sprite implements SVGTextEngine
         matrix?: Matrix,
     ): Promise<IPointData>
     {
+        console.log('PUT_TEXT')
         this.contentList.set(id, {
             position,
             content,
             style,
             matrix,
         });
+
+        console.log(this.contentList)
 
         const textMetrics = TextMetrics.measureText(content, new TextStyle(style), false, this.canvas);
 
@@ -75,13 +78,13 @@ export class SVGTextEngineImpl extends Sprite implements SVGTextEngine
         let w = 0;
         let h = 0;
 
-        for (const [_, { position, content, style }] of this.contentList)
+        this.contentList.forEach(({ position, content, style }) =>
         {
             const textMetrics = TextMetrics.measureText(content, new TextStyle(style), false, this.canvas);
 
             w = Math.max(w, position.x + textMetrics.width);
             h = Math.max(h, position.y + textMetrics.height + textMetrics.fontProperties.descent);
-        }
+        });
 
         const resolution = window.devicePixelRatio || 1;
 
