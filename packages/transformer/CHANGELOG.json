@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/transformer",
   "entries": [
     {
+      "version": "2.2.3",
+      "tag": "@pixi-essentials/transformer_v2.2.3",
+      "date": "Thu, 31 Dec 2020 22:56:47 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Add lazyMode"
+          }
+        ]
+      }
+    },
+    {
       "version": "2.2.2",
       "tag": "@pixi-essentials/transformer_v2.2.2",
       "date": "Sat, 05 Dec 2020 21:58:39 GMT",

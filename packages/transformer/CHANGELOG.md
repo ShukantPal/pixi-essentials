@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/transformer
 
-This log was last generated on Sat, 05 Dec 2020 21:58:39 GMT and should not be manually modified.
+This log was last generated on Thu, 31 Dec 2020 22:56:47 GMT and should not be manually modified.
+
+## 2.2.3
+Thu, 31 Dec 2020 22:56:47 GMT
+
+### Patches
+
+- Add lazyMode
 
 ## 2.2.2
 Sat, 05 Dec 2020 21:58:39 GMT
