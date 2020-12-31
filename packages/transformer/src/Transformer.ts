@@ -3,13 +3,11 @@
 import { Renderer } from '@pixi/core';
 import { DisplayObject, Container } from '@pixi/display';
 import { Point, Matrix, Transform, Rectangle } from '@pixi/math';
-import { Graphics } from '@pixi/graphics';
-import { AxisAlignedBounds, OrientedBounds } from '@pixi-essentials/bounds';
+import { OrientedBounds } from '@pixi-essentials/bounds';
 import { ObjectPoolFactory } from '@pixi-essentials/object-pool';
 import { TransformerHandle } from './TransformerHandle';
 import { TransformerWireframe } from './TransformerWireframe';
 import { createHorizontalSkew, createVerticalSkew } from './utils/skewTransform';
-import { distanceToLine } from './utils/distanceToLine';
 import { decomposeTransform } from './utils/decomposeTransform';
 import { multiplyTransform } from './utils/multiplyTransform';
 
@@ -28,7 +26,7 @@ const tempPointer = new Point();
 const emitMatrix = new Matrix();// Used to pass to event handlers
 
 // Pool for allocating an arbitrary number of points
-const pointPool = ObjectPoolFactory.build(Point as any);
+const pointPool = ObjectPoolFactory.build<Point>(Point as any);
 
 /**
  * The handles used for rotation.
@@ -267,6 +265,8 @@ export class Transformer extends Container
     public boxScalingEnabled: boolean;
     public boxScalingTolerance: number;
     public centeredScaling: boolean;
+    public lazyMode: boolean;
+    public lazyDirty: boolean;
     public projectionTransform: Matrix;
     public rotationSnaps: number[];
     public rotationSnapTolerance: number;
@@ -996,7 +996,7 @@ export class Transformer extends Container
      */
     render(renderer: Renderer): void
     {
-        if (this.renderable && this.visible)
+        if (this.renderable && this.visible && (!this.lazyMode || this.lazyDirty))
         {
             this.draw();
         }
@@ -1055,6 +1055,8 @@ export class Transformer extends Container
                 .lineStyle();
             this.wireframe.drawBoxScalingTolerance(groupBounds);
         }
+
+        this.lazyDirty = false;
     }
 
     /**
@@ -1315,6 +1317,8 @@ export class Transformer extends Container
     {
         Transformer.calculateGroupOrientedBounds(this.group, rotation, this.groupBounds);
         this.drawHandles(this.groupBounds);
+
+        this.lazyDirty = true;
     }
 
     /**
