@@ -5,7 +5,7 @@ import { parseMeasurement } from './utils/parseMeasurement';
 import type { DisplayObject } from '@pixi/display';
 import type { IPointData } from '@pixi/math';
 import type { SVGTextEngine } from './SVGTextEngine';
-import type { TextStyle } from '@pixi/text';
+import type { TextStyle, TextStyleFontWeight } from '@pixi/text';
 
 /**
  * Draws SVG &lt;text /&gt; elements.
@@ -65,7 +65,7 @@ export class SVGTextNode extends Container
         style.fill = fill || style.fill || 'black';
         style.fontFamily = fontFamily || !style.fontFamily ? `${fontFamily || 'serif'}, serif` : style.fontFamily;
         style.fontSize = !isNaN(fontSize) ? fontSize : style.fontSize;
-        style.fontWeight = fontWeight || style.fontWeight || 'normal';
+        style.fontWeight = (fontWeight as TextStyleFontWeight) || style.fontWeight || 'normal';
         style.letterSpacing = !isNaN(letterSpacing) ? letterSpacing : (style.letterSpacing || 0);
         style.wordWrap = true;
         style.wordWrapWidth = 400;
