@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/svg
 
-This log was last generated on Sat, 26 Dec 2020 22:47:29 GMT and should not be manually modified.
+This log was last generated on Sat, 02 Jan 2021 00:21:47 GMT and should not be manually modified.
+
+## 0.2.5
+Sat, 02 Jan 2021 00:21:47 GMT
+
+### Patches
+
+- Remove redundant logs in SVGTextEngineImpl
 
 ## 0.2.3
 Sat, 26 Dec 2020 22:47:29 GMT

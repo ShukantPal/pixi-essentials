@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/svg",
   "entries": [
     {
+      "version": "0.2.5",
+      "tag": "@pixi-essentials/svg_v0.2.5",
+      "date": "Sat, 02 Jan 2021 00:21:47 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Remove redundant logs in SVGTextEngineImpl"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.2.3",
       "tag": "@pixi-essentials/svg_v0.2.3",
       "date": "Sat, 26 Dec 2020 22:47:29 GMT",
