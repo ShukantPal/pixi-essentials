@@ -1051,7 +1051,7 @@ export class Transformer extends Container
         {
             this.wireframe
                 .closePath()
-                .beginFill(0xfff0ff, .1)
+                .beginFill(0xfff0ff, 1e-4)
                 .lineStyle();
             this.wireframe.drawBoxScalingTolerance(groupBounds);
         }
@@ -1138,14 +1138,14 @@ export class Transformer extends Container
 
             // Calculate skew handle positions in screen space, and then transform back into local-space. This ensures that
             // the handles appear at skewRadius distance, regardless of the projection.
-            handles.skewHorizontal.position.set(
+            handleAnchors.skewHorizontal.set(
                 center.x + (Math.cos(this._skewX) * this.skewRadius),
                 center.y + (Math.sin(this._skewX) * this.skewRadius));
-            handles.skewVertical.position.set( // HINT: Slope = skew.y + Math.PI / 2
+            handleAnchors.skewVertical.set( // HINT: Slope = skew.y + Math.PI / 2
                 center.x + (-Math.sin(this._skewY) * this.skewRadius),
                 center.y + (Math.cos(this._skewY) * this.skewRadius));
-            this.worldTransform.applyInverse(handles.skewHorizontal.position, handles.skewHorizontal.position);
-            this.worldTransform.applyInverse(handles.skewVertical.position, handles.skewVertical.position);
+            this.worldTransform.applyInverse(handleAnchors.skewHorizontal, handleAnchors.skewHorizontal);
+            this.worldTransform.applyInverse(handleAnchors.skewVertical, handleAnchors.skewVertical);
 
             // Restore center to local-space
             center.set(cx, cy);
@@ -1178,6 +1178,7 @@ export class Transformer extends Container
             const handle: TransformerHandle = handles[handleName];
 
             handle.rotation = rotation;
+            handle.position.copyFrom(handleAnchors[handleName]);
             handle.getBounds(false, tempRect);
         }
     }

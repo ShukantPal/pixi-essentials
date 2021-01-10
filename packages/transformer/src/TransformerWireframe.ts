@@ -11,6 +11,93 @@ import type { Handle, Transformer } from './Transformer';
 
 const pointPool = ObjectPoolFactory.build(Point);
 const tempHull = [new Point(), new Point(), new Point(), new Point()];
+const tempMatrix = new Matrix();
+const tempPoint = new Point();
+
+/**
+ * Box rotation region for the top-left corner, normalized to 1-unit tolerance
+ * and positioned at the origin.
+ *
+ * @ignore
+ * @internal
+ */
+const boxRotationRegionTopLeft = [
+    0, 0,
+    0, 1,
+    -1, 1,
+    -1, -1,
+    1, -1,
+    1, 0,
+];
+
+/**
+ * Box rotation region for the top-right corner, normalized to 1-unit tolerance
+ * and positioned at the origin.
+ *
+ * @ignore
+ * @internal
+ */
+const boxRotationRegionTopRight = [
+    0, 0,
+    -1, 0,
+    -1, -1,
+    1, -1,
+    1, 1,
+    0, 1,
+];
+
+/**
+ * Box rotation region for the bottom-left corner, normalized to 1-unit tolerance
+ * and positioned at the origin.
+ *
+ * @ignore
+ * @internal
+ */
+const boxRotationRegionBottomLeft = [
+    0, 0,
+    1, 0,
+    1, 1,
+    -1, 1,
+    -1, -1,
+    0, -1,
+];
+
+/**
+ * Box rotation region for the bottom-right corner, normalized to 1-unit tolerance
+ * and positioned at the origin.
+ *
+ * @ignore
+ * @internal
+ */
+const boxRotationRegionBottomRight = [
+    0, 0,
+    0, -1,
+    1, -1,
+    1, 1,
+    -1, 1,
+    -1, 0,
+];
+
+/**
+ * Array used to store transformed box rotation region geometries.
+ *
+ * @ignore
+ * @internal
+ */
+const boxRotationTemp = new Array(12);
+
+/**
+ * Box rotation region geometries in one array.
+ *
+ * @ignore
+ * @internal
+ */
+const boxRotationRegions = [
+    boxRotationRegionTopLeft,
+    boxRotationRegionTopRight,
+    boxRotationRegionBottomLeft,
+    boxRotationRegionBottomRight,
+];
 
 /**
  * The transformer's wireframe is drawn using this class.
@@ -184,6 +271,7 @@ export class TransformerWireframe extends Graphics
 
             boxScalingHandle.clear()
                 .beginFill(0xffffff, 1e-4)
+                // @ts-expect-error 5.4.0-RC will fix this.
                 .drawPolygon(innerStart, outerStart, outerEnd, innerEnd)
                 .endFill();
         }
@@ -191,7 +279,7 @@ export class TransformerWireframe extends Graphics
 
     /**
      * Draws square-shaped tolerance regions for capturing pointer events within {@link Transformer#boxRotationTolernace}
-     * of the four corners of the group bounding box.
+     * of the four corners of the group bounding box. The square are cut in the interior region of the group bounds.
      */
     public drawBoxRotationTolerance(): void
     {
@@ -205,37 +293,40 @@ export class TransformerWireframe extends Graphics
         // 2x because half of the square's width & height is inside
         const t = this.transformer.boxRotationTolerance * 2;
 
-        // Top Left
-        this.drawPolygon([
-            tl.x - t, tl.y - t,
-            tl.x + t, tl.y - t,
-            tl.x + t, tl.y + t,
-            tl.x - t, tl.y + t,
-        ]);
+        // Expand box rotation regions to the given tolerance, and then rotate to align with
+        // the group bounds. The position is added manually.
+        const matrix = tempMatrix
+            .identity()
+            .scale(t, t)
+            .rotate(this.transformer.getGroupBounds().rotation);
 
-        // Top Right
-        this.drawPolygon([
-            tr.x - t, tr.y - t,
-            tr.x + t, tr.y - t,
-            tr.x + t, tr.y + t,
-            tr.x - t, tr.y + t,
-        ]);
+        for (let i = 0; i < 4; i++)
+        {
+            const region = boxRotationRegions[i];
+            let position: Point;
 
-        // Bottom Left
-        this.drawPolygon([
-            bl.x - t, bl.y - t,
-            bl.x + t, bl.y - t,
-            bl.x + t, bl.y + t,
-            bl.x - t, bl.y + t,
-        ]);
+            switch (i)
+            {
+                case 0: position = tl; break;
+                case 1: position = tr; break;
+                case 2: position = bl; break;
+                case 3: position = br; break;
+            }
 
-        // Bottom Right
-        this.drawPolygon([
-            br.x - t, br.y - t,
-            br.x + t, br.y - t,
-            br.x + t, br.y + t,
-            br.x - t, br.y + t,
-        ]);
+            for (let j = 0; j < region.length; j += 2)
+            {
+                const x = region[j];
+                const y = region[j + 1];
+
+                tempPoint.set(x, y);
+                matrix.apply(tempPoint, tempPoint);
+
+                boxRotationTemp[j] = tempPoint.x + position.x;
+                boxRotationTemp[j + 1] = tempPoint.y + position.y;
+            }
+
+            this.drawPolygon(boxRotationTemp.slice());
+        }
     }
 
     /**
