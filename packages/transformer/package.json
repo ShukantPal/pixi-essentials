@@ -1,6 +1,6 @@
 {
   "name": "@pixi-essentials/transformer",
-  "version": "2.2.3",
+  "version": "2.2.4",
   "description": "Interactive display-object to edit the transformation matrices of display-objects",
   "main": "lib/transformer.js",
   "module": "lib/transformer.es.js",

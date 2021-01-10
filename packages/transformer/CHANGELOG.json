@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/transformer",
   "entries": [
     {
+      "version": "2.2.4",
+      "tag": "@pixi-essentials/transformer_v2.2.4",
+      "date": "Sun, 10 Jan 2021 19:40:19 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix box rotation interference with translation (dragging) when the group was sufficiently small. Also, fixed handle positioning problems."
+          }
+        ]
+      }
+    },
+    {
       "version": "2.2.3",
       "tag": "@pixi-essentials/transformer_v2.2.3",
       "date": "Thu, 31 Dec 2020 22:56:47 GMT",

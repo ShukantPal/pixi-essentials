@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/transformer
 
-This log was last generated on Thu, 31 Dec 2020 22:56:47 GMT and should not be manually modified.
+This log was last generated on Sun, 10 Jan 2021 19:40:19 GMT and should not be manually modified.
+
+## 2.2.4
+Sun, 10 Jan 2021 19:40:19 GMT
+
+### Patches
+
+- Fix box rotation interference with translation (dragging) when the group was sufficiently small. Also, fixed handle positioning problems.
 
 ## 2.2.3
 Thu, 31 Dec 2020 22:56:47 GMT
