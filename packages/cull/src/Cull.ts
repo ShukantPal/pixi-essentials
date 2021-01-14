@@ -203,7 +203,7 @@ export class Cull
         const fullyVisible = bounds.left >= rect.left
             && bounds.top >= rect.top
             && bounds.right <= rect.right
-            && bounds.bottom >= rect.bottom;
+            && bounds.bottom <= rect.bottom;
 
         // Only cull children if this display-object is *not* fully-visible. It is expected that the bounds
         // of children lie inside of its own. Hence, further culling is only required if the display-object
