@@ -3,6 +3,8 @@
   "version": "1.0.3",
   "description": "Dynamic texture allocator based on @pixi-essentials/area-allocator",
   "main": "lib/texture-allocator.js",
+  "module": "lib/texture-allocator.es.js",
+  "bundle": "dist/texture-allocator.js",
   "types": "./index.d.ts",
   "scripts": {
     "build": "rollup -c node_modules/@pixi-build-tools/rollup-configurator/index.js --silent",
@@ -39,7 +41,7 @@
   },
   "devDependencies": {
     "rollup": "~2.33.1",
-    "@pixi-build-tools/rollup-configurator": "~1.0.7",
+    "@pixi-build-tools/rollup-configurator": "^1.0.8",
     "tslib": "~2.0.3",
     "typescript": "~4.0.5",
     "eslint": "~7.13.0",
