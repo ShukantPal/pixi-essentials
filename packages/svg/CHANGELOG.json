@@ -2,6 +2,26 @@
   "name": "@pixi-essentials/svg",
   "entries": [
     {
+      "version": "1.0.1",
+      "tag": "@pixi-essentials/svg_v1.0.1",
+      "date": "Sun, 31 Jan 2021 03:42:33 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Upgrade build to fix wrong namespace in dependencies (gradients and texture-allocator)"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@pixi-essentials/gradients\" from `^0.0.2` to `^0.0.3`"
+          },
+          {
+            "comment": "Updating dependency \"@pixi-essentials/texture-allocator\" from `~1.0.3` to `~1.0.4`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.2.5",
       "tag": "@pixi-essentials/svg_v0.2.5",
       "date": "Sat, 02 Jan 2021 00:21:47 GMT",

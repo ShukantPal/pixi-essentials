@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/texture-allocator",
   "entries": [
     {
+      "version": "1.0.4",
+      "tag": "@pixi-essentials/texture-allocator_v1.0.4",
+      "date": "Sun, 31 Jan 2021 03:42:33 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Upgrade build to output correct IIFE namespace"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.0.3",
       "tag": "@pixi-essentials/texture-allocator_v1.0.3",
       "date": "Sat, 26 Dec 2020 22:47:29 GMT",

@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/gradients
 
-This log was last generated on Sat, 26 Dec 2020 22:47:29 GMT and should not be manually modified.
+This log was last generated on Sun, 31 Jan 2021 03:42:33 GMT and should not be manually modified.
+
+## 0.0.3
+Sun, 31 Jan 2021 03:42:33 GMT
+
+### Patches
+
+- Upgrade build to output correct IIFE namespace
 
 ## 0.0.2
 Sat, 26 Dec 2020 22:47:29 GMT

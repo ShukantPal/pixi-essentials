@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/svg
 
-This log was last generated on Sat, 02 Jan 2021 00:21:47 GMT and should not be manually modified.
+This log was last generated on Sun, 31 Jan 2021 03:42:33 GMT and should not be manually modified.
+
+## 1.0.1
+Sun, 31 Jan 2021 03:42:33 GMT
+
+### Patches
+
+- Upgrade build to fix wrong namespace in dependencies (gradients and texture-allocator)
 
 ## 0.2.5
 Sat, 02 Jan 2021 00:21:47 GMT

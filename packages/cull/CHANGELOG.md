@@ -1,6 +1,11 @@
 # Change Log - @pixi-essentials/cull
 
-This log was last generated on Sat, 26 Dec 2020 22:47:29 GMT and should not be manually modified.
+This log was last generated on Sun, 31 Jan 2021 03:42:33 GMT and should not be manually modified.
+
+## 1.0.12
+Sun, 31 Jan 2021 03:42:33 GMT
+
+*Version update only*
 
 ## 1.0.10
 Sat, 26 Dec 2020 22:47:29 GMT

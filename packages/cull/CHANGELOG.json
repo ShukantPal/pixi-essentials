@@ -2,6 +2,12 @@
   "name": "@pixi-essentials/cull",
   "entries": [
     {
+      "version": "1.0.12",
+      "tag": "@pixi-essentials/cull_v1.0.12",
+      "date": "Sun, 31 Jan 2021 03:42:33 GMT",
+      "comments": {}
+    },
+    {
       "version": "1.0.10",
       "tag": "@pixi-essentials/cull_v1.0.10",
       "date": "Sat, 26 Dec 2020 22:47:29 GMT",

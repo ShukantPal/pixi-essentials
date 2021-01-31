@@ -1,6 +1,6 @@
 {
   "name": "@pixi-essentials/texture-allocator",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Dynamic texture allocator based on @pixi-essentials/area-allocator",
   "main": "lib/texture-allocator.js",
   "module": "lib/texture-allocator.es.js",

@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/gradients",
   "entries": [
     {
+      "version": "0.0.3",
+      "tag": "@pixi-essentials/gradients_v0.0.3",
+      "date": "Sun, 31 Jan 2021 03:42:33 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Upgrade build to output correct IIFE namespace"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.2",
       "tag": "@pixi-essentials/gradients_v0.0.2",
       "date": "Sat, 26 Dec 2020 22:47:29 GMT",
