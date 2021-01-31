@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/svg",
   "entries": [
     {
+      "version": "1.0.2",
+      "tag": "@pixi-essentials/svg_v1.0.2",
+      "date": "Sun, 31 Jan 2021 04:07:26 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix dependency namespaces in browser build"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.0.1",
       "tag": "@pixi-essentials/svg_v1.0.1",
       "date": "Sun, 31 Jan 2021 03:42:33 GMT",

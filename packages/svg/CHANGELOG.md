@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/svg
 
-This log was last generated on Sun, 31 Jan 2021 03:42:33 GMT and should not be manually modified.
+This log was last generated on Sun, 31 Jan 2021 04:07:26 GMT and should not be manually modified.
+
+## 1.0.2
+Sun, 31 Jan 2021 04:07:26 GMT
+
+### Patches
+
+- Fix dependency namespaces in browser build
 
 ## 1.0.1
 Sun, 31 Jan 2021 03:42:33 GMT
