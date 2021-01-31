@@ -38,7 +38,7 @@
     "@pixi/math": "~5.4.0-rc.1"
   },
   "devDependencies": {
-    "@pixi-build-tools/rollup-configurator": "^1.0.9",
+    "@pixi-build-tools/rollup-configurator": "^1.0.10",
     "@pixi-essentials/eslint-config": "~1.0.0",
     "@pixi/display": "~5.4.0-rc.1",
     "@pixi/math": "~5.4.0-rc.1",
