@@ -496,7 +496,7 @@ export class SVGScene extends DisplayObject
                 matrix: new Matrix(),
                 miterLimit: strokeMiterLimit === null ? 150 : strokeMiterLimit,
                 texture: strokeTexture || Texture.WHITE,
-                width: strokeWidth === null ? (stroke ? 1 : 0) : strokeWidth,
+                width: strokeWidth === null ? (typeof stroke === 'number' ? 1 : 0) : strokeWidth,
                 /* eslint-enable no-nested-ternary */
             });
         }
