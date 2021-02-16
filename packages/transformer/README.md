@@ -68,3 +68,7 @@ app.stage.addChild(new Transformer({
 <p align="center">
 <img src="https://i.imgur.com/b82qYjF.png" width="790px" />
 </p>
+
+## External Resources
+
+* (Initial release) [Vector rendering of SVG content with PixiJS](https://medium.com/javascript-in-plain-english/vector-rendering-of-svg-content-with-pixijs-6f26c91f09ee?source=friends_link&sk=1faf7f354ab39bd79d476bf33e9d44d1)
