@@ -379,7 +379,8 @@ export class SVGScene extends DisplayObject
         {
             let contents = url.slice(4, -1);
 
-            if (contents.startsWith('\'') && contents.endsWith('\'')) {
+            if (contents.startsWith('\'') && contents.endsWith('\''))
+            {
                 contents = contents.slice(1, -1);
             }
 
@@ -450,9 +451,7 @@ export class SVGScene extends DisplayObject
             }
             else
             {
-                const ref = fill
-                    .replace('url(', '')
-                    .slice(1, -2);// Remove single quotes + the ending ')' parenthesis
+                const ref = this.parseReference(fill);
                 const paintElement = this.content.querySelector(ref);
 
                 if (paintElement && paintElement instanceof SVGGradientElement)
