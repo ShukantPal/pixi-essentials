@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/svg
 
-This log was last generated on Tue, 16 Feb 2021 00:41:50 GMT and should not be manually modified.
+This log was last generated on Tue, 16 Feb 2021 00:55:07 GMT and should not be manually modified.
+
+## 1.0.5
+Tue, 16 Feb 2021 00:55:07 GMT
+
+### Patches
+
+- Fix build regression for the UMD variant.
 
 ## 1.0.4
 Tue, 16 Feb 2021 00:41:50 GMT

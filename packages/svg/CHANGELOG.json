@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/svg",
   "entries": [
     {
+      "version": "1.0.5",
+      "tag": "@pixi-essentials/svg_v1.0.5",
+      "date": "Tue, 16 Feb 2021 00:55:07 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix build regression for the UMD variant."
+          }
+        ]
+      }
+    },
+    {
       "version": "1.0.4",
       "tag": "@pixi-essentials/svg_v1.0.4",
       "date": "Tue, 16 Feb 2021 00:41:50 GMT",
