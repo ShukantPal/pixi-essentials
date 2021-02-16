@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/svg",
   "entries": [
     {
+      "version": "1.0.4",
+      "tag": "@pixi-essentials/svg_v1.0.4",
+      "date": "Tue, 16 Feb 2021 00:41:50 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix no-stroke when color is #000 but stroke-width not explicitly specified. Fix error with url(#id) fill gradient references (without the single quotes, i.e. url('#id')"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.0.3",
       "tag": "@pixi-essentials/svg_v1.0.3",
       "date": "Sun, 31 Jan 2021 04:22:28 GMT",

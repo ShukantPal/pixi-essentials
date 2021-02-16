@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/svg
 
-This log was last generated on Sun, 31 Jan 2021 04:22:28 GMT and should not be manually modified.
+This log was last generated on Tue, 16 Feb 2021 00:41:50 GMT and should not be manually modified.
+
+## 1.0.4
+Tue, 16 Feb 2021 00:41:50 GMT
+
+### Patches
+
+- Fix no-stroke when color is #000 but stroke-width not explicitly specified. Fix error with url(#id) fill gradient references (without the single quotes, i.e. url('#id')
 
 ## 1.0.3
 Sun, 31 Jan 2021 04:22:28 GMT
