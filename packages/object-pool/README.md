@@ -11,7 +11,7 @@ following features:
 * **auto-GC**: The GC will reduce your pool to the reserve size after allocation demand goes down
 per-frame.
 
-This package is can also be used as a _single-source_ of object pools. If two different libraries need
+This package can also be used as a _single-source_ of object pools. If two different libraries need
 a pool for say, `PIXI.Rectangle`, then the same object pool will be returned.
 
 ### Analysis
