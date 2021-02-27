@@ -32,7 +32,7 @@
   "files": [
     "lib",
     "dist",
-    "index.d.ts"
+    "*.d.ts"
   ],
   "devDependencies": {
     "@pixi/display": "~5.4.0-rc.1",

@@ -1,4 +1,4 @@
-const floss = require('floss');
+const { floss } = require('floss');
 
 function done()
 {
@@ -6,7 +6,13 @@ function done()
     console.log('Done?');
 }
 
-floss({
-    path: 'node_modules/@pixi-build-tools/floss-rush-monorepo',
-    quiet: false,
-}, done);
+try {
+    floss({
+        path: 'node_modules/@pixi-build-tools/floss-rush-monorepo',
+        reporter: 'tap',
+        args: []
+    }, done);
+} catch (e) {
+    console.error(e);
+    throw e;
+}
