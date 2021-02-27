@@ -37,14 +37,14 @@ dependencies:
   '@types/react': 16.9.46
   '@typescript-eslint/eslint-plugin': 3.9.1_@typescript-eslint+parser@3.9.1
   '@typescript-eslint/parser': 3.9.1
-  chai: 4.2.0
   d-path-parser: 1.0.0
-  electron: 10.1.3
-  floss: 3.0.0_electron@10.1.3
+  electron: 11.3.0
+  floss: 4.0.0_electron@11.3.0
   gl-mat3: 2.0.0
   libtess: 1.2.2
   pixi-spatial-hash: 1.0.0
   react: 16.13.1
+  sinon: 9.2.4
   tinycolor2: 1.4.1
 lockfileVersion: 5.1
 packages:
@@ -325,6 +325,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-IybgxzLlEPm7ihp70cLNKc3IPyqkFuW+idk9Zw2St+OayJTw5ctCnLAg9cducwIVHjPYTvN46BYDa+n0KRWZYw==
+  /@pixi/constants/5.3.8:
+    dev: false
+    resolution:
+      integrity: sha512-vTkgBgiox2pLj2ZK/X37O6rFjsLic6CYa+rSCCMo8lCwipG/dgizYoAVIsmZy30tFgg1xYzI6qOw3MSVXupp8Q==
   /@pixi/constants/5.4.0-rc.3:
     dev: false
     resolution:
@@ -351,6 +355,17 @@ packages:
     dev: false
     resolution:
       integrity: sha512-taw50LnzV+TQVMx5HQA2ZJgF9wuhZ6DeoXHW2KkevYB0ekKYnEO2VMMiRDMcmchtyvHclJebzjeHZLGqDtKDgw==
+  /@pixi/core/5.3.8:
+    dependencies:
+      '@pixi/constants': 5.3.8
+      '@pixi/math': 5.3.8
+      '@pixi/runner': 5.3.8
+      '@pixi/settings': 5.3.8
+      '@pixi/ticker': 5.3.8
+      '@pixi/utils': 5.3.8
+    dev: false
+    resolution:
+      integrity: sha512-mbl7//UbNaIZJbS8R8g5o6cHAMW7xaJWW/dNazSJ9057Fpq5g3e3E2rreNTEILfC29cxm2sXDmgK5a9agoqJaA==
   /@pixi/core/5.4.0-rc.3:
     dependencies:
       '@pixi/constants': 5.4.0-rc.3
@@ -378,6 +393,14 @@ packages:
     dev: false
     resolution:
       integrity: sha512-dPm7Vk2BH9byu6RHBYsI9MtjUU8x1HNm/PIi6lIlxANhTjWnhxwfvmrGE7ZcRLThTenNdDVlZ2ke2XAXP98UgA==
+  /@pixi/display/5.3.8:
+    dependencies:
+      '@pixi/math': 5.3.8
+      '@pixi/settings': 5.3.8
+      '@pixi/utils': 5.3.8
+    dev: false
+    resolution:
+      integrity: sha512-ch7g63ox3iow/NEGbrArLfUMJVLVF+FpdFAp72uEweIzlcyzOQV6AcQTHtiRy4+tM6LdlcLSJXJISqGKt2R0Dg==
   /@pixi/display/5.4.0-rc.3:
     dependencies:
       '@pixi/math': 5.4.0-rc.3
@@ -400,6 +423,7 @@ packages:
     dependencies:
       '@typescript-eslint/eslint-plugin': 2.34.0_c6bf31947aecc94fb99a7079e7efd7d4
       '@typescript-eslint/parser': 2.34.0_eslint@7.7.0
+      eslint: 7.7.0
     dev: false
     peerDependencies:
       eslint: '*'
@@ -537,6 +561,17 @@ packages:
     dev: false
     resolution:
       integrity: sha512-1bn9Jptg3JXgVOw0SrEMdmjSwkTBYDm6fPnPnh4goF3yDozh0xEqmXobVtCgy2fulMfHRzIfbgtRxrBf2mkCAg==
+  /@pixi/graphics/5.3.8:
+    dependencies:
+      '@pixi/constants': 5.3.8
+      '@pixi/core': 5.3.8
+      '@pixi/display': 5.3.8
+      '@pixi/math': 5.3.8
+      '@pixi/sprite': 5.3.8
+      '@pixi/utils': 5.3.8
+    dev: false
+    resolution:
+      integrity: sha512-auqwS6ZnDlNoerddLCoMpEzgq0o09WHH7XxwfTK75hJwBaFX1RO/nasfvCx2wAtWZxAYCaABfR8WnWZfrsBSqA==
   /@pixi/graphics/5.4.0-rc.3:
     dependencies:
       '@pixi/constants': 5.4.0-rc.3
@@ -592,6 +627,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-k5C3kQpxlGm2AdBJEUjjW2l2YlSvTKf+54vNOjD4UcEfRoDevC5p4Zg49q3UAu855lrs5qw49AbkrFKsQvPIRA==
+  /@pixi/math/5.3.8:
+    dev: false
+    resolution:
+      integrity: sha512-MZekzC9W391KU2NyzbRHrgYfjPKguzU5cRLbaEw9dgDabLh3/Yzob1KVg8dngIITPbi5yBmoX7zh7ZHEA1NRPQ==
   /@pixi/math/5.4.0-rc.3:
     dev: false
     resolution:
@@ -750,6 +789,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-7eLZxxT+PwxuwzcRL1egrnEdLHwD41yFb24pMSo6XM86ppP1tdBjrv5+pLDnUuDEfNjZQxx07FAlZY+sMKANmw==
+  /@pixi/runner/5.3.8:
+    dev: false
+    resolution:
+      integrity: sha512-6Y9v9OHd5FFv6s0M4AGHnG3qvLiTBM5T5RnlEqMNMsqH6CWSDq0mNJA5HQD65q5ViK8HM6MYPm2nwwkYq5AICQ==
   /@pixi/runner/5.4.0-rc.3:
     dev: false
     resolution:
@@ -772,6 +815,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-1MYJokqpPUtvYEX0BVi0Pq2Xi6KGmWDV5hlQnTXY9NGv6tmqrPYvIb/uHFaDyVUWmrqsFL3xZ4W5zMo+c/dwVA==
+  /@pixi/settings/5.3.8:
+    dependencies:
+      ismobilejs: 1.1.1
+    dev: false
+    resolution:
+      integrity: sha512-/NSd9v6+IbG3GjzIoNwy7rgPg6kwwWy54pcaiM3Wv3zjkwhkVySK4m3h892Wa2z5lFvrHEH9zewGJwEpUH/FMA==
   /@pixi/settings/5.4.0-rc.3:
     dependencies:
       ismobilejs: 1.1.1
@@ -838,6 +887,17 @@ packages:
     dev: false
     resolution:
       integrity: sha512-qo7DG0oWS1uIBqfxw2jZPn34RCR6gQ+IjZRBpFxZPKPB1cL359scZmDBqBbQ4bd4rJ/6QXQfzUdGhXfQJtc9oQ==
+  /@pixi/sprite/5.3.8:
+    dependencies:
+      '@pixi/constants': 5.3.8
+      '@pixi/core': 5.3.8
+      '@pixi/display': 5.3.8
+      '@pixi/math': 5.3.8
+      '@pixi/settings': 5.3.8
+      '@pixi/utils': 5.3.8
+    dev: false
+    resolution:
+      integrity: sha512-r+WeX5cti3VKu6U+hZeSiY4UC8912FjNU7M5bA/gev9CfUKv3fNwKYshPfzOkTPua8dFwI1U6tplYu5rSPMBmw==
   /@pixi/sprite/5.4.0-rc.3:
     dependencies:
       '@pixi/constants': 5.4.0-rc.3
@@ -941,6 +1001,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-p5F/dwJGwfZWUg5cCPqOnEx5iYGW+huQlZZtrTKKd1KoVehFsrzHeRBOEp4d584jsOmBf7fjJaUTyzsFn0YtOQ==
+  /@pixi/ticker/5.3.8:
+    dependencies:
+      '@pixi/settings': 5.3.8
+    dev: false
+    resolution:
+      integrity: sha512-WoVi8btR0X2/fXJgt/oRy2gm32ECnibqUkxl0MOcLuxg7cHDZKFA5PwNK/eIx5hZZ2xM/ztoPtEohWV6LqLryw==
   /@pixi/ticker/5.4.0-rc.3:
     dependencies:
       '@pixi/settings': 5.4.0-rc.3
@@ -967,6 +1033,16 @@ packages:
     dev: false
     resolution:
       integrity: sha512-GDP2h1Mph9Uei4zmJjzDK6GZ5S9O2A09VySVfWyKgWwP3SQ/Ss0bGYm4sE6+u1NMSz1WCrLgu66H82XuXs2Cbg==
+  /@pixi/utils/5.3.8:
+    dependencies:
+      '@pixi/constants': 5.3.8
+      '@pixi/settings': 5.3.8
+      earcut: 2.2.2
+      eventemitter3: 3.1.2
+      url: 0.11.0
+    dev: false
+    resolution:
+      integrity: sha512-LljIFFOFcXLyLzXqIYwcXUqz6NsAUbwxb7Som9Gm3i1usGIqPRX4R08Iaf4L6OKA7417gSrRmbYdT0Hje/0ikA==
   /@pixi/utils/5.4.0-rc.3:
     dependencies:
       '@pixi/constants': 5.4.0-rc.3
@@ -1368,6 +1444,14 @@ packages:
     dev: false
     resolution:
       integrity: sha512-42nyaQOVunX5Pm6GRJobmzbS7iLI+fhERITnETXzzwDZh+TtDr/Au3yAvXVjFmZ4wEUaE4Y3NFZfKv0bV0cbtg==
+  /@sinonjs/samsam/5.3.1:
+    dependencies:
+      '@sinonjs/commons': 1.8.1
+      lodash.get: 4.4.2
+      type-detect: 4.0.8
+    dev: false
+    resolution:
+      integrity: sha512-1Hc0b1TtyfBu8ixF/tpfSHTVWKwCBLY4QJbkgnE7HcwyvT2xArDxb4K7dMgqRm3szI+LJbzmW/s4xxEhv6hwDg==
   /@sinonjs/text-encoding/0.7.1:
     dev: false
     resolution:
@@ -1574,6 +1658,7 @@ packages:
       node: ^8.10.0 || ^10.13.0 || >=11.10.1
     peerDependencies:
       eslint: '*'
+      typescript: '*'
     resolution:
       integrity: sha512-eS6FTkq+wuMJ+sgtuNTtcqavWXqsflWcfBnlYhg/nS4aZ1leewkXGbvBhaapn1q6qf4M71bsR1tez5JTRMuqwA==
   /@typescript-eslint/experimental-utils/2.34.0_eslint@7.7.0:
@@ -1588,6 +1673,7 @@ packages:
       node: ^8.10.0 || ^10.13.0 || >=11.10.1
     peerDependencies:
       eslint: '*'
+      typescript: '*'
     resolution:
       integrity: sha512-eS6FTkq+wuMJ+sgtuNTtcqavWXqsflWcfBnlYhg/nS4aZ1leewkXGbvBhaapn1q6qf4M71bsR1tez5JTRMuqwA==
   /@typescript-eslint/experimental-utils/2.34.0_eslint@7.7.0+typescript@4.0.2:
@@ -1618,6 +1704,7 @@ packages:
       node: ^10.12.0 || >=12.0.0
     peerDependencies:
       eslint: '*'
+      typescript: '*'
     resolution:
       integrity: sha512-lkiZ8iBBaYoyEKhCkkw4SAeatXyBq9Ece5bZXdLe1LWBUwTszGbmbiqmQbwWA8cSYDnjWXp9eDbXpf9Sn0hLAg==
   /@typescript-eslint/experimental-utils/3.9.1_eslint@7.7.0:
@@ -1633,6 +1720,7 @@ packages:
       node: ^10.12.0 || >=12.0.0
     peerDependencies:
       eslint: '*'
+      typescript: '*'
     resolution:
       integrity: sha512-lkiZ8iBBaYoyEKhCkkw4SAeatXyBq9Ece5bZXdLe1LWBUwTszGbmbiqmQbwWA8cSYDnjWXp9eDbXpf9Sn0hLAg==
   /@typescript-eslint/experimental-utils/3.9.1_eslint@7.7.0+typescript@4.0.2:
@@ -2069,6 +2157,19 @@ packages:
       node: '>=4'
     resolution:
       integrity: sha512-XQU3bhBukrOsQCuwZndwGcCVQHyZi53fQ6Ys1Fym7E4olpIqqZZhhoFJoaKVvV17lWQoXYwgWN2nF5crA8J2jw==
+  /chai/4.3.0:
+    dependencies:
+      assertion-error: 1.1.0
+      check-error: 1.0.2
+      deep-eql: 3.0.1
+      get-func-name: 2.0.0
+      pathval: 1.1.0
+      type-detect: 4.0.8
+    dev: false
+    engines:
+      node: '>=8'
+    resolution:
+      integrity: sha512-/BFd2J30EcOwmdOgXvVsmM48l0Br0nmZPlO0uOW4XKh6kpsUumRXBgPV+IlaqFaqr9cYbeoZAM1Npx0i4A+aiA==
   /chalk/2.4.2:
     dependencies:
       ansi-styles: 3.2.1
@@ -2178,6 +2279,12 @@ packages:
       node: '>= 6'
     resolution:
       integrity: sha512-NOKm8xhkzAjzFx8B2v5OAHT+u5pRQc2UCa2Vq9jYL/31o2wi9mxBA7LIFs3sV5VSC49z6pEhfbMULvShKj26WA==
+  /commander/7.1.0:
+    dev: false
+    engines:
+      node: '>= 10'
+    resolution:
+      integrity: sha512-pRxBna3MJe6HKnBGsDyMv8ETbptw3axEdYHoqNh7gu5oDcew8fs0xnivZGm06Ogk8zGAJ9VX+OPEr2GXEQK4dg==
   /commondir/1.0.1:
     dev: false
     resolution:
@@ -2355,7 +2462,7 @@ packages:
     dev: false
     resolution:
       integrity: sha512-eZoZPPJcUHnfRZ0PjLvx2qBordSiO8ofC3vt+qACLM95u+4DovnbYNpQtJh0DNsWj8RnxrQytD4WA8gj5cRIaQ==
-  /electron/10.1.3:
+  /electron/11.3.0:
     dependencies:
       '@electron/get': 1.12.2
       '@types/node': 12.12.54
@@ -2366,7 +2473,7 @@ packages:
     hasBin: true
     requiresBuild: true
     resolution:
-      integrity: sha512-CR8LrlG47MdAp317SQ3vGYa2o2cIMdMSMPYH46OVitFLk35dwE9fn3VqvhUIXhCHYcNWIAPzMhkVHpkoFdKWuw==
+      integrity: sha512-MhdS0gok3wZBTscLBbYrOhLaQybCSAfkupazbK1dMP5c+84eVMxJE/QGohiWQkzs0tVFIJsAHyN19YKPbelNrQ==
   /emoji-regex/7.0.3:
     dev: false
     resolution:
@@ -2818,22 +2925,23 @@ packages:
     dev: false
     resolution:
       integrity: sha512-r5wGx7YeOwNWNlCA0wQ86zKyDLMQr+/RB8xy74M4hTphfmjlijTSSXGuH8rnvKZnfT9i+75zmd8jcKdMR4O6jA==
-  /floss/3.0.0_electron@10.1.3:
+  /floss/4.0.0_electron@11.3.0:
     dependencies:
-      chalk: 2.4.2
-      commander: 2.20.3
-      electron: 10.1.3
+      chalk: 4.1.0
+      commander: 7.1.0
+      electron: 11.3.0
+      glob: 7.1.6
       mocha: 6.2.3
-      resolve: 1.17.0
+      resolve: 1.20.0
     dev: false
     engines:
-      node: '>=6.0'
+      node: '>=10.0'
     hasBin: true
     peerDependencies:
-      electron: '>=1'
+      electron: '>=10'
       nyc: '>=13'
     resolution:
-      integrity: sha512-nBqFZhHcN6SX3jkH8+ftG4S/a0XDOEYh6DrCyOkdhcPaq8yi2AQt420jIcOhh350I61zHHfgYXD3rkfoYPS4fQ==
+      integrity: sha512-oG5CX5WC4QGDwepY2DjnVk3tLSAZRYthLTo8ClqhZ+Nn2Epxt3PYqpgR8g9GbpYyniTSjQ0Cd2fsL09c2yTbnQ==
   /fs-extra/7.0.1:
     dependencies:
       graceful-fs: 4.2.4
@@ -3157,6 +3265,7 @@ packages:
     resolution:
       integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
   /ini/1.3.5:
+    deprecated: Please update to ini >=1.3.6 to avoid a prototype pollution issue
     dev: false
     optional: true
     resolution:
@@ -3197,6 +3306,12 @@ packages:
       node: '>= 0.4'
     resolution:
       integrity: sha512-pyVD9AaGLxtg6srb2Ng6ynWJqkHU9bEM087AKck0w8QwDarTfNcpIYoU8x8Hv2Icm8u6kFJM18Dag8lyqGkviw==
+  /is-core-module/2.2.0:
+    dependencies:
+      has: 1.0.3
+    dev: false
+    resolution:
+      integrity: sha512-XRAfAdyyY5F5cOXn7hYQDqh2Xmii+DEfIcQGxK/uNwMHhIkPWO0g8msXcbzLe+MpGoR951MlqM/2iIlU4vKDdQ==
   /is-date-object/1.0.2:
     dev: false
     engines:
@@ -4210,6 +4325,13 @@ packages:
     dev: false
     resolution:
       integrity: sha512-ic+7JYiV8Vi2yzQGFWOkiZD5Z9z7O2Zhm9XMaTxdJExKasieFCr+yXZ/WmXsckHiKl12ar0y6XiXDx3m4RHn1w==
+  /resolve/1.20.0:
+    dependencies:
+      is-core-module: 2.2.0
+      path-parse: 1.0.6
+    dev: false
+    resolution:
+      integrity: sha512-wENBPt4ySzg4ybFQW2TT1zMQucPK95HSh/nq2CFTZVOGut2+pQvSsgtda4d26YrYcr067wjbmzOG8byDPBX63A==
   /resolve/1.8.1:
     dependencies:
       path-parse: 1.0.6
@@ -4637,6 +4759,17 @@ packages:
     dev: false
     resolution:
       integrity: sha512-IKo9MIM111+smz9JGwLmw5U1075n1YXeAq8YeSFlndCLhAL5KGn6bLgu7b/4AYHTV/LcEMcRm2wU2YiL55/6Pg==
+  /sinon/9.2.4:
+    dependencies:
+      '@sinonjs/commons': 1.8.1
+      '@sinonjs/fake-timers': 6.0.1
+      '@sinonjs/samsam': 5.3.1
+      diff: 4.0.2
+      nise: 4.0.4
+      supports-color: 7.1.0
+    dev: false
+    resolution:
+      integrity: sha512-zljcULZQsJxVra28qIAL6ow1Z9tpattkCTEJR4RBP3TGc00FcttsP5pK284Nas5WjMZU5Yzy3kAIp3B3KRf5Yg==
   /slice-ansi/2.1.0:
     dependencies:
       ansi-styles: 3.2.1
@@ -5347,9 +5480,11 @@ packages:
       '@pixi-build-tools/rollup-configurator': 1.0.10_rollup@2.27.0
       '@pixi/display': 5.4.0-rc.3
       '@pixi/eslint-config': 1.0.1_eslint@7.7.0+typescript@4.0.2
+      '@pixi/graphics': 5.3.8
       '@pixi/math': 5.4.0-rc.3
       '@typescript-eslint/eslint-plugin': 3.9.1_bfaa9f11a80e0b0e07bd4175641995de
       '@typescript-eslint/parser': 3.9.1_eslint@7.7.0+typescript@4.0.2
+      chai: 4.3.0
       eslint: 7.7.0
       pixi.js: 5.3.0
       rollup: 2.27.0
@@ -5358,7 +5493,7 @@ packages:
     dev: false
     name: '@rush-temp/cull'
     resolution:
-      integrity: sha512-EDXQEeBkPo8Fklvm3QT0k+x37F46FhGYv6MBEGi76ClIEcbd7sNiZcQOagO8mKdY4KQP7ZBdPVlYnZbSPak3+w==
+      integrity: sha512-TiQKFI34pd1uS9yYUj6CmXjUo1B3r76OqQmiXbnEv3htW/2x+pOXtPBvPzIHR9ESHFpPke+fnK5EN9CKS3qrig==
       tarball: 'file:projects/cull.tgz'
     version: 0.0.0
   'file:projects/data-half-edge-mesh.tgz':
@@ -5461,6 +5596,7 @@ packages:
       '@pixi/math': 5.3.0
       '@typescript-eslint/eslint-plugin': 3.9.1_bfaa9f11a80e0b0e07bd4175641995de
       '@typescript-eslint/parser': 3.9.1_eslint@7.7.0+typescript@4.0.2
+      chai: 4.3.0
       eslint: 7.7.0
       rollup: 2.27.0
       tslib: 2.0.1
@@ -5468,7 +5604,7 @@ packages:
     dev: false
     name: '@rush-temp/mixin-smart-mask'
     resolution:
-      integrity: sha512-4k639MAnQcY29UALEjtWDEraTLhmdJR+lxD0O+bb0G0TENDqHAszRa5iC9yTkMd6ihhK7hQSCR8cXjHv+nBNbQ==
+      integrity: sha512-v09OtXNgyBB8dq9QuYvhZCkCbTSqbRolDvbMeqd0I6q9c3BOdMTx6RC1tpRi1veaBvbmyrwNIGHuDEVVNy7KVQ==
       tarball: 'file:projects/mixin-smart-mask.tgz'
     version: 0.0.0
   'file:projects/object-pool.tgz':
@@ -5482,12 +5618,13 @@ packages:
       '@typescript-eslint/parser': 3.9.1_eslint@7.7.0+typescript@4.0.2
       eslint: 7.7.0
       rollup: 2.27.0
+      sinon: 9.2.4
       tslib: 2.0.1
       typescript: 4.0.2
     dev: false
     name: '@rush-temp/object-pool'
     resolution:
-      integrity: sha512-s+9AbS2zd4qj4XFySWHvsfTCvk1lRcQLNLApd01jxDVHde5YM1bsmUMRx1fZ5ZSQxVPB40o0mDi+giJUJrmCqA==
+      integrity: sha512-y4MLiVD31XfIjgrfdJDrGSuCQoHLRQywheF2O1xUryFEYWppaRpxFaioWhjNlo9sW5QkcZfe8sTaw/jzCvok4w==
       tarball: 'file:projects/object-pool.tgz'
     version: 0.0.0
   'file:projects/ooo-renderer.tgz':
@@ -5652,13 +5789,13 @@ packages:
       '@pixi/eslint-config': 1.0.1_eslint@7.7.0
       '@typescript-eslint/eslint-plugin': 3.9.1_2f406a1e6c58f7d5fb62b87c45cb09ef
       '@typescript-eslint/parser': 3.9.1_eslint@7.7.0
-      electron: 10.1.3
+      electron: 11.3.0
       eslint: 7.7.0
-      floss: 3.0.0_electron@10.1.3
+      floss: 4.0.0_electron@11.3.0
     dev: false
     name: '@rush-temp/unit-tests'
     resolution:
-      integrity: sha512-tepBtpodfPsAOvOkzPYN2PpfhPlhTaAqO0LBmNf3UtKPzrBfcPpiR4MXJvU5E/w86gXcylKkI1FeFRnkXdhUZA==
+      integrity: sha512-hV3VpYi07XyfB7IoQHXsUhGsURVdZs0qpu9ABoncMfA6wdzKeMlFKCrN7Txf1km2Sfc9DwXV71334O7LPbsBBw==
       tarball: 'file:projects/unit-tests.tgz'
     version: 0.0.0
 registry: ''
@@ -5701,12 +5838,12 @@ specifiers:
   '@types/react': ^16.9.46
   '@typescript-eslint/eslint-plugin': ~3.9.1
   '@typescript-eslint/parser': ~3.9.1
-  chai: ~4.2.0
   d-path-parser: ^1.0.0
-  electron: ~10.1.3
-  floss: ~3.0.0
+  electron: ~11.3.0
+  floss: ^4.0.0
   gl-mat3: 2.0.0
   libtess: ~1.2.2
   pixi-spatial-hash: 1.0.0
   react: ^16.0.0
+  sinon: ~9.2.4
   tinycolor2: ^1.4.1

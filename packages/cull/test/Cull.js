@@ -1,5 +1,7 @@
-const { Container, Graphics, Rectangle } = require('pixi.js');
+const { Container } = require('@pixi/display');
 const { Cull } = require('../');
+const { Rectangle } = require('@pixi/math');
+const { Graphics } = require('@pixi/graphics');
 const expect = require('chai').expect;
 
 describe('Cull', () =>

@@ -3,6 +3,8 @@ export * from './paint/Paint';
 export * from './paint/PaintProvider';
 export * from './paint/PaintServer';
 
+export * from './utils/Path';
+
 export * from './SVGGraphicsGeometry';
 export * from './SVGGraphicsNode';
 export * from './SVGImageNode';
