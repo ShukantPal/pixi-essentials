@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/svg
 
-This log was last generated on Tue, 16 Feb 2021 00:55:07 GMT and should not be manually modified.
+This log was last generated on Sat, 27 Feb 2021 19:23:00 GMT and should not be manually modified.
+
+## 1.0.7
+Sat, 27 Feb 2021 19:23:00 GMT
+
+### Patches
+
+- Add proper hit-testing support for paths, in SVGPathNode.
 
 ## 1.0.5
 Tue, 16 Feb 2021 00:55:07 GMT

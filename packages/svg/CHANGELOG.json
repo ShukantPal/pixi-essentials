@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/svg",
   "entries": [
     {
+      "version": "1.0.7",
+      "tag": "@pixi-essentials/svg_v1.0.7",
+      "date": "Sat, 27 Feb 2021 19:23:00 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Add proper hit-testing support for paths, in SVGPathNode."
+          }
+        ]
+      }
+    },
+    {
       "version": "1.0.5",
       "tag": "@pixi-essentials/svg_v1.0.5",
       "date": "Tue, 16 Feb 2021 00:55:07 GMT",

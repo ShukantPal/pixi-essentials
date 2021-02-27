@@ -2,6 +2,12 @@
   "name": "@pixi-essentials/transformer",
   "entries": [
     {
+      "version": "2.2.5",
+      "tag": "@pixi-essentials/transformer_v2.2.5",
+      "date": "Sat, 27 Feb 2021 19:23:00 GMT",
+      "comments": {}
+    },
+    {
       "version": "2.2.4",
       "tag": "@pixi-essentials/transformer_v2.2.4",
       "date": "Sun, 10 Jan 2021 19:40:19 GMT",
