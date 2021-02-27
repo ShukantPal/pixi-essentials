@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 14.x, 15.x]
+        node-version: [14.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -34,7 +34,7 @@ jobs:
         version: 5.18.1
       env:
         ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
-    - run: pnpm i -g rush
+    - run: pnpm i -g @microsoft/rush
     - run: rush install
     - run: rush rebuild
     - run: rush unit-test
