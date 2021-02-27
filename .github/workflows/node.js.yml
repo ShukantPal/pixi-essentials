@@ -25,6 +25,8 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+      env:
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: true
     - name: Setup PNPM
       # You may pin to the exact commit or the version.
       # uses: pnpm/action-setup@935101478d12d633ea2e71bb8b63d18e00bda099
