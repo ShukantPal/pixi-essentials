@@ -31,7 +31,7 @@ jobs:
       uses: pnpm/action-setup@v1.2.0
       with:
         # Version of PNPM to install
-        version: latest
+        version: 5.18.1
     - run: pnpm i -g rush
     - run: rush install
     - run: rush rebuild
