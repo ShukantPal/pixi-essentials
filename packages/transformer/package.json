@@ -32,12 +32,14 @@
   ],
   "dependencies": {
     "@pixi-essentials/bounds": "~2.0.1",
-    "@pixi-essentials/object-pool": "~0.0.5",
-    "@pixi/core": "~5.3.3",
-    "@pixi/display": "~5.3.3",
-    "@pixi/graphics": "~5.3.3",
-    "@pixi/interaction": "~5.3.3",
-    "@pixi/math": "~5.3.3"
+    "@pixi-essentials/object-pool": "~0.0.5"
+  },
+  "peerDependencies": {
+    "@pixi/core": "^6.0.0",
+    "@pixi/display": "^6.0.0",
+    "@pixi/graphics": "^6.0.0",
+    "@pixi/interaction": "^6.0.0",
+    "@pixi/math": "^6.0.0"
   },
   "devDependencies": {
     "@pixi-essentials/eslint-config": "~1.0.0",
