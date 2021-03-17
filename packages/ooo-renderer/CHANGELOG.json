@@ -2,6 +2,21 @@
   "name": "@pixi-essentials/ooo-renderer",
   "entries": [
     {
+      "version": "0.0.3",
+      "tag": "@pixi-essentials/ooo-renderer_v0.0.3",
+      "date": "Wed, 17 Mar 2021 16:12:19 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@pixi-essentials/object-pool\" from `^0.0.5` to `^0.1.0`"
+          },
+          {
+            "comment": "Updating dependency \"@pixi-essentials/object-pool\" from `^0.0.5` to `^0.1.0`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.2",
       "tag": "@pixi-essentials/ooo-renderer_v0.0.2",
       "date": "Sat, 15 Aug 2020 20:26:58 GMT",

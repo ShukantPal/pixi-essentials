@@ -61,7 +61,7 @@
     "d-path-parser": "^1.0.0",
     "tinycolor2": "^1.4.1",
     "@pixi-essentials/gradients": "^0.0.3",
-    "@pixi-essentials/cull": "^1.0.12",
+    "@pixi-essentials/cull": "^1.1.0",
     "@pixi-essentials/texture-allocator": "~1.0.4",
     "libtess": "~1.2.2"
   },

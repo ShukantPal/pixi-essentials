@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/transformer
 
-This log was last generated on Sat, 27 Feb 2021 19:23:00 GMT and should not be manually modified.
+This log was last generated on Wed, 17 Mar 2021 16:12:19 GMT and should not be manually modified.
+
+## 2.3.0
+Wed, 17 Mar 2021 16:12:19 GMT
+
+### Minor changes
+
+- Upgrade to PixiJS 6
 
 ## 2.2.5
 Sat, 27 Feb 2021 19:23:00 GMT
