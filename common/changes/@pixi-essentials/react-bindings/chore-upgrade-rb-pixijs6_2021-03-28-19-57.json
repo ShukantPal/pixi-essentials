@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@pixi-essentials/react-bindings",
+      "comment": "Upgrade to PixiJS 6",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@pixi-essentials/react-bindings",
+  "email": "sukantk2002@outlook.com"
+}

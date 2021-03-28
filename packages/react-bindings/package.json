@@ -32,11 +32,11 @@
     "index.d.ts"
   ],
   "dependencies": {
-    "@pixi-essentials/transformer": "^2.3.0",
-    "@pixi/display": "^5.3.3",
-    "@pixi/math": "~5.3.3"
+    "@pixi-essentials/transformer": "^2.3.0"
   },
   "peerDependencies": {
+    "@pixi/display": "^6.0.0",
+    "@pixi/math": "^6.0.0",
     "@inlet/react-pixi": "^5.0.0",
     "react": "^16.0.0"
   },
