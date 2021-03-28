@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/react-bindings
 
-This log was last generated on Thu, 17 Sep 2020 18:39:18 GMT and should not be manually modified.
+This log was last generated on Sun, 28 Mar 2021 19:58:55 GMT and should not be manually modified.
+
+## 1.1.0
+Sun, 28 Mar 2021 19:58:55 GMT
+
+### Minor changes
+
+- Upgrade to PixiJS 6
 
 ## 1.0.8
 Thu, 17 Sep 2020 18:39:18 GMT
