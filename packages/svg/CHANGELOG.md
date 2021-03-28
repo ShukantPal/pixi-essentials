@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/svg
 
-This log was last generated on Sat, 27 Feb 2021 19:23:00 GMT and should not be manually modified.
+This log was last generated on Sun, 28 Mar 2021 17:05:18 GMT and should not be manually modified.
+
+## 1.1.0
+Sun, 28 Mar 2021 17:05:18 GMT
+
+### Minor changes
+
+- Upgrade to PixiJS 6
 
 ## 1.0.7
 Sat, 27 Feb 2021 19:23:00 GMT
