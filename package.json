@@ -6,7 +6,7 @@
   "scripts": {
     "prepare": "rush install",
     "build:compile": "rush build",
-    "build:types": "node ./scripts/runScript compile",
+    "build:types": "rush build:types",
     "build": "npm run build:compile; npm run build:types",
     "prepublishOnly": "npm run build",
     "test": "cd ./tools/unit-tests && pnpm test && cd ../.."

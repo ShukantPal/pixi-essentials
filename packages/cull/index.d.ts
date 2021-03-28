@@ -93,7 +93,7 @@ export declare class Cull {
  * @ignore
  * @public
  */
-export declare interface ICullOptions {
+declare interface ICullOptions {
     recursive: boolean;
     toggle: 'visible' | 'renderable';
 }

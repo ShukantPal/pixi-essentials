@@ -31,7 +31,7 @@
   },
   "scripts": {
     "build": "rollup -c node_modules/@pixi-build-tools/rollup-configurator/index.js --silent",
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "build:types": "echo \"Error: run tests from root\" && exit 1"
   },
   "bugs": {
     "url": "https://github.com/SukantPal/pixi-essentials/issues"

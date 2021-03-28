@@ -11,7 +11,7 @@
   },
   "scripts": {
     "build": "rollup -c node_modules/@pixi-build-tools/rollup-configurator/index.js --silent",
-    "compile": "rm -rf compile && tsc && api-extractor run"
+    "build:types": "rm -rf compile && tsc && api-extractor run"
   },
   "repository": {
     "type": "git",

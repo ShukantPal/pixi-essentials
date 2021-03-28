@@ -4,11 +4,10 @@ dependencies:
   '@pixi-build-tools/floss-rush-monorepo': 1.0.1
   '@pixi-build-tools/rollup-configurator': 1.0.10
   '@pixi/eslint-config': 1.0.1
-  '@pixi/filter-color-matrix': 5.4.0-rc.3
+  '@pixi/filter-color-matrix': 6.0.0
   '@pixi/interaction': 6.0.0
   '@pixi/settings': 6.0.0
-  '@pixi/sprite': 5.4.0-rc.3
-  '@pixi/text': 5.4.0-rc.3
+  '@pixi/text': 6.0.0
   '@pixi/ticker': 6.0.0
   '@pixi/utils': 5.3.0
   '@rush-temp/area-allocator': 'file:projects/area-allocator.tgz'
@@ -550,12 +549,6 @@ packages:
     dev: false
     resolution:
       integrity: sha512-HFr+vth5ZHHEFJYcjtWZ+O0s7Z2YWJyDyxr+nTd5Q8AT7gMDTVehpNVrm7ByaCKeEovOZzZI6A347+WmHcNpGg==
-  /@pixi/filter-color-matrix/5.4.0-rc.3:
-    dependencies:
-      '@pixi/core': 5.4.0-rc.3
-    dev: false
-    resolution:
-      integrity: sha512-NW2tfvOIWfu5E+2yW+eSZfJCSfdUgGHAhn2IxFdQdmaam1R+EMBJsu7QBt2VoAsNJlC+IIsOOfoIu1lIXAfaCQ==
   /@pixi/filter-color-matrix/6.0.0:
     dependencies:
       '@pixi/core': 6.0.0
@@ -641,17 +634,6 @@ packages:
     dev: false
     resolution:
       integrity: sha512-1bn9Jptg3JXgVOw0SrEMdmjSwkTBYDm6fPnPnh4goF3yDozh0xEqmXobVtCgy2fulMfHRzIfbgtRxrBf2mkCAg==
-  /@pixi/graphics/5.4.0-rc.3:
-    dependencies:
-      '@pixi/constants': 5.4.0-rc.3
-      '@pixi/core': 5.4.0-rc.3
-      '@pixi/display': 5.4.0-rc.3
-      '@pixi/math': 5.4.0-rc.3
-      '@pixi/sprite': 5.4.0-rc.3
-      '@pixi/utils': 5.4.0-rc.3
-    dev: false
-    resolution:
-      integrity: sha512-pfNOxrSXtQ1XA9fGy3WD8VzhrU8iQ4kkANTd0+NUoaKIyaGmouFfsrNKNm3nlqdhpHCmMWfrYIMXVStV20U6Vw==
   /@pixi/graphics/6.0.0:
     dependencies:
       '@pixi/constants': 6.0.0
@@ -1181,16 +1163,6 @@ packages:
     dev: false
     resolution:
       integrity: sha512-juinZC2yFXnzucWWxSdty9nfIIOAq2WA8DD2k40YL+7Y5L52/ggkgnokeQ2lrTb1BvTfx6YVNlvAsKonUek0Og==
-  /@pixi/text/5.4.0-rc.3:
-    dependencies:
-      '@pixi/core': 5.4.0-rc.3
-      '@pixi/math': 5.4.0-rc.3
-      '@pixi/settings': 5.4.0-rc.3
-      '@pixi/sprite': 5.4.0-rc.3
-      '@pixi/utils': 5.4.0-rc.3
-    dev: false
-    resolution:
-      integrity: sha512-/nv7Z3DnQpvPC3KlkMRSJRvYyjg02odpAFrSSu8/1HjTmIa+23scYTdeRA3kZdFkjd3+qvuBNuhlfmoYq0Fz7A==
   /@pixi/text/6.0.0:
     dependencies:
       '@pixi/core': 6.0.0
@@ -5707,7 +5679,7 @@ packages:
     dev: false
     name: '@rush-temp/bvh'
     resolution:
-      integrity: sha512-YgPjq8LAhOrxdXTHnVNLfs76eW3Z7+DARtqbG/L0bdt5DxHMcBJlPTmfBj2bYRMmprBDQzAos4ZnI3kMy3g3pA==
+      integrity: sha512-Fd6pcCENpM/fVIoOe+K+gMZYFiK4B5MrC0qqPHE+Iqlcj/OmCuo0M5zaSBqe1Ht+TUDYqoyy4fz5Qrpeb5ItKw==
       tarball: 'file:projects/bvh.tgz'
     version: 0.0.0
   'file:projects/conic.tgz':
@@ -5862,7 +5834,7 @@ packages:
     dev: false
     name: '@rush-temp/mixin-smart-mask'
     resolution:
-      integrity: sha512-v09OtXNgyBB8dq9QuYvhZCkCbTSqbRolDvbMeqd0I6q9c3BOdMTx6RC1tpRi1veaBvbmyrwNIGHuDEVVNy7KVQ==
+      integrity: sha512-xohmJEnaxonyD15ER5k36rFSbLeJrC2cFXy8gheBOoNTuYQK4idhyOzbJmmoz1s9M65dc9fSPxb3XVYFv4NRMw==
       tarball: 'file:projects/mixin-smart-mask.tgz'
     version: 0.0.0
   'file:projects/object-pool.tgz':
@@ -5902,7 +5874,7 @@ packages:
     dev: false
     name: '@rush-temp/ooo-renderer'
     resolution:
-      integrity: sha512-Ua5O0HhOi5ZxCdKiMMn6fpJqrm7eR0dx7CVurAz9tslnNFobsaqWMx+Urt2ZBDpVvPECYqDZcMHRwPQXWG5/vQ==
+      integrity: sha512-OM5a53vDoaDDLvdUo/XL/Hf+xa9qzs7BVREFrAUBzdM5jRGjZuqtJlzZ3n+CZytGkUUr9xw1ymtkSKXQOoOOzg==
       tarball: 'file:projects/ooo-renderer.tgz'
     version: 0.0.0
   'file:projects/react-bindings.tgz':
@@ -5923,7 +5895,7 @@ packages:
     dev: false
     name: '@rush-temp/react-bindings'
     resolution:
-      integrity: sha512-PXhZNV84HdT81zDBkRYq2qUgT2xBc6Y5fQq2nzSDR/ymorFS9zUxQx7bgj2nZmnKRNoZp5jkjjGERNTsT+Igpg==
+      integrity: sha512-o0l9syJxSRjjiT2+iK54Umj2yLlIl85jh7OvAZSFqttbuoR18twba7YS8gY8WepI3cgIjc4+NVxLOX9a2dKZnA==
       tarball: 'file:projects/react-bindings.tgz'
     version: 0.0.0
   'file:projects/shader-preprocessor.tgz':
@@ -5949,13 +5921,13 @@ packages:
   'file:projects/svg.tgz':
     dependencies:
       '@pixi-build-tools/rollup-configurator': 1.0.10_rollup@2.28.1
-      '@pixi/core': 5.4.0-rc.3
-      '@pixi/display': 5.4.0-rc.3
-      '@pixi/filter-color-matrix': 5.4.0-rc.3
-      '@pixi/graphics': 5.4.0-rc.3
-      '@pixi/math': 5.4.0-rc.3
-      '@pixi/sprite': 5.4.0-rc.3
-      '@pixi/text': 5.4.0-rc.3
+      '@pixi/core': 6.0.0
+      '@pixi/display': 6.0.0
+      '@pixi/filter-color-matrix': 6.0.0
+      '@pixi/graphics': 6.0.0
+      '@pixi/math': 6.0.0
+      '@pixi/sprite': 6.0.0
+      '@pixi/text': 6.0.0
       d-path-parser: 1.0.0
       eslint: 7.9.0
       libtess: 1.2.2
@@ -5966,7 +5938,7 @@ packages:
     dev: false
     name: '@rush-temp/svg'
     resolution:
-      integrity: sha512-iCEvGwJwl+Rm2G6jPMVumToTP7imATeOtpeeWE/NXFPsTs7drC2dXtyF7RCC9CWhSzCKvYgPP26WRHtIJSADPg==
+      integrity: sha512-UY4GLTf/tnqqkrRAqh4pFvjzXVzi66qhDCgmHJKUxD0+fri/o/NwvIV/l/WkVeDA45swyjoAM7Sr64Jpy2HNOg==
       tarball: 'file:projects/svg.tgz'
     version: 0.0.0
   'file:projects/system-g.tgz':
@@ -6024,7 +5996,7 @@ packages:
     dev: false
     name: '@rush-temp/transformer'
     resolution:
-      integrity: sha512-Br5gAAAJJl7TW8aelbhPGn+cMsZLD5c6r+T1IrFPYkPaq7NQj83nPcPq67MnEksYwmJNZeDWfbnempH7xHznvw==
+      integrity: sha512-csnb1P6C421MSckIJD/p+Wq7ST028LdZDD97vPepm3y9NilcHGjLyi3XKzK/IF86iOrUqZ2XEwAmrhLyATNsfA==
       tarball: 'file:projects/transformer.tgz'
     version: 0.0.0
   'file:projects/types.tgz':
@@ -6066,11 +6038,10 @@ specifiers:
   '@pixi-build-tools/floss-rush-monorepo': 1.0.1
   '@pixi-build-tools/rollup-configurator': ^1.0.10
   '@pixi/eslint-config': ~1.0.1
-  '@pixi/filter-color-matrix': ~5.4.0-rc.1
+  '@pixi/filter-color-matrix': ^6.0.0
   '@pixi/interaction': ^6.0.0
   '@pixi/settings': ^6.0.0
-  '@pixi/sprite': ~5.4.0-rc.1
-  '@pixi/text': ~5.4.0-rc.1
+  '@pixi/text': ^6.0.0
   '@pixi/ticker': ^6.0.0
   '@pixi/utils': ^5.1.0
   '@rush-temp/area-allocator': 'file:./projects/area-allocator.tgz'

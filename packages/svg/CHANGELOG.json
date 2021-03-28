@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/svg",
   "entries": [
     {
+      "version": "1.1.0",
+      "tag": "@pixi-essentials/svg_v1.1.0",
+      "date": "Sun, 28 Mar 2021 17:05:18 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Upgrade to PixiJS 6"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.0.7",
       "tag": "@pixi-essentials/svg_v1.0.7",
       "date": "Sat, 27 Feb 2021 19:23:00 GMT",
