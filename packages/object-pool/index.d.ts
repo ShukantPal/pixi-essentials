@@ -19,7 +19,7 @@ export declare interface IObjectPoolOptions {
  * @class
  * @public
  */
-export declare abstract class ObjectPool<T extends typeof Object> {
+export declare abstract class ObjectPool<T> {
     protected _freeList: Array<T>;
     protected _freeCount: number;
     protected _reserveCount: number;
@@ -112,7 +112,7 @@ export declare abstract class ObjectPool<T extends typeof Object> {
  * @public
  * @example
  * ```js
- * import { ObjectPool, ObjectPoolFactory } from 'pixi-object-pool';
+ * import { ObjectPool, ObjectPoolFactory } from '@pixi-essentials/object-pool';
  *
  * class AABB {}
  *
@@ -125,9 +125,23 @@ export declare abstract class ObjectPool<T extends typeof Object> {
  */
 export declare class ObjectPoolFactory {
     /**
-     * @param {Class} Type
+     * Builds an object-pool for objects constructed from the given class with a default constructor. If an
+     * object pool for that class was already created, an existing instance is returned.
+     *
+     * @param classConstructor
      */
-    static build(Type: typeof Object): ObjectPool<any>;
+    static build<T>(Type: {
+        new (): T;
+    }): ObjectPool<T>;
+    /**
+     * Builds an object-pool for objects built using a factory function. The factory function's context will be the
+     * object-pool.
+     *
+     * These types of pools are not cached and should only be used on internal data structures.
+     *
+     * @param factoryFunction
+     */
+    static buildFunctional<T>(factoryFunction: () => T): ObjectPool<T>;
 }
 
 export { }

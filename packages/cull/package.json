@@ -28,7 +28,7 @@
   },
   "scripts": {
     "build": "rollup -c node_modules/@pixi-build-tools/rollup-configurator/index.js --silent",
-    "compile": "rm -rf compile && tsc && api-extractor run"
+    "build:types": "rm -rf compile && tsc && api-extractor run"
   },
   "bugs": {
     "url": "https://github.com/SukantPal/pixi-essentials/issues"

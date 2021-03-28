@@ -1,12 +1,12 @@
 const { FILL_RULE, Path } = require('../');
 
-describe('Path', function()
+describe('Path', () =>
 {
     const FILL_RULE_KEYS = Object.keys(FILL_RULE);
 
     FILL_RULE_KEYS.forEach(function (fillRuleId)
     {
-        it('should hit-test correctly for simple polygon for fill-rule ' + fillRuleId, function()
+        it(`should hit-test correctly for simple polygon for fill-rule ${fillRuleId}`, () =>
         {
             const path = new Path();
 
@@ -25,7 +25,7 @@ describe('Path', function()
             expect(path.contains(-1, 0)).to.equal(false);
         });
 
-        it('should hit-test correctly for polylines with holes for fill-rule ' + fillRuleId, function()
+        it(`should hit-test correctly for polylines with holes for fill-rule ${fillRuleId}`, () =>
         {
             const path = new Path();
 
