@@ -2,6 +2,8 @@
 <img src="https://i.imgur.com/apQs3EL.png" alt="Frame-1-12x" width="600"></img>
 </p>
 
+[![Node.js CI](https://github.com/SukantPal/pixi-essentials/actions/workflows/node.js.yml/badge.svg)](https://github.com/SukantPal/pixi-essentials/actions/workflows/node.js.yml)
+
 # PixiJS Essentials Kit
 
 :point_right: This project is a collection of essential packages for building performant, enterprise-level applications on top of the PixiJS library. It includes several optimization plugins, frequency-domain filters, display-object libraries, and mixins on the core API.
