@@ -72,3 +72,6 @@ common/autoinstallers/*/.npmrc
 
 # Ts
 index.d.ts
+
+# IntelliJ
+*.iml
