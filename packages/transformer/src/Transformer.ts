@@ -1,5 +1,3 @@
-/// <reference path="./types.d.ts" />
-
 import { Renderer } from '@pixi/core';
 import { DisplayObject, Container } from '@pixi/display';
 import { Point, Matrix, Transform, Rectangle } from '@pixi/math';
@@ -219,6 +217,7 @@ const DEFAULT_WIREFRAME_STYLE: ITransformerStyle = {
  */
 export interface ITransformerOptions
 {
+    boundingBoxes?: 'all' | 'groupOnly';
     boxRotationEnabled?: boolean;
     boxRotationTolerance?: number;
     boxScalingEnabled?: boolean;
@@ -260,6 +259,8 @@ export class Transformer extends Container
 {
     public group: DisplayObject[];
 
+    /** "groupOnly" won't show individual bounding boxes. */
+    public boundingBoxes: 'all' | 'groupOnly';
     public boxRotationEnabled: boolean;
     public boxRotationTolerance: number;
     public boxScalingEnabled: boolean;
@@ -329,6 +330,7 @@ export class Transformer extends Container
      * | skewVertical          | Skew                     | Applied horizontal shear. Handle segment is vertical at skew.x = 0! |
      *
      * @param {object}[options]
+     * @param {string}[boundingBoxes="all"] - "all" or "groupOnly". "groupOnly" won't show individual bounding boxes.
      * @param {DisplayObject[]}[options.group] - the group of display-objects being transformed
      * @param {boolean}[options.enabledHandles] - specifically define which handles are to be enabled
      * @param {TransformerHandleClass}[options.handleConstructor] - a custom transformer-handle class
@@ -364,6 +366,8 @@ export class Transformer extends Container
 
         this.interactive = true;
         this.cursor = 'move';
+
+        this.boundingBoxes = options.boundingBoxes || 'all';
 
         /**
          * The group of display-objects under transformation.
@@ -1021,7 +1025,7 @@ export class Transformer extends Container
             this.wireframe.beginFill(0xffffff, 1e-4);
         }
 
-        for (let i = 0, j = targets.length; i < j; i++)
+        for (let i = 0, j = targets.length; i < j && this.boundingBoxes !== 'groupOnly'; i++)
         {
             this.wireframe.drawBounds(Transformer.calculateOrientedBounds(targets[i], tempBounds));
         }
