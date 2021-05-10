@@ -1,9 +1,10 @@
-/// <reference path="../node_modules/pixi.js/pixi.js.d.ts" />
 import { Point } from '@pixi/math';
 
 /**
  * Rectangle object is an area defined by its position, as indicated by its top-left corner
  * point (x, y) and by its width and its height.
+ *
+ * @public
  */
 export class AxisAlignedBounds
 {
@@ -226,7 +227,7 @@ export class AxisAlignedBounds
     }
 
     /**
-     * Checks whether the given {@link bounds} are equal to this.
+     * Checks whether the given {@code bounds} are equal to this.
      *
      * @param bounds
      */

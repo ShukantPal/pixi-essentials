@@ -1,4 +1,3 @@
-/// <reference path="../node_modules/pixi.js/pixi.js.d.ts" />
 import { AxisAlignedBounds } from './AxisAlignedBounds';
 import { Matrix, ObservablePoint, Point } from '@pixi/math';
 
@@ -10,6 +9,8 @@ const tempPoint = new Point();
  * An oriented bounding box is modelled by rotating its (axis-aligned) {@link OrientedBounds#innerBounds}
  * by an angle {@link OrientedBounds#angle} around its center. The center of an oriented bounding box and
  * its axis-aligned inner-bounds coincide.
+ *
+ * @public
  */
 export class OrientedBounds
 {
@@ -83,7 +84,7 @@ export class OrientedBounds
      *
      * The center of this and {@code this.innerBounds} will always coincide.
      */
-    get center(): ObservablePoint
+    get center(): Point
     {
         if (this.isDirty()) this.update();
 
@@ -220,8 +221,8 @@ export class OrientedBounds
 
         // Calculate center
         // Do not set [x|y] so to prevent this.updateCenter from being fired!
-        center._x = innerBounds.x + (innerBounds.width / 2);
-        center._y = innerBounds.y + (innerBounds.height / 2);
+        (center as any)._x = innerBounds.x + (innerBounds.width / 2);
+        (center as any)._y = innerBounds.y + (innerBounds.height / 2);
 
         // Calculate orientation matrix
         matrix.identity()
@@ -240,7 +241,8 @@ export class OrientedBounds
     }
 
     /**
-     * This will translate {@link this.innerBounds} after {@link this.center} is changed to ensure consistency.
+     * This will translate {@link OrientedBounds#innerBounds} after {@link OrientedBounds#center} is
+     * changed to ensure consistency.
      */
     private updateCenter(): void
     {

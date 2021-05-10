@@ -1,14 +1,11 @@
-/// <reference types="pixi.js" />
 import { Matrix } from '@pixi/math';
-import { ObservablePoint } from '@pixi/math';
 import { Point } from '@pixi/math';
 
 /**
  * Rectangle object is an area defined by its position, as indicated by its top-left corner
  * point (x, y) and by its width and its height.
  *
- * @class
- * @memberof PIXI
+ * @public
  */
 export declare class AxisAlignedBounds {
     currentID: number;
@@ -19,10 +16,10 @@ export declare class AxisAlignedBounds {
     protected _height: number;
     protected _hull: [Point, Point, Point, Point];
     /**
-     * @param {number} [x=0] - The X coordinate of the upper-left corner of the rectangle
-     * @param {number} [y=0] - The Y coordinate of the upper-left corner of the rectangle
-     * @param {number} [width=0] - The overall width of this rectangle
-     * @param {number} [height=0] - The overall height of this rectangle
+     * @param [x=0] - The X coordinate of the upper-left corner of the rectangle
+     * @param [y=0] - The Y coordinate of the upper-left corner of the rectangle
+     * @param [width=0] - The overall width of this rectangle
+     * @param [height=0] - The overall height of this rectangle
      */
     constructor(x?: number, y?: number, width?: number, height?: number);
     get x(): number;
@@ -48,26 +45,20 @@ export declare class AxisAlignedBounds {
     get left(): number;
     /**
      * returns the right edge of the rectangle
-     *
-     * @member {number}
      */
     get right(): number;
     /**
      * returns the top edge of the rectangle
-     *
-     * @member {number}
      */
     get top(): number;
     /**
      * returns the bottom edge of the rectangle
-     *
-     * @member {number}
      */
     get bottom(): number;
     /**
      * Creates a clone of this Rectangle
      *
-     * @return {PIXI.Rectangle} a copy of the rectangle
+     * @return A copy of this AxisAlignedBounds.
      */
     clone(): AxisAlignedBounds;
     /**
@@ -93,7 +84,7 @@ export declare class AxisAlignedBounds {
      */
     contains(x: number, y: number): boolean;
     /**
-     * Checks whether the given {@link bounds} are equal to this.
+     * Checks whether the given {@code bounds} are equal to this.
      *
      * @param bounds
      */
@@ -117,8 +108,8 @@ export declare class AxisAlignedBounds {
     /**
      * Enlarges rectangle that way its corners lie on grid
      *
-     * @param [resolution=1] resolution
-     * @param [eps=0.001] precision
+     * @param [resolution=1] - resolution
+     * @param [eps=0.001] - precision
      * @return Returns itself.
      */
     ceil(resolution?: number, eps?: number): this;
@@ -137,6 +128,8 @@ export declare class AxisAlignedBounds {
  * An oriented bounding box is modelled by rotating its (axis-aligned) {@link OrientedBounds#innerBounds}
  * by an angle {@link OrientedBounds#angle} around its center. The center of an oriented bounding box and
  * its axis-aligned inner-bounds coincide.
+ *
+ * @public
  */
 export declare class OrientedBounds {
     innerBounds: AxisAlignedBounds;
@@ -169,7 +162,7 @@ export declare class OrientedBounds {
      *
      * The center of this and {@code this.innerBounds} will always coincide.
      */
-    get center(): ObservablePoint;
+    get center(): Point;
     set center(value: Point);
     /**
      * The four-corners of this bounding, in clockwise order starting from the top-left.
@@ -204,6 +197,12 @@ export declare class OrientedBounds {
      */
     equals(bounds: OrientedBounds): boolean;
     /**
+     * Whether this bounding box contains the given point
+     *
+     * @param point
+     */
+    contains(point: Point | number, y?: number): boolean;
+    /**
      * Copies {@code bounds} into this instance.
      *
      * @param bounds
@@ -219,7 +218,8 @@ export declare class OrientedBounds {
      */
     protected update(): void;
     /**
-     * This will translate {@link this.innerBounds} after {@link this.center} is changed to ensure consistency.
+     * This will translate {@link OrientedBounds#innerBounds} after {@link OrientedBounds#center} is
+     * changed to ensure consistency.
      */
     private updateCenter;
 }
