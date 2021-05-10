@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/transformer
 
-This log was last generated on Wed, 17 Mar 2021 16:12:19 GMT and should not be manually modified.
+This log was last generated on Mon, 10 May 2021 01:32:07 GMT and should not be manually modified.
+
+## 2.3.1
+Mon, 10 May 2021 01:32:07 GMT
+
+### Patches
+
+- Add `boundingBoxes` option, where "groupOnly" won't draw the bounding boxes for individual items
 
 ## 2.3.0
 Wed, 17 Mar 2021 16:12:19 GMT

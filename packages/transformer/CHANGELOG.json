@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/transformer",
   "entries": [
     {
+      "version": "2.3.1",
+      "tag": "@pixi-essentials/transformer_v2.3.1",
+      "date": "Mon, 10 May 2021 01:32:07 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Add `boundingBoxes` option, where \"groupOnly\" won't draw the bounding boxes for individual items"
+          }
+        ]
+      }
+    },
+    {
       "version": "2.3.0",
       "tag": "@pixi-essentials/transformer_v2.3.0",
       "date": "Wed, 17 Mar 2021 16:12:19 GMT",
