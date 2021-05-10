@@ -29,10 +29,10 @@ const pointPool = ObjectPoolFactory.build<Point>(Point as any);
 /**
  * The handles used for rotation.
  *
- * @internal
+ * @public
  * @ignore
  */
-type RotateHandle = 'rotator'
+export type RotateHandle = 'rotator'
     | 'boxRotateTopLeft'
     | 'boxRotateTopRight'
     | 'boxRotateBottomLeft'
@@ -41,10 +41,10 @@ type RotateHandle = 'rotator'
 /**
  * The handles used for scaling.
  *
- * @internal
+ * @public
  * @ignore
  */
-type ScaleHandle = 'topLeft' |
+export type ScaleHandle = 'topLeft' |
     'topCenter' |
     'topRight' |
     'middleLeft' |
@@ -57,15 +57,15 @@ type ScaleHandle = 'topLeft' |
 /**
  * The handles used for skewing
  *
- * @internal
+ * @public
  * @ignore
  */
-type SkewHandle = 'skewHorizontal' | 'skewVertical';
+export type SkewHandle = 'skewHorizontal' | 'skewVertical';
 
 /**
  * All the handles provided by {@link Transformer}.
  *
- * @internal
+ * @public
  * @ignore
  */
 export type Handle = RotateHandle | ScaleHandle | SkewHandle;
@@ -73,7 +73,6 @@ export type Handle = RotateHandle | ScaleHandle | SkewHandle;
 /**
  * Specific cursors for each handle
  *
- * @internal
  * @ignore
  */
 export const HANDLE_TO_CURSOR: { [H in Handle]?: string } = {
@@ -214,6 +213,7 @@ const DEFAULT_WIREFRAME_STYLE: ITransformerStyle = {
 
 /**
  * @ignore
+ * @public
  */
 export interface ITransformerOptions
 {
