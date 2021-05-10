@@ -15,6 +15,7 @@ const IDENTITY_MATRIX = Matrix.IDENTITY;// Prevent reinstantation each time
  * @internal
  */
 export type TransformerProps = {
+    boundingBoxes?: 'all' | 'groupOnly';
     boxScalingEnabled?: boolean;
     boxScalingTolerance?: number;
     boxRotationEnabled?: boolean;
@@ -61,6 +62,7 @@ export const Transformer: React.FC<TransformerProps> = PixiComponent<Transformer
 
         instance.group = newProps.group || [];
 
+        instance.boundingBoxes = newProps.boundingBoxes || 'all';
         instance.boxScalingEnabled = newProps.boxScalingEnabled === true;
         instance.boxScalingTolerance = newProps.boxScalingTolerance !== undefined
             ? newProps.boxScalingTolerance : instance.boxScalingTolerance;
