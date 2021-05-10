@@ -31,7 +31,7 @@
     "index.d.ts"
   ],
   "dependencies": {
-    "@pixi-essentials/bounds": "~2.1.0",
+    "@pixi-essentials/bounds": "~2.1.1",
     "@pixi-essentials/object-pool": "~0.1.0"
   },
   "peerDependencies": {

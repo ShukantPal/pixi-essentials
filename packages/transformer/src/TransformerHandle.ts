@@ -1,5 +1,3 @@
-/// <reference path="./types.d.ts" />
-
 import { Graphics } from '@pixi/graphics';
 import { Point } from '@pixi/math';
 import { Renderer } from '@pixi/core';

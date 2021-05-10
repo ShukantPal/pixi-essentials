@@ -1,5 +1,3 @@
-/// <reference path="../types.d.ts" />
-
 import { Matrix } from '@pixi/math';
 import { decomposeTransform } from './decomposeTransform';
 

@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/bounds
 
-This log was last generated on Wed, 17 Mar 2021 16:12:19 GMT and should not be manually modified.
+This log was last generated on Mon, 10 May 2021 01:41:10 GMT and should not be manually modified.
+
+## 2.1.1
+Mon, 10 May 2021 01:41:10 GMT
+
+### Patches
+
+- Fix types declaration file
 
 ## 2.1.0
 Wed, 17 Mar 2021 16:12:19 GMT

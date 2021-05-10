@@ -1,5 +1,3 @@
-/// <reference path="../types.d.ts" />
-
 import type { Transform, Matrix } from '@pixi/math';
 
 /**

@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/bounds",
   "entries": [
     {
+      "version": "2.1.1",
+      "tag": "@pixi-essentials/bounds_v2.1.1",
+      "date": "Mon, 10 May 2021 01:41:10 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix types declaration file"
+          }
+        ]
+      }
+    },
+    {
       "version": "2.1.0",
       "tag": "@pixi-essentials/bounds_v2.1.0",
       "date": "Wed, 17 Mar 2021 16:12:19 GMT",

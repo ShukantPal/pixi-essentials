@@ -1,5 +1,3 @@
-/// <reference path="../types.d.ts" />
-
 import { Matrix } from '@pixi/math';
 
 const tempMatrix = new Matrix();

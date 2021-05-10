@@ -1,5 +1,3 @@
-/// <reference path="./types.d.ts" />
-
 import { Graphics } from '@pixi/graphics';
 import { HANDLE_TO_CURSOR } from './Transformer';
 import { ObjectPoolFactory } from '@pixi-essentials/object-pool';
@@ -103,7 +101,7 @@ const boxRotationRegions = [
  * The transformer's wireframe is drawn using this class.
  *
  * @ignore
- * @internal
+ * @public
  */
 export class TransformerWireframe extends Graphics
 {
@@ -271,7 +269,6 @@ export class TransformerWireframe extends Graphics
 
             boxScalingHandle.clear()
                 .beginFill(0xffffff, 1e-4)
-                // @ts-expect-error 5.4.0-RC will fix this.
                 .drawPolygon(innerStart, outerStart, outerEnd, innerEnd)
                 .endFill();
         }
