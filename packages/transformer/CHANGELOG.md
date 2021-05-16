@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/transformer
 
-This log was last generated on Sun, 16 May 2021 01:00:19 GMT and should not be manually modified.
+This log was last generated on Sun, 16 May 2021 01:04:10 GMT and should not be manually modified.
+
+## 2.3.3
+Sun, 16 May 2021 01:04:10 GMT
+
+### Patches
+
+- Fix last release that wasn't built before releasing
 
 ## 2.3.2
 Sun, 16 May 2021 01:00:19 GMT

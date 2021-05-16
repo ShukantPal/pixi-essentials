@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/transformer",
   "entries": [
     {
+      "version": "2.3.3",
+      "tag": "@pixi-essentials/transformer_v2.3.3",
+      "date": "Sun, 16 May 2021 01:04:10 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix last release that wasn't built before releasing"
+          }
+        ]
+      }
+    },
+    {
       "version": "2.3.2",
       "tag": "@pixi-essentials/transformer_v2.3.2",
       "date": "Sun, 16 May 2021 01:00:19 GMT",
