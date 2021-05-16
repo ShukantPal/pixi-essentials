@@ -15,7 +15,7 @@ const IDENTITY_MATRIX = Matrix.IDENTITY;// Prevent reinstantation each time
  * @internal
  */
 export type TransformerProps = {
-    boundingBoxes?: 'all' | 'groupOnly';
+    boundingBoxes?: 'all' | 'groupOnly' | 'none';
     boxScalingEnabled?: boolean;
     boxScalingTolerance?: number;
     boxRotationEnabled?: boolean;
