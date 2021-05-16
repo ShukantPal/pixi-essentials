@@ -11,9 +11,7 @@ const EMPTY: any = {};
 
 const IDENTITY_MATRIX = Matrix.IDENTITY;// Prevent reinstantation each time
 
-/**
- * @internal
- */
+/** @internal */
 export type TransformerProps = {
     boundingBoxes?: 'all' | 'groupOnly' | 'none';
     boxScalingEnabled?: boolean;
@@ -40,9 +38,7 @@ export type TransformerProps = {
     wireframeStyle?: Partial<ITransformerStyle>;
 };
 
-/**
- * @ignore
- */
+/** @ignore */
 const HANDLER_TO_EVENT = {
     transformchange: 'transformchange',
     transformcommit: 'transformcommit',
