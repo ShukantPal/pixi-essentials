@@ -5,13 +5,13 @@
   "pnpmOptions": {
     "pnpmStore": "global",
     "strictPeerDependencies": false,
-    "resolutionStrategy": "fast",
+    "resolutionStrategy": "fast"
   },
   "nodeSupportedVersionRange": ">=10.0.0 <15.0.0",
   "suppressNodeLtsWarning": true,
   "repository": {
     "url": "https://github.com/SukantPal/pixi-essentials",
-    "defaultBranch": "master",
+    "defaultBranch": "release",
     "defaultRemote": "origin"
   },
   "eventHooks": {
