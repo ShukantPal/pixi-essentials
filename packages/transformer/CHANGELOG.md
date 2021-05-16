@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/transformer
 
-This log was last generated on Mon, 10 May 2021 01:32:07 GMT and should not be manually modified.
+This log was last generated on Sun, 16 May 2021 01:00:19 GMT and should not be manually modified.
+
+## 2.3.2
+Sun, 16 May 2021 01:00:19 GMT
+
+### Patches
+
+- Add boundingBoxes="none" option to not draw anything visible in the wireframe at all
 
 ## 2.3.1
 Mon, 10 May 2021 01:32:07 GMT

@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/react-bindings
 
-This log was last generated on Mon, 10 May 2021 01:32:07 GMT and should not be manually modified.
+This log was last generated on Sun, 16 May 2021 01:00:19 GMT and should not be manually modified.
+
+## 1.1.2
+Sun, 16 May 2021 01:00:19 GMT
+
+### Patches
+
+- Add support for @pixi-essentials/transformer's new boundingBoxes="none" option
 
 ## 1.1.1
 Mon, 10 May 2021 01:32:07 GMT

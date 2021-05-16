@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/transformer",
   "entries": [
     {
+      "version": "2.3.2",
+      "tag": "@pixi-essentials/transformer_v2.3.2",
+      "date": "Sun, 16 May 2021 01:00:19 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Add boundingBoxes=\"none\" option to not draw anything visible in the wireframe at all"
+          }
+        ]
+      }
+    },
+    {
       "version": "2.3.1",
       "tag": "@pixi-essentials/transformer_v2.3.1",
       "date": "Mon, 10 May 2021 01:32:07 GMT",

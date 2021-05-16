@@ -2,6 +2,23 @@
   "name": "@pixi-essentials/react-bindings",
   "entries": [
     {
+      "version": "1.1.2",
+      "tag": "@pixi-essentials/react-bindings_v1.1.2",
+      "date": "Sun, 16 May 2021 01:00:19 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Add support for @pixi-essentials/transformer's new boundingBoxes=\"none\" option"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@pixi-essentials/transformer\" from `^2.3.1` to `^2.3.2`"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.1.1",
       "tag": "@pixi-essentials/react-bindings_v1.1.1",
       "date": "Mon, 10 May 2021 01:32:07 GMT",
