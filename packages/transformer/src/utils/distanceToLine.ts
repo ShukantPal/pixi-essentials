@@ -4,10 +4,6 @@ import { Point } from '@pixi/math';
  * Calculates the distance of (x,y) from the line through l0 and l1.
  *
  * @ignore
- * @param h
- * @param k
- * @param l0
- * @param l1
  */
 export function distanceToLine(h: number, k: number, l0: Point, l1: Point): number
 {
