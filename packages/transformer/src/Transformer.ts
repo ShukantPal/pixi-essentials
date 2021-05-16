@@ -1186,11 +1186,7 @@ export class Transformer extends Container
         }
     }
 
-    /**
-     * Called on the `pointerdown` event. You must call the super implementation.
-     *
-     * @param e
-     */
+    /** Called on the `pointerdown` event. You must call the super implementation. */
     protected onPointerDown(e: InteractionEvent): void
     {
         this._pointerDown = true;
@@ -1199,11 +1195,7 @@ export class Transformer extends Container
         e.stopPropagation();
     }
 
-    /**
-     * Called on the `pointermove` event. You must call the super implementation.
-     *
-     * @param e
-     */
+    /** Called on the `pointermove` event. You must call the super implementation. */
     protected onPointerMove(e: InteractionEvent): void
     {
         if (!this._pointerDown)
@@ -1273,11 +1265,7 @@ export class Transformer extends Container
         e.stopPropagation();
     }
 
-    /**
-     * Called on the `pointerup` and `pointerupoutside` events. You must call the super implementation.
-     *
-     * @param e
-     */
+    /** Called on the `pointerup` and `pointerupoutside` events. You must call the super implementation. */
     protected onPointerUp(e: InteractionEvent): void
     {
         this._pointerDragging = false;
