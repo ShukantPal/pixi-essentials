@@ -217,7 +217,7 @@ const DEFAULT_WIREFRAME_STYLE: ITransformerStyle = {
  */
 export interface ITransformerOptions
 {
-    boundingBoxes?: 'all' | 'groupOnly';
+    boundingBoxes?: 'all' | 'groupOnly' | 'none';
     boxRotationEnabled?: boolean;
     boxRotationTolerance?: number;
     boxScalingEnabled?: boolean;
@@ -257,31 +257,89 @@ export interface ITransformerOptions
  */
 export class Transformer extends Container
 {
+    /** The group of display-objects under transformation. */
     public group: DisplayObject[];
 
-    /** "groupOnly" won't show individual bounding boxes. */
-    public boundingBoxes: 'all' | 'groupOnly';
-    public boxRotationEnabled: boolean;
-    public boxRotationTolerance: number;
-    public boxScalingEnabled: boolean;
-    public boxScalingTolerance: number;
-    public centeredScaling: boolean;
-    public lazyMode: boolean;
-    public lazyDirty: boolean;
-    public projectionTransform: Matrix;
-    public rotationSnaps: number[];
-    public rotationSnapTolerance: number;
-    public skewRadius: number;
-    public skewSnaps: number[];
-    public skewSnapTolerance: number;
-    public translateEnabled: boolean;
-    public transientGroupTilt: boolean;
+    /**
+     * Specify which bounding boxes should be drawn in the wireframe.
+     *
+     * "groupOnly" won't show individual bounding boxes. "none" will not render anything visible.
+     *
+     * @default "all"
+     */
+    public boundingBoxes: 'all' | 'groupOnly' | 'none';
 
-    protected groupBounds: OrientedBounds;
+    /** Set this to enable rotation at the four corners */
+    public boxRotationEnabled: boolean;
+
+    /** The thickness of the box rotation area */
+    public boxRotationTolerance: number;
+
+    /** Set this to enable scaling by dragging at the edges of the bounding box */
+    public boxScalingEnabled: boolean;
+
+    /** The padding around the bounding-box to capture dragging on the edges. */
+    public boxScalingTolerance: number;
+
+    /** This will prevent the wireframe's center from shifting on scaling. */
+    public centeredScaling: boolean;
 
     /**
-     * Object mapping handle-names to the handle display-objects.
+     * Flags whether the transformer should **not** redraw each frame (good for performance)
+     *
+     * @default false
      */
+    public lazyMode: boolean;
+
+    /** Set this when you want the transformer to redraw when using {@link Transformer#lazyMode lazyMode}. */
+    public lazyDirty: boolean;
+
+    /**
+     * This is used when the display-object group are rendered through a projection transformation (i.e. are disconnected
+     * from the transformer in the scene graph). The transformer project itself into their frame-of-reference using this
+     * transform.
+     *
+     * Specifically, the projection-transform converts points from the group's world space to the transformer's world
+     * space. If you are not applying a projection on the transformer itself, this means it is the group's
+     * world-to-screen transformation.
+     */
+    public projectionTransform: Matrix;
+
+    /** The angles at which rotation should snap. */
+    public rotationSnaps: number[];
+
+    /** The maximum angular difference for snapping rotation. */
+    public rotationSnapTolerance: number;
+
+    /** The distance of skewing handles from the group's center. */
+    public skewRadius: number;
+
+    /** The angles at which both the horizontal & vertical skew handles should snap. */
+    public skewSnaps: number[];
+
+    /**
+     * The maximum angular difference for snapping skew handles.
+     */
+    public skewSnapTolerance: number;
+
+    /**
+     * This will enable translation on dragging the transformer. By default, it is turned on.
+     *
+     * @default true
+     */
+    public translateEnabled: boolean;
+
+    /**
+     * This will reset the rotation angle after the user finishes rotating a group with more than one display-object.
+     *
+     * @default true
+     */
+    public transientGroupTilt: boolean;
+
+    /** The last calculated bounds of the whole group being transformed */
+    protected groupBounds: OrientedBounds;
+
+    /** Object mapping handle-names to the handle display-objects. */
     protected handles: { [H in Handle]?: TransformerHandle };
 
     /**
@@ -291,17 +349,38 @@ export class Transformer extends Container
      * @ignore
      */
     public handleAnchors: { [H in Handle]: Point };
+
+    /** Draws the bounding boxes */
     protected wireframe: TransformerWireframe;
 
+    /** @see Transformer#enabledHandles */
     protected _enabledHandles: Handle[];
+
+    /** @see Transformer#rotateEnabled */
     protected _rotateEnabled: boolean;
+
+    /** @see Transformer#scaleEnabled */
     protected _scaleEnabled: boolean;
+
+    /** @see Transformer#skewEnabled */
     protected _skewEnabled: boolean;
+
+    /** The horizontal skew value. Rotating the group by 𝜽 will also change this value by 𝜽. */
     protected _skewX: number;
+
+    /** The vertical skew value. Rotating the group by 𝜽 will also change this value by 𝜽. */
     protected _skewY: number;
+
+    /** The currently grabbed handle. This can be used to get the type of transformation. */
     protected _transformHandle: Handle;
+
+    /** The current type of transform being applied by the user. */
     protected _transformType: 'translate' | 'scale' | 'rotate' | 'skew' | 'none';
+
+    /** The style applied on transformer handles */
     protected _handleStyle: Partial<ITransformerHandleStyle>;
+
+    /** The wireframe style applied on the transformer */
     protected _wireframeStyle: Partial<ITransformerStyle>;
 
     private _pointerDown: boolean;
@@ -368,63 +447,21 @@ export class Transformer extends Container
         this.cursor = 'move';
 
         this.boundingBoxes = options.boundingBoxes || 'all';
-
-        /**
-         * The group of display-objects under transformation.
-         */
         this.group = options.group || [];
-
-        /**
-         * The thickness of the box rotation area
-         */
         this.boxRotationTolerance = options.boxRotationTolerance || DEFUALT_BOX_ROTATION_TOLERANCE;
-
-        /**
-         * The padding around the bounding-box to capture dragging on the edges.
-         */
         this.boxScalingTolerance = options.boxScalingTolerance || DEFAULT_BOX_SCALING_TOLERANCE;
 
-        /**
-         * This will prevent the wireframe's center from shifting on scaling.
-         */
         this.centeredScaling = !!options.centeredScaling;
-
-        /**
-         * This is used when the display-object group are rendered through a projection transformation (i.e. are disconnected
-         * from the transformer in the scene graph). The transformer project itself into their frame-of-reference using this
-         * transform.
-         *
-         * Specifically, the projection-transform converts points from the group's world space to the transformer's world
-         * space. If you are not applying a projection on the transformer itself, this means it is the group's
-         * world-to-screen transformation.
-         */
         this.projectionTransform = new Matrix();
 
-        /**
-         * The angles at which rotation should snap.
-         */
         this.rotationSnaps = options.rotationSnaps || DEFAULT_ROTATION_SNAPS;
-
-        /**
-         * The maximum angular difference for snapping rotation.
-         */
         this.rotationSnapTolerance = options.rotationSnapTolerance !== undefined
             ? options.rotationSnapTolerance
             : DEFAULT_ROTATION_SNAP_TOLERANCE;
 
-        /**
-         * The distance of skewing handles from the group's center.
-         */
         this.skewRadius = options.skewRadius || 64;
-
-        /**
-         * The angles at which both the horizontal & vertical skew handles should snap.
-         */
         this.skewSnaps = options.skewSnaps || DEFAULT_SKEW_SNAPS;
 
-        /**
-         * The maximum angular difference for snapping skew handles.
-         */
         this.skewSnapTolerance = options.skewSnapTolerance !== undefined
             ? options.skewSnapTolerance
             : DEFAULT_SKEW_SNAP_TOLERANCE;
@@ -435,44 +472,16 @@ export class Transformer extends Container
         this._scaleEnabled = options.scaleEnabled !== false;
         this._skewEnabled = options.skewEnabled === true;
 
-        /**
-         * This will enable translation on dragging the transformer. By default, it is turned on.
-         *
-         * @default true
-         */
         this.translateEnabled = options.translateEnabled !== false;
-
-        /**
-         * This will reset the rotation angle after the user finishes rotating a group with more than one display-object.
-         *
-         * @default true
-         */
         this.transientGroupTilt = options.transientGroupTilt !== undefined ? options.transientGroupTilt : true;
 
-        /**
-         * Draws the bounding boxes
-         */
         this.wireframe = this.addChild(new TransformerWireframe(this));
         this.wireframe.cursor = 'none';
 
-        /**
-         * The horizontal skew value. Rotating the group by 𝜽 will also change this value by 𝜽.
-         */
         this._skewX = 0;
-
-        /**
-         * The vertical skew value. Rotating the group by 𝜽 will also change this value by 𝜽.
-         */
         this._skewY = 0;
 
-        /**
-         * The current type of transform being applied by the user.
-         */
         this._transformType = 'none';
-
-        /**
-         * The wireframe style applied on the transformer
-         */
         this._wireframeStyle = Object.assign({}, DEFAULT_WIREFRAME_STYLE, options.wireframeStyle || {});
 
         const HandleConstructor = options.handleConstructor || TransformerHandle;
@@ -575,9 +584,7 @@ export class Transformer extends Container
         this.on('pointerupoutside', this.onPointerUp, this);
     }
 
-    /**
-     * The list of enabled handles, if applied manually.
-     */
+    /** The list of enabled handles, if applied manually. */
     get enabledHandles(): Array<Handle>
     {
         return this._enabledHandles;
@@ -612,9 +619,7 @@ export class Transformer extends Container
         }
     }
 
-    /**
-     * The currently applied handle style. If you have edited the transformer handles directly, this may be inaccurate.
-     */
+    /** The currently applied handle style. If you have edited the transformer handles directly, this may be inaccurate. */
     get handleStyle(): Partial<ITransformerHandleStyle>
     {
         return this._handleStyle;
@@ -631,9 +636,7 @@ export class Transformer extends Container
         this._handleStyle = value;
     }
 
-    /**
-     * This will enable the rotate handles.
-     */
+    /** This will enable the rotate handles. */
     get rotateEnabled(): boolean
     {
         return this._rotateEnabled;
@@ -653,9 +656,7 @@ export class Transformer extends Container
         }
     }
 
-    /**
-     * This will enable the scale handles.
-     */
+    /** This will enable the scale handles. */
     get scaleEnabled(): boolean
     {
         return this._scaleEnabled;
@@ -683,9 +684,7 @@ export class Transformer extends Container
         }
     }
 
-    /**
-     * This will enable the skew handles.
-     */
+    /** This will enable the skew handles. */
     get skewEnabled(): boolean
     {
         return this._skewEnabled;
@@ -717,9 +716,7 @@ export class Transformer extends Container
         return this._transformType;
     }
 
-    /**
-     * The currently applied wireframe style.
-     */
+    /** The currently applied wireframe style. */
     get wireframeStyle(): Partial<ITransformerStyle>
     {
         return this._wireframeStyle;
@@ -1008,24 +1005,26 @@ export class Transformer extends Container
         super.render(renderer);
     }
 
-    /**
-     * Recalculates the transformer's geometry. This is called on each render.
-     */
+    /** Recalculates the transformer's geometry. This is called on each render. */
     protected draw(): void
     {
         const targets = this.group;
         const { color, thickness } = this._wireframeStyle;
 
         // Updates occur right here!
-        this.wireframe.clear()
-            .lineStyle(thickness, color);
+        this.wireframe.clear();
+
+        if (this.boundingBoxes !== 'none')
+        {
+            this.wireframe.lineStyle(thickness, color);
+        }
 
         if (this.translateEnabled)
         {
             this.wireframe.beginFill(0xffffff, 1e-4);
         }
 
-        for (let i = 0, j = targets.length; i < j && this.boundingBoxes !== 'groupOnly'; i++)
+        for (let i = 0, j = targets.length; i < j && this.boundingBoxes === 'all'; i++)
         {
             this.wireframe.drawBounds(Transformer.calculateOrientedBounds(targets[i], tempBounds));
         }
