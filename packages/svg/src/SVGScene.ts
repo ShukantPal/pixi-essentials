@@ -151,6 +151,11 @@ export class SVGScene extends DisplayObject
      */
     render(renderer: Renderer): void
     {
+        if (!this.visible || !this.renderable)
+        {
+            return;
+        }
+
         // Update render-server objects
         this.renderServers.render(renderer);
 
