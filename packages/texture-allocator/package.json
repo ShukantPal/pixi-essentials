@@ -35,9 +35,9 @@
     "@pixi-essentials/area-allocator": "~1.0.2"
   },
   "peerDependencies": {
-    "@pixi/core": "~5.4.0-rc.1",
-    "@pixi/math": "~5.4.0-rc.1",
-    "@pixi/constants": "~5.4.0-rc.1"
+    "@pixi/core": "^6.0.0",
+    "@pixi/math": "^6.0.0",
+    "@pixi/constants": "^6.0.0"
   },
   "devDependencies": {
     "rollup": "~2.33.1",
