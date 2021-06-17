@@ -177,6 +177,8 @@ export class SVGScene extends DisplayObject
     {
         super.updateTransform();
 
+        this.root.alpha = this.worldAlpha;
+
         const worldTransform = this.worldTransform;
         const rootTransform = this.root.transform.worldTransform;
 
