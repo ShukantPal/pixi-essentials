@@ -27,8 +27,7 @@
     "url": "git+https://github.com/SukantPal/pixi-essentials.git"
   },
   "scripts": {
-    "build": "rollup -c node_modules/@pixi-build-tools/rollup-configurator/index.js --silent",
-    "build:types": "echo \"Error: run tests from root\" && exit 1"
+    "build": "rollup -c node_modules/@pixi-build-tools/rollup-configurator/index.js --silent"
   },
   "bugs": {
     "url": "https://github.com/SukantPal/pixi-essentials/issues"
@@ -37,24 +36,25 @@
     "gl-mat3": "2.0.0"
   },
   "peerDependencies": {
-    "@pixi/constants": "^5.0.0",
-    "@pixi/core": "^5.0.0",
-    "@pixi/display": "^5.0.0",
-    "@pixi/math": "^5.0.0",
+    "@pixi/constants": "^6.0.0",
+    "@pixi/core": "^6.0.0",
+    "@pixi/display": "^6.0.0",
+    "@pixi/math": "^6.0.0",
     "pixi-batch-renderer": "2.3.2"
   },
   "devDependencies": {
-    "@pixi/constants": "^5.0.0",
-    "@pixi/core": "^5.0.0",
-    "@pixi/display": "^5.0.0",
-    "@pixi/math": "^5.0.0",
+    "@pixi/constants": "^6.0.0",
+    "@pixi/core": "^6.0.0",
+    "@pixi/display": "^6.0.0",
+    "@pixi/math": "^6.0.0",
     "pixi-batch-renderer": "2.3.2",
-    "pixi.js": "5.3.0",
+    "pixi.js": "6.0.0",
     "@pixi-build-tools/rollup-configurator": "^1.0.10",
     "tslib": "~2.0.1",
     "typescript": "~4.0.2",
     "eslint": "~7.7.0",
     "@pixi-essentials/eslint-config": "~1.0.0",
-    "rollup": "~2.27.0"
+    "rollup": "~2.27.0",
+    "@microsoft/api-extractor": "~7.16.1"
   }
 }

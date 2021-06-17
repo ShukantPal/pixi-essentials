@@ -10,8 +10,11 @@ export * from './SVGGraphicsNode';
 export * from './SVGImageNode';
 export * from './SVGPathNode';
 export * from './SVGScene';
+export * from './SVGSceneContext';
 export * from './SVGUseNode';
 export * from './SVGTextEngine';
 export * from './SVGTextEngineImpl';
 export * from './SVGTextNode';
 export * from './SVGUseNode';
+
+export * from './mask/MaskServer';

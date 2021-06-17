@@ -10,16 +10,24 @@ import type { AreaField } from './Area';
  * is allocated or free. The last element is optional and is the list
  * of its children.
  *
+ * @public
  * @ignore
  */
-type AreaNode = [AreaNode, AreaField, boolean] | [AreaNode, AreaField, AreaNode[]];
+export type AreaNode = [AreaNode, AreaField, boolean] | [AreaNode, AreaField, AreaNode[]];
 
 /**
  * Pointer to guillotene node.
+ * 
+ * @public
+ * @ignore
  */
-type AreaPtr = { __mem_area: AreaNode };
+export type AreaPtr = { __mem_area: AreaNode };
 
-enum SPLIT_ORIENTATION {
+/**
+ * @public
+ * @ignore
+ */
+export enum SPLIT_ORIENTATION {
     HOR = 0,
     VERT = 1,
     NONE = 2
@@ -27,6 +35,7 @@ enum SPLIT_ORIENTATION {
 
 const tempRect = new Rectangle();
 
+/** @public */
 export class GuilloteneAllocator implements AreaAllocator<AreaPtr>
 {
     protected _root: AreaNode;

@@ -9,6 +9,8 @@ const tempRect = new Rectangle();
 /**
  * The texture allocator dynamically manages space on base-texture slabs. It can be used to generate
  * atlases on demand, which improve batching efficiency.
+ * 
+ * @public
  */
 export class TextureAllocator<T extends Texture = Texture>
 {

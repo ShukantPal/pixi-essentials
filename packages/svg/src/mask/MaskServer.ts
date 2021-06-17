@@ -12,6 +12,7 @@ const tempDestinationFrame = new Rectangle();
  * A sprite that does not render anything. It can be used as a mask whose bounds can be updated by adding it
  * as a child of the mask-target.
  *
+ * @public
  * @see MaskServer.createMask
  * @ignore
  */
@@ -32,6 +33,7 @@ export class MaskSprite extends Sprite
  * to alpha = 1. The rest are filtered to an alpha such that 0 < alpha < 1.). This is in compliance
  * with [CSS Masking Module Level 1](https://www.w3.org/TR/css-masking-1/#MaskElement).
  *
+ * @public
  * @ignore
  */
 export class MaskServer extends Sprite

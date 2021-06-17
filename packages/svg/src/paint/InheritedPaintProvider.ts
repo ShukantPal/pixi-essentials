@@ -4,6 +4,8 @@ import type { Paint } from './Paint';
 /**
  * Inherited paint, used for &lt;use /&gt; elements. The properties used on the inherited paint do not
  * override those on the parent.
+ * 
+ * @public
  */
 export class InheritedPaintProvider implements Paint
 {

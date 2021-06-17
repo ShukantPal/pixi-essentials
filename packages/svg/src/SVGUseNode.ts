@@ -4,6 +4,8 @@ import type { SVGGraphicsNode } from './SVGGraphicsNode';
 
 /**
  * Container for rendering SVG &lt;use /&gt; elements.
+ * 
+ * @public
  */
 export class SVGUseNode extends Container
 {

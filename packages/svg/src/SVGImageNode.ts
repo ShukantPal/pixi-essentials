@@ -6,6 +6,8 @@ const tempMatrix = new Matrix();
 
 /**
  * Draws SVG &lt;image /&gt; elements.
+ * 
+ * @public
  */
 export class SVGImageNode extends SVGGraphicsNode
 {

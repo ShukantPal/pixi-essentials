@@ -1,4 +1,4 @@
-import { Conic, LinearFunctional } from './Conic';
+import { Conic } from './Conic';
 import { Container } from '@pixi/display';
 import { Point, Matrix, Transform } from '@pixi/math';
 import { Renderer, Texture } from '@pixi/core';
@@ -19,10 +19,6 @@ const tempMatrix = new Matrix();
 export class ConicDisplay extends Container
 {
     public shape: Conic;
-
-    // Container
-    public transform: Transform;
-    public worldTransform: Matrix;
 
     public vertexData: Array<number>;
     public uvData: Array<number>;

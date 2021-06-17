@@ -1,11 +1,18 @@
 import { Bounds } from '@pixi/display';
 
+/** @internal */
 export const PATH = 100;
 
+/**
+ * @ignore
+ * @public
+ */
 export type Contour = Array<number>;
 
 /**
  * The fill rules supported by {@link Path}.
+ * 
+ * @public
  */
 export enum FILL_RULE {
     NONZERO = 'nonzero',
@@ -14,6 +21,8 @@ export enum FILL_RULE {
 
 /**
  * Shape extension for Graphics
+ * 
+ * @public
  */
 export class Path
 {

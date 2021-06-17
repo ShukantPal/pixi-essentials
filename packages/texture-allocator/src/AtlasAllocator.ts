@@ -9,6 +9,8 @@ import type { AtlasResourceSource } from './AtlasResource';
 /**
  * This texture allocator auto-manages the base-texture with an {@link AtlasResource}. You can also
  * pass a texture source to `allocate`, mimicing {@link Texture.from} functionality.
+ * 
+ * @public
  */
 export class AtlasAllocator extends TextureAllocator
 {

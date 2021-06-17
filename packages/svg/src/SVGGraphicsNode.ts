@@ -10,7 +10,11 @@ import type { PaintServer } from './paint/PaintServer';
 import type { Renderer } from '@pixi/core';
 import type { SVGSceneContext } from './SVGSceneContext';
 
-interface ILineStyleOptions {
+/**
+ * @public
+ * @ignore
+ */
+export interface ILineStyleOptions {
     color?: number;
     alpha?: number;
     texture?: Texture;
@@ -47,6 +51,8 @@ const _segmentsCount: (length: number, defaultSegments?: number) => number
  *
  * It also provides an implementation for dashed stroking, by adding the `dashArray` and `dashOffset` properties
  * to `LineStyle`.
+ * 
+ * @public
  */
 export class SVGGraphicsNode extends Graphics
 {

@@ -1,4 +1,4 @@
-import { Matrix, Point } from '@pixi/math';
+import { Point } from '@pixi/math';
 
 const SQRT_2 = Math.sqrt(2);
 

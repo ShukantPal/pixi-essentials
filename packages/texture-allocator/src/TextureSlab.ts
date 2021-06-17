@@ -4,6 +4,8 @@ import type { Rectangle } from '@pixi/math';
 
 /**
  * An entry of an issued texture from a {@link TextureSlab}.
+ * 
+ * @public
  */
 export type TextureEntry = 
 {
@@ -21,6 +23,8 @@ export type TextureEntry =
 /**
  * A texture slab holds a managed base-texture that is used to issue allocated texture space. The
  * texture allocator maintains a pool of these texture slabs.
+ * 
+ * @public
  */
 export type TextureSlab = 
 {

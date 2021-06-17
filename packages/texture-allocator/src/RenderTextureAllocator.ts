@@ -8,6 +8,8 @@ import type { TextureSlab } from './TextureSlab';
 
 /**
  * This allocator issues render-textures, and is otherwise just like {@link TextureAllocator}.
+ * 
+ * @public
  */
 export class RenderTextureAllocator extends TextureAllocator<RenderTexture>
 {

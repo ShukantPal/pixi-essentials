@@ -6,6 +6,8 @@ import type { Paint } from './Paint';
 /**
  * Provides the `Paint` for an `SVGElement`. It will also respond to changes in the attributes of the element
  * (not implemented).
+ * 
+ * @public
  */
 export class PaintProvider implements Paint
 {

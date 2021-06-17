@@ -31,6 +31,8 @@ const tempRect = new Rectangle();
  * events fired by a node:
  *
  * * `nodetransformdirty`: This will invalidate the transform calculations.
+ * 
+ * @public
  */
 export class SVGScene extends DisplayObject
 {
@@ -700,7 +702,7 @@ export class SVGScene extends DisplayObject
     }
 
     /**
-     * Populates the entire SVG scene. This should only be called once after the {@link this.content} has been set.
+     * Populates the entire SVG scene. This should only be called once after the {@link SVGScene.content} has been set.
      */
     protected populateScene(): void
     {
@@ -716,7 +718,7 @@ export class SVGScene extends DisplayObject
     }
 
     /**
-     * Handles `nodetransformdirty` events fired by nodes. It will set {@link this._transformDirty} to true.
+     * Handles `nodetransformdirty` events fired by nodes. It will set {@link SVGScene._transformDirty} to true.
      *
      * This will also emit `transformdirty`.
      */

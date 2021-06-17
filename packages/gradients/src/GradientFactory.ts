@@ -26,6 +26,8 @@ const tempDestinationFrame = new Rectangle();
 
 /**
  * Factory class for generating color-gradient textures.
+ * 
+ * @public
  */
 export class GradientFactory
 {

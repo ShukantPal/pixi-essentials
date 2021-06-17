@@ -21,6 +21,8 @@ function convertLinearGradientAxis(linearGradient: SVGLinearGradientElement): vo
 /**
  * [Paint Servers]{@link https://svgwg.org/svg-next/pservers.html} are implemented as textures. This class is a lazy
  * wrapper around paint textures, which can only be generated using the `renderer` drawing to the screen.
+ * 
+ * @public
  */
 export class PaintServer
 {

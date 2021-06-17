@@ -1,8 +1,8 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/api-extractor/v7/api-extractor.schema.json",
-  "mainEntryPointFilePath": "<projectFolder>/compile/svg/src/index.d.ts",
+  "mainEntryPointFilePath": "<projectFolder>/compile/index.d.ts",
   "bundledPackages": [
-    "@pixi-essentials/svg"
+    "@pixi-essentials/conic"
   ],
   "compiler": {
     "tsconfigFilePath": "<projectFolder>/tsconfig.json"
@@ -24,20 +24,11 @@
     "compilerMessageReporting": {
       "default": {
         "logLevel": "warning"
-      },
-      "TS2611": {
-        "logLevel": "none"
       }
     },
     "extractorMessageReporting": {
       "default": {
         "logLevel": "warning"
-      },
-      "ae-unresolved-link": {
-        "logLevel": "none"
-      },
-      "ae-internal-missing-underscore": {
-        "logLevel": "none"
       }
     },
     "tsdocMessageReporting": {

@@ -20,6 +20,7 @@ enum SHAPES {
     RREC = 4,
 }
 
+/** @public */
 export class SVGGraphicsGeometry extends GraphicsGeometry
 {
     processLine(data: GraphicsData): void

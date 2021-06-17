@@ -1,0 +1,8 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "outDir": "compile",
+        "skipLibCheck": true
+    },
+    "include": ["../global.d.ts", "./src"]
+}

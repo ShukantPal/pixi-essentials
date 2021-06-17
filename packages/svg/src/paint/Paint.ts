@@ -4,6 +4,7 @@ import type { LINE_CAP, LINE_JOIN } from '@pixi/graphics';
  * Internal, parsed form of painting attributes. If a paint attribute was not defined, it **must** be
  * `null` (not `undefined`).
  *
+ * @public
  * @see https://www.w3.org/TR/SVG2/painting.html#Introduction
  */
 export interface Paint

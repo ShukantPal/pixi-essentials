@@ -8,6 +8,8 @@ graphicsUtils.FILL_COMMANDS[PATH] = buildPath;
 
 /**
  * Draws SVG &lt;path /&gt; elements.
+ * 
+ * @public
  */
 export class SVGPathNode extends SVGGraphicsNode
 {

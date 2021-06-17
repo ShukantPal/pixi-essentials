@@ -8,7 +8,7 @@
   "types": "./index.d.ts",
   "scripts": {
     "build": "rollup -c rollup.config.js --silent",
-    "build:types": "rm -rf compile && tsc && api-extractor run"
+    "build:types": "rm -rf compile && rm ./index.d.ts && tsc && api-extractor run"
   },
   "repository": {
     "type": "git",
@@ -46,7 +46,8 @@
     "@pixi/math": "^6.0.0",
     "@pixi/filter-color-matrix": "^6.0.0",
     "@pixi/text": "^6.0.0",
-    "typescript": "~4.1.3"
+    "typescript": "~4.1.3",
+    "@microsoft/api-extractor": "~7.16.1"
   },
   "peerDependencies": {
     "@pixi/core": "^6.0.0",

@@ -6,11 +6,15 @@ import type { Texture } from '@pixi/core';
 
 /**
  * Types of image sources supported by {@link AtlasResource}.
+ * 
+ * @public
  */
 export type AtlasResourceSource =  HTMLImageElement | HTMLCanvasElement | ImageBitmap | ImageData | ArrayBufferView;
 
 /**
  * An item that is uploaded to the atlas texture.
+ * 
+ * @public
  */
 export type AtlasResourceItem =
 {
@@ -42,6 +46,8 @@ export type AtlasResourceItem =
 
 /**
  * An {@code AtlasResource} is used by {@link AtlasAllocator} to manage texture sources
+ * 
+ * @public
  */
 export class AtlasResource extends Resource
 {

@@ -1,5 +1,7 @@
 /**
  * The orientation of an area indicates the axis along which it is split. This is a 1-bit field.
+ * 
+ * @public
  */
 export enum AreaOrientation {
     HORIZONTAL = 0,
@@ -8,6 +10,8 @@ export enum AreaOrientation {
 
 /**
  * Alias for the 31-bit field texture-area type.
+ * 
+ * @public
  */
 export type AreaField = number;
 
@@ -53,11 +57,13 @@ export type AreaField = number;
  *      <td>30</td>
  *      <td>
  *        The orientation of the area, which indicates the axis along it is split. The open and close
- *        offsets of its children are along this axis. See {@link TextureAreaOrientation}.
+ *        offsets of its children are along this axis. See {@link AreaOrientation}.
  *      </td>
  *    </tr>
  *  </tbody>
  * </table>
+ * 
+ * @public
  */
 export class Area
 {

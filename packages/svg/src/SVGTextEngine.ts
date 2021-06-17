@@ -9,6 +9,7 @@ import type { TextStyle } from '@pixi/text';
  *
  * It is expected an implementation inherits from {@link PIXI.DisplayObject}.
  *
+ * @public
  * @see SVGTextEngineImpl
  */
 export interface SVGTextEngine

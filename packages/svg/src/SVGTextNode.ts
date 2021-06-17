@@ -9,6 +9,8 @@ import type { TextStyle, TextStyleFontWeight } from '@pixi/text';
 
 /**
  * Draws SVG &lt;text /&gt; elements.
+ * 
+ * @public
  */
 export class SVGTextNode extends Container
 {
