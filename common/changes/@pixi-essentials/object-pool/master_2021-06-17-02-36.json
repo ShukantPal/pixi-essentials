@@ -1,11 +1,11 @@
 {
   "changes": [
     {
-      "packageName": "@pixi-essentials/gradients",
+      "packageName": "@pixi-essentials/object-pool",
       "comment": "",
       "type": "none"
     }
   ],
-  "packageName": "@pixi-essentials/gradients",
+  "packageName": "@pixi-essentials/object-pool",
   "email": "shukantpal@outlook.com"
 }

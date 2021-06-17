@@ -1,11 +1,11 @@
 {
   "changes": [
     {
-      "packageName": "@pixi-essentials/area-allocator",
+      "packageName": "@pixi-essentials/conic",
       "comment": "",
       "type": "none"
     }
   ],
-  "packageName": "@pixi-essentials/area-allocator",
+  "packageName": "@pixi-essentials/conic",
   "email": "shukantpal@outlook.com"
 }

@@ -2,6 +2,23 @@
   "name": "@pixi-essentials/texture-allocator",
   "entries": [
     {
+      "version": "1.0.5",
+      "tag": "@pixi-essentials/texture-allocator_v1.0.5",
+      "date": "Thu, 17 Jun 2021 02:36:40 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Upgrade to PixiJS 6"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@pixi-essentials/area-allocator\" from `~1.0.2` to `~1.0.3`"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.0.4",
       "tag": "@pixi-essentials/texture-allocator_v1.0.4",
       "date": "Sun, 31 Jan 2021 03:42:33 GMT",
