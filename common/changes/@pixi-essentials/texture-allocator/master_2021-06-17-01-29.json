@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@pixi-essentials/texture-allocator",
+      "comment": "Upgrade to PixiJS 6",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@pixi-essentials/texture-allocator",
+  "email": "shukantpal@outlook.com"
+}
