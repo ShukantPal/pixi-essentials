@@ -1,3 +1,5 @@
+export { getLoaderCache } from './loader';
+
 export * from './paint/InheritedPaintProvider';
 export * from './paint/Paint';
 export * from './paint/PaintProvider';

@@ -4,6 +4,7 @@ import { DisplayObject, Container } from '@pixi/display';
 import { InheritedPaintProvider } from './paint/InheritedPaintProvider';
 import { MaskServer } from './mask/MaskServer';
 import { LINE_CAP, LINE_JOIN, GraphicsData } from '@pixi/graphics';
+import * as Loader from './loader';
 import { Matrix, Rectangle } from '@pixi/math';
 import { PaintProvider } from './paint/PaintProvider';
 import { PaintServer } from './paint/PaintServer';
@@ -112,13 +113,16 @@ export class SVGScene extends DisplayObject
 
         this.renderServers = new Container();
 
-        this.populateScene();
+        if (!context || !context.disableRootPopulation)
+            this.populateScene();
     }
 
     initContext(context?: Partial<SVGSceneContext>): void
     {
         context = context || {};
         context.atlas = context.atlas || new CanvasTextureAllocator(2048, 2048);
+        context.disableHrefSVGLoading = typeof context.disableHrefSVGLoading === 'undefined'
+            ? false : context.disableHrefSVGLoading;
 
         this._context = context as SVGSceneContext;
     }
@@ -541,17 +545,53 @@ export class SVGScene extends DisplayObject
             case 'use': {
                 const useElement = element as SVGUseElement;
                 const useTargetURL = useElement.getAttribute('href') || useElement.getAttribute('xlink:href');
-                const useTarget = this.content.querySelector(useTargetURL);
                 const usePaint = this.queryPaint(useElement);
 
-                const contentNode = this.populateSceneRecursive(useTarget as SVGGraphicsElement, {
-                    basePaint: usePaint,
-                }) as SVGGraphicsNode;
-
-                (node as SVGUseNode).ref = contentNode;
-                contentNode.transform.setFromMatrix(Matrix.IDENTITY);// clear transform
-
                 (node as SVGUseNode).embedUse(useElement);
+
+                if (useTargetURL.startsWith('#'))
+                {
+                    const useTarget = this.content.querySelector(useTargetURL);
+                    const contentNode = this.populateSceneRecursive(useTarget as SVGGraphicsElement, {
+                        basePaint: usePaint,
+                    }) as SVGGraphicsNode;
+
+                    (node as SVGUseNode).ref = contentNode;
+                    contentNode.transform.setFromMatrix(Matrix.IDENTITY);// clear transform
+                }
+                else if (!this._context.disableHrefSVGLoading)
+                {
+                    (node as SVGUseNode).isRefExternal = true;
+
+                    Loader._load(useTargetURL)
+                        .then((svgDocument) => [
+                            new SVGScene(svgDocument, {
+                                ...this._context,
+                                disableRootPopulation: true,
+                            }),
+                            svgDocument.querySelector('#' + useTargetURL.split('#')[1])
+                        ] as [SVGScene, SVGElement])
+                        .then(([shellScene, useTarget]) =>
+                        {
+                            if (!useTarget)
+                            {
+                                console.error(`SVGScene failed to resolve ${useTargetURL} and SVGUseNode is empty!`);
+                            }
+
+                            const contentNode = shellScene.populateSceneRecursive(useTarget as SVGGraphicsElement, {
+                                basePaint: usePaint,
+                            }) as SVGGraphicsNode;
+        
+                            (node as SVGUseNode).ref = contentNode;
+                            contentNode.transform.setFromMatrix(Matrix.IDENTITY);// clear transform
+
+                            this._transformDirty = true;
+
+                            shellScene.on('transformdirty', () => {
+                                this._transformDirty = true;
+                            });
+                        });
+                }
             }
         }
 
@@ -761,5 +801,18 @@ export class SVGScene extends DisplayObject
     {
         this._height = value;
         this.scale.y = this._height / this.content.viewBox.baseVal.height;
+    }
+
+    /**
+     * Load the SVG document and create a {@link SVGScene} asynchronously.
+     * 
+     * A cache is used for loaded SVG documents.
+     *
+     * @param url 
+     * @param context 
+     * @returns 
+     */
+    static async from(url: string, context?: SVGSceneContext): Promise<SVGScene> {
+        return new SVGScene(await Loader._load(url), context);
     }
 }

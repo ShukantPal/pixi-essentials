@@ -9,8 +9,15 @@ import type { SVGGraphicsNode } from './SVGGraphicsNode';
  */
 export class SVGUseNode extends Container
 {
+    public isRefExternal = false;
+
     private _ref: SVGGraphicsNode;
 
+    /**
+     * Embeds the `SVGUseElement` into this node.
+     *
+     * @param element - The &lt;use /&gt; element to draw.
+     */
     embedUse(element: SVGUseElement): void
     {
         element.x.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PX);
