@@ -1,6 +1,14 @@
 # Change Log - @pixi-essentials/svg
 
-This log was last generated on Thu, 17 Jun 2021 02:36:40 GMT and should not be manually modified.
+This log was last generated on Sun, 20 Jun 2021 02:05:05 GMT and should not be manually modified.
+
+## 1.1.2
+Sun, 20 Jun 2021 02:05:05 GMT
+
+### Patches
+
+- Add support for external hrefs in SVG use elements
+- Fix issues with dash-array in stroked geometries
 
 ## 1.1.1
 Thu, 17 Jun 2021 02:36:40 GMT

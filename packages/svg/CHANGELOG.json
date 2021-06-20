@@ -2,6 +2,21 @@
   "name": "@pixi-essentials/svg",
   "entries": [
     {
+      "version": "1.1.2",
+      "tag": "@pixi-essentials/svg_v1.1.2",
+      "date": "Sun, 20 Jun 2021 02:05:05 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Add support for external hrefs in SVG use elements"
+          },
+          {
+            "comment": "Fix issues with dash-array in stroked geometries"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.1.1",
       "tag": "@pixi-essentials/svg_v1.1.1",
       "date": "Thu, 17 Jun 2021 02:36:40 GMT",
