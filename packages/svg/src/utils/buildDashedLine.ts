@@ -480,14 +480,30 @@ export function buildDashedLine(graphicsData: GraphicsData, graphicsGeometry: Gr
 
     const style = graphicsData.lineStyle;
 
+    // The length into the current dash that was already been added. This is needed for dashes
+    // that cover multiple line segments (e.g. path turns in middle of dash).
     let dashOffset: number = (style as any).dashOffset || 0;
+
+    // Local copy of dash array
     const dashArray: number[] = (style as any).dashArray || [10, 5];
 
+    // Number of line segments
     const segCount = (points.length / 2) - 1;
+
+    // Start of each segment
     const segStart = new Point();
+
+    // End of each segement
     const segEnd = new Point();
+    
+    // Holds points for the dashes. When drawing a dash, this must contain more than one point. It
+    // may contain more than 2 points if the dash spans across multiple segments.
     const segPoints = [];
+
+    // The current head of the dash algorithm
     const dashPointer = new Point();
+
+    // The index in dashArray of location in the path at dashPointer
     let dashArrayIndex = 0;
 
     // Loop expects start of dash to already be present

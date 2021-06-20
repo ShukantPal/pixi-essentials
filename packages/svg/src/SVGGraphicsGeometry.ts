@@ -61,11 +61,12 @@ export class SVGGraphicsGeometry extends GraphicsGeometry
             if (lineStyle.dashArray)
             {
                 buildDashedLine(
-                    // @ts-expect-error
                     {
                         points: contour,
                         holes: [],
-                        shape: null,
+
+                        // @ts-expect-error
+                        shape: { points: contour, type: SHAPES.POLY },
                         lineStyle,
                     },
                     this,
