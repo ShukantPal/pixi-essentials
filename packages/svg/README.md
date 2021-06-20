@@ -18,12 +18,6 @@ npm install @pixi-essentials/svg
 import { SVGScene } from '@pixi-essentials/svg';
 
 async function main() {
-  const svgPayload = await fetch(
-    "https://upload.wikimedia.org/wikipedia/commons/f/fa/De_Groot_academic_genealogy.svg"
-  ).then((data) => data.text());
-  const svgDOM = new DOMParser().parseFromString(svgPayload, "image/svg+xml");
-  const svgEl = svgDOM.documentElement;
-
   console.info("Loaded payload");
 
   const app = new PIXI.Application({
@@ -36,7 +30,7 @@ async function main() {
   });
 
   const viewport = app.stage.addChild(new PIXI.Container());
-  const scene = viewport.addChild(new PIXI.SVGScene(svgEl));
+  const scene = viewport.addChild(await PIXI.SVGScene.from("https://upload.wikimedia.org/wikipedia/commons/f/fa/De_Groot_academic_genealogy.svg"));
 
   app.renderer.render(app.stage);
 
