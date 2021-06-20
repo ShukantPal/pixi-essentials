@@ -48,7 +48,7 @@ export class PaintProvider implements Paint
         this.stroke = stroke && PaintProvider.parseColor(element.getAttribute('stroke'));
         this.strokeDashArray = strokeDashArray
             && strokeDashArray
-                ?.split(',')
+                ?.split(/[, ]+/g)
                 .map((num) => parseFloat(num.trim()));
         this.strokeDashOffset = strokeDashOffset && parseFloat(strokeDashOffset);
         this.strokeLineCap = strokeLineCap as unknown as LINE_CAP;
