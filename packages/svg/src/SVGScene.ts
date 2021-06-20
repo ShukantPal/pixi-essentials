@@ -565,7 +565,10 @@ export class SVGScene extends DisplayObject
 
                     Loader._load(useTargetURL)
                         .then((svgDocument) => [
-                            new SVGScene(svgDocument, this._context),
+                            new SVGScene(svgDocument, {
+                                ...this._context,
+                                disableRootPopulation: true,
+                            }),
                             svgDocument.querySelector('#' + useTargetURL.split('#')[1])
                         ] as [SVGScene, SVGElement])
                         .then(([shellScene, useTarget]) =>
