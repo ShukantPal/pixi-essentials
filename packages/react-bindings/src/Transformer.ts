@@ -4,7 +4,7 @@ import { PixiComponent, applyDefaultProps } from '@inlet/react-pixi';
 import { Transformer as TransformerImpl, TransformerHandle as TransformerHandleImpl } from '@pixi-essentials/transformer';
 import { applyEventProps } from './utils/applyEventProps';
 
-import type { ITransformerStyle, ITransformerHandleStyle } from '@pixi-essentials/transformer';
+import type { ITransformerCursors, ITransformerStyle, ITransformerHandleStyle } from '@pixi-essentials/transformer';
 import type React from 'react';
 
 const EMPTY: any = {};
@@ -19,6 +19,7 @@ export type TransformerProps = {
     boxRotationEnabled?: boolean;
     boxRotationTolerance?: number;
     centeredScaling?: boolean;
+    cursors?: Partial<ITransformerCursors>;
     enabledHandles?: Array<string>;
     group?: DisplayObject[];
     handleConstructor?: typeof TransformerHandleImpl;
@@ -55,6 +56,11 @@ export const Transformer: React.FC<TransformerProps> = PixiComponent<Transformer
     {
         applyDefaultProps(instance, oldProps, newProps);
         applyEventProps(instance, HANDLER_TO_EVENT, oldProps, newProps);
+
+        if (newProps.cursors)
+        {
+            Object.assign(instance.cursors, newProps.cursors);
+        }
 
         instance.group = newProps.group || [];
 

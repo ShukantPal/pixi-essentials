@@ -11,6 +11,7 @@ export type {
     ScaleHandle,
     SkewHandle,
     ITransformerOptions,
-    ITransformerStyle
+    ITransformerStyle,
+    ITransformerCursors,
 } from './Transformer';
 export type { ITransformerHandleStyle } from './TransformerHandle';
