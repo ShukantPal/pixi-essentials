@@ -212,31 +212,97 @@ const DEFAULT_WIREFRAME_STYLE: ITransformerStyle = {
 };
 
 /**
+ * @public
+ */
+export interface ITransformerCursors {
+    default: string;
+    boxRotate?: string;
+    boxScaleLeft?: string;
+    boxScaleTop?: string;
+    boxScaleRight?: string;
+    boxScaleBottom?: string;
+    translate?: string;
+}
+
+/**
  * @ignore
  * @public
  */
 export interface ITransformerOptions
 {
+    /** "all" or "groupOnly". "groupOnly" won't show individual bounding boxes. */
     boundingBoxes?: 'all' | 'groupOnly' | 'none';
+
+    /** Enable box rotation by dragging outside of corners */
     boxRotationEnabled?: boolean;
+
+    /** The radial tolerance for box rotation */
     boxRotationTolerance?: number;
+
+    /** Enable box scaling by dragging at the edges */
     boxScalingEnabled?: boolean;
+
+    /** The tolerance for scaling at the edges */
     boxScalingTolerance: number;
+
+    /** Whether scaling should always be centered */
     centeredScaling: boolean;
+
+    /** */
+    cursors?: ITransformerCursors;
+
+    /** Specifically define which handles are to be enabled */
     enabledHandles?: Array<Handle>;
+
+    /** The group of display-objects being transformed */
     group: DisplayObject[];
+
+    /** A custom transformer-handle class */
     handleConstructor: typeof TransformerHandle;
+
+    /** Styling options for the handle. These cannot be modified afterwards! */
     handleStyle: Partial<ITransformerHandleStyle>;
+
+    /** Whether rotate handles are enabled */
     rotateEnabled?: boolean;
+
+    /**
+     * The rotation snap angles, in radians. By default, transformer will
+     * snap for each 1/8th of a revolution.
+     */
     rotationSnaps?: number[];
+
+    /** The snap tolerance for rotation in radians */
     rotationSnapTolerance?: number;
+
+    /** Whether scale handles are enabled */
     scaleEnabled?: boolean;
+
+    /** Whether skew handles are enabled */
     skewEnabled?: boolean;
+
+    /**
+     * Distance of skew handles from center of transformer box
+     *      (`skewTransform` should be enabled)
+     */
     skewRadius?: number;
+
+    /** The skew snap angles, in radians. */
     skewSnaps?: number[];
+
+    /** The skew snap tolerance angle. */
     skewSnapTolerance?: number;
+
+    /** Whether dragging the transformer should move the group */
     translateEnabled?: boolean;
+
+    /**
+     * Whether the transformer should reset the wireframe's rotation
+     * after a rotator handle is "defocused".
+     */
     transientGroupTilt?: boolean;
+
+    /** Styling options for the wireframe. */
     wireframeStyle: Partial<ITransformerStyle>;
 }
 
@@ -283,6 +349,9 @@ export class Transformer extends Container
 
     /** This will prevent the wireframe's center from shifting on scaling. */
     public centeredScaling: boolean;
+
+    /** Cursors to use in the transformer */
+    public cursors: ITransformerCursors;
 
     /**
      * Flags whether the transformer should **not** redraw each frame (good for performance)
@@ -407,36 +476,6 @@ export class Transformer extends Container
      * | bottomRight           | Scale                    | |
      * | skewHorizontal        | Skew                     | Applies vertical shear. Handle segment is horizontal at skew.y = 0! |
      * | skewVertical          | Skew                     | Applied horizontal shear. Handle segment is vertical at skew.x = 0! |
-     *
-     * @param {object}[options]
-     * @param {string}[boundingBoxes="all"] - "all" or "groupOnly". "groupOnly" won't show individual bounding boxes.
-     * @param {DisplayObject[]}[options.group] - the group of display-objects being transformed
-     * @param {boolean}[options.enabledHandles] - specifically define which handles are to be enabled
-     * @param {TransformerHandleClass}[options.handleConstructor] - a custom transformer-handle class
-     * @param {object}[options.handleStyle] - styling options for the handle. These cannot be modified afterwards!
-     * @param {number}[options.handleStyle.color=0xffffff] - handle color
-     * @param {string}[options.handleStyle.outlineColor=0x000000] - color of the handle outline (stroke)
-     * @param {string}[options.handleStyle.outlineThickness=1] - thickness of the handle outline (stroke)
-     * @param {number}[options.handleStyle.radius=8] - dimensions of the handle
-     * @param {string}[options.handleStyle.shape='tooth'] - 'circle', 'tooth', or 'square'
-     * @param {boolean}[options.handleStyle.scaleInvariant] - whether the handles should not become bigger when the whole scene
-     *  is scaled up.
-     * @param {boolean}[options.rotateEnabled=true] - whether rotate handles are enabled
-     * @param {number[]}[options.rotationSnaps] - the rotation snap angles, in radians. By default, transformer will
-     *      snap for each 1/8th of a revolution.
-     * @param {number}[options.rotationSnapTolerance] - the snap tolerance for rotation in radians
-     * @param {boolean}[options.scaleEnabled=true] - whether scale handles are enabled
-     * @param {boolean}[options.skewEnabled=true] - whether skew handles are enabled
-     * @param {number}[options.skewRadius] - distance of skew handles from center of transformer box
-     *      (`skewTransform` should be enabled)
-     * @param {number[]}[options.skewSnaps] - the skew snap angles, in radians.
-     * @param {number}[options.skewSnapTolerance] - the skew snap tolerance angle.
-     * @param {boolean}[options.translateEnabled=true] - whether dragging the transformer should move the group
-     * @param {boolean}[options.transientGroupTilt=true] - whether the transformer should reset the wireframe's rotation
-     *      after a rotator handle is "defocused".
-     * @param {object}[options.wireframeStyle] - styling options for the wireframe.
-     * @param {number}[options.wireframeStyle.color] - color of the lines
-     * @param {number}[options.wireframeStyle.thickness] - thickness of the lines
      */
     constructor(options: Partial<ITransformerOptions> = {})
     {
@@ -444,7 +483,8 @@ export class Transformer extends Container
         super();
 
         this.interactive = true;
-        this.cursor = 'move';
+        this.cursors = Object.assign({ default: 'move' }, options.cursors);
+        this.cursor = this.cursors.default;
 
         this.boundingBoxes = options.boundingBoxes || 'all';
         this.group = options.group || [];
@@ -1198,68 +1238,76 @@ export class Transformer extends Container
     /** Called on the `pointermove` event. You must call the super implementation. */
     protected onPointerMove(e: InteractionEvent): void
     {
-        if (!this._pointerDown)
-        {
-            return;
-        }
-
         const lastPointerPosition = this._pointerPosition;
         const currentPointerPosition = pointPool.allocate().copyFrom(e.data.global);
+        const hoveredHandle = this.wireframe.hitHandleType(
+            this.groupBounds,
+            this.projectionTransform,
+            currentPointerPosition);
 
-        const cx = currentPointerPosition.x;
-        const cy = currentPointerPosition.y;
-
-        // Translate group by difference
-        if (this._pointerDragging)
+        if (!this._pointerDown)
         {
-            switch (this._transformHandle)
-            {
-                case 'boxRotateTopLeft':
-                case 'boxRotateTopRight':
-                case 'boxRotateBottomLeft':
-                case 'boxRotateBottomRight':
-                    this.rotateGroup(this._transformHandle, currentPointerPosition);
-                    break;
-                case 'topCenter':
-                case 'middleLeft':
-                case 'middleRight':
-                case 'bottomCenter':
-                    this.scaleGroup(this._transformHandle, currentPointerPosition);
-                    break;
-                default: {
-                    if (this.translateEnabled)
-                    {
-                        const [worldOrigin, worldDestination, worldDelta] = tempHull;
-
-                        // HINT: The pointer has moved from lastPointerPosition to currentPointerPosition in the
-                        // transformer's world space. However, we want to translate the display-object's in their
-                        // world space; to do this, we project (0,0) and the delta into their world-space, and take
-                        // the difference.
-                        worldOrigin.set(0, 0);
-                        worldDestination.set(
-                            currentPointerPosition.x - lastPointerPosition.x,
-                            currentPointerPosition.y - lastPointerPosition.y);
-                        this.projectionTransform.applyInverse(worldOrigin, worldOrigin);
-                        this.projectionTransform.applyInverse(worldDestination, worldDestination);
-
-                        worldDelta.set(worldDestination.x - worldOrigin.x, worldDestination.y - worldOrigin.y);
-
-                        this.translateGroup(worldDelta);
-                    }
-                }
-            }
+            this.setCursorFromHoveredHandle(hoveredHandle);
         }
         else
         {
-            this._transformHandle = this.wireframe.hitHandleType(
-                this.groupBounds,
-                this.projectionTransform,
-                currentPointerPosition);
-        }
+            const cx = currentPointerPosition.x;
+            const cy = currentPointerPosition.y;
 
-        this._pointerPosition.x = cx;
-        this._pointerPosition.y = cy;
-        this._pointerDragging = true;
+            // Translate group by difference
+            if (this._pointerDragging)
+            {
+                switch (this._transformHandle)
+                {
+                    case 'boxRotateTopLeft':
+                    case 'boxRotateTopRight':
+                    case 'boxRotateBottomLeft':
+                    case 'boxRotateBottomRight':
+                        this.rotateGroup(this._transformHandle, currentPointerPosition);
+                        break;
+                    case 'topCenter':
+                    case 'middleLeft':
+                    case 'middleRight':
+                    case 'bottomCenter':
+                        this.scaleGroup(this._transformHandle, currentPointerPosition);
+                        break;
+                    default:
+                    {
+                        if (this.translateEnabled)
+                        {
+                            const [worldOrigin, worldDestination, worldDelta] = tempHull;
+
+                            // HINT: The pointer has moved from lastPointerPosition to currentPointerPosition in the
+                            // transformer's world space. However, we want to translate the display-object's in their
+                            // world space; to do this, we project (0,0) and the delta into their world-space, and take
+                            // the difference.
+                            worldOrigin.set(0, 0);
+                            worldDestination.set(
+                                currentPointerPosition.x - lastPointerPosition.x,
+                                currentPointerPosition.y - lastPointerPosition.y);
+                            this.projectionTransform.applyInverse(worldOrigin, worldOrigin);
+                            this.projectionTransform.applyInverse(worldDestination, worldDestination);
+
+                            worldDelta.set(worldDestination.x - worldOrigin.x, worldDestination.y - worldOrigin.y);
+
+                            this.translateGroup(worldDelta);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                this._transformHandle = this.wireframe.hitHandleType(
+                    this.groupBounds,
+                    this.projectionTransform,
+                    currentPointerPosition);
+                this.setCursorFromHoveredHandle(hoveredHandle);
+            }
+
+            this._pointerPosition.x = cx;
+            this._pointerPosition.y = cy;
+            this._pointerDragging = true;
+        }
 
         pointPool.release(currentPointerPosition);
         e.stopPropagation();
@@ -1375,6 +1423,37 @@ export class Transformer extends Container
         else if (this._transformHandle === key1)
         {
             this._transformHandle = key0;
+        }
+    }
+
+    /** Set cursor from {@code this.cursors} based on the handle hovered currently. */
+    private setCursorFromHoveredHandle(hoveredHandle: string): void
+    {
+        if (hoveredHandle && hoveredHandle.startsWith('boxRotate'))
+        {
+            this.cursor = this.cursors.boxRotate || this.cursors.default;
+        }
+        else if (hoveredHandle)
+        {
+            switch (hoveredHandle)
+            {
+                case 'topCenter':
+                    this.cursor = this.cursors.boxScaleTop || this.cursors.default;
+                    break;
+                case 'middleLeft':
+                    this.cursor = this.cursors.boxScaleLeft || this.cursors.default;
+                    break;
+                case 'middleRight':
+                    this.cursor = this.cursors.boxScaleRight || this.cursors.default;
+                    break;
+                case 'bottomCenter':
+                    this.cursor = this.cursors.boxScaleBottom || this.cursors.default;
+                    break;
+            }
+        }
+        else
+        {
+            this.cursor = this.cursors.translate || this.cursors.default;
         }
     }
 
