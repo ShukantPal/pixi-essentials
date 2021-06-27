@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/transformer",
   "entries": [
     {
+      "version": "2.4.0",
+      "tag": "@pixi-essentials/transformer_v2.4.0",
+      "date": "Sun, 27 Jun 2021 23:47:01 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "New \"cursors\" option for custom CSS cursors for box rotation/scaling areas"
+          }
+        ]
+      }
+    },
+    {
       "version": "2.3.3",
       "tag": "@pixi-essentials/transformer_v2.3.3",
       "date": "Sun, 16 May 2021 01:04:10 GMT",

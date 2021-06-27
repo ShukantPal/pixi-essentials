@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/transformer
 
-This log was last generated on Sun, 16 May 2021 01:04:10 GMT and should not be manually modified.
+This log was last generated on Sun, 27 Jun 2021 23:47:01 GMT and should not be manually modified.
+
+## 2.4.0
+Sun, 27 Jun 2021 23:47:01 GMT
+
+### Minor changes
+
+- New "cursors" option for custom CSS cursors for box rotation/scaling areas
 
 ## 2.3.3
 Sun, 16 May 2021 01:04:10 GMT
