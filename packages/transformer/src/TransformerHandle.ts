@@ -5,34 +5,22 @@ import { Renderer } from '@pixi/core';
 import { InteractionEvent } from '@pixi/interaction';
 import type { Handle } from './Transformer';
 
-/**
- * @see TransformerHandle#style
- */
+/** @see TransformerHandle#style */
 export interface ITransformerHandleStyle
 {
-    /**
-     * Fill color of the handle
-     */
+    /** Fill color of the handle */
     color: number;
 
-    /**
-     * Outline color of the handle
-     */
+    /** Outline color of the handle */
     outlineColor: number;
 
-    /**
-     * Outline thickness around the handle
-     */
+    /** Outline thickness around the handle */
     outlineThickness: number;
 
-    /**
-     * Radius (or size for non-circular handles) of the handle
-     */
+    /** Radius (or size for non-circular handles) of the handle */
     radius: number;
 
-    /**
-     * {@link TransformerHandle} provides three types of handle shapes - 'circle', 'square', 'tooth'.
-     */
+    /** {@link TransformerHandle} provides three types of handle shapes - 'circle', 'square', 'tooth'. */
     shape: string;
 }
 
