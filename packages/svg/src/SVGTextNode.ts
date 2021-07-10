@@ -54,8 +54,8 @@ export class SVGTextNode extends Container
         {
             await engine.clear();
 
-            this.currentTextPosition.x = 0;
-            this.currentTextPosition.y = 0;
+            this.currentTextPosition.x = element.x.baseVal.getItem(0).value;
+            this.currentTextPosition.y = element.y.baseVal.getItem(0).value;
         }
 
         const fill = element.getAttribute('fill');
