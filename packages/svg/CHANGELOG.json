@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/svg",
   "entries": [
     {
+      "version": "1.1.3",
+      "tag": "@pixi-essentials/svg_v1.1.3",
+      "date": "Sat, 10 Jul 2021 23:20:42 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix SVGTextNode not respecting (x, y) attributes of <text /> elements."
+          }
+        ]
+      }
+    },
+    {
       "version": "1.1.2",
       "tag": "@pixi-essentials/svg_v1.1.2",
       "date": "Sun, 20 Jun 2021 02:05:05 GMT",

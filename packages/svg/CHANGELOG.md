@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/svg
 
-This log was last generated on Sun, 20 Jun 2021 02:05:05 GMT and should not be manually modified.
+This log was last generated on Sat, 10 Jul 2021 23:20:42 GMT and should not be manually modified.
+
+## 1.1.3
+Sat, 10 Jul 2021 23:20:42 GMT
+
+### Patches
+
+- Fix SVGTextNode not respecting (x, y) attributes of <text /> elements.
 
 ## 1.1.2
 Sun, 20 Jun 2021 02:05:05 GMT
