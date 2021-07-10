@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/svg
 
-This log was last generated on Sat, 10 Jul 2021 23:20:42 GMT and should not be manually modified.
+This log was last generated on Sat, 10 Jul 2021 23:35:25 GMT and should not be manually modified.
+
+## 1.1.4
+Sat, 10 Jul 2021 23:35:25 GMT
+
+### Patches
+
+- Fix error when <text /> element does not have (x, y) attributes
 
 ## 1.1.3
 Sat, 10 Jul 2021 23:20:42 GMT
