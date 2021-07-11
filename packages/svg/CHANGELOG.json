@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/svg",
   "entries": [
     {
+      "version": "1.1.5",
+      "tag": "@pixi-essentials/svg_v1.1.5",
+      "date": "Sun, 11 Jul 2021 02:39:04 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix SVGTextNode shifting upwards when you re-embed a text element. This only pops when manipulating the scene tree manually."
+          }
+        ]
+      }
+    },
+    {
       "version": "1.1.4",
       "tag": "@pixi-essentials/svg_v1.1.4",
       "date": "Sat, 10 Jul 2021 23:35:25 GMT",

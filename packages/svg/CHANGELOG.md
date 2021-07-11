@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/svg
 
-This log was last generated on Sat, 10 Jul 2021 23:35:25 GMT and should not be manually modified.
+This log was last generated on Sun, 11 Jul 2021 02:39:04 GMT and should not be manually modified.
+
+## 1.1.5
+Sun, 11 Jul 2021 02:39:04 GMT
+
+### Patches
+
+- Fix SVGTextNode shifting upwards when you re-embed a text element. This only pops when manipulating the scene tree manually.
 
 ## 1.1.4
 Sat, 10 Jul 2021 23:35:25 GMT
