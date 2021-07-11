@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/svg",
   "entries": [
     {
+      "version": "1.1.6",
+      "tag": "@pixi-essentials/svg_v1.1.6",
+      "date": "Sun, 11 Jul 2021 20:57:07 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix SVGTextNode bounds not updating after the text renders."
+          }
+        ]
+      }
+    },
+    {
       "version": "1.1.5",
       "tag": "@pixi-essentials/svg_v1.1.5",
       "date": "Sun, 11 Jul 2021 02:39:04 GMT",

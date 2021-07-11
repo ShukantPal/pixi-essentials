@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/react-bindings
 
-This log was last generated on Sun, 27 Jun 2021 23:47:01 GMT and should not be manually modified.
+This log was last generated on Sun, 11 Jul 2021 20:57:07 GMT and should not be manually modified.
+
+## 1.1.4
+Sun, 11 Jul 2021 20:57:07 GMT
+
+### Patches
+
+- Add support for transformer cursors to <Transformer />
 
 ## 1.1.3
 Sun, 27 Jun 2021 23:47:01 GMT

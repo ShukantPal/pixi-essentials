@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/svg
 
-This log was last generated on Sun, 11 Jul 2021 02:39:04 GMT and should not be manually modified.
+This log was last generated on Sun, 11 Jul 2021 20:57:07 GMT and should not be manually modified.
+
+## 1.1.6
+Sun, 11 Jul 2021 20:57:07 GMT
+
+### Patches
+
+- Fix SVGTextNode bounds not updating after the text renders.
 
 ## 1.1.5
 Sun, 11 Jul 2021 02:39:04 GMT
