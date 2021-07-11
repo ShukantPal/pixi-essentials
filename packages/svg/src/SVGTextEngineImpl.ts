@@ -45,6 +45,7 @@ export class SVGTextEngineImpl extends Sprite implements SVGTextEngine
     {
         this.contentList.clear();
         this.dirtyId++;
+        this.position.set(0, 0);
     }
 
     async put(
