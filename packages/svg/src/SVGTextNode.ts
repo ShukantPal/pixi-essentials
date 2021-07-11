@@ -39,6 +39,12 @@ export class SVGTextNode extends Container
         this.currentTextPosition = { x: 0, y: 0 };
         this.engine = new (SVGTextNode.defaultEngine)();
         this.addChild(this.engine);
+    
+        // Listen to nodetransformdirty on the engine so bounds are updated
+        // when the text is rendered.
+        this.engine.on('nodetransformdirty', () => {
+            this.emit('nodetransformdirty');
+        });
     }
 
     /**

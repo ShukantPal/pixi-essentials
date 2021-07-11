@@ -118,7 +118,10 @@ export class SVGTextEngineImpl extends Sprite implements SVGTextEngine
         }
 
         this.updateId = this.dirtyId;
-    }
+
+        // Ensure the SVG scene updates its bounds after the text is rendered.
+        this.emit('nodetransformdirty');
+     }
 
     render(renderer: Renderer): void
     {

@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@pixi-essentials/transformer",
+      "comment": "Add new \"cursors\" option, allowing custom cursors for box-rotation/box-scaling areas.",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@pixi-essentials/transformer",
+  "email": "sukantk2002@outlook.com"
+}

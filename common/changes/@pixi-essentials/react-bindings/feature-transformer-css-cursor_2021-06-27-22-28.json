@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@pixi-essentials/react-bindings",
+      "comment": "Add support for transformer cursors to <Transformer />",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@pixi-essentials/react-bindings",
+  "email": "sukantk2002@outlook.com"
+}
