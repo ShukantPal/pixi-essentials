@@ -88,6 +88,9 @@ export class AtlasResource extends Resource
         if (glTexture.width !== width ||
             glTexture.height !== height)
         {
+            glTexture.width = width;
+            glTexture.height = height;
+
             gl.texImage2D(
                 baseTexture.target, 
                 0, 

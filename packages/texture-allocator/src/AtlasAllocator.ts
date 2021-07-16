@@ -77,6 +77,8 @@ export class AtlasAllocator extends TextureAllocator
                 updateId: -1,
                 texture,
             });
+
+            texture.baseTexture.update();
         }
 
         return texture;
