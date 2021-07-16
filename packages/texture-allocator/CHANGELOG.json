@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/texture-allocator",
   "entries": [
     {
+      "version": "1.0.6",
+      "tag": "@pixi-essentials/texture-allocator_v1.0.6",
+      "date": "Fri, 16 Jul 2021 22:26:37 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix bugs in AtlasAllocator that caused textures to disappear if they were added in different frames"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.0.5",
       "tag": "@pixi-essentials/texture-allocator_v1.0.5",
       "date": "Thu, 17 Jun 2021 02:36:40 GMT",

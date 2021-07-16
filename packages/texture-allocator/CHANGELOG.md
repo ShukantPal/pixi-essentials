@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/texture-allocator
 
-This log was last generated on Thu, 17 Jun 2021 02:36:40 GMT and should not be manually modified.
+This log was last generated on Fri, 16 Jul 2021 22:26:37 GMT and should not be manually modified.
+
+## 1.0.6
+Fri, 16 Jul 2021 22:26:37 GMT
+
+### Patches
+
+- Fix bugs in AtlasAllocator that caused textures to disappear if they were added in different frames
 
 ## 1.0.5
 Thu, 17 Jun 2021 02:36:40 GMT
