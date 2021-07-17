@@ -158,10 +158,10 @@ export class TransformerWireframe extends Graphics
 
         if (boxScalingEnabled)
         {
-            const topProximity = distanceToLine(x, y, topLeft, topRight);
-            const leftProximity = distanceToLine(x, y, topLeft, bottomLeft);
-            const rightProximity = distanceToLine(x, y, topRight, bottomRight);
-            const bottomProximity = distanceToLine(x, y, bottomLeft, bottomRight);
+            const topProximity = distanceToLine(x, y, topLeft, topRight) * projectionTransform.d;
+            const leftProximity = distanceToLine(x, y, topLeft, bottomLeft) * projectionTransform.a;
+            const rightProximity = distanceToLine(x, y, topRight, bottomRight) * projectionTransform.a;
+            const bottomProximity = distanceToLine(x, y, bottomLeft, bottomRight) * projectionTransform.d;
             const minProximity = Math.min(topProximity, leftProximity, rightProximity, bottomProximity);
 
             if (minProximity < boxScalingTolerance)
