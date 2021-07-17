@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/transformer",
   "entries": [
     {
+      "version": "2.5.1",
+      "tag": "@pixi-essentials/transformer_v2.5.1",
+      "date": "Sat, 17 Jul 2021 20:49:05 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix issues with cursors and handle hit-testing when using projection transforms"
+          }
+        ]
+      }
+    },
+    {
       "version": "2.5.0",
       "tag": "@pixi-essentials/transformer_v2.5.0",
       "date": "Sun, 11 Jul 2021 20:57:07 GMT",

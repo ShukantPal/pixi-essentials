@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/transformer
 
-This log was last generated on Sun, 11 Jul 2021 20:57:07 GMT and should not be manually modified.
+This log was last generated on Sat, 17 Jul 2021 20:49:05 GMT and should not be manually modified.
+
+## 2.5.1
+Sat, 17 Jul 2021 20:49:05 GMT
+
+### Patches
+
+- Fix issues with cursors and handle hit-testing when using projection transforms
 
 ## 2.5.0
 Sun, 11 Jul 2021 20:57:07 GMT
