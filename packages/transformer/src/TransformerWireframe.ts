@@ -154,10 +154,7 @@ export class TransformerWireframe extends Graphics
             bottomLeft,
         ] = groupBounds.hull;
 
-        projectionTransform.applyInverse(pointerPosition, pointerPosition);
-
-        const x = pointerPosition.x;
-        const y = pointerPosition.y;
+        const { x, y } = projectionTransform.applyInverse(pointerPosition, tempPoint);
 
         if (boxScalingEnabled)
         {
