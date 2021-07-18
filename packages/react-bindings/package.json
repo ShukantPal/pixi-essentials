@@ -32,7 +32,7 @@
     "index.d.ts"
   ],
   "dependencies": {
-    "@pixi-essentials/transformer": "^2.5.1"
+    "@pixi-essentials/transformer": "^2.5.2"
   },
   "peerDependencies": {
     "@pixi/display": "^6.0.0",
