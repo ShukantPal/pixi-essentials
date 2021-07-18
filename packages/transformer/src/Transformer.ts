@@ -1307,10 +1307,11 @@ export class Transformer extends Container
             this._pointerPosition.x = cx;
             this._pointerPosition.y = cy;
             this._pointerDragging = true;
+
+            e.stopPropagation();
         }
 
         pointPool.release(currentPointerPosition);
-        e.stopPropagation();
     }
 
     /** Called on the `pointerup` and `pointerupoutside` events. You must call the super implementation. */
