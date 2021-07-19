@@ -69,14 +69,24 @@ export class AtlasAllocator extends TextureAllocator
         if (source)
         {
             const atlas = texture.baseTexture.resource as AtlasResource;
-
-            atlas.managedItems.push({
+            const item = {
                 frame: texture.frame,
                 source,
                 dirtyId: 0,
                 updateId: -1,
                 texture,
-            });
+            };
+
+            atlas.managedItems.push(item);
+
+            if (source && source instanceof HTMLImageElement && source.loading) {
+                source.addEventListener('load', () => {
+                    if (texture.baseTexture.valid && !texture.baseTexture.destroyed && atlas.managedItems.indexOf(item) >= 0) {
+                        item.dirtyId++;
+                        texture.baseTexture.update();
+                    }
+                });
+            }
 
             texture.baseTexture.update();
         }
