@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/texture-allocator
 
-This log was last generated on Fri, 16 Jul 2021 22:26:37 GMT and should not be manually modified.
+This log was last generated on Mon, 19 Jul 2021 16:31:57 GMT and should not be manually modified.
+
+## 1.0.7
+Mon, 19 Jul 2021 16:31:57 GMT
+
+### Patches
+
+- Invalidate resource item and base-texture when image loads after being allocated in AtlasAllocator
 
 ## 1.0.6
 Fri, 16 Jul 2021 22:26:37 GMT

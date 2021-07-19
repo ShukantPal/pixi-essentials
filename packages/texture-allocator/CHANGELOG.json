@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/texture-allocator",
   "entries": [
     {
+      "version": "1.0.7",
+      "tag": "@pixi-essentials/texture-allocator_v1.0.7",
+      "date": "Mon, 19 Jul 2021 16:31:57 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Invalidate resource item and base-texture when image loads after being allocated in AtlasAllocator"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.0.6",
       "tag": "@pixi-essentials/texture-allocator_v1.0.6",
       "date": "Fri, 16 Jul 2021 22:26:37 GMT",
