@@ -72,7 +72,7 @@ export class AtlasAllocator extends TextureAllocator
             const item = {
                 frame: texture.frame,
                 source,
-                dirtyId: 0,
+                dirtyId: source instanceof HTMLImageElement && source.loading ? -1 : 0,
                 updateId: -1,
                 texture,
             };
