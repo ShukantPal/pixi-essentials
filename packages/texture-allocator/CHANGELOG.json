@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/texture-allocator",
   "entries": [
     {
+      "version": "1.0.8",
+      "tag": "@pixi-essentials/texture-allocator_v1.0.8",
+      "date": "Tue, 27 Jul 2021 17:10:50 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fixes WebGL error when image is uploaded before it loads"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.0.7",
       "tag": "@pixi-essentials/texture-allocator_v1.0.7",
       "date": "Mon, 19 Jul 2021 16:31:57 GMT",
