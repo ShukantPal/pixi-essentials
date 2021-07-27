@@ -73,14 +73,14 @@ export class AtlasAllocator extends TextureAllocator
                 frame: texture.frame,
                 source,
                 // dirtyId !== updateId only if image loaded
-                dirtyId: source instanceof HTMLImageElement && source.loading ? -1 : 0,
+                dirtyId: source instanceof HTMLImageElement && !source.complete ? -1 : 0,
                 updateId: -1,
                 texture,
             };
 
             atlas.managedItems.push(item);
 
-            if (source instanceof HTMLImageElement && source.loading) {
+            if (source instanceof HTMLImageElement && !source.complete) {
                 source.addEventListener('load', () => {
                     if (texture.baseTexture.valid && !texture.baseTexture.destroyed && atlas.managedItems.indexOf(item) >= 0) {
                         item.dirtyId++;
