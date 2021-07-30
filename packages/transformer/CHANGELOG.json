@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/transformer",
   "entries": [
     {
+      "version": "2.5.4",
+      "tag": "@pixi-essentials/transformer_v2.5.4",
+      "date": "Fri, 30 Jul 2021 18:24:29 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix type declarations not generated for 2.5.3"
+          }
+        ]
+      }
+    },
+    {
       "version": "2.5.3",
       "tag": "@pixi-essentials/transformer_v2.5.3",
       "date": "Fri, 30 Jul 2021 18:00:26 GMT",

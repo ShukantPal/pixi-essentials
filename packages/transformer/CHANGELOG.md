@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/transformer
 
-This log was last generated on Fri, 30 Jul 2021 18:00:26 GMT and should not be manually modified.
+This log was last generated on Fri, 30 Jul 2021 18:24:29 GMT and should not be manually modified.
+
+## 2.5.4
+Fri, 30 Jul 2021 18:24:29 GMT
+
+### Patches
+
+- Fix type declarations not generated for 2.5.3
 
 ## 2.5.3
 Fri, 30 Jul 2021 18:00:26 GMT
