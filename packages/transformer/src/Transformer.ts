@@ -225,7 +225,6 @@ export interface ITransformerCursors {
 }
 
 /**
- * @ignore
  * @public
  */
 export interface ITransformerOptions
@@ -292,6 +291,9 @@ export interface ITransformerOptions
 
     /** The skew snap tolerance angle. */
     skewSnapTolerance?: number;
+
+    /** The root object in your scene in which the transformed objects exist. */
+    stage: Container;
 
     /** Whether dragging the transformer should move the group */
     translateEnabled?: boolean;
@@ -392,6 +394,28 @@ export class Transformer extends Container
     public skewSnapTolerance: number;
 
     /**
+     * The root object in your scene in which objects can move.
+     *
+     * {@code Transformer} will subscribe to this object for `pointermove` events, if provided. This
+     * should be used when:
+     *
+     * * {@link InteractionManager.moveWhenInside moveWhenInside} is enabled on the interaction plugin.
+     * * {@link EventBoundary.moveOnAll moveOnAll} is not turned off when using the new {@link EventSystem}.
+     *
+     * Otherwise, the transformer will receive **not** `pointermove` events when the user drags fast enough that
+     * the cursor leaves the transformer's bounds.
+     *
+     * The stage must be fully interactive in the area you want objects to move. Generally, this is the
+     * whole canvas:
+     *
+     * ```ts
+     * stage.interactive = true;
+     * stage.hitArea = renderer.screen;// or pass custom rect for the canvas dimensions
+     * ```
+     */
+    public stage: Container | null;
+
+    /**
      * This will enable translation on dragging the transformer. By default, it is turned on.
      *
      * @default true
@@ -455,6 +479,7 @@ export class Transformer extends Container
     private _pointerDown: boolean;
     private _pointerDragging: boolean;
     private _pointerPosition: Point;
+    private _pointerMoveTarget: DisplayObject;
 
     /* eslint-disable max-len */
     /**
@@ -518,6 +543,8 @@ export class Transformer extends Container
         this.wireframe = this.addChild(new TransformerWireframe(this));
         this.wireframe.cursor = 'none';
 
+        this.stage = options.stage || null;
+
         this._skewX = 0;
         this._skewY = 0;
 
@@ -533,6 +560,7 @@ export class Transformer extends Container
         const rotatorHandles = {
             rotator: this.addChild(
                 new HandleConstructor(
+                    this,
                     'rotator',
                     handleStyle,
                     (pointerPosition) =>
@@ -547,6 +575,7 @@ export class Transformer extends Container
         const scaleHandles = SCALE_HANDLES.reduce((scaleHandles, handleKey: ScaleHandle) =>
         {
             const handle = new HandleConstructor(
+                this,
                 handleKey,
                 handleStyle,
                 null,
@@ -569,6 +598,7 @@ export class Transformer extends Container
         const skewHandles = {
             skewHorizontal: this.addChild(
                 new HandleConstructor(
+                    this,
                     'skewHorizontal',
                     handleStyle,
                     (pointerPosition: Point) => { this.skewGroup('skewHorizontal', pointerPosition); },
@@ -577,6 +607,7 @@ export class Transformer extends Container
                 )),
             skewVertical: this.addChild(
                 new HandleConstructor(
+                    this,
                     'skewVertical',
                     handleStyle,
                     (pointerPosition: Point) => { this.skewGroup('skewVertical', pointerPosition); },
@@ -618,8 +649,8 @@ export class Transformer extends Container
         this._pointerDown = false;
         this._pointerDragging = false;
         this._pointerPosition = new Point();
+        this._pointerMoveTarget = null;
         this.on('pointerdown', this.onPointerDown, this);
-        this.on('pointermove', this.onPointerMove, this);
         this.on('pointerup', this.onPointerUp, this);
         this.on('pointerupoutside', this.onPointerUp, this);
     }
@@ -1233,6 +1264,15 @@ export class Transformer extends Container
         this._pointerDragging = false;
 
         e.stopPropagation();
+
+        if (this._pointerMoveTarget)
+        {
+            this._pointerMoveTarget.off('pointermove', this.onPointerMove, this);
+            this._pointerMoveTarget = null;
+        }
+
+        this._pointerMoveTarget = this.stage || this;
+        this._pointerMoveTarget.on('pointermove', this.onPointerMove, this);
     }
 
     /** Called on the `pointermove` event. You must call the super implementation. */
@@ -1322,6 +1362,12 @@ export class Transformer extends Container
 
         this.commitGroup();
         e.stopPropagation();
+
+        if (this._pointerMoveTarget)
+        {
+            this._pointerMoveTarget.off('pointermove', this.onPointerMove, this);
+            this._pointerMoveTarget = null;
+        }
     }
 
     /**

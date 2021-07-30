@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/texture-allocator
 
-This log was last generated on Tue, 27 Jul 2021 17:10:50 GMT and should not be manually modified.
+This log was last generated on Tue, 27 Jul 2021 17:48:59 GMT and should not be manually modified.
+
+## 1.0.9
+Tue, 27 Jul 2021 17:48:59 GMT
+
+### Patches
+
+- Fix image loading logic
 
 ## 1.0.8
 Tue, 27 Jul 2021 17:10:50 GMT

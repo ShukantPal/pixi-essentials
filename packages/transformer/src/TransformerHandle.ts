@@ -2,8 +2,9 @@ import { Graphics } from '@pixi/graphics';
 import { Point } from '@pixi/math';
 import { Renderer } from '@pixi/core';
 
-import { InteractionEvent } from '@pixi/interaction';
-import type { Handle } from './Transformer';
+import type { Container } from '@pixi/display';
+import type { InteractionEvent } from '@pixi/interaction';
+import type { Handle, Transformer } from './Transformer';
 
 /** @see TransformerHandle#style */
 export interface ITransformerHandleStyle
@@ -52,8 +53,10 @@ export class TransformerHandle extends Graphics
     private _pointerDown: boolean;
     private _pointerDragging: boolean;
     private _pointerPosition: Point;
+    private _pointerMoveTarget: Container | null;
 
     /**
+     * @param {Transformer} transformer
      * @param {string} handle - the type of handle being drawn
      * @param {object} styleOpts - styling options passed by the user
      * @param {function} handler - handler for drag events, it receives the pointer position; used by {@code onDrag}.
@@ -61,6 +64,7 @@ export class TransformerHandle extends Graphics
      * @param {string}[cursor='move'] - a custom cursor to be applied on this handle
      */
     constructor(
+        protected readonly transformer: Transformer,
         handle: Handle,
         styleOpts: Partial<ITransformerHandleStyle> = {},
         handler: (pointerPosition: Point) => void,
@@ -87,8 +91,8 @@ export class TransformerHandle extends Graphics
         this._pointerDown = false;
         this._pointerDragging = false;
         this._pointerPosition = new Point();
+        this._pointerMoveTarget = null;
         this.on('mousedown', this.onPointerDown, this);
-        this.on('mousemove', this.onPointerMove, this);
         this.on('mouseup', this.onPointerUp, this);
         this.on('mouseupoutside', this.onPointerUp, this);
     }
@@ -213,6 +217,15 @@ export class TransformerHandle extends Graphics
         this._pointerDragging = false;
 
         e.stopPropagation();
+
+        if (this._pointerMoveTarget)
+        {
+            this._pointerMoveTarget.off('pointermove', this.onPointerMove, this);
+            this._pointerMoveTarget = null;
+        }
+
+        this._pointerMoveTarget = this.transformer.stage || this;
+        this._pointerMoveTarget.on('pointermove', this.onPointerMove, this);
     }
 
     /**
@@ -252,6 +265,12 @@ export class TransformerHandle extends Graphics
         }
 
         this._pointerDown = false;
+
+        if (this._pointerMoveTarget)
+        {
+            this._pointerMoveTarget.off('pointermove', this.onPointerMove, this);
+            this._pointerMoveTarget = null;
+        }
     }
 
     /**
