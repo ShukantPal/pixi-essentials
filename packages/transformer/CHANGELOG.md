@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/transformer
 
-This log was last generated on Sun, 18 Jul 2021 02:26:58 GMT and should not be manually modified.
+This log was last generated on Fri, 30 Jul 2021 18:00:26 GMT and should not be manually modified.
+
+## 2.5.3
+Fri, 30 Jul 2021 18:00:26 GMT
+
+### Patches
+
+- Support for passing the stage for listening to pointermove events. This is useful when you're using the new EventSystem or moveWhenInside optimization with the interaction manager.
 
 ## 2.5.2
 Sun, 18 Jul 2021 02:26:58 GMT

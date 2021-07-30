@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/transformer",
   "entries": [
     {
+      "version": "2.5.3",
+      "tag": "@pixi-essentials/transformer_v2.5.3",
+      "date": "Fri, 30 Jul 2021 18:00:26 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Support for passing the stage for listening to pointermove events. This is useful when you're using the new EventSystem or moveWhenInside optimization with the interaction manager."
+          }
+        ]
+      }
+    },
+    {
       "version": "2.5.2",
       "tag": "@pixi-essentials/transformer_v2.5.2",
       "date": "Sun, 18 Jul 2021 02:26:58 GMT",
