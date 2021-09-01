@@ -24,6 +24,7 @@ export type TransformerProps = {
     group?: DisplayObject[];
     handleConstructor?: typeof TransformerHandleImpl;
     handleStyle?: Partial<ITransformerHandleStyle>;
+    lockAspectRatio?: boolean;
     projectionTransform?: Matrix;
     rotateEnabled?: boolean;
     rotationSnaps?: number[];
@@ -73,6 +74,7 @@ export const Transformer: React.FC<TransformerProps> = PixiComponent<Transformer
             ? newProps.boxRotationTolerance : instance.boxRotationTolerance;
         instance.centeredScaling = newProps.centeredScaling;
         instance.enabledHandles = newProps.enabledHandles as any;
+        instance.lockAspectRatio = newProps.lockAspectRatio;
         instance.projectionTransform.copyFrom(newProps.projectionTransform || IDENTITY_MATRIX);
         instance.skewRadius = newProps.skewRadius || instance.skewRadius;
         instance.rotateEnabled = newProps.rotateEnabled !== false;

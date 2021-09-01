@@ -262,6 +262,8 @@ export interface ITransformerOptions
     /** Styling options for the handle. These cannot be modified afterwards! */
     handleStyle: Partial<ITransformerHandleStyle>;
 
+    lockAspectRatio?: boolean;
+
     /** Whether rotate handles are enabled */
     rotateEnabled?: boolean;
 
@@ -364,6 +366,8 @@ export class Transformer extends Container
 
     /** Set this when you want the transformer to redraw when using {@link Transformer#lazyMode lazyMode}. */
     public lazyDirty: boolean;
+
+    public lockAspectRatio: boolean;
 
     /**
      * This is used when the display-object group are rendered through a projection transformation (i.e. are disconnected
@@ -518,6 +522,8 @@ export class Transformer extends Container
 
         this.centeredScaling = !!options.centeredScaling;
         this.projectionTransform = new Matrix();
+
+        this.lockAspectRatio = options.lockAspectRatio === true;
 
         this.rotationSnaps = options.rotationSnaps || DEFAULT_ROTATION_SNAPS;
         this.rotationSnapTolerance = options.rotationSnapTolerance !== undefined
@@ -922,8 +928,20 @@ export class Transformer extends Container
         const dv = (dx * vxvec) + (dy * vyvec);
 
         // Scaling factors along x,y axes
-        const sx = 1 + (du * xDir / innerBounds.width);
-        const sy = 1 + (dv * yDir / innerBounds.height);
+        let sx = 1 + (du * xDir / innerBounds.width);
+        let sy = 1 + (dv * yDir / innerBounds.height);
+
+        if (this.lockAspectRatio)
+        {
+            if (sx > sy)
+            {
+                sy = sx;
+            }
+            else
+            {
+                sx = sy;
+            }
+        }
 
         const matrix = tempMatrix.identity();
 
