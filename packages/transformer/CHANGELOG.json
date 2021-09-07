@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/transformer",
   "entries": [
     {
+      "version": "2.5.5",
+      "tag": "@pixi-essentials/transformer_v2.5.5",
+      "date": "Tue, 07 Sep 2021 01:18:24 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "New lockAspectRatio feature"
+          }
+        ]
+      }
+    },
+    {
       "version": "2.5.4",
       "tag": "@pixi-essentials/transformer_v2.5.4",
       "date": "Fri, 30 Jul 2021 18:24:29 GMT",

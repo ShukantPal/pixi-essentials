@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/transformer
 
-This log was last generated on Fri, 30 Jul 2021 18:24:29 GMT and should not be manually modified.
+This log was last generated on Tue, 07 Sep 2021 01:18:24 GMT and should not be manually modified.
+
+## 2.5.5
+Tue, 07 Sep 2021 01:18:24 GMT
+
+### Patches
+
+- New lockAspectRatio feature
 
 ## 2.5.4
 Fri, 30 Jul 2021 18:24:29 GMT
