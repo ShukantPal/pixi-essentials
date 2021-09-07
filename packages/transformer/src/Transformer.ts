@@ -262,6 +262,7 @@ export interface ITransformerOptions
     /** Styling options for the handle. These cannot be modified afterwards! */
     handleStyle: Partial<ITransformerHandleStyle>;
 
+    /** Lock aspect ratio when scaling using one of the corner handles. */
     lockAspectRatio?: boolean;
 
     /** Whether rotate handles are enabled */
@@ -367,6 +368,7 @@ export class Transformer extends Container
     /** Set this when you want the transformer to redraw when using {@link Transformer#lazyMode lazyMode}. */
     public lazyDirty: boolean;
 
+    /** Lock aspect ratio when using one of the corner handles. */
     public lockAspectRatio: boolean;
 
     /**
@@ -931,7 +933,15 @@ export class Transformer extends Container
         let sx = 1 + (du * xDir / innerBounds.width);
         let sy = 1 + (dv * yDir / innerBounds.height);
 
-        if (this.lockAspectRatio)
+        // Only lock aspect ratio if using a handle that scales along both axes.
+        const lockAspectRatio = this.lockAspectRatio && (
+            handle === 'topLeft' ||
+            handle === 'topRight' ||
+            handle === 'bottomLeft' ||
+            handle === 'bottomRight'
+        );
+
+        if (lockAspectRatio)
         {
             if (sx > sy)
             {
