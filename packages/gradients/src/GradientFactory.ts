@@ -11,14 +11,26 @@ import type { Renderer } from '@pixi/core';
  * @ignore
  * @param color - The hexadecimal form of the color.
  */
-function cssColor(color: number) {
+function cssColor(color: number | string) {
+    if(typeof color === 'string'){
+        return color;
+    }
     let string = color.toString(16);
 
-    while (string.length < 6) {
-        string = `0${string}`;
+    if(string.length === 3){
+        string = `#${string[0]}${string[0]}${string[1]}${string[1]}${string[2]}${string[2]}`;
+    }
+    else if(string.length === 8){
+        string = `rgba(${parseInt(string.substring(0, 2), 16)}, ${parseInt(string.substring(2, 4), 16)}, ${parseInt(string.substring(4, 6), 16)}, ${parseInt(string.substring(6), 16)/255})`;
+    }
+    else{
+        while (string.length < 6) {
+            string = `0${string}`;
+        }
+        string = `#${string}`;
     }
 
-    return `#${string}`;
+    return string;
 }
 
 const tempSourceFrame = new Rectangle();
@@ -75,7 +87,7 @@ export class GradientFactory
 
         colorStops.forEach((stop) => {
             gradient.addColorStop(stop.offset, cssColor(stop.color));
-        })
+        });
 
         context.fillStyle = gradient;
         context.fillRect(0, 0, renderTexture.width, renderTexture.height);
@@ -144,7 +156,7 @@ export class GradientFactory
 
         colorStops.forEach((stop) => {
             gradient.addColorStop(stop.offset, cssColor(stop.color));
-        })
+        });
 
         context.fillStyle = gradient;
         context.fillRect(0, 0, renderTexture.width, renderTexture.height);
