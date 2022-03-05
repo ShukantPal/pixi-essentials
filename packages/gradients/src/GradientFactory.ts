@@ -17,20 +17,11 @@ function cssColor(color: number | string) {
     }
     let string = color.toString(16);
 
-    if(string.length === 3){
-        string = `#${string[0]}${string[0]}${string[1]}${string[1]}${string[2]}${string[2]}`;
-    }
-    else if(string.length === 8){
-        string = `rgba(${parseInt(string.substring(0, 2), 16)}, ${parseInt(string.substring(2, 4), 16)}, ${parseInt(string.substring(4, 6), 16)}, ${parseInt(string.substring(6), 16)/255})`;
-    }
-    else{
-        while (string.length < 6) {
-            string = `0${string}`;
-        }
-        string = `#${string}`;
+    while (string.length < 6) {
+        string = `0${string}`;
     }
 
-    return string;
+    return  `#${string}`;
 }
 
 const tempSourceFrame = new Rectangle();
