@@ -21,7 +21,7 @@ function cssColor(color: number | string) {
         string = `0${string}`;
     }
 
-    return  `#${string}`;
+    return `#${string}`;
 }
 
 const tempSourceFrame = new Rectangle();
