@@ -5,6 +5,6 @@
  */
 export interface ColorStop
 {
-    color: number;
+    color: number | string;
     offset: number;
 }

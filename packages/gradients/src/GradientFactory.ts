@@ -11,7 +11,10 @@ import type { Renderer } from '@pixi/core';
  * @ignore
  * @param color - The hexadecimal form of the color.
  */
-function cssColor(color: number) {
+function cssColor(color: number | string) {
+    if(typeof color === 'string'){
+        return color;
+    }
     let string = color.toString(16);
 
     while (string.length < 6) {
@@ -75,7 +78,7 @@ export class GradientFactory
 
         colorStops.forEach((stop) => {
             gradient.addColorStop(stop.offset, cssColor(stop.color));
-        })
+        });
 
         context.fillStyle = gradient;
         context.fillRect(0, 0, renderTexture.width, renderTexture.height);
@@ -144,7 +147,7 @@ export class GradientFactory
 
         colorStops.forEach((stop) => {
             gradient.addColorStop(stop.offset, cssColor(stop.color));
-        })
+        });
 
         context.fillStyle = gradient;
         context.fillRect(0, 0, renderTexture.width, renderTexture.height);
