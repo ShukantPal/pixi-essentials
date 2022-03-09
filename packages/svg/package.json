@@ -1,6 +1,6 @@
 {
   "name": "@pixi-essentials/svg",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "Native SVG Renderer on top of PixiJS",
   "main": "lib/svg.js",
   "module": "lib/svg.es.js",
@@ -61,7 +61,7 @@
   "dependencies": {
     "d-path-parser": "^1.0.0",
     "tinycolor2": "^1.4.1",
-    "@pixi-essentials/gradients": "^0.0.4",
+    "@pixi-essentials/gradients": "^0.0.5",
     "@pixi-essentials/cull": "^1.1.0",
     "@pixi-essentials/texture-allocator": "~1.0.9",
     "libtess": "~1.2.2"

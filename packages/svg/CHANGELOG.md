@@ -1,6 +1,11 @@
 # Change Log - @pixi-essentials/svg
 
-This log was last generated on Sun, 11 Jul 2021 20:57:07 GMT and should not be manually modified.
+This log was last generated on Wed, 09 Mar 2022 03:58:56 GMT and should not be manually modified.
+
+## 1.1.7
+Wed, 09 Mar 2022 03:58:56 GMT
+
+*Version update only*
 
 ## 1.1.6
 Sun, 11 Jul 2021 20:57:07 GMT

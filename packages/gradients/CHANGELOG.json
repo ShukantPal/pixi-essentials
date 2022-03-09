@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/gradients",
   "entries": [
     {
+      "version": "0.0.5",
+      "tag": "@pixi-essentials/gradients_v0.0.5",
+      "date": "Wed, 09 Mar 2022 03:58:56 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Add support for strings as color values."
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.4",
       "tag": "@pixi-essentials/gradients_v0.0.4",
       "date": "Thu, 17 Jun 2021 02:36:40 GMT",

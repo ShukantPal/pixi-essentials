@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/svg",
   "entries": [
     {
+      "version": "1.1.7",
+      "tag": "@pixi-essentials/svg_v1.1.7",
+      "date": "Wed, 09 Mar 2022 03:58:56 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@pixi-essentials/gradients\" from `^0.0.4` to `^0.0.5`"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.1.6",
       "tag": "@pixi-essentials/svg_v1.1.6",
       "date": "Sun, 11 Jul 2021 20:57:07 GMT",
