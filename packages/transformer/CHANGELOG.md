@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/transformer
 
-This log was last generated on Tue, 07 Sep 2021 01:18:24 GMT and should not be manually modified.
+This log was last generated on Sat, 21 May 2022 23:41:14 GMT and should not be manually modified.
+
+## 2.5.6
+Sat, 21 May 2022 23:41:14 GMT
+
+### Patches
+
+- Fix transformer handles on mobile
 
 ## 2.5.5
 Tue, 07 Sep 2021 01:18:24 GMT

@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/transformer",
   "entries": [
     {
+      "version": "2.5.6",
+      "tag": "@pixi-essentials/transformer_v2.5.6",
+      "date": "Sat, 21 May 2022 23:41:14 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix transformer handles on mobile"
+          }
+        ]
+      }
+    },
+    {
       "version": "2.5.5",
       "tag": "@pixi-essentials/transformer_v2.5.5",
       "date": "Tue, 07 Sep 2021 01:18:24 GMT",
