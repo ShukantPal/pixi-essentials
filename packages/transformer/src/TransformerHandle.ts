@@ -92,9 +92,9 @@ export class TransformerHandle extends Graphics
         this._pointerDragging = false;
         this._pointerPosition = new Point();
         this._pointerMoveTarget = null;
-        this.on('mousedown', this.onPointerDown, this);
-        this.on('mouseup', this.onPointerUp, this);
-        this.on('mouseupoutside', this.onPointerUp, this);
+        this.on('pointerdown', this.onPointerDown, this);
+        this.on('pointerup', this.onPointerUp, this);
+        this.on('pointerupoutside', this.onPointerUp, this);
     }
 
     get handle(): Handle
