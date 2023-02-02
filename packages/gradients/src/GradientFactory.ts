@@ -98,6 +98,9 @@ export class GradientFactory
         renderer.batch.flush();
         renderer.renderTexture.bind(renderTarget, sourceFrame, destinationFrame);
 
+        // Clean up temporary sprite and texture
+        renderSprite.destroy({texture: true, baseTexture: true})
+
         return renderTexture;
     }
 
@@ -166,6 +169,9 @@ export class GradientFactory
         
         renderer.batch.flush();
         renderer.renderTexture.bind(renderTarget, sourceFrame, destinationFrame);
+
+        // Clean up temporary sprite and texture
+        renderSprite.destroy({texture: true, baseTexture: true})
 
         return renderTexture;
     }
