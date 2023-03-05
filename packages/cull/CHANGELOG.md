@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/cull
 
-This log was last generated on Wed, 17 Mar 2021 16:12:19 GMT and should not be manually modified.
+This log was last generated on Sun, 05 Mar 2023 03:28:18 GMT and should not be manually modified.
+
+## 2.0.0
+Sun, 05 Mar 2023 03:28:18 GMT
+
+### Breaking changes
+
+- Upgrade to PixiJS 7
 
 ## 1.1.0
 Wed, 17 Mar 2021 16:12:19 GMT
@@ -12,7 +19,7 @@ Wed, 17 Mar 2021 16:12:19 GMT
 ## 1.0.12
 Sun, 31 Jan 2021 03:42:33 GMT
 
-*Version update only*
+_Version update only_
 
 ## 1.0.10
 Sat, 26 Dec 2020 22:47:29 GMT

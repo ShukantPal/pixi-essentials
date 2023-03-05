@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/area-allocator
 
-This log was last generated on Thu, 17 Jun 2021 02:36:40 GMT and should not be manually modified.
+This log was last generated on Sun, 05 Mar 2023 03:28:18 GMT and should not be manually modified.
+
+## 2.0.0
+Sun, 05 Mar 2023 03:28:18 GMT
+
+### Breaking changes
+
+- Upgrade to PixiJS 7
 
 ## 1.0.3
 Thu, 17 Jun 2021 02:36:40 GMT

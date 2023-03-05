@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/bounds
 
-This log was last generated on Mon, 10 May 2021 01:41:10 GMT and should not be manually modified.
+This log was last generated on Sun, 05 Mar 2023 03:28:18 GMT and should not be manually modified.
+
+## 3.0.0
+Sun, 05 Mar 2023 03:28:18 GMT
+
+### Breaking changes
+
+- Upgrade to PixiJS 7
 
 ## 2.1.1
 Mon, 10 May 2021 01:41:10 GMT

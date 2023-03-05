@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/object-pool",
   "entries": [
     {
+      "version": "1.0.0",
+      "tag": "@pixi-essentials/object-pool_v1.0.0",
+      "date": "Sun, 05 Mar 2023 03:28:18 GMT",
+      "comments": {
+        "major": [
+          {
+            "comment": "Upgrade to PixiJS 7"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.1.0",
       "tag": "@pixi-essentials/object-pool_v0.1.0",
       "date": "Wed, 17 Mar 2021 16:12:19 GMT",

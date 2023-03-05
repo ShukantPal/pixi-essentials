@@ -1,6 +1,6 @@
 {
   "name": "@pixi-essentials/instanced-renderer",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "PixiJS object renderer that uses instancing for drawing multiple geometries with the same style",
   "keywords": [
     "instanced",

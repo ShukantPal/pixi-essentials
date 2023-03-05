@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/texture-allocator
 
-This log was last generated on Tue, 27 Jul 2021 17:48:59 GMT and should not be manually modified.
+This log was last generated on Sun, 05 Mar 2023 03:28:18 GMT and should not be manually modified.
+
+## 2.0.0
+Sun, 05 Mar 2023 03:28:18 GMT
+
+### Breaking changes
+
+- Upgrade to PixiJS 7
 
 ## 1.0.9
 Tue, 27 Jul 2021 17:48:59 GMT

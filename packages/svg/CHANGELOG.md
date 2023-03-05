@@ -1,11 +1,25 @@
 # Change Log - @pixi-essentials/svg
 
-This log was last generated on Wed, 09 Mar 2022 03:58:56 GMT and should not be manually modified.
+This log was last generated on Sun, 05 Mar 2023 03:31:22 GMT and should not be manually modified.
+
+## 2.0.1
+Sun, 05 Mar 2023 03:31:22 GMT
+
+### Patches
+
+- Proper destruction of SVGScene content when destroy() is called to avoid memory leaks. (thanks @DanoTheNerd)
+
+## 2.0.0
+Sun, 05 Mar 2023 03:28:18 GMT
+
+### Breaking changes
+
+- Upgrade to PixiJS 7
 
 ## 1.1.7
 Wed, 09 Mar 2022 03:58:56 GMT
 
-*Version update only*
+_Version update only_
 
 ## 1.1.6
 Sun, 11 Jul 2021 20:57:07 GMT
@@ -46,7 +60,7 @@ Sun, 20 Jun 2021 02:05:05 GMT
 ## 1.1.1
 Thu, 17 Jun 2021 02:36:40 GMT
 
-*Version update only*
+_Version update only_
 
 ## 1.1.0
 Sun, 28 Mar 2021 17:05:18 GMT
