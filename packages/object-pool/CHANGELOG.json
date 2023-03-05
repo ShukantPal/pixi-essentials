@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/object-pool",
   "entries": [
     {
+      "version": "1.0.1",
+      "tag": "@pixi-essentials/object-pool_v1.0.1",
+      "date": "Sun, 05 Mar 2023 04:30:06 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Add TypeScript declaration file"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.0.0",
       "tag": "@pixi-essentials/object-pool_v1.0.0",
       "date": "Sun, 05 Mar 2023 03:28:18 GMT",

@@ -1,6 +1,11 @@
 # Change Log - @pixi-essentials/bvh
 
-This log was last generated on Sun, 05 Mar 2023 03:28:18 GMT and should not be manually modified.
+This log was last generated on Sun, 05 Mar 2023 04:30:06 GMT and should not be manually modified.
+
+## 1.0.1
+Sun, 05 Mar 2023 04:30:06 GMT
+
+_Version update only_
 
 ## 1.0.0
 Sun, 05 Mar 2023 03:28:18 GMT
