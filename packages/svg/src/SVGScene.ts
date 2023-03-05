@@ -153,6 +153,15 @@ export class SVGScene extends DisplayObject
     /**
      * @override
      */
+    destroy(): void {
+        this.root.destroy(true);
+
+        super.destroy();
+    }
+
+    /**
+     * @override
+     */
     render(renderer: Renderer): void
     {
         if (!this.visible || !this.renderable)
