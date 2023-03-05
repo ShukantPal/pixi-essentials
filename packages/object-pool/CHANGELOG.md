@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/object-pool
 
-This log was last generated on Sun, 05 Mar 2023 03:28:18 GMT and should not be manually modified.
+This log was last generated on Sun, 05 Mar 2023 04:30:06 GMT and should not be manually modified.
+
+## 1.0.1
+Sun, 05 Mar 2023 04:30:06 GMT
+
+### Patches
+
+- Add TypeScript declaration file
 
 ## 1.0.0
 Sun, 05 Mar 2023 03:28:18 GMT

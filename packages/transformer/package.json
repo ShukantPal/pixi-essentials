@@ -32,7 +32,7 @@
   ],
   "dependencies": {
     "@pixi-essentials/bounds": "~3.0.0",
-    "@pixi-essentials/object-pool": "~1.0.0"
+    "@pixi-essentials/object-pool": "~1.0.1"
   },
   "peerDependencies": {
     "@pixi/core": "^7.0.0",

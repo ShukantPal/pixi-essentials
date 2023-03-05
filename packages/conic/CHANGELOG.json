@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/conic",
   "entries": [
     {
+      "version": "2.0.1",
+      "tag": "@pixi-essentials/conic_v2.0.1",
+      "date": "Sun, 05 Mar 2023 04:30:06 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Upgrade pixi-batch-renderer dependency for full PixiJS 7 compatibility"
+          }
+        ]
+      }
+    },
+    {
       "version": "2.0.0",
       "tag": "@pixi-essentials/conic_v2.0.0",
       "date": "Sun, 05 Mar 2023 03:28:18 GMT",

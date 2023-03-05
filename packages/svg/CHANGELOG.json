@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/svg",
   "entries": [
     {
+      "version": "2.0.2",
+      "tag": "@pixi-essentials/svg_v2.0.2",
+      "date": "Sun, 05 Mar 2023 04:30:27 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix errors in PixiJS 7 type-check"
+          }
+        ]
+      }
+    },
+    {
       "version": "2.0.1",
       "tag": "@pixi-essentials/svg_v2.0.1",
       "date": "Sun, 05 Mar 2023 03:31:22 GMT",
