@@ -2,9 +2,9 @@ import { Graphics } from '@pixi/graphics';
 import { Point } from '@pixi/math';
 import { Renderer } from '@pixi/core';
 
-import type { Container } from '@pixi/display';
-import type { InteractionEvent } from '@pixi/interaction';
+import type {Container} from '@pixi/display';
 import type { Handle, Transformer } from './Transformer';
+import {FederatedEventTarget, FederatedPointerEvent, IFederatedDisplayObject} from "@pixi/events";
 
 /** @see TransformerHandle#style */
 export interface ITransformerHandleStyle
@@ -38,10 +38,14 @@ const DEFAULT_HANDLE_STYLE: ITransformerHandleStyle = {
     shape: 'tooth',
 };
 
+const Graphics_ = Graphics as unknown as { new(): Graphics & FederatedEventTarget };
+
 /**
  * The transfomer handle base implementation.
+ *
+ * @extends PIXI.Graphics
  */
-export class TransformerHandle extends Graphics
+export class TransformerHandle extends Graphics_
 {
     onHandleDelta: (pointerPosition: Point) => void;
     onHandleCommit: () => void;
@@ -53,7 +57,7 @@ export class TransformerHandle extends Graphics
     private _pointerDown: boolean;
     private _pointerDragging: boolean;
     private _pointerPosition: Point;
-    private _pointerMoveTarget: Container | null;
+    private _pointerMoveTarget: (Container & IFederatedDisplayObject) | null;
 
     /**
      * @param {Transformer} transformer
@@ -92,9 +96,14 @@ export class TransformerHandle extends Graphics
         this._pointerDragging = false;
         this._pointerPosition = new Point();
         this._pointerMoveTarget = null;
-        this.on('pointerdown', this.onPointerDown, this);
-        this.on('pointerup', this.onPointerUp, this);
-        this.on('pointerupoutside', this.onPointerUp, this);
+
+        this.onPointerDown = this.onPointerDown.bind(this);
+        this.onPointerMove = this.onPointerMove.bind(this);
+        this.onPointerUp = this.onPointerUp.bind(this);
+
+        this.onpointerdown = this.onPointerDown;
+        this.onpointermove = this.onPointerMove;
+        this.onpointerup = this.onPointerUp;
     }
 
     get handle(): Handle
@@ -211,7 +220,7 @@ export class TransformerHandle extends Graphics
      *
      * @param e
      */
-    protected onPointerDown(e: InteractionEvent): void
+    protected onPointerDown(e: FederatedPointerEvent): void
     {
         this._pointerDown = true;
         this._pointerDragging = false;
@@ -220,12 +229,12 @@ export class TransformerHandle extends Graphics
 
         if (this._pointerMoveTarget)
         {
-            this._pointerMoveTarget.off('pointermove', this.onPointerMove, this);
+            this._pointerMoveTarget.removeEventListener('pointermove', this.onPointerMove);
             this._pointerMoveTarget = null;
         }
 
-        this._pointerMoveTarget = this.transformer.stage || this;
-        this._pointerMoveTarget.on('pointermove', this.onPointerMove, this);
+        this._pointerMoveTarget = (this.transformer.stage || this) as unknown as Container & IFederatedDisplayObject;
+        this._pointerMoveTarget.addEventListener('pointermove', this.onPointerMove);
     }
 
     /**
@@ -233,7 +242,7 @@ export class TransformerHandle extends Graphics
      *
      * @param e
      */
-    protected onPointerMove(e: InteractionEvent): void
+    protected onPointerMove(e: FederatedPointerEvent): void
     {
         if (!this._pointerDown)
         {
@@ -257,7 +266,7 @@ export class TransformerHandle extends Graphics
      *
      * @param e
      */
-    protected onPointerUp(e: InteractionEvent): void
+    protected onPointerUp(e: FederatedPointerEvent): void
     {
         if (this._pointerDragging)
         {
@@ -268,7 +277,7 @@ export class TransformerHandle extends Graphics
 
         if (this._pointerMoveTarget)
         {
-            this._pointerMoveTarget.off('pointermove', this.onPointerMove, this);
+            this._pointerMoveTarget.removeEventListener('pointermove', this.onPointerMove);
             this._pointerMoveTarget = null;
         }
     }
@@ -278,7 +287,7 @@ export class TransformerHandle extends Graphics
      *
      * @param e
      */
-    protected onDragStart(e: InteractionEvent): void
+    protected onDragStart(e: FederatedPointerEvent): void
     {
         this._pointerPosition.copyFrom(e.data.global);
 
@@ -290,7 +299,7 @@ export class TransformerHandle extends Graphics
      *
      * @param e
      */
-    protected onDrag(e: InteractionEvent): void
+    protected onDrag(e: FederatedPointerEvent): void
     {
         const currentPosition = e.data.global;
 
@@ -309,7 +318,7 @@ export class TransformerHandle extends Graphics
      * @param _
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    protected onDragEnd(_: InteractionEvent): void
+    protected onDragEnd(_: FederatedPointerEvent): void
     {
         this._pointerDragging = false;
 

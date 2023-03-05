@@ -1,3 +1,4 @@
+(This package was never implemented - merely an idea :-)
 # @pixi-essentials/ooo-renderer
 
 This package implements a out-of-order rendering pipeline that improves batching efficiency in:

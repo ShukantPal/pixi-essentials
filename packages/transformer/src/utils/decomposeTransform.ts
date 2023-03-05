@@ -1,4 +1,4 @@
-import type { Transform, Matrix } from '@pixi/math';
+import type {Transform, Matrix, Point} from '@pixi/math';
 
 /**
  * Decomposes the matrix into transform, while preserving rotation & the pivot.
@@ -13,7 +13,7 @@ export function decomposeTransform(
     transform: Transform,
     matrix: Matrix,
     rotation?: number,
-    pivot = transform.pivot,
+    pivot: Point = transform.pivot,
 ): Transform
 {
     const a = matrix.a;

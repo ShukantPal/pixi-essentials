@@ -32,7 +32,7 @@ const tempRect = new Rectangle();
  * events fired by a node:
  *
  * * `nodetransformdirty`: This will invalidate the transform calculations.
- * 
+ *
  * @public
  */
 export class SVGScene extends DisplayObject
@@ -581,7 +581,7 @@ export class SVGScene extends DisplayObject
                             const contentNode = shellScene.populateSceneRecursive(useTarget as SVGGraphicsElement, {
                                 basePaint: usePaint,
                             }) as SVGGraphicsNode;
-        
+
                             (node as SVGUseNode).ref = contentNode;
                             contentNode.transform.setFromMatrix(Matrix.IDENTITY);// clear transform
 
@@ -805,12 +805,12 @@ export class SVGScene extends DisplayObject
 
     /**
      * Load the SVG document and create a {@link SVGScene} asynchronously.
-     * 
+     *
      * A cache is used for loaded SVG documents.
      *
-     * @param url 
-     * @param context 
-     * @returns 
+     * @param url
+     * @param context
+     * @returns
      */
     static async from(url: string, context?: SVGSceneContext): Promise<SVGScene> {
         return new SVGScene(await Loader._load(url), context);
