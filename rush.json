@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/rush/v5/rush.schema.json",
-  "rushVersion": "5.29.1",
-  "pnpmVersion": "4.14.4",
+  "rushVersion": "5.90.0",
+  "pnpmVersion": "7.25.0",
   "pnpmOptions": {
     "pnpmStore": "global",
     "strictPeerDependencies": false,
     "resolutionStrategy": "fast"
   },
-  "nodeSupportedVersionRange": ">=10.0.0 <15.0.0",
+  "nodeSupportedVersionRange": ">=14.0.0 <19.0.0",
   "suppressNodeLtsWarning": true,
   "repository": {
     "url": "https://github.com/SukantPal/pixi-essentials",
@@ -90,12 +90,6 @@
     {
       "packageName": "@pixi-essentials/object-pool",
       "projectFolder": "packages/object-pool",
-      "reviewCategory": "production",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@pixi-essentials/ooo-renderer",
-      "projectFolder": "packages/ooo-renderer",
       "reviewCategory": "production",
       "shouldPublish": true
     },

@@ -35,28 +35,28 @@
     "*.d.ts"
   ],
   "devDependencies": {
-    "@pixi/display": "^6.0.0",
+    "@pixi/display": "^7.0.0",
     "@pixi-essentials/eslint-config": "^1.0.0",
     "eslint": "^7.9.0",
-    "@pixi/sprite": "^6.0.0",
-    "@pixi/core": "^6.0.0",
-    "@pixi/graphics": "^6.0.0",
+    "@pixi/sprite": "^7.0.0",
+    "@pixi/core": "^7.0.0",
+    "@pixi/graphics": "^7.0.0",
     "rollup": "^2.28.1",
     "@pixi-build-tools/rollup-configurator": "^1.0.10",
-    "@pixi/math": "^6.0.0",
-    "@pixi/filter-color-matrix": "^6.0.0",
-    "@pixi/text": "^6.0.0",
+    "@pixi/math": "^7.0.0",
+    "@pixi/filter-color-matrix": "^7.0.0",
+    "@pixi/text": "^7.0.0",
     "typescript": "~4.1.3",
     "@microsoft/api-extractor": "~7.16.1"
   },
   "peerDependencies": {
-    "@pixi/core": "^6.0.0",
-    "@pixi/display": "^6.0.0",
-    "@pixi/filter-color-matrix": "^6.0.0",
-    "@pixi/math": "^6.0.0",
-    "@pixi/graphics": "^6.0.0",
-    "@pixi/sprite": "^6.0.0",
-    "@pixi/text": "^6.0.0"
+    "@pixi/core": "^7.0.0",
+    "@pixi/display": "^7.0.0",
+    "@pixi/filter-color-matrix": "^7.0.0",
+    "@pixi/math": "^7.0.0",
+    "@pixi/graphics": "^7.0.0",
+    "@pixi/sprite": "^7.0.0",
+    "@pixi/text": "^7.0.0"
   },
   "dependencies": {
     "d-path-parser": "^1.0.0",

@@ -1,4 +1,4 @@
-import { Renderer } from '@pixi/core';
+import {Renderer, utils} from '@pixi/core';
 import { DisplayObject, Container } from '@pixi/display';
 import { Point, Matrix, Transform, Rectangle } from '@pixi/math';
 import { OrientedBounds } from '@pixi-essentials/bounds';
@@ -9,8 +9,13 @@ import { createHorizontalSkew, createVerticalSkew } from './utils/skewTransform'
 import { decomposeTransform } from './utils/decomposeTransform';
 import { multiplyTransform } from './utils/multiplyTransform';
 
-import type { InteractionEvent } from '@pixi/interaction';
 import type { ITransformerHandleStyle } from './TransformerHandle';
+import {
+    Cursor,
+    FederatedEventTarget,
+    FederatedPointerEvent,
+    IFederatedDisplayObject,
+} from "@pixi/events";
 
 // Preallocated objects
 const tempTransform = new Transform();
@@ -75,7 +80,7 @@ export type Handle = RotateHandle | ScaleHandle | SkewHandle;
  *
  * @ignore
  */
-export const HANDLE_TO_CURSOR: { [H in Handle]?: string } = {
+export const HANDLE_TO_CURSOR: { [H in Handle]?: Cursor } = {
     topLeft: 'nw-resize',
     topCenter: 'n-resize',
     topRight: 'ne-resize',
@@ -227,8 +232,7 @@ export interface ITransformerCursors {
 /**
  * @public
  */
-export interface ITransformerOptions
-{
+export interface ITransformerOptions {
     /** "all" or "groupOnly". "groupOnly" won't show individual bounding boxes. */
     boundingBoxes?: 'all' | 'groupOnly' | 'none';
 
@@ -311,6 +315,14 @@ export interface ITransformerOptions
     wireframeStyle: Partial<ITransformerStyle>;
 }
 
+// api-extractor-disable-next-line: [ae-forgotten-export]
+const Container_ = Container as unknown as { new():
+        Container
+        & IFederatedDisplayObject
+        & Omit<FederatedEventTarget, keyof IFederatedDisplayObject>
+        & utils.EventEmitter;
+};
+
 /**
  * {@code Transformer} provides an interactive interface for editing the transforms in a group. It supports translating,
  * scaling, rotating, and skewing display-objects both through interaction and code.
@@ -325,8 +337,10 @@ export interface ITransformerOptions
  *
  * NOTE: The transformer needs to capture all interaction events that would otherwise go to the display-objects in the
  * group. Hence, it must be placed after them in the scene graph.
+ *
+ * @extends PIXI.Container
  */
-export class Transformer extends Container
+export class Transformer extends Container_
 {
     /** The group of display-objects under transformation. */
     public group: DisplayObject[];
@@ -485,7 +499,7 @@ export class Transformer extends Container
     private _pointerDown: boolean;
     private _pointerDragging: boolean;
     private _pointerPosition: Point;
-    private _pointerMoveTarget: DisplayObject;
+    private _pointerMoveTarget: DisplayObject & IFederatedDisplayObject;
 
     /* eslint-disable max-len */
     /**
@@ -658,9 +672,13 @@ export class Transformer extends Container
         this._pointerDragging = false;
         this._pointerPosition = new Point();
         this._pointerMoveTarget = null;
-        this.on('pointerdown', this.onPointerDown, this);
-        this.on('pointerup', this.onPointerUp, this);
-        this.on('pointerupoutside', this.onPointerUp, this);
+
+        this.onPointerDown = this.onPointerDown.bind(this);
+        this.onPointerMove = this.onPointerMove.bind(this);
+        this.onPointerUp = this.onPointerUp.bind(this);
+        this.addEventListener('pointerdown', this.onPointerDown);
+        this.addEventListener('pointerup', this.onPointerUp);
+        this.addEventListener('pointerupoutside', this.onPointerUp);
     }
 
     /** The list of enabled handles, if applied manually. */
@@ -1286,7 +1304,7 @@ export class Transformer extends Container
     }
 
     /** Called on the `pointerdown` event. You must call the super implementation. */
-    protected onPointerDown(e: InteractionEvent): void
+    protected onPointerDown(e: FederatedPointerEvent): void
     {
         this._pointerDown = true;
         this._pointerDragging = false;
@@ -1295,16 +1313,16 @@ export class Transformer extends Container
 
         if (this._pointerMoveTarget)
         {
-            this._pointerMoveTarget.off('pointermove', this.onPointerMove, this);
+            this._pointerMoveTarget.removeEventListener('pointermove', this.onPointerMove);
             this._pointerMoveTarget = null;
         }
 
-        this._pointerMoveTarget = this.stage || this;
-        this._pointerMoveTarget.on('pointermove', this.onPointerMove, this);
+        this._pointerMoveTarget = (this.stage || this) as unknown as DisplayObject & IFederatedDisplayObject;
+        this._pointerMoveTarget.addEventListener('pointermove', this.onPointerMove);
     }
 
     /** Called on the `pointermove` event. You must call the super implementation. */
-    protected onPointerMove(e: InteractionEvent): void
+    protected onPointerMove(e: FederatedPointerEvent): void
     {
         const lastPointerPosition = this._pointerPosition;
         const currentPointerPosition = pointPool.allocate().copyFrom(e.data.global);
@@ -1383,7 +1401,7 @@ export class Transformer extends Container
     }
 
     /** Called on the `pointerup` and `pointerupoutside` events. You must call the super implementation. */
-    protected onPointerUp(e: InteractionEvent): void
+    protected onPointerUp(e: FederatedPointerEvent): void
     {
         this._pointerDragging = false;
         this._pointerDown = false;
@@ -1393,7 +1411,7 @@ export class Transformer extends Container
 
         if (this._pointerMoveTarget)
         {
-            this._pointerMoveTarget.off('pointermove', this.onPointerMove, this);
+            this._pointerMoveTarget.removeEventListener('pointermove', this.onPointerMove);
             this._pointerMoveTarget = null;
         }
     }

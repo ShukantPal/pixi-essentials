@@ -6,6 +6,7 @@ import { distanceToLine } from './utils/distanceToLine';
 
 import type { AxisAlignedBounds, OrientedBounds } from '@pixi-essentials/bounds';
 import type { Handle, Transformer } from './Transformer';
+import {FederatedEventTarget} from "@pixi/events";
 
 const pointPool = ObjectPoolFactory.build(Point);
 const tempHull = [new Point(), new Point(), new Point(), new Point()];
@@ -97,21 +98,27 @@ const boxRotationRegions = [
     boxRotationRegionBottomRight,
 ];
 
+const Graphics_ = Graphics as unknown as { new(): Graphics & FederatedEventTarget };
+type GraphicsT_ = Graphics & FederatedEventTarget;
+
 /**
  * The transformer's wireframe is drawn using this class.
  *
  * @ignore
  * @public
+ * @extends PIXI.Graphics
  */
-export class TransformerWireframe extends Graphics
+export class TransformerWireframe extends Graphics_
 {
     protected transformer: Transformer;
 
     /**
      * The four scaling "edges" (or wide handles) for box-scaling. {@link TransformerWireframe#drawBoxScalingTolerance}
      * should draw into these.
+     *
+     * @type {PIXI.Graphics[]}
      */
-    protected boxScalingHandles: [Graphics, Graphics, Graphics, Graphics];
+    protected boxScalingHandles: [GraphicsT_, GraphicsT_, GraphicsT_, GraphicsT_];
 
     constructor(transformer: Transformer)
     {
@@ -124,7 +131,7 @@ export class TransformerWireframe extends Graphics
             this.addChild(new Graphics()),
             this.addChild(new Graphics()),
             this.addChild(new Graphics()),
-        ];
+        ] as unknown as [GraphicsT_, GraphicsT_, GraphicsT_, GraphicsT_];
         this.boxScalingHandles.forEach((scalingHandle) => { scalingHandle.interactive = true; });
         this.boxScalingHandles[0].cursor = HANDLE_TO_CURSOR.topCenter;
         this.boxScalingHandles[1].cursor = HANDLE_TO_CURSOR.middleRight;
