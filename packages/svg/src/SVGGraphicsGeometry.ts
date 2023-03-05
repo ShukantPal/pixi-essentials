@@ -25,6 +25,7 @@ export class SVGGraphicsGeometry extends GraphicsGeometry
 {
     processLine(data: GraphicsData): void
     {
+        // @ts-expect-error Because we are extending the Shape enum.
         if (data.shape.type === PATH)
         {
             this.processPathLine(data);
@@ -152,6 +153,7 @@ export class SVGGraphicsGeometry extends GraphicsGeometry
                 sequenceBounds.addFramePad(ellipse.x, ellipse.y, ellipse.x, ellipse.y,
                     ellipse.width + lineWidth, ellipse.height + lineWidth);
             }
+            // @ts-expect-error Because we are extending the Shape enum.
             else if (type === PATH)
             {
                 const path = shape as any as Path;

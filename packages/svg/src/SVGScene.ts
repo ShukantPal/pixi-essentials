@@ -6,6 +6,7 @@ import { MaskServer } from './mask/MaskServer';
 import { LINE_CAP, LINE_JOIN, GraphicsData } from '@pixi/graphics';
 import * as Loader from './loader';
 import { Matrix, Rectangle } from '@pixi/math';
+import { NODE_TRANSFORM_DIRTY, TRANSFORM_DIRTY } from './const';
 import { PaintProvider } from './paint/PaintProvider';
 import { PaintServer } from './paint/PaintServer';
 import { RenderTexture, Texture } from '@pixi/core';
@@ -596,7 +597,7 @@ export class SVGScene extends DisplayObject
 
                             this._transformDirty = true;
 
-                            shellScene.on('transformdirty', () => {
+                            shellScene.on(TRANSFORM_DIRTY, () => {
                                 this._transformDirty = true;
                             });
                         });
@@ -661,7 +662,7 @@ export class SVGScene extends DisplayObject
             return null;
         }
 
-        node.on('nodetransformdirty', this.onNodeTransformDirty);
+        node.on(NODE_TRANSFORM_DIRTY, this.onNodeTransformDirty);
 
         let paint: Paint;
 
@@ -781,7 +782,7 @@ export class SVGScene extends DisplayObject
     private onNodeTransformDirty = (): void =>
     {
         this._transformDirty = true;
-        this.emit('transformdirty', this);
+        this.emit(TRANSFORM_DIRTY, this);
     };
 
     /**

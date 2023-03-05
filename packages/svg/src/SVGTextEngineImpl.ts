@@ -1,3 +1,4 @@
+import { NODE_TRANSFORM_DIRTY } from './const';
 import { Sprite } from '@pixi/sprite';
 import { Texture } from '@pixi/core';
 import { TextMetrics, TextStyle } from '@pixi/text';
@@ -10,7 +11,7 @@ import type { SVGTextEngine } from './SVGTextEngine';
  * `SVGTextEngineImpl` is the default implementation for {@link SVGTextEngine}. It is inspired by {@link PIXI.Text} that
  * is provided by @pixi/text. It uses a &lt;canvas /&gt; to draw and cache the text. This may cause blurring issues when
  * the SVG is viewed at highly zoomed-in scales because it is rasterized.
- * 
+ *
  * @public
  */
 export class SVGTextEngineImpl extends Sprite implements SVGTextEngine
@@ -120,7 +121,7 @@ export class SVGTextEngineImpl extends Sprite implements SVGTextEngine
         this.updateId = this.dirtyId;
 
         // Ensure the SVG scene updates its bounds after the text is rendered.
-        this.emit('nodetransformdirty');
+        this.emit(NODE_TRANSFORM_DIRTY);
      }
 
     render(renderer: Renderer): void
