@@ -1,4 +1,6 @@
+import '@pixi/events';
 import { Container } from '@pixi/display';
+import { NODE_TRANSFORM_DIRTY } from './const';
 import { SVGTextEngineImpl } from './SVGTextEngineImpl';
 import { parseMeasurement } from './utils/parseMeasurement';
 
@@ -9,7 +11,7 @@ import type { TextStyle, TextStyleFontWeight } from '@pixi/text';
 
 /**
  * Draws SVG &lt;text /&gt; elements.
- * 
+ *
  * @public
  */
 export class SVGTextNode extends Container
@@ -39,11 +41,11 @@ export class SVGTextNode extends Container
         this.currentTextPosition = { x: 0, y: 0 };
         this.engine = new (SVGTextNode.defaultEngine)();
         this.addChild(this.engine);
-    
+
         // Listen to nodetransformdirty on the engine so bounds are updated
         // when the text is rendered.
-        this.engine.on('nodetransformdirty', () => {
-            this.emit('nodetransformdirty');
+        this.engine.on(NODE_TRANSFORM_DIRTY, () => {
+            this.emit(NODE_TRANSFORM_DIRTY);
         });
     }
 
@@ -108,7 +110,7 @@ export class SVGTextNode extends Container
                 );
 
                 // Ensure transforms are updated as new text phrases are loaded.
-                this.emit('nodetransformdirty');
+                this.emit(NODE_TRANSFORM_DIRTY);
             }
             else if (childNode instanceof SVGTSpanElement)
             {
