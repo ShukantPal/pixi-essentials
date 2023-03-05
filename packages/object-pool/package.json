@@ -26,7 +26,8 @@
   },
   "files": [
     "lib",
-    "dist"
+    "dist",
+    "index.d.ts"
   ],
   "repository": {
     "type": "git",
