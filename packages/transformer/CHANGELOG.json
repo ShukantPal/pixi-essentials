@@ -2,6 +2,26 @@
   "name": "@pixi-essentials/transformer",
   "entries": [
     {
+      "version": "3.0.0",
+      "tag": "@pixi-essentials/transformer_v3.0.0",
+      "date": "Sun, 05 Mar 2023 03:28:18 GMT",
+      "comments": {
+        "major": [
+          {
+            "comment": "Upgrade to PixiJS 7"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@pixi-essentials/bounds\" from `~2.1.1` to `~3.0.0`"
+          },
+          {
+            "comment": "Updating dependency \"@pixi-essentials/object-pool\" from `~0.1.0` to `~1.0.0`"
+          }
+        ]
+      }
+    },
+    {
       "version": "2.5.6",
       "tag": "@pixi-essentials/transformer_v2.5.6",
       "date": "Sat, 21 May 2022 23:41:14 GMT",

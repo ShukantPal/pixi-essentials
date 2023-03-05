@@ -1,6 +1,6 @@
 {
 	"name": "@pixi-essentials/mixin-smart-mask",
-	"version": "1.0.4",
+	"version": "2.0.0",
 	"description": "Smarter masking to reduce redundant draw-calls & improve batching efficiency",
 	"keywords": [
 		"smart-mask",
@@ -38,12 +38,12 @@
 		"url": "https://github.com/SukantPal/pixi-essentials/issues"
 	},
 	"peerDependencies": {
-		"@pixi-essentials/object-pool": "^0.1.0",
+		"@pixi-essentials/object-pool": "^1.0.0",
 		"@pixi/display": "^7.0.0",
 		"@pixi/math": "^7.0.0"
 	},
 	"devDependencies": {
-		"@pixi-essentials/object-pool": "^0.1.0",
+		"@pixi-essentials/object-pool": "^1.0.0",
 		"@pixi/display": "^7.0.0",
 		"@pixi/graphics": "^7.0.0",
 		"@pixi/math": "^7.0.0",

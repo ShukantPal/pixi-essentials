@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/system-g",
   "entries": [
     {
+      "version": "1.0.0",
+      "tag": "@pixi-essentials/system-g_v1.0.0",
+      "date": "Sun, 05 Mar 2023 03:28:18 GMT",
+      "comments": {
+        "major": [
+          {
+            "comment": "Upgrade to PixiJS 7"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.1",
       "tag": "@pixi-essentials/system-g_v0.0.1",
       "date": "Sat, 15 Aug 2020 20:26:58 GMT",

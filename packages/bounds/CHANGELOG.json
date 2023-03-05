@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/bounds",
   "entries": [
     {
+      "version": "3.0.0",
+      "tag": "@pixi-essentials/bounds_v3.0.0",
+      "date": "Sun, 05 Mar 2023 03:28:18 GMT",
+      "comments": {
+        "major": [
+          {
+            "comment": "Upgrade to PixiJS 7"
+          }
+        ]
+      }
+    },
+    {
       "version": "2.1.1",
       "tag": "@pixi-essentials/bounds_v2.1.1",
       "date": "Mon, 10 May 2021 01:41:10 GMT",

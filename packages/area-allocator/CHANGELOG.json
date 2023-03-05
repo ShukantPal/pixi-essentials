@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/area-allocator",
   "entries": [
     {
+      "version": "2.0.0",
+      "tag": "@pixi-essentials/area-allocator_v2.0.0",
+      "date": "Sun, 05 Mar 2023 03:28:18 GMT",
+      "comments": {
+        "major": [
+          {
+            "comment": "Upgrade to PixiJS 7"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.0.3",
       "tag": "@pixi-essentials/area-allocator_v1.0.3",
       "date": "Thu, 17 Jun 2021 02:36:40 GMT",

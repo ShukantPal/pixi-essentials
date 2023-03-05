@@ -1,6 +1,20 @@
 # Change Log - @pixi-essentials/gradients
 
-This log was last generated on Wed, 09 Mar 2022 03:58:56 GMT and should not be manually modified.
+This log was last generated on Sun, 05 Mar 2023 03:31:22 GMT and should not be manually modified.
+
+## 1.0.1
+Sun, 05 Mar 2023 03:31:22 GMT
+
+### Patches
+
+- Clean up temporary textures and sprites on gradient creation (thanks @hallundbaek)
+
+## 1.0.0
+Sun, 05 Mar 2023 03:28:18 GMT
+
+### Breaking changes
+
+- Upgrade to PixiJS 7
 
 ## 0.0.5
 Wed, 09 Mar 2022 03:58:56 GMT

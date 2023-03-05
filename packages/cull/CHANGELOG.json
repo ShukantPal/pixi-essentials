@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/cull",
   "entries": [
     {
+      "version": "2.0.0",
+      "tag": "@pixi-essentials/cull_v2.0.0",
+      "date": "Sun, 05 Mar 2023 03:28:18 GMT",
+      "comments": {
+        "major": [
+          {
+            "comment": "Upgrade to PixiJS 7"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.1.0",
       "tag": "@pixi-essentials/cull_v1.1.0",
       "date": "Wed, 17 Mar 2021 16:12:19 GMT",

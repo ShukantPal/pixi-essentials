@@ -1,6 +1,6 @@
 {
   "name": "@pixi-essentials/types",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "Type definitions used throughout @pixi-essentials",
   "keywords": [
     "types",

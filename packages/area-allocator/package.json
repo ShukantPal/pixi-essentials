@@ -1,6 +1,6 @@
 {
   "name": "@pixi-essentials/area-allocator",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "description": "Efficient texture area allocator for on-demand atlases",
   "main": "lib/area-allocator.js",
   "module": "lib/area-allocator.es.js",
