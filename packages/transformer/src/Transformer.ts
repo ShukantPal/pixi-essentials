@@ -1313,12 +1313,12 @@ export class Transformer extends Container_
 
         if (this._pointerMoveTarget)
         {
-            this._pointerMoveTarget.removeEventListener('pointermove', this.onPointerMove);
+            this._pointerMoveTarget.removeEventListener('globalpointermove', this.onPointerMove);
             this._pointerMoveTarget = null;
         }
 
         this._pointerMoveTarget = (this.stage || this) as unknown as DisplayObject & IFederatedDisplayObject;
-        this._pointerMoveTarget.addEventListener('pointermove', this.onPointerMove);
+        this._pointerMoveTarget.addEventListener('globalpointermove', this.onPointerMove);
     }
 
     /** Called on the `pointermove` event. You must call the super implementation. */
@@ -1411,7 +1411,7 @@ export class Transformer extends Container_
 
         if (this._pointerMoveTarget)
         {
-            this._pointerMoveTarget.removeEventListener('pointermove', this.onPointerMove);
+            this._pointerMoveTarget.removeEventListener('globalpointermove', this.onPointerMove);
             this._pointerMoveTarget = null;
         }
     }
