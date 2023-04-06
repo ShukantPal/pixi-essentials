@@ -229,12 +229,12 @@ export class TransformerHandle extends Graphics_
 
         if (this._pointerMoveTarget)
         {
-            this._pointerMoveTarget.removeEventListener('pointermove', this.onPointerMove);
+            this._pointerMoveTarget.removeEventListener('globalpointermove', this.onPointerMove);
             this._pointerMoveTarget = null;
         }
 
         this._pointerMoveTarget = (this.transformer.stage || this) as unknown as Container & IFederatedDisplayObject;
-        this._pointerMoveTarget.addEventListener('pointermove', this.onPointerMove);
+        this._pointerMoveTarget.addEventListener('globalpointermove', this.onPointerMove);
     }
 
     /**
@@ -277,7 +277,7 @@ export class TransformerHandle extends Graphics_
 
         if (this._pointerMoveTarget)
         {
-            this._pointerMoveTarget.removeEventListener('pointermove', this.onPointerMove);
+            this._pointerMoveTarget.removeEventListener('globalpointermove', this.onPointerMove);
             this._pointerMoveTarget = null;
         }
     }
