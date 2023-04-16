@@ -152,7 +152,6 @@ export class AtlasResource extends Resource
         if (!isWebGL2) {
             if (source instanceof ImageData) {
                 source = source.data;  // pass the typed array directly
-
             } else if (source instanceof HTMLCanvasElement) {
                 const ctx = source.getContext('2d');
                 const [w, h] = [source.width, source.height];
