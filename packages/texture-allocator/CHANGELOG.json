@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/texture-allocator",
   "entries": [
     {
+      "version": "2.0.1",
+      "tag": "@pixi-essentials/texture-allocator_v2.0.1",
+      "date": "Sun, 16 Apr 2023 20:43:53 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Support WebGL1 contexts by implicit conversion of ImageData, HTMLCanvasElement, HTMLImageElement into ArrayBufferView (@bhousel)"
+          }
+        ]
+      }
+    },
+    {
       "version": "2.0.0",
       "tag": "@pixi-essentials/texture-allocator_v2.0.0",
       "date": "Sun, 05 Mar 2023 03:28:18 GMT",

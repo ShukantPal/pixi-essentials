@@ -2,6 +2,18 @@
   "name": "@pixi-essentials/transformer",
   "entries": [
     {
+      "version": "3.0.1",
+      "tag": "@pixi-essentials/transformer_v3.0.1",
+      "date": "Sun, 16 Apr 2023 20:43:53 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Use globalpointermove instead of pointermove for PixiJS 7 compatibility (requires 7.2.0) (@rnike)"
+          }
+        ]
+      }
+    },
+    {
       "version": "3.0.0",
       "tag": "@pixi-essentials/transformer_v3.0.0",
       "date": "Sun, 05 Mar 2023 03:28:18 GMT",
