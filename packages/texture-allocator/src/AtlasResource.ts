@@ -156,7 +156,6 @@ export class AtlasResource extends Resource
                 const ctx = source.getContext('2d');
                 const [w, h] = [source.width, source.height];
                 source = ctx.getImageData(0, 0, w, h).data;
-
             } else if (source instanceof HTMLImageElement) {
                 const [w, h] = [source.naturalWidth, source.naturalHeight];
                 const canvas = document.createElement('canvas');
