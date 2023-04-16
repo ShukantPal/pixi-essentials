@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/transformer
 
-This log was last generated on Sun, 05 Mar 2023 03:28:18 GMT and should not be manually modified.
+This log was last generated on Sun, 16 Apr 2023 20:43:53 GMT and should not be manually modified.
+
+## 3.0.1
+Sun, 16 Apr 2023 20:43:53 GMT
+
+### Patches
+
+- Use globalpointermove instead of pointermove for PixiJS 7 compatibility (requires 7.2.0) (@rnike)
 
 ## 3.0.0
 Sun, 05 Mar 2023 03:28:18 GMT

@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/texture-allocator
 
-This log was last generated on Sun, 05 Mar 2023 03:28:18 GMT and should not be manually modified.
+This log was last generated on Sun, 16 Apr 2023 20:43:53 GMT and should not be manually modified.
+
+## 2.0.1
+Sun, 16 Apr 2023 20:43:53 GMT
+
+### Patches
+
+- Support WebGL1 contexts by implicit conversion of ImageData, HTMLCanvasElement, HTMLImageElement into ArrayBufferView (@bhousel)
 
 ## 2.0.0
 Sun, 05 Mar 2023 03:28:18 GMT
