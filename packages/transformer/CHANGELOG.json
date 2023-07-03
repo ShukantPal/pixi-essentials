@@ -2,6 +2,21 @@
   "name": "@pixi-essentials/transformer",
   "entries": [
     {
+      "version": "3.0.2",
+      "tag": "@pixi-essentials/transformer_v3.0.2",
+      "date": "Mon, 03 Jul 2023 13:17:51 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Drop @pixi/interaction import for forward compatibility"
+          },
+          {
+            "comment": "Handle pointerup events outside of handles to prevent sticky buttons issue (@SampsaKaskela)"
+          }
+        ]
+      }
+    },
+    {
       "version": "3.0.1",
       "tag": "@pixi-essentials/transformer_v3.0.1",
       "date": "Sun, 16 Apr 2023 20:43:53 GMT",
