@@ -1,5 +1,3 @@
-⚠️ Although the latest version of this package declares a dependency on PixiJS 7, it now has a bug where pointer events outside of the handles causes the UI to stop responding. This is because of how PixiJS (EventSystem) now excludes events outside of a DisplayObject. See [#73](https://github.com/ShukantPal/pixi-essentials/issues/73)
-
 # @pixi-essentials/transformer
 
 This package contains `Transformer`, which provides an interactive interface for scaling and rotating groups of display-objects.
