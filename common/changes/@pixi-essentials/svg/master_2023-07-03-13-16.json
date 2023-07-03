@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@pixi-essentials/svg",
+      "comment": "",
+      "type": "none"
+    }
+  ],
+  "packageName": "@pixi-essentials/svg"
+}

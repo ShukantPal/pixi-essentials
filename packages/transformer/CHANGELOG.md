@@ -1,6 +1,14 @@
 # Change Log - @pixi-essentials/transformer
 
-This log was last generated on Sun, 16 Apr 2023 20:43:53 GMT and should not be manually modified.
+This log was last generated on Mon, 03 Jul 2023 13:17:51 GMT and should not be manually modified.
+
+## 3.0.2
+Mon, 03 Jul 2023 13:17:51 GMT
+
+### Patches
+
+- Drop @pixi/interaction import for forward compatibility
+- Handle pointerup events outside of handles to prevent sticky buttons issue (@SampsaKaskela)
 
 ## 3.0.1
 Sun, 16 Apr 2023 20:43:53 GMT
