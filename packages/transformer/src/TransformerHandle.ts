@@ -104,6 +104,7 @@ export class TransformerHandle extends Graphics_
         this.onpointerdown = this.onPointerDown;
         this.onpointermove = this.onPointerMove;
         this.onpointerup = this.onPointerUp;
+        this.onpointerupoutside = this.onPointerUp;
     }
 
     get handle(): Handle
@@ -262,7 +263,7 @@ export class TransformerHandle extends Graphics_
     }
 
     /**
-     * Handles the `pointerup` event. You must call the super implementation.
+     * Handles the `pointerup` and `pointerupoutside` events. You must call the super implementation.
      *
      * @param e
      */
