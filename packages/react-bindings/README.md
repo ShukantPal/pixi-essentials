@@ -1,6 +1,6 @@
 # @pixi-essentials/react-bindings
 
-This package contains React components for essential display-objects. It is designed for usage with [@inlet/react-pixi](https://github.com/inlet/react-pixi).
+This package contains React components for essential display-objects. It is designed for usage with [@pixi/react](https://github.com/pixijs/pixi-react).
 
 ## Installation :package:
 
