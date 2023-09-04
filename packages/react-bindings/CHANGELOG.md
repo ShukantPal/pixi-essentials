@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/react-bindings
 
-This log was last generated on Sun, 05 Mar 2023 03:28:18 GMT and should not be manually modified.
+This log was last generated on Mon, 04 Sep 2023 20:57:15 GMT and should not be manually modified.
+
+## 3.0.0
+Mon, 04 Sep 2023 20:57:15 GMT
+
+### Breaking changes
+
+- Migrate react-bindings from @inlet/react-pixi to @pixi/react
 
 ## 2.0.0
 Sun, 05 Mar 2023 03:28:18 GMT

@@ -1,6 +1,6 @@
 {
   "name": "@pixi-essentials/react-bindings",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "React components for display-objects provided by pixi-essentials, for usage with @pixi/react.",
   "main": "lib/react-bindings.js",
   "module": "lib/react-bindings.es.js",

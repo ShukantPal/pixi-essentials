@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@pixi-essentials/transformer",
+      "comment": "",
+      "type": "none"
+    }
+  ],
+  "packageName": "@pixi-essentials/transformer"
+}
