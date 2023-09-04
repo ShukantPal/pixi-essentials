@@ -1,6 +1,6 @@
 import { DisplayObject } from '@pixi/display';
 import { Matrix } from '@pixi/math';
-import { PixiComponent, applyDefaultProps } from '@inlet/react-pixi';
+import { PixiComponent, applyDefaultProps } from '@pixi/react';
 import { Transformer as TransformerImpl, TransformerHandle as TransformerHandleImpl } from '@pixi-essentials/transformer';
 import { applyEventProps } from './utils/applyEventProps';
 

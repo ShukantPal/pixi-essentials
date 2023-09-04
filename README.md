@@ -41,4 +41,4 @@
 
 | Package                   | Brief          |
 | ------------------------- | -------------- |
-| [@pixi-essentials/react-bindings](./packages/react-bindings) | This contains React components for essential display-objects, with [@inlet/react-pixi](https://github.com/inlet/react-pixi) |
+| [@pixi-essentials/react-bindings](./packages/react-bindings) | This contains React components for essential display-objects, with [@pixi/react](https://github.com/pixijs/pixi-react) |

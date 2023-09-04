@@ -1,12 +1,12 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@inlet/react-pixi': ^5.0.0
   '@pixi-build-tools/floss-rush-monorepo': 1.0.1
   '@pixi-build-tools/rollup-configurator': ^1.0.10
   '@pixi/constants': ^5.1.0
   '@pixi/eslint-config': ~1.0.1
   '@pixi/graphics': ^7.0.0
+  '@pixi/react': ^7.0.0
   '@pixi/sprite': ^7.0.0
   '@pixi/ticker': ^7.0.0
   '@pixi/utils': ^5.1.0
@@ -45,12 +45,12 @@ specifiers:
   tinycolor2: ^1.4.1
 
 dependencies:
-  '@inlet/react-pixi': 5.2.0_pixi.js@7.1.4
   '@pixi-build-tools/floss-rush-monorepo': 1.0.1
   '@pixi-build-tools/rollup-configurator': 1.0.14
   '@pixi/constants': 5.3.12
   '@pixi/eslint-config': 1.0.1
   '@pixi/graphics': 7.1.4
+  '@pixi/react': 7.1.0_ixhinzbrtvxaplzl5esyie5uue
   '@pixi/sprite': 7.1.4
   '@pixi/ticker': 7.1.4
   '@pixi/utils': 5.3.12
@@ -67,7 +67,7 @@ dependencies:
   '@rush-temp/instanced-renderer': file:projects/instanced-renderer.tgz
   '@rush-temp/mixin-smart-mask': file:projects/mixin-smart-mask.tgz
   '@rush-temp/object-pool': file:projects/object-pool.tgz
-  '@rush-temp/react-bindings': file:projects/react-bindings.tgz_pixi.js@7.1.4
+  '@rush-temp/react-bindings': file:projects/react-bindings.tgz_ixhinzbrtvxaplzl5esyie5uue
   '@rush-temp/shader-preprocessor': file:projects/shader-preprocessor.tgz
   '@rush-temp/svg': file:projects/svg.tgz
   '@rush-temp/system-g': file:projects/system-g.tgz
@@ -183,35 +183,6 @@ packages:
 
   /@humanwhocodes/object-schema/1.2.1:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
-    dev: false
-
-  /@inlet/react-pixi/5.2.0_pixi.js@7.1.4:
-    resolution: {integrity: sha512-8vCC7RegsF66dlb1rKxUB7KKj9iO9S2ilX+nVOQjg0dpSwP6HHT2EFd6oEgFdjhmUOGfUskC0VoXDaeXIfTSfQ==}
-    peerDependencies:
-      pixi.js: ^5.x.x
-      prop-types: ^15.x.x
-      react: ^16.x.x
-      react-dom: ^16.x.x
-      react-spring: 9.x.x
-    dependencies:
-      performance-now: 2.1.0
-      pixi.js: 7.1.4
-      react-reconciler: 0.25.1
-    dev: false
-
-  /@inlet/react-pixi/5.2.0_yweeoaujsyarwecgqztokkxyue:
-    resolution: {integrity: sha512-8vCC7RegsF66dlb1rKxUB7KKj9iO9S2ilX+nVOQjg0dpSwP6HHT2EFd6oEgFdjhmUOGfUskC0VoXDaeXIfTSfQ==}
-    peerDependencies:
-      pixi.js: ^5.x.x
-      prop-types: ^15.x.x
-      react: ^16.x.x
-      react-dom: ^16.x.x
-      react-spring: 9.x.x
-    dependencies:
-      performance-now: 2.1.0
-      pixi.js: 7.1.4
-      react: 16.14.0
-      react-reconciler: 0.25.1_react@16.14.0
     dev: false
 
   /@jridgewell/gen-mapping/0.3.2:
@@ -618,6 +589,75 @@ packages:
 
   /@pixi/prepare/7.1.4:
     resolution: {integrity: sha512-E886CuBC3I8RPb9Mmm7ko+MLRQAb47ec6xpdL1c3t5w4D/iiYHV9Z/mKBluI6ElhSeZkkq3EbEiMSCB1ZTYXag==}
+    dev: false
+
+  /@pixi/react/7.1.0_ixhinzbrtvxaplzl5esyie5uue:
+    resolution: {integrity: sha512-HnZSEyqIoIsgnilJ8U4N1SqSfCxl7y+drwzej5Vwi4Q2cPb420uPhPma1OXskxRo7HAWBjgdKBHlcEk40ZAKGg==}
+    peerDependencies:
+      '@babel/runtime': ^7.14.8
+      '@pixi/app': '>=6.0.0'
+      '@pixi/constants': '>=6.0.0'
+      '@pixi/core': '>=6.0.0'
+      '@pixi/display': '>=6.0.0'
+      '@pixi/extensions': '>=6.0.0'
+      '@pixi/graphics': '>=6.0.0'
+      '@pixi/math': '>=6.0.0'
+      '@pixi/mesh': '>=6.0.0'
+      '@pixi/mesh-extras': '>=6.0.0'
+      '@pixi/particle-container': '>=6.0.0'
+      '@pixi/sprite': '>=6.0.0'
+      '@pixi/sprite-animated': '>=6.0.0'
+      '@pixi/sprite-tiling': '>=6.0.0'
+      '@pixi/text': '>=6.0.0'
+      '@pixi/text-bitmap': '>=6.0.0'
+      '@pixi/ticker': '>=6.0.0'
+      react: '>=17.0.0'
+      react-dom: '>=17.0.0'
+    dependencies:
+      '@pixi/constants': 5.3.12
+      '@pixi/graphics': 7.1.4
+      '@pixi/sprite': 7.1.4
+      '@pixi/ticker': 7.1.4
+      lodash.isnil: 4.0.0
+      lodash.times: 4.3.2
+      performance-now: 2.1.0
+      prop-types: 15.8.1
+    dev: false
+
+  /@pixi/react/7.1.0_obisx3exolhfyr6dq2wtfbn2uq:
+    resolution: {integrity: sha512-HnZSEyqIoIsgnilJ8U4N1SqSfCxl7y+drwzej5Vwi4Q2cPb420uPhPma1OXskxRo7HAWBjgdKBHlcEk40ZAKGg==}
+    peerDependencies:
+      '@babel/runtime': ^7.14.8
+      '@pixi/app': '>=6.0.0'
+      '@pixi/constants': '>=6.0.0'
+      '@pixi/core': '>=6.0.0'
+      '@pixi/display': '>=6.0.0'
+      '@pixi/extensions': '>=6.0.0'
+      '@pixi/graphics': '>=6.0.0'
+      '@pixi/math': '>=6.0.0'
+      '@pixi/mesh': '>=6.0.0'
+      '@pixi/mesh-extras': '>=6.0.0'
+      '@pixi/particle-container': '>=6.0.0'
+      '@pixi/sprite': '>=6.0.0'
+      '@pixi/sprite-animated': '>=6.0.0'
+      '@pixi/sprite-tiling': '>=6.0.0'
+      '@pixi/text': '>=6.0.0'
+      '@pixi/text-bitmap': '>=6.0.0'
+      '@pixi/ticker': '>=6.0.0'
+      react: '>=17.0.0'
+      react-dom: '>=17.0.0'
+    dependencies:
+      '@pixi/constants': 5.3.12
+      '@pixi/display': 7.1.4
+      '@pixi/graphics': 7.1.4
+      '@pixi/math': 7.1.4
+      '@pixi/sprite': 7.1.4
+      '@pixi/ticker': 7.1.4
+      lodash.isnil: 4.0.0
+      lodash.times: 4.3.2
+      performance-now: 2.1.0
+      prop-types: 15.8.1
+      react: 18.2.0
     dev: false
 
   /@pixi/runner/5.3.12:
@@ -2609,7 +2649,7 @@ packages:
       fs.realpath: 1.0.0
       inflight: 1.0.6
       inherits: 2.0.4
-      minimatch: 3.0.8
+      minimatch: 3.1.2
       once: 1.4.0
       path-is-absolute: 1.0.1
     dev: false
@@ -2620,7 +2660,7 @@ packages:
       fs.realpath: 1.0.0
       inflight: 1.0.6
       inherits: 2.0.4
-      minimatch: 3.0.4
+      minimatch: 3.1.2
       once: 1.4.0
       path-is-absolute: 1.0.1
     dev: false
@@ -2812,7 +2852,7 @@ packages:
   /ignore-walk/3.0.4:
     resolution: {integrity: sha512-PY6Ii8o1jMRA1z4F2hRkH/xN59ox43DavKvD3oDpfurRlOJyAHpifIwpbdv1n4jt4ov0jSpw3kQ4GhJnpBL6WQ==}
     dependencies:
-      minimatch: 3.0.8
+      minimatch: 3.1.2
     dev: false
 
   /ignore/4.0.6:
@@ -3215,8 +3255,16 @@ packages:
     resolution: {integrity: sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==}
     dev: false
 
+  /lodash.isnil/4.0.0:
+    resolution: {integrity: sha512-up2Mzq3545mwVnMhTDMdfoG1OurpA/s5t88JmQX809eH3C8491iu2sfKhTfhQtKY78oPNhiaHJUpT/dUDAAtng==}
+    dev: false
+
   /lodash.merge/4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
+    dev: false
+
+  /lodash.times/4.3.2:
+    resolution: {integrity: sha512-FfaJzl0SA35CRPDh5SWe2BTght6y5KSK7yJv166qIp/8q7qOwBDCvuDZE2RUSMRpBkLF6rZKbLEUoTmaP3qg6A==}
     dev: false
 
   /lodash.truncate/4.4.2:
@@ -3445,7 +3493,7 @@ packages:
     resolution: {integrity: sha512-/5CMN3T0R4XTj4DcGaexo+roZSdSFW/0AOOTROrjxzCG1wrWXEsGbRKevjlIL+ZDE4sZlJr5ED4YW0yqmkK+eA==}
     dependencies:
       hosted-git-info: 2.8.9
-      resolve: 1.17.0
+      resolve: 1.22.1
       semver: 5.7.1
       validate-npm-package-license: 3.0.4
     dev: false
@@ -3845,38 +3893,11 @@ packages:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
     dev: false
 
-  /react-reconciler/0.25.1:
-    resolution: {integrity: sha512-R5UwsIvRcSs3w8n9k3tBoTtUHdVhu9u84EG7E5M0Jk9F5i6DA1pQzPfUZd6opYWGy56MJOtV3VADzy6DRwYDjw==}
-    engines: {node: '>=0.10.0'}
-    peerDependencies:
-      react: ^16.13.1
-    dependencies:
-      loose-envify: 1.4.0
-      object-assign: 4.1.1
-      prop-types: 15.8.1
-      scheduler: 0.19.1
-    dev: false
-
-  /react-reconciler/0.25.1_react@16.14.0:
-    resolution: {integrity: sha512-R5UwsIvRcSs3w8n9k3tBoTtUHdVhu9u84EG7E5M0Jk9F5i6DA1pQzPfUZd6opYWGy56MJOtV3VADzy6DRwYDjw==}
-    engines: {node: '>=0.10.0'}
-    peerDependencies:
-      react: ^16.13.1
-    dependencies:
-      loose-envify: 1.4.0
-      object-assign: 4.1.1
-      prop-types: 15.8.1
-      react: 16.14.0
-      scheduler: 0.19.1
-    dev: false
-
-  /react/16.14.0:
-    resolution: {integrity: sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g==}
+  /react/18.2.0:
+    resolution: {integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==}
     engines: {node: '>=0.10.0'}
     dependencies:
       loose-envify: 1.4.0
-      object-assign: 4.1.1
-      prop-types: 15.8.1
     dev: false
 
   /read-package-json/2.1.2:
@@ -4281,13 +4302,6 @@ packages:
 
   /safer-buffer/2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
-    dev: false
-
-  /scheduler/0.19.1:
-    resolution: {integrity: sha512-n/zwRWRYSUj0/3g/otKDRPMh6qv2SYMWNq85IEa8iZyAv8od9zDYpGSnpBEjNgcMNq6Scbu5KfIPxNF72R/2EA==}
-    dependencies:
-      loose-envify: 1.4.0
-      object-assign: 4.1.1
     dev: false
 
   /semver-compare/1.0.0:
@@ -5072,7 +5086,7 @@ packages:
     dev: false
 
   file:projects/bvh.tgz:
-    resolution: {integrity: sha512-uzoMVtjr5DkNvCuSnMiUQZEv8q6MTJEJddkxxXhpmrGjE0087gfZBUlIkCvlgQoFaYZX+BFiRLf49Ie1M1+avw==, tarball: file:projects/bvh.tgz}
+    resolution: {integrity: sha512-bLkMtOzIlNRHXOK4G/lTi+If5lAUo69W2uAQYy0/TH4gIEX0s+SNdawj3DYcT7JgaX0xl/OANM2iG9l1C/IboQ==, tarball: file:projects/bvh.tgz}
     name: '@rush-temp/bvh'
     version: 0.0.0
     dependencies:
@@ -5234,7 +5248,7 @@ packages:
     dev: false
 
   file:projects/mixin-smart-mask.tgz:
-    resolution: {integrity: sha512-lN4p9WTMEweDQo7QCr4yn6mXqsy+iYouYW3JET4eZEFy7ORhEN9AMdSxW2WPHVHyA4jevJgjx9b/3+B/ivaNaw==, tarball: file:projects/mixin-smart-mask.tgz}
+    resolution: {integrity: sha512-N3MQWGL93IpsWlmZkpGKJbDPpB2l+F/RwomviZpfEJbIqj1ZYNUwKZfTcGuOJFW6Q+6DGa2iVRci67zmcluo2A==, tarball: file:projects/mixin-smart-mask.tgz}
     name: '@rush-temp/mixin-smart-mask'
     version: 0.0.0
     dependencies:
@@ -5272,28 +5286,40 @@ packages:
       - supports-color
     dev: false
 
-  file:projects/react-bindings.tgz_pixi.js@7.1.4:
-    resolution: {integrity: sha512-h1tPVnK2epDBjVAreISTSw8vszuliBDm0OBsAQmzpevY+7+ABzyQc6ZU32wIj8U9I/dklbZ26uTQrEH5oSOAEA==, tarball: file:projects/react-bindings.tgz}
+  file:projects/react-bindings.tgz_ixhinzbrtvxaplzl5esyie5uue:
+    resolution: {integrity: sha512-Pv1l0t/KiOLM5DALkCZzmO41w3tGmnyqMLgTyYFNy+2u0EwA3/KNcMV+AfRuKBYAjH4QsdQkwaxTX5cKNNt/Yw==, tarball: file:projects/react-bindings.tgz}
     id: file:projects/react-bindings.tgz
     name: '@rush-temp/react-bindings'
     version: 0.0.0
     dependencies:
-      '@inlet/react-pixi': 5.2.0_yweeoaujsyarwecgqztokkxyue
       '@pixi-build-tools/rollup-configurator': 1.0.14_rollup@2.27.1
       '@pixi/display': 7.1.4
       '@pixi/math': 7.1.4
+      '@pixi/react': 7.1.0_obisx3exolhfyr6dq2wtfbn2uq
       '@types/react': 16.14.35
       eslint: 7.7.0
-      react: 16.14.0
+      react: 18.2.0
       rollup: 2.27.1
       tslib: 2.0.3
       typescript: 4.9.5
     transitivePeerDependencies:
+      - '@babel/runtime'
+      - '@pixi/app'
+      - '@pixi/constants'
+      - '@pixi/core'
+      - '@pixi/extensions'
+      - '@pixi/graphics'
+      - '@pixi/mesh'
+      - '@pixi/mesh-extras'
+      - '@pixi/particle-container'
+      - '@pixi/sprite'
+      - '@pixi/sprite-animated'
+      - '@pixi/sprite-tiling'
+      - '@pixi/text'
+      - '@pixi/text-bitmap'
+      - '@pixi/ticker'
       - '@types/node'
-      - pixi.js
-      - prop-types
       - react-dom
-      - react-spring
       - supports-color
     dev: false
 
@@ -5317,7 +5343,7 @@ packages:
     dev: false
 
   file:projects/svg.tgz:
-    resolution: {integrity: sha512-ySZRM/Fs8fckQBmklf+EDYza35CV3i7yTc6FACqsOSD6U4C33LPhnDNhTRADmT9J6kTx0mWykeGO/RKdqjKhAw==, tarball: file:projects/svg.tgz}
+    resolution: {integrity: sha512-iYxgraIbdhEJNIpT6OUPkhwi9Q5lR4lMQusW7IQNFr7abdGR3Hl5fjROElYenMjv+UHT/5lK5+jd8jhQ7JoaPg==, tarball: file:projects/svg.tgz}
     name: '@rush-temp/svg'
     version: 0.0.0
     dependencies:
@@ -5381,7 +5407,7 @@ packages:
     dev: false
 
   file:projects/transformer.tgz:
-    resolution: {integrity: sha512-qGMlJU309X3+LJedBCMKMPWz1uJ0BDO4siAyGISVkbJXrL3r1Cf2UAVQGHNDleU6ynGxtjBbgix08w2QJJJn4Q==, tarball: file:projects/transformer.tgz}
+    resolution: {integrity: sha512-o+f/m7wemJunjJ8Rdk9X8eN4uWp6sDzp5GrJapSlmiF8QRoO2vdjJu4F52EATwI0X6BuBsr1sevS+3QxBla4xg==, tarball: file:projects/transformer.tgz}
     name: '@rush-temp/transformer'
     version: 0.0.0
     dependencies:
