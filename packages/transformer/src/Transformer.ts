@@ -1422,7 +1422,7 @@ export class Transformer extends Container_
      * @param delta - transformation matrix
      * @param skipUpdate - whether to skip updating the group-bounds after applying the transform
      */
-    private prependTransform(delta: Matrix, skipUpdate = false): void
+    protected prependTransform(delta: Matrix, skipUpdate = false): void
     {
         const group = this.group;
 
