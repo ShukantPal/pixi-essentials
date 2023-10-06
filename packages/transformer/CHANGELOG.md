@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/transformer
 
-This log was last generated on Mon, 03 Jul 2023 13:17:51 GMT and should not be manually modified.
+This log was last generated on Fri, 06 Oct 2023 02:33:43 GMT and should not be manually modified.
+
+## 3.0.4
+Fri, 06 Oct 2023 02:33:43 GMT
+
+### Patches
+
+- Change preprendTransform visiblity to protected
 
 ## 3.0.2
 Mon, 03 Jul 2023 13:17:51 GMT
