@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: [20.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -26,12 +26,9 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: Setup PNPM
-      # You may pin to the exact commit or the version.
-      # uses: pnpm/action-setup@935101478d12d633ea2e71bb8b63d18e00bda099
-      uses: pnpm/action-setup@v1.2.0
+      uses: pnpm/action-setup@v3
       with:
-        # Version of PNPM to install
-        version: 5.18.1
+        version: 8.6.0
       env:
         ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
     - run: pnpm i -g @microsoft/rush
