@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/rush/v5/rush.schema.json",
-  "rushVersion": "5.90.0",
-  "pnpmVersion": "7.25.0",
+  "rushVersion": "5.122.0",
+  "pnpmVersion": "8.15.6",
   "pnpmOptions": {
     "pnpmStore": "global",
     "strictPeerDependencies": false,
     "resolutionStrategy": "fast"
   },
-  "nodeSupportedVersionRange": ">=14.0.0 <19.0.0",
+  "nodeSupportedVersionRange": ">=18.0.0 <=22.0.0",
   "suppressNodeLtsWarning": true,
   "repository": {
     "url": "https://github.com/SukantPal/pixi-essentials",
@@ -60,6 +60,12 @@
     {
       "packageName": "@pixi-essentials/diagnostic-geometry",
       "projectFolder": "packages/diagnostic-geometry",
+      "reviewCategory": "development",
+      "shouldPublish": false
+    },
+    {
+      "packageName": "@pixi-essentials/examples",
+      "projectFolder": "examples",
       "reviewCategory": "development",
       "shouldPublish": false
     },
