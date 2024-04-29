@@ -34,8 +34,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     requestAnimationFrame(() => {
         app.render()
-    })
-
-    console.log('hERER')
+    });
 });
 
