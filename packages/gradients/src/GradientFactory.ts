@@ -83,8 +83,6 @@ export class GradientFactory
             resource: canvas,
         }));
 
-        console.log(renderTarget)
-
         renderer.renderTarget.copyToTexture(
             renderTarget,
             renderTexture,
