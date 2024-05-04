@@ -1,13 +1,12 @@
 import type { AreaAllocator } from '@pixi-essentials/area-allocator';
-import type { BaseTexture, Texture } from '@pixi/core';
-import type { Rectangle } from '@pixi/math';
+import type { Rectangle, Texture, TextureSource } from 'pixi.js';
 
 /**
  * An entry of an issued texture from a {@link TextureSlab}.
- * 
+ *
  * @public
  */
-export type TextureEntry = 
+export type TextureEntry =
 {
     /**
      * The area returned by the area allocator, with the `__mem_area` key.
@@ -23,16 +22,16 @@ export type TextureEntry =
 /**
  * A texture slab holds a managed base-texture that is used to issue allocated texture space. The
  * texture allocator maintains a pool of these texture slabs.
- * 
+ *
  * @public
  */
-export type TextureSlab = 
+export type TextureSlab<T extends TextureSource> =
 {
     /**
      * The area allocator that issues texture space.
      */
     managedArea: AreaAllocator<any>;
-    
+
     /**
      * The list of allocated textures and their area.
      */
@@ -41,5 +40,5 @@ export type TextureSlab =
     /**
      * The base-texture that holds all the issued textures.
      */
-    slab: BaseTexture;
+    slab: T;
 };

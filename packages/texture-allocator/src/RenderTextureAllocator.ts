@@ -1,41 +1,37 @@
-import { BaseRenderTexture, RenderTexture } from '@pixi/core';
-import { GuilloteneAllocator } from '@pixi-essentials/area-allocator';
+import { RenderTexture, TextureSource } from 'pixi.js';
 import { TextureAllocator } from './TextureAllocator';
 
-import type { BaseTexture } from '@pixi/core';
-import type { Rectangle } from '@pixi/math';
-import type { TextureSlab } from './TextureSlab';
+import type { Rectangle } from 'pixi.js';
 
 /**
  * This allocator issues render-textures, and is otherwise just like {@link TextureAllocator}.
- * 
+ *
  * @public
  */
-export class RenderTextureAllocator extends TextureAllocator<RenderTexture>
+export class RenderTextureAllocator extends TextureAllocator<TextureSource, RenderTexture>
 {
     /**
      * Creates a texture slab backed by a base render-texture.
      */
-    protected createSlab(): TextureSlab
+    protected override createSlabSource(): TextureSource
     {
-        return {
-            managedArea: new GuilloteneAllocator(this.slabWidth, this.slabHeight),
-            managedTextures: [],
-            slab: new BaseRenderTexture({
-                width: this.slabWidth,
-                height: this.slabHeight
-            })
-        };
+        return new TextureSource({
+            height: this.slabHeight,
+            width: this.slabWidth,
+        });
     }
 
     /**
      * Creates a render-texture from the given base render-texture.
      *
-     * @param baseTexture 
-     * @param frame 
+     * @param source
+     * @param frame
      */
-    protected createTexture(baseTexture: BaseTexture, frame: Rectangle): RenderTexture
+    protected override createTexture(source: TextureSource, frame: Rectangle): RenderTexture
     {
-        return new RenderTexture(baseTexture as BaseRenderTexture, frame);
+        return new RenderTexture({
+            frame,
+            source,
+        });
     }
 }

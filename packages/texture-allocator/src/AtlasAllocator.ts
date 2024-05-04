@@ -1,56 +1,64 @@
-import { AtlasResource } from './AtlasResource';
-import { BaseTexture, Texture } from '@pixi/core';
-import { GuilloteneAllocator } from '@pixi-essentials/area-allocator';
+import { AtlasSource, optimizeAtlasUploads } from './AtlasSource';
+import { Texture } from 'pixi.js';
 import { TextureAllocator } from './TextureAllocator';
-import { TextureSlab } from './TextureSlab';
 
-import type { AtlasResourceSource } from './AtlasResource';
+import type { AtlasItemSource, AtlasItem } from './AtlasSource';
+import type { Renderer } from 'pixi.js';
 
 /**
- * This texture allocator auto-manages the base-texture with an {@link AtlasResource}. You can also
+ * This texture allocator auto-manages the base-texture with an {@link AtlasSource}. You can also
  * pass a texture source to `allocate`, mimicing {@link Texture.from} functionality.
- * 
+ *
  * @public
  */
-export class AtlasAllocator extends TextureAllocator
+export class AtlasAllocator extends TextureAllocator<AtlasSource>
 {
     /**
-     * Creates a texture slab backed by an {@link AtlasResource}.
+     * Creates an atlas allocator.
+     *
+     * @param renderer - The renderer to register the atlas source uploader for. This is optional, but
+     *  the atlas textures won't work without calling {@link optimizeAtlasUploads} on the renderer.
+     * @param slabWidth
+     * @param slabHeight
      */
-    protected createSlab(): TextureSlab
+    constructor(renderer: Renderer | null, slabWidth = 2048, slabHeight = 2048) {
+        super(slabWidth, slabHeight);
+
+        if (renderer)
+        {
+            optimizeAtlasUploads(renderer);
+        }
+    }
+
+    /**
+     * Creates a texture slab backed by an {@link AtlasSource}.
+     */
+    protected override createSlabSource(): AtlasSource
     {
-        return {
-            managedArea: new GuilloteneAllocator(this.slabWidth, this.slabHeight),
-            managedTextures: [],
-            slab: new BaseTexture(new AtlasResource(this.slabWidth, this.slabHeight),
-            {
-                width: this.slabWidth,
-                height: this.slabHeight,
-            }),
-        };
+        return new AtlasSource(this.slabWidth, this.slabHeight);
     }
 
     /**
      * Allocates a texture backed by the given atlas source, with the given padding.
      *
      * @override
-     * @param width 
-     * @param height 
-     * @param padding 
-     * @param source 
+     * @param width
+     * @param height
+     * @param padding
+     * @param source
      */
-    allocate(width: number, height: number, padding?: number, source?: AtlasResourceSource): Texture;
+    allocate(width: number, height: number, padding?: number, source?: AtlasItemSource): Texture;
 
     /**
      * Allocates a texture backed by the given source, with default padding.
      *
      * @param width
-     * @param height 
-     * @param source 
+     * @param height
+     * @param source
      */
-    allocate(width: number, height: number, source?: AtlasResourceSource): Texture;
+    allocate(width: number, height: number, source?: AtlasItemSource): Texture;
 
-    allocate(width: number, height: number, paddingOrSource?: number | AtlasResourceSource, source?: AtlasResourceSource): Texture
+    allocate(width: number, height: number, paddingOrSource?: number | AtlasItemSource, source?: AtlasItemSource): Texture
     {
         let padding: number;
 
@@ -68,7 +76,7 @@ export class AtlasAllocator extends TextureAllocator
 
         if (source)
         {
-            const atlas = texture.baseTexture.resource as AtlasResource;
+            const atlas = texture.source as AtlasSource;
             const item = {
                 frame: texture.frame,
                 source,
@@ -76,20 +84,28 @@ export class AtlasAllocator extends TextureAllocator
                 dirtyId: source instanceof HTMLImageElement && !source.complete ? -1 : 0,
                 updateId: -1,
                 texture,
-            };
+            } satisfies AtlasItem;
 
             atlas.managedItems.push(item);
 
-            if (source instanceof HTMLImageElement && !source.complete) {
-                source.addEventListener('load', () => {
-                    if (texture.baseTexture.valid && !texture.baseTexture.destroyed && atlas.managedItems.indexOf(item) >= 0) {
+            if (source instanceof HTMLImageElement && !source.complete)
+            {
+                source.addEventListener('load', () =>
+                {
+                    if (!texture.source.destroyed && atlas.managedItems.indexOf(item) >= 0)
+                    {
                         item.dirtyId++;
-                        texture.baseTexture.update();
+                        atlas.update();
+                        texture.update();
+                    }
+                    else
+                    {
+                        console.warn('Image loaded after texture was destroyed');
                     }
                 });
             }
 
-            texture.baseTexture.update();
+            atlas.update();
         }
 
         return texture;
@@ -99,8 +115,8 @@ export class AtlasAllocator extends TextureAllocator
     {
         super.free(texture);
 
-        const atlas = texture.baseTexture.resource as AtlasResource;
-        const item = atlas.managedItems.find(item => item.texture === texture);
+        const atlas = texture.source as AtlasSource;
+        const item = atlas.managedItems.find((item) => item.texture === texture);
 
         if (item)
         {

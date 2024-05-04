@@ -1,18 +1,9 @@
-import {Application, RenderTexture, Sprite} from "pixi.js";
-import {GradientFactory} from "@pixi-essentials/gradients";
+import { RenderTexture, Sprite } from 'pixi.js';
+import { GradientFactory } from '@pixi-essentials/gradients';
+import { main } from '../../src/main';
 
-
-document.addEventListener('DOMContentLoaded', async () => {
-    const app = new Application();
-    Object.assign(window, { app });
-
-    await app.init({
-        autoStart: false,
-        height: 600,
-        view: document.getElementById('view') as HTMLCanvasElement,
-        width: 800,
-    });
-
+main((app) =>
+{
     const gradient1 = GradientFactory.createLinearGradient(
         app.renderer,
         RenderTexture.create({ width: 800, height: 600 }),
@@ -32,8 +23,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     app.stage.addChild(gradient1Sprite);
 
-    requestAnimationFrame(() => {
-        app.render()
+    requestAnimationFrame(() =>
+    {
+        app.render();
     });
 });
-

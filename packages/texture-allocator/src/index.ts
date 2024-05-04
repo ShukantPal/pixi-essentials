@@ -1,5 +1,5 @@
 export * from './AtlasAllocator';
-export * from './AtlasResource';
+export * from './AtlasSource';
 export * from './CanvasTextureAllocator';
 export * from './RenderTextureAllocator';
 export * from './TextureAllocator';
