@@ -1,9 +1,8 @@
 import { GradientFactory } from '@pixi-essentials/gradients';
 import { PaintProvider } from './PaintProvider';
 
-import type { Renderer, RenderTexture } from '@pixi/core';
+import type { Rectangle, Renderer, RenderTexture, Texture } from 'pixi.js';
 import type { ColorStop } from '@pixi-essentials/gradients';
-import type { Rectangle } from '@pixi/math';
 
 /**
  * Converts the linear gradient's x1, x2, y1, y2 attributes into percentage units.
@@ -21,7 +20,7 @@ function convertLinearGradientAxis(linearGradient: SVGLinearGradientElement): vo
 /**
  * [Paint Servers]{@link https://svgwg.org/svg-next/pservers.html} are implemented as textures. This class is a lazy
  * wrapper around paint textures, which can only be generated using the `renderer` drawing to the screen.
- * 
+ *
  * @public
  */
 export class PaintServer
@@ -148,7 +147,7 @@ export class PaintServer
      *
      * @param renderer - The renderer being used to render the paint texture.
      */
-    private linearGradient(renderer: Renderer): RenderTexture
+    private linearGradient(renderer: Renderer): Texture
     {
         const linearGradient = this.paintServer as SVGLinearGradientElement;
         const paintTexture = this.paintTexture;
@@ -173,7 +172,7 @@ export class PaintServer
      *
      * @param renderer - The renderer being used to render the paint texture.
      */
-    private radialGradient(renderer: Renderer): RenderTexture
+    private radialGradient(renderer: Renderer): Texture
     {
         const radialGradient = this.paintServer as SVGRadialGradientElement;
         const paintTexture = this.paintTexture;

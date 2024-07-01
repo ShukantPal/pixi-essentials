@@ -1,10 +1,10 @@
-import type { LINE_CAP, LINE_JOIN } from '@pixi/graphics';
 import type { Paint } from './Paint';
+import type { LineCap, LineJoin } from 'pixi.js';
 
 /**
  * Inherited paint, used for &lt;use /&gt; elements. The properties used on the inherited paint do not
  * override those on the parent.
- * 
+ *
  * @public
  */
 export class InheritedPaintProvider implements Paint
@@ -56,12 +56,12 @@ export class InheritedPaintProvider implements Paint
             ? this.provider.strokeDashOffset : this.parent.strokeDashOffset;
     }
 
-    get strokeLineCap(): LINE_CAP
+    get strokeLineCap(): LineCap
     {
         return typeof this.provider.strokeLineCap === 'string' ? this.provider.strokeLineCap : this.parent.strokeLineCap;
     }
 
-    get strokeLineJoin(): LINE_JOIN
+    get strokeLineJoin(): LineJoin
     {
         return typeof this.provider.strokeLineJoin === 'string' ? this.provider.strokeLineJoin : this.parent.strokeLineJoin;
     }

@@ -1,12 +1,11 @@
-import { BaseImageResource, Texture } from '@pixi/core';
-import { Matrix } from '@pixi/math';
+import { Texture, Matrix, ImageSource } from 'pixi.js';
 import { SVGGraphicsNode } from './SVGGraphicsNode';
 
 const tempMatrix = new Matrix();
 
 /**
  * Draws SVG &lt;image /&gt; elements.
- * 
+ *
  * @public
  */
 export class SVGImageNode extends SVGGraphicsNode
@@ -80,14 +79,13 @@ export class SVGImageNode extends SVGGraphicsNode
         };
 
         // Generate the quad geometry
-        this.beginTextureFill({
+        this.fill({
             texture: this._texture,
             alpha: opacity,
             matrix: new Matrix()
                 .scale(1 / sx, 1 / sy),
         });
-        this.drawRect(x, y, width, height);
-        this.endFill();
+        this.rect(x, y, width, height);
     }
 
     /**
@@ -119,7 +117,7 @@ export class SVGImageNode extends SVGGraphicsNode
 
         if (this._texture)
         {
-            this._canvas = (this._texture.baseTexture.resource as BaseImageResource).source as HTMLCanvasElement;
+            this._canvas = (this._texture.source as ImageSource).resource as HTMLCanvasElement;
             this._context = this._canvas.getContext('2d');
         }
         else // Allocation fails if the texture is too large. If so, create a standalone texture.

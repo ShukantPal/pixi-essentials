@@ -1,4 +1,4 @@
-import { ColorMatrixFilter } from '@pixi/filter-color-matrix';
+import { ColorMatrixFilter } from 'pixi.js';
 
 /**
  * The luminance-to-red filter stores the luminance of the RGB components into the alpha channel

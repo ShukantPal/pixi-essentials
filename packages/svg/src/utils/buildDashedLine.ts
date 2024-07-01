@@ -1,13 +1,14 @@
-import { GRAPHICS_CURVES, LINE_CAP, LINE_JOIN } from '@pixi/graphics';
-import { Point, SHAPES } from '@pixi/math';
+import { Point } from 'pixi.js';
 
 // @ts-expect-error We'll export Polygon later.
-import type { GraphicsData, GraphicsGeometry, LineStyle, Polygon } from '@pixi/graphics';
+import type { GraphicsData, GraphicsGeometry, LineStyle, Polygon } from 'pixi.js';
 
 function distanceTo(p0: Point, p1: Point): number
 {
-    return Math.sqrt(((p0.x - p1.x) ** 2) + ((p0.y - p1.y) ** 2)); 
+    return Math.sqrt(((p0.x - p1.x) ** 2) + ((p0.y - p1.y) ** 2));
 }
+
+const FLT_EPSILON = 1.19209290e-7;
 
 /**
  * Buffers vertices to draw a square cap.
@@ -221,7 +222,7 @@ function buildDash(points: number[], style: LineStyle, graphicsGeometry: Graphic
 
     // if (!closedShape)
     // {
-    if (style.cap === LINE_CAP.ROUND)
+    if (style.cap === 'round')
     {
         indexCount += round(
             x0 - (perpx * (innerWeight - outerWeight) * 0.5),
@@ -234,7 +235,7 @@ function buildDash(points: number[], style: LineStyle, graphicsGeometry: Graphic
             true,
         ) + 2;
     }
-    else if (style.cap === LINE_CAP.SQUARE)
+    else if (style.cap === 'square')
     {
         indexCount += square(x0, y0, perpx, perpy, innerWeight, outerWeight, true, verts);
     }
@@ -314,7 +315,7 @@ function buildDash(points: number[], style: LineStyle, graphicsGeometry: Graphic
         const omx = x1 - ((px - x1) * outerWeight);
         const omy = y1 - ((py - y1) * outerWeight);
 
-        if (style.join === LINE_JOIN.BEVEL || pdist / widthSquared > miterLimitSquared)
+        if (style.join === 'bevel' || pdist / widthSquared > miterLimitSquared)
         {
             if (clockwise) /* rotating at inner angle */
             {
@@ -333,7 +334,7 @@ function buildDash(points: number[], style: LineStyle, graphicsGeometry: Graphic
 
             indexCount += 2;
         }
-        else if (style.join === LINE_JOIN.ROUND)
+        else if (style.join === 'round')
         {
             if (clockwise) /* arc is outside */
             {
@@ -393,7 +394,7 @@ function buildDash(points: number[], style: LineStyle, graphicsGeometry: Graphic
 
     // if (!closedShape)
     // {
-    if (style.cap === LINE_CAP.ROUND)
+    if (style.cap === 'round')
     {
         indexCount += round(
             x1 - (perpx * (innerWeight - outerWeight) * 0.5),
@@ -406,14 +407,14 @@ function buildDash(points: number[], style: LineStyle, graphicsGeometry: Graphic
             false
         ) + 2;
     }
-    else if (style.cap === LINE_CAP.SQUARE)
+    else if (style.cap === 'square')
     {
         indexCount += square(x1, y1, perpx, perpy, innerWeight, outerWeight, false, verts);
     }
     // }
 
     const indices = graphicsGeometry.indices;
-    const eps2 = GRAPHICS_CURVES.epsilon * GRAPHICS_CURVES.epsilon;
+    const eps2 = FLT_EPSILON * FLT_EPSILON;
 
     // indices.push(indexStart);
     for (let i = indexStart; i < indexCount + indexStart - 2; ++i)
@@ -495,7 +496,7 @@ export function buildDashedLine(graphicsData: GraphicsData, graphicsGeometry: Gr
 
     // End of each segement
     const segEnd = new Point();
-    
+
     // Holds points for the dashes. When drawing a dash, this must contain more than one point. It
     // may contain more than 2 points if the dash spans across multiple segments.
     const segPoints = [];

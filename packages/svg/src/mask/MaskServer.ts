@@ -1,9 +1,7 @@
-import { Rectangle } from '@pixi/math';
-import { Sprite } from '@pixi/sprite';
+import { Rectangle, Sprite } from 'pixi.js';
 import { l2rFilter } from './L2RFilter';
 
-import type { Container, DisplayObject } from '@pixi/display';
-import type { Renderer, RenderTexture } from '@pixi/core';
+import type { Container, ContainerChild, Renderer, RenderTexture } from 'pixi.js';
 
 const tempSourceFrame = new Rectangle();
 const tempDestinationFrame = new Rectangle();
@@ -77,7 +75,7 @@ export class MaskServer extends Sprite
             const destinationFrame = tempDestinationFrame.copyFrom(renderer.renderTexture.destinationFrame);
 
             const localBounds = (this as Sprite).getLocalBounds(null);
-            const children: DisplayObject[] = this.children;
+            const children: ContainerChild[] = this.children;
 
             renderer.renderTexture.bind(this.texture as RenderTexture, localBounds);
             renderer.renderTexture.clear();

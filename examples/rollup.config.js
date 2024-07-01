@@ -25,6 +25,7 @@ function config(input)
 
 module.exports = [
     config('pages/gradients/index.ts'),
+    config('pages/svg/image/index.ts'),
     config('pages/texture-allocator/atlas/index.ts'),
     config('pages/texture-allocator/canvas/index.ts'),
 ];

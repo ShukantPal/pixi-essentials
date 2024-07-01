@@ -1,4 +1,4 @@
-import { Bounds } from '@pixi/display';
+import { Bounds } from 'pixi.js';
 
 /** @internal */
 export const PATH = 100;
@@ -11,7 +11,7 @@ export type Contour = Array<number>;
 
 /**
  * The fill rules supported by {@link Path}.
- * 
+ *
  * @public
  */
 export enum FILL_RULE {
@@ -21,7 +21,7 @@ export enum FILL_RULE {
 
 /**
  * Shape extension for Graphics
- * 
+ *
  * @public
  */
 export class Path
@@ -175,10 +175,10 @@ export class Path
         bounds.maxX = maxX;
         bounds.maxY = maxY;
     }
-    
+
     /**
      * Hit-tests the point (x, y) based on the even-odd fill rule.
-     * 
+     *
      * @see http://geomalgorithms.com/a03-_inclusion.html
      */
     private hitEvenOdd(x: number, y: number): boolean
@@ -186,7 +186,7 @@ export class Path
         // Here, we do we a ray tracing of a horizontally line extending from (x, y) infinitely towards the
         // right. The number of edges crossing this ray are counted.
         let crossingCount = 0;
-        
+
         for (const contour of this.contours)
         {
             for (let i = 0, j = contour.length; i < j;)
@@ -255,7 +255,7 @@ export class Path
                     ) < 0)           // (x, y) right of edge
                     {
                         --windingNumber;
-                    }                   
+                    }
                 }
             }
         }

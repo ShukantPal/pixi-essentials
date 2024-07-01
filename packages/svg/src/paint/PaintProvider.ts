@@ -1,12 +1,12 @@
-import { LINE_CAP, LINE_JOIN } from '@pixi/graphics';
 import color from 'tinycolor2';
 
 import type { Paint } from './Paint';
+import type { LineCap, LineJoin } from 'pixi.js';
 
 /**
  * Provides the `Paint` for an `SVGElement`. It will also respond to changes in the attributes of the element
  * (not implemented).
- * 
+ *
  * @public
  */
 export class PaintProvider implements Paint
@@ -18,8 +18,8 @@ export class PaintProvider implements Paint
     public stroke: number | string;
     public strokeDashArray: number[];
     public strokeDashOffset: number;
-    public strokeLineCap: LINE_CAP;
-    public strokeLineJoin: LINE_JOIN;
+    public strokeLineCap: LineCap;
+    public strokeLineJoin: LineJoin;
     public strokeMiterLimit: number;
     public strokeWidth: number;
 
@@ -51,8 +51,8 @@ export class PaintProvider implements Paint
                 ?.split(/[, ]+/g)
                 .map((num) => parseFloat(num.trim()));
         this.strokeDashOffset = strokeDashOffset && parseFloat(strokeDashOffset);
-        this.strokeLineCap = strokeLineCap as unknown as LINE_CAP;
-        this.strokeLineJoin = strokeLineJoin as unknown as LINE_JOIN;
+        this.strokeLineCap = strokeLineCap as unknown as LineCap;
+        this.strokeLineJoin = strokeLineJoin as unknown as LineJoin;
         this.strokeMiterLimit = strokeMiterLimit && parseFloat(strokeMiterLimit);
         this.strokeWidth = strokeWidth && parseFloat(strokeWidth);
     }

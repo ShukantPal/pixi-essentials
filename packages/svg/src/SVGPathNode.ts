@@ -1,14 +1,12 @@
 import { FILL_RULE, Path, PATH } from './utils/Path';
 import { SVGGraphicsNode } from './SVGGraphicsNode';
 import { buildPath } from './utils/buildPath';
-import { graphicsUtils } from '@pixi/graphics';
 import dPathParser from 'd-path-parser';
 
-graphicsUtils.FILL_COMMANDS[PATH] = buildPath;
 
 /**
  * Draws SVG &lt;path /&gt; elements.
- * 
+ *
  * @public
  */
 export class SVGPathNode extends SVGGraphicsNode

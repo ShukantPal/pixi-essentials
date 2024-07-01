@@ -1,10 +1,10 @@
-import { Container } from '@pixi/display';
+import { Container } from 'pixi.js';
 
 import type { SVGGraphicsNode } from './SVGGraphicsNode';
 
 /**
  * Container for rendering SVG &lt;use /&gt; elements.
- * 
+ *
  * @public
  */
 export class SVGUseNode extends Container

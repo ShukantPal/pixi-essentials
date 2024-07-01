@@ -1,10 +1,12 @@
 import { NODE_TRANSFORM_DIRTY } from './const';
-import { Sprite } from '@pixi/sprite';
-import { Texture } from '@pixi/core';
-import { TextMetrics, TextStyle } from '@pixi/text';
+import {
+    CanvasTextMetrics,
+    Sprite,
+    Texture,
+    TextStyle,
+} from 'pixi.js';
 
-import type { IPointData, Matrix } from '@pixi/math';
-import type { Renderer } from '@pixi/core';
+import type { PointData, Matrix, Renderer } from 'pixi.js';
 import type { SVGTextEngine } from './SVGTextEngine';
 
 /**
@@ -19,7 +21,7 @@ export class SVGTextEngineImpl extends Sprite implements SVGTextEngine
     protected canvas: HTMLCanvasElement;
     protected context: CanvasRenderingContext2D;
     protected contentList: Map<any, {
-        position: IPointData;
+        position: PointData;
         content: string;
         style: Partial<TextStyle>;
         matrix?: Matrix;
@@ -51,11 +53,11 @@ export class SVGTextEngineImpl extends Sprite implements SVGTextEngine
 
     async put(
         id: any,
-        position: IPointData,
+        position: PointData,
         content: string,
         style: Partial<TextStyle>,
         matrix?: Matrix,
-    ): Promise<IPointData>
+    ): Promise<PointData>
     {
         this.contentList.set(id, {
             position,
@@ -64,7 +66,7 @@ export class SVGTextEngineImpl extends Sprite implements SVGTextEngine
             matrix,
         });
 
-        const textMetrics = TextMetrics.measureText(content, new TextStyle(style), false, this.canvas);
+        const textMetrics = CanvasTextMetrics.measureText(content, new TextStyle(style), this.canvas, false);
 
         this.dirtyId++;
 
@@ -81,7 +83,7 @@ export class SVGTextEngineImpl extends Sprite implements SVGTextEngine
 
         this.contentList.forEach(({ position, content, style }) =>
         {
-            const textMetrics = TextMetrics.measureText(content, new TextStyle(style), false, this.canvas);
+            const textMetrics = CanvasTextMetrics.measureText(content, new TextStyle(style), this.canvas, false);
 
             w = Math.max(w, position.x + textMetrics.width);
             h = Math.max(h, position.y + textMetrics.height + textMetrics.fontProperties.descent);
@@ -102,7 +104,7 @@ export class SVGTextEngineImpl extends Sprite implements SVGTextEngine
 
         for (const [_, { position, content, style }] of this.contentList)
         {
-            const textMetrics = TextMetrics.measureText(content, new TextStyle(style), false, this.canvas);
+            const textMetrics = CanvasTextMetrics.measureText(content, new TextStyle(style), this.canvas, false);
             const textStyle = new TextStyle(style);
 
             this.context.fillStyle = typeof textStyle.fill === 'string' ? textStyle.fill : 'black';

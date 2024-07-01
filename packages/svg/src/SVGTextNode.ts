@@ -1,13 +1,11 @@
 import '@pixi/events';
-import { Container } from '@pixi/display';
+import { Container } from 'pixi.js';
 import { NODE_TRANSFORM_DIRTY } from './const';
 import { SVGTextEngineImpl } from './SVGTextEngineImpl';
 import { parseMeasurement } from './utils/parseMeasurement';
 
-import type { DisplayObject } from '@pixi/display';
-import type { IPointData } from '@pixi/math';
+import type { PointData, TextStyle, TextStyleFontWeight } from 'pixi.js';
 import type { SVGTextEngine } from './SVGTextEngine';
-import type { TextStyle, TextStyleFontWeight } from '@pixi/text';
 
 /**
  * Draws SVG &lt;text /&gt; elements.
@@ -22,17 +20,17 @@ export class SVGTextNode extends Container
      *
      * @alpha
      */
-    static defaultEngine: { new(): SVGTextEngine & DisplayObject } = SVGTextEngineImpl;
+    static defaultEngine: { new(): SVGTextEngine & Container } = SVGTextEngineImpl;
 
     /**
      * An instance of a SVG text engine used to layout and render text.
      */
-    protected engine: SVGTextEngine & DisplayObject;
+    protected engine: SVGTextEngine & Container;
 
     /**
      * The current text position, where the next glyph will be placed.
      */
-    protected currentTextPosition: IPointData;
+    protected currentTextPosition: PointData;
 
     constructor()
     {

@@ -1,41 +1,15 @@
-import { DashedLineStyle } from './style/DashedLineStyle';
 import { EllipticArcUtils } from './utils/EllipticArcUtils';
-import { Matrix } from '@pixi/math';
-import { LINE_CAP, LINE_JOIN } from '@pixi/graphics';
-import { GRAPHICS_CURVES, Graphics } from '@pixi/graphics';
-import { SVGGraphicsGeometry } from './SVGGraphicsGeometry';
-import { Texture } from '@pixi/core';
+import {
+    Matrix,
+    Graphics,
+} from 'pixi.js';
 
+import type { DashedStrokeStyle, ConvertedDashedStrokeStyle } from './style/DashedLineStyle';
 import type { PaintServer } from './paint/PaintServer';
-import type { Renderer } from '@pixi/core';
+import type { Renderer } from 'pixi.js';
 import type { SVGSceneContext } from './SVGSceneContext';
 
-/**
- * @public
- * @ignore
- */
-export interface ILineStyleOptions {
-    color?: number;
-    alpha?: number;
-    texture?: Texture;
-    matrix?: Matrix;
-
-    width?: number;
-    alignment?: number;
-    native?: boolean;
-    cap?: LINE_CAP;
-    join?: LINE_JOIN;
-    miterLimit?: number;
-
-    // additions
-    dashArray?: number[];
-    dashOffset?: number;
-}
-
 const tempMatrix = new Matrix();
-
-const _segmentsCount: (length: number, defaultSegments?: number) => number 
-    = (GRAPHICS_CURVES as any)._segmentsCount.bind(GRAPHICS_CURVES);
 
 /**
  * This node can be used to directly embed the following elements:
@@ -51,7 +25,7 @@ const _segmentsCount: (length: number, defaultSegments?: number) => number
  *
  * It also provides an implementation for dashed stroking, by adding the `dashArray` and `dashOffset` properties
  * to `LineStyle`.
- * 
+ *
  * @public
  */
 export class SVGGraphicsNode extends Graphics
@@ -65,56 +39,7 @@ export class SVGGraphicsNode extends Graphics
         super();
 
         this.context = context;
-
-        (this as any)._geometry = new SVGGraphicsGeometry();
-        (this as any)._geometry.refCount++;
-
-        this._lineStyle = new DashedLineStyle();
-
         this.paintServers = [];
-    }
-
-    public lineTextureStyle(options: ILineStyleOptions): this
-    {
-        // Apply defaults
-        options = Object.assign({
-            width: 0,
-            texture: Texture.WHITE,
-            color: (options && options.texture) ? 0xFFFFFF : 0x0,
-            alpha: 1,
-            matrix: null,
-            alignment: 0.5,
-            native: false,
-            cap: LINE_CAP.BUTT,
-            join: LINE_JOIN.MITER,
-            miterLimit: 10,
-            dashArray: null,
-            dashOffset: 0,
-        }, options);
-
-        if (this.currentPath)
-        {
-            this.startPoly();
-        }
-
-        const visible = options.width > 0 && options.alpha > 0;
-
-        if (!visible)
-        {
-            this._lineStyle.reset();
-        }
-        else
-        {
-            if (options.matrix)
-            {
-                options.matrix = options.matrix.clone();
-                options.matrix.invert();
-            }
-
-            Object.assign(this._lineStyle, { visible }, options);
-        }
-
-        return this;
     }
 
     /**
@@ -141,9 +66,9 @@ export class SVGGraphicsNode extends Graphics
         anticlockwise = false): this
     {
         const sweepAngle = endAngle - startAngle;
-        const n = GRAPHICS_CURVES.adaptive
-            ? _segmentsCount(EllipticArcUtils.calculateArcLength(rx, ry, startAngle, endAngle - startAngle)) * 4
-            : 20;
+
+        // Choose a number of segments such that the maximum absolute deviation from the circle is approximately 0.029
+        const n = Math.ceil(2.3 * Math.sqrt(rx + ry));
         const delta = (anticlockwise ? -1 : 1) * Math.abs(sweepAngle) / (n - 1);
 
         tempMatrix.identity()
@@ -437,6 +362,6 @@ export class SVGGraphicsNode extends Graphics
             paintServers[i].resolvePaint(renderer);
         }
 
-        super.render(renderer);
+        // TODO: Fix rendering
     }
 }

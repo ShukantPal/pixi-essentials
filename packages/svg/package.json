@@ -35,6 +35,7 @@
     "*.d.ts"
   ],
   "devDependencies": {
+    "pixi.js": "^8.2.0",
     "@pixi-essentials/eslint-config": "^1.0.0",
     "eslint": "^7.9.0",
     "rollup": "^2.28.1",
@@ -43,20 +44,12 @@
     "@microsoft/api-extractor": "~7.16.1"
   },
   "peerDependencies": {
-    "@pixi/core": "^7.0.0",
-    "@pixi/display": "^7.0.0",
-    "@pixi/filter-color-matrix": "^7.0.0",
-    "@pixi/math": "^7.0.0",
-    "@pixi/graphics": "^7.0.0",
-    "@pixi/sprite": "^7.0.0",
-    "@pixi/text": "^7.0.0",
-    "@pixi/events": "^7.0.0"
+    "pixi.js": "^8.2.0"
   },
   "dependencies": {
     "d-path-parser": "^1.0.0",
     "tinycolor2": "^1.4.1",
     "@pixi-essentials/gradients": "^1.0.1",
-    "@pixi-essentials/cull": "^2.0.0",
     "@pixi-essentials/texture-allocator": "~2.0.1",
     "libtess": "~1.2.2"
   },

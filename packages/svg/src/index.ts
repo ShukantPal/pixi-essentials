@@ -7,7 +7,6 @@ export * from './paint/PaintServer';
 
 export * from './utils/Path';
 
-export * from './SVGGraphicsGeometry';
 export * from './SVGGraphicsNode';
 export * from './SVGImageNode';
 export * from './SVGPathNode';
