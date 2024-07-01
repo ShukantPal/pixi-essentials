@@ -7,7 +7,7 @@
     "strictPeerDependencies": false,
     "resolutionStrategy": "fast"
   },
-  "nodeSupportedVersionRange": ">=18.0.0 <=22.0.0",
+  "nodeSupportedVersionRange": ">=18.0.0 <=23.0.0",
   "suppressNodeLtsWarning": true,
   "repository": {
     "url": "https://github.com/SukantPal/pixi-essentials",
