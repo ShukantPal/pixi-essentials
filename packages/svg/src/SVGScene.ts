@@ -364,79 +364,6 @@ export class SVGScene extends Container
         const transform = element instanceof SVGGraphicsElement ? element.transform.baseVal.consolidate() : null;
         const transformMatrix = transform ? transform.matrix : tempMatrix.identity();
 
-        if (node instanceof SVGGraphicsNode && !(node instanceof SVGImageNode))
-        {
-            if (fill === 'none')
-            {
-                node.fill({
-                    color: 0,
-                    alpha: 0,
-                });
-            }
-            else if (typeof fill === 'number')
-            {
-                node.fill({
-                    color: fill,
-                    alpha: opacity === null ? 1 : opacity,
-                });
-            }
-            else if (!fill)
-            {
-                node.fill({
-                    color: 0,
-                });
-            }
-            else
-            {
-                const ref = this.parseReference(fill);
-                const paintElement = this.content.querySelector(ref);
-
-                if (paintElement && paintElement instanceof SVGGradientElement)
-                {
-                    const paintServer = this.createPaintServer(paintElement);
-                    const paintTexture = paintServer.paintTexture;
-
-                    node.paintServers.push(paintServer);
-                    node.fill({
-                        texture: paintTexture,
-                        alpha: opacity === null ? 1 : opacity,
-                        matrix: new Matrix(),
-                    });
-                }
-            }
-
-            let strokeTexture: Texture;
-
-            if (typeof stroke === 'string' && stroke.startsWith('url'))
-            {
-                const ref = this.parseReference(stroke);
-                const paintElement = this.content.querySelector(ref);
-
-                if (paintElement && paintElement instanceof SVGGradientElement)
-                {
-                    const paintServer = this.createPaintServer(paintElement);
-                    const paintTexture = paintServer.paintTexture;
-
-                    node.paintServers.push(paintServer);
-                    strokeTexture = paintTexture;
-                }
-            }
-
-            node.setStrokeStyle({
-                /* eslint-disable no-nested-ternary */
-                color: stroke === null ? 0 : (typeof stroke === 'number' ? stroke : 0xffffff),
-                cap: strokeLineCap === null ? 'square' : strokeLineCap as unknown as LineCap,
-                dashArray: strokeDashArray,
-                dashOffset: strokeDashOffset === null ? strokeDashOffset : 0,
-                join: strokeLineJoin === null ? 'miter' :  strokeLineJoin as unknown as LineJoin,
-                matrix: new Matrix(),
-                miterLimit: strokeMiterLimit === null ? 150 : strokeMiterLimit,
-                texture: strokeTexture || Texture.WHITE,
-                width: strokeWidth === null ? (typeof stroke === 'number' ? 1 : 0) : strokeWidth,
-                /* eslint-enable no-nested-ternary */
-            });
-        }
-
         switch (element.nodeName.toLowerCase())
         {
             case 'circle':
@@ -517,6 +444,79 @@ export class SVGScene extends Container
                         });
                 }
             }
+        }
+
+        if (node instanceof SVGGraphicsNode && !(node instanceof SVGImageNode))
+        {
+            if (fill === 'none')
+            {
+                node.fill({
+                    color: 0,
+                    alpha: 0,
+                });
+            }
+            else if (typeof fill === 'number')
+            {
+                node.fill({
+                    color: fill,
+                    alpha: opacity === null ? 1 : opacity,
+                });
+            }
+            else if (!fill)
+            {
+                node.fill({
+                    color: 0,
+                });
+            }
+            else
+            {
+                const ref = this.parseReference(fill);
+                const paintElement = this.content.querySelector(ref);
+
+                if (paintElement && paintElement instanceof SVGGradientElement)
+                {
+                    const paintServer = this.createPaintServer(paintElement);
+                    const paintTexture = paintServer.paintTexture;
+
+                    node.paintServers.push(paintServer);
+                    node.fill({
+                        texture: paintTexture,
+                        alpha: opacity === null ? 1 : opacity,
+                        matrix: new Matrix(),
+                    });
+                }
+            }
+
+            let strokeTexture: Texture;
+
+            if (typeof stroke === 'string' && stroke.startsWith('url'))
+            {
+                const ref = this.parseReference(stroke);
+                const paintElement = this.content.querySelector(ref);
+
+                if (paintElement && paintElement instanceof SVGGradientElement)
+                {
+                    const paintServer = this.createPaintServer(paintElement);
+                    const paintTexture = paintServer.paintTexture;
+
+                    node.paintServers.push(paintServer);
+                    strokeTexture = paintTexture;
+                }
+            }
+
+            node.stroke({
+                /* eslint-disable no-nested-ternary */
+                color: stroke === null ? 0 : (typeof stroke === 'number' ? stroke : 0xffffff),
+                cap: strokeLineCap === null ? 'square' : strokeLineCap as unknown as LineCap,
+                dashArray: strokeDashArray,
+                dashOffset: strokeDashOffset === null ? strokeDashOffset : 0,
+                join: strokeLineJoin === null ? 'miter' :  strokeLineJoin as unknown as LineJoin,
+                matrix: new Matrix(),
+                miterLimit: strokeMiterLimit === null ? 150 : strokeMiterLimit,
+                texture: strokeTexture || Texture.WHITE,
+                width: strokeWidth === null ? (typeof stroke === 'number' ? 1 : 0) : strokeWidth,
+                /* eslint-enable no-nested-ternary */
+            });
         }
 
         node.setFromMatrix(tempMatrix.set(
@@ -616,6 +616,8 @@ export class SVGScene extends Container
 
             const geometry = node.geometry;
             const graphicsData = (geometry as any)?.graphicsData;
+
+            console.log(node.context.instructions)
 
             if (graphicsData)
             {

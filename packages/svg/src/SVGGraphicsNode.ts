@@ -86,11 +86,11 @@ export class SVGGraphicsNode extends Graphics
 
             if (i === 0)
             {
-                this._initCurve(x, y);
+                this.moveTo(x, y);
                 continue;
             }
 
-            this.currentPath.points.push(x, y);
+            this.lineTo(x, y);
         }
 
         return this;
@@ -129,7 +129,8 @@ export class SVGGraphicsNode extends Graphics
         }
 
         // See https://www.w3.org/TR/SVG2/implnote.html#ArcImplementationNotes
-        const points = this.currentPath.points;
+        this.context['_activePath'].shapePath['_ensurePoly']();
+        const points: ReadonlyArray<number> = this.context['_activePath'].shapePath['_currentPoly'].points;
         const startX = points[points.length - 2];
         const startY = points[points.length - 1];
         const midX = (startX + endX) / 2;

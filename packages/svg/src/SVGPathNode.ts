@@ -38,20 +38,6 @@ export class SVGPathNode extends SVGGraphicsNode
         }
     }
 
-    // @ts-expect-error
-    get currentPath(): any
-    {
-        return this.currentPath2;
-    }
-    set currentPath(nothing: any)
-    {
-        if (nothing)
-        {
-            throw new Error('currentPath cannot be set');
-        }
-        // readonly
-    }
-
     closePath(): any
     {
         this.currentPath2.points.push(this.currentPath2.points[0], this.currentPath2.points[1])
@@ -69,8 +55,8 @@ export class SVGPathNode extends SVGGraphicsNode
     }
 
     // Redirect moveTo, lineTo, ... onto paths!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :P
-    startPoly = this.startPath;
-    finishPoly = this.finishPath;
+    //startPoly = this.startPath;
+    //finishPoly = this.finishPath;
 
     /**
      * Embeds the `SVGPathElement` into this node.
