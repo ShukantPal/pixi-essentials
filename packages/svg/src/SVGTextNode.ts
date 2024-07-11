@@ -1,4 +1,3 @@
-import '@pixi/events';
 import { Container } from 'pixi.js';
 import { NODE_TRANSFORM_DIRTY } from './const';
 import { SVGTextEngineImpl } from './SVGTextEngineImpl';

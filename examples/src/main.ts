@@ -24,5 +24,10 @@ export function main(callback: (app: Application) => void, options?: Partial<App
         });
 
         callback(app);
+
+        Object.assign(window, {
+            app,
+            stage: app.stage,
+        });
     });
 }

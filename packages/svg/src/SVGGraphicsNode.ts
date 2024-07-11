@@ -32,13 +32,13 @@ export class SVGGraphicsNode extends Graphics
 {
     paintServers: PaintServer[];
 
-    protected context: SVGSceneContext;
+    protected _sceneContext: SVGSceneContext;
 
     constructor(context: SVGSceneContext)
     {
         super();
 
-        this.context = context;
+        this._sceneContext = context;
         this.paintServers = [];
     }
 

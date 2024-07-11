@@ -31,7 +31,7 @@
     "@pixi-essentials/svg": "2.0.2",
     "@typescript-eslint/parser": "~3.9.1",
     "@typescript-eslint/eslint-plugin": "~3.9.1",
-    "pixi.js": "^8.1.0"
+    "pixi.js": "^8.2.0"
   },
   "devDependencies": {
     "@pixi-essentials/eslint-config": "~1.0.0",

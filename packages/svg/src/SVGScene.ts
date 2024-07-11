@@ -6,7 +6,7 @@ import * as Loader from './loader';
 import { NODE_TRANSFORM_DIRTY, TRANSFORM_DIRTY } from './const';
 import { PaintProvider } from './paint/PaintProvider';
 import { PaintServer } from './paint/PaintServer';
-import { Container, Matrix, Rectangle, RenderTexture, Texture  } from 'pixi.js';
+import { Bounds, Container, Matrix, Rectangle, RenderTexture, Texture } from 'pixi.js';
 import { SVGGraphicsNode } from './SVGGraphicsNode';
 import { SVGImageNode } from './SVGImageNode';
 import { SVGPathNode } from './SVGPathNode';
@@ -19,6 +19,7 @@ import type { SVGSceneContext } from './SVGSceneContext';
 
 const tempMatrix = new Matrix();
 const tempRect = new Rectangle();
+const tempBounds = new Bounds();
 
 /**
  * {@link SVGScene} can be used to build an interactive viewer for scalable vector graphics images. You must specify the size
@@ -110,7 +111,9 @@ export class SVGScene extends Container
         this.boundsArea = new Rectangle(0, 0, this.content.viewBox.baseVal.width, this.content.viewBox.baseVal.height);
 
         if (!context || !context.disableRootPopulation)
+        {
             this.populateScene();
+        }
     }
 
     initContext(context?: Partial<SVGSceneContext>): void
@@ -131,7 +134,7 @@ export class SVGScene extends Container
      */
     protected createNode(element: SVGElement): Container
     {
-        let renderNode = null;
+        let renderNode: Container;
 
         switch (element.nodeName.toLowerCase())
         {
@@ -361,19 +364,27 @@ export class SVGScene extends Container
         const transform = element instanceof SVGGraphicsElement ? element.transform.baseVal.consolidate() : null;
         const transformMatrix = transform ? transform.matrix : tempMatrix.identity();
 
-        if (node instanceof SVGGraphicsNode)
+        if (node instanceof SVGGraphicsNode && !(node instanceof SVGImageNode))
         {
             if (fill === 'none')
             {
-                node.beginFill(0, 0);
+                node.fill({
+                    color: 0,
+                    alpha: 0,
+                });
             }
             else if (typeof fill === 'number')
             {
-                node.beginFill(fill, opacity === null ? 1 : opacity);
+                node.fill({
+                    color: fill,
+                    alpha: opacity === null ? 1 : opacity,
+                });
             }
             else if (!fill)
             {
-                node.beginFill(0);
+                node.fill({
+                    color: 0,
+                });
             }
             else
             {
@@ -592,17 +603,19 @@ export class SVGScene extends Container
 
         if (node instanceof SVGGraphicsNode)
         {
-            const bbox = node.getLocalBounds(tempRect);
+            tempBounds.clear();
+
+            const bbox = node.getLocalBounds(tempBounds);
             const paintServers = node.paintServers;
             const { x, y, width: bwidth, height: bheight } = bbox;
 
             node.paintServers.forEach((paintServer) =>
             {
-                paintServer.resolvePaintDimensions(bbox);
+                paintServer.resolvePaintDimensions(bbox.rectangle);
             });
 
             const geometry = node.geometry;
-            const graphicsData = (geometry as any).graphicsData;
+            const graphicsData = (geometry as any)?.graphicsData;
 
             if (graphicsData)
             {
@@ -666,7 +679,7 @@ export class SVGScene extends Container
      */
     protected populateScene(): void
     {
-        this.populateSceneRecursive(this.content);
+        this.addChild(this.populateSceneRecursive(this.content));
     }
 
     /**
