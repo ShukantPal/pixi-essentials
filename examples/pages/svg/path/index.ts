@@ -4,7 +4,7 @@ import { Ticker } from 'pixi.js';
 
 const svg = `
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 356">
-    <!-- Circle -->
+  <!-- Circle -->
   <path d="M 100,100 m -50,0 a 50,50 0 1,0 100,0 a 50,50 0 1,0 -100,0" fill="#ef4444" stroke="black" />
   
   <!-- Ellipse -->

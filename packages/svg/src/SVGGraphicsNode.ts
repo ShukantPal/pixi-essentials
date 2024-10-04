@@ -1,15 +1,16 @@
-import { EllipticArcUtils } from './utils/EllipticArcUtils';
 import {
     Matrix,
     Graphics,
+    Point,
+    GraphicsPath,
 } from 'pixi.js';
 
-import type { DashedStrokeStyle, ConvertedDashedStrokeStyle } from './style/DashedLineStyle';
 import type { PaintServer } from './paint/PaintServer';
 import type { Renderer } from 'pixi.js';
 import type { SVGSceneContext } from './SVGSceneContext';
 
 const tempMatrix = new Matrix();
+const tempPoint = new Point();
 
 /**
  * This node can be used to directly embed the following elements:
@@ -129,10 +130,15 @@ export class SVGGraphicsNode extends Graphics
         }
 
         // See https://www.w3.org/TR/SVG2/implnote.html#ArcImplementationNotes
-        this.context['_activePath'].shapePath['_ensurePoly']();
-        const points: ReadonlyArray<number> = this.context['_activePath'].shapePath['_currentPoly'].points;
-        const startX = points[points.length - 2];
-        const startY = points[points.length - 1];
+        /* eslint-disable dot-notation */
+        const activePath = this.context['_activePath'] as GraphicsPath;
+
+        activePath.shapePath['_ensurePoly']();
+        activePath.getLastPoint(tempPoint);
+        /* eslint-enable dot-notation */
+
+        const startX = tempPoint.x;
+        const startY = tempPoint.y;
         const midX = (startX + endX) / 2;
         const midY = (startY + endY) / 2;
 
