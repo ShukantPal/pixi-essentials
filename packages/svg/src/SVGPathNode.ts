@@ -11,10 +11,6 @@ const tempPoint = new Point();
  */
 export class SVGPathNode extends SVGGraphicsNode
 {
-    // Redirect moveTo, lineTo, ... onto paths!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :P
-    //startPoly = this.startPath;
-    //finishPoly = this.finishPath;
-
     /**
      * Embeds the `SVGPathElement` into this node.
      *

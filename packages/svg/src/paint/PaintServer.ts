@@ -27,7 +27,7 @@ export class PaintServer
 {
     public paintServer: SVGGradientElement | SVGPatternElement;
     public paintTexture: RenderTexture;
-    public paintContexts: { [id: number]: number };
+    public paintContexts: Map<Renderer, number>;
 
     public dirtyId: number;
 
@@ -41,7 +41,7 @@ export class PaintServer
     {
         this.paintServer = paintServer;
         this.paintTexture = paintTexture;
-        this.paintContexts = {};
+        this.paintContexts = new Map<Renderer, number>();
         this.dirtyId = 0;
     }
 
@@ -53,13 +53,13 @@ export class PaintServer
      */
     public resolvePaint(renderer: Renderer): void
     {
-        const contextDirtyId = this.paintContexts[renderer.CONTEXT_UID];
+        const contextDirtyId = this.paintContexts.get(renderer);
         const dirtyId = this.dirtyId;
 
         if (contextDirtyId === undefined || contextDirtyId < dirtyId)
         {
             this.updatePaint(renderer);
-            this.paintContexts[renderer.CONTEXT_UID] = dirtyId;
+            this.paintContexts.set(renderer, dirtyId);
         }
     }
 

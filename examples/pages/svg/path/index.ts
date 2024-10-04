@@ -4,6 +4,13 @@ import { Ticker } from 'pixi.js';
 
 const svg = `
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 356">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:lightblue;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:purple;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
   <!-- Circle -->
   <path d="M 100,100 m -50,0 a 50,50 0 1,0 100,0 a 50,50 0 1,0 -100,0" fill="#ef4444" stroke="black" />
   
@@ -21,6 +28,20 @@ const svg = `
   
   <!-- Cubic Bezier Curve -->
   <path d="M 250,300 c 50,-50 100,50 150,0" fill="#4f46e5" stroke="black" />
+  
+  <!-- Outer circle with hollow effect (fill-rule: evenodd) at (100, 400) -->
+  <path d="M 100 350
+           A 50 50 0 1 1 99.9 350 Z
+           M 100 380
+           A 30 30 0 1 0 100 379.9 Z"
+        fill="url(#bgGradient)" fill-rule="evenodd"/>
+
+  <!-- Outer circle without hollow effect (fill-rule: nonzero) at (300, 400) -->
+  <path d="M 300 350
+           A 50 50 0 1 1 299.9 350 Z
+           M 300 380
+           A 30 30 0 1 0 300 379.9 Z"
+        fill="red" fill-rule="nonzero"/>
 </svg>
 `.trim();
 
@@ -30,6 +51,8 @@ main((app) =>
 
     const svgElement = new DOMParser().parseFromString(svg, 'image/svg+xml').documentElement as unknown as SVGSVGElement;
     const svgScene = new SVGScene(svgElement);
+
+    svgScene.drawPaints(app.renderer);
 
     app.stage.addChild(svgScene);
 

@@ -79,9 +79,7 @@ export class GradientFactory
         context.fillStyle = gradient;
         context.fillRect(0, 0, renderTexture.width, renderTexture.height);
 
-        const renderTarget = renderer.renderTarget.getRenderTarget(new CanvasSource({
-            resource: canvas,
-        }));
+        const renderTarget = renderer.renderTarget.getRenderTarget(canvas);
 
         renderer.renderTarget.copyToTexture(
             renderTarget,
@@ -145,12 +143,15 @@ export class GradientFactory
         context.fillStyle = gradient;
         context.fillRect(0, 0, renderTexture.width, renderTexture.height);
 
+        const renderTarget = renderer.renderTarget.getRenderTarget(canvas);
+
         renderer.renderTarget.copyToTexture(
-            renderer.renderTarget.getRenderTarget(canvas), renderTexture,
+            renderTarget,
+            renderTexture,
             { x: 0, y: 0 },
             { width: renderTexture.width, height: renderTexture.height },
             { x: renderTexture.frame.x, y: renderTexture.frame.y });
-        renderer.renderTarget.pop();
+        renderTarget.destroy();
 
         return renderTexture;
     }

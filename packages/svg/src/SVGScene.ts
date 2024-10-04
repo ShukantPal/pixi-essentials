@@ -6,7 +6,7 @@ import * as Loader from './loader';
 import { NODE_TRANSFORM_DIRTY, TRANSFORM_DIRTY } from './const';
 import { PaintProvider } from './paint/PaintProvider';
 import { PaintServer } from './paint/PaintServer';
-import { Bounds, Container, Matrix, Rectangle, RenderTexture, Texture } from 'pixi.js';
+import { Bounds, Container, Matrix, Rectangle, Renderer, RenderTexture, Texture } from 'pixi.js';
 import { SVGGraphicsNode } from './SVGGraphicsNode';
 import { SVGImageNode } from './SVGImageNode';
 import { SVGPathNode } from './SVGPathNode';
@@ -79,6 +79,8 @@ export class SVGScene extends Container
      */
     private _elementToMask: Map<SVGElement, MaskServer>;
 
+    private _elementToRenderNode: Map<SVGElement, Container>;
+
     /**
      * Flags whether any transform is dirty in the SVG scene graph.
      */
@@ -104,6 +106,7 @@ export class SVGScene extends Container
 
         this._elementToPaint = new Map();
         this._elementToMask = new Map();
+        this._elementToRenderNode = new Map();
         this._transformDirty = true;
 
         this.renderServers = new Container();
@@ -126,6 +129,21 @@ export class SVGScene extends Container
         this._context = context as SVGSceneContext;
     }
 
+    /**
+     * Draw the paints required to render the elements in this SVG scene. If not called, gradients
+     * and special effects may not render.
+     *
+     * @param renderer
+     */
+    drawPaints(renderer: Renderer): void {
+        for (const node of this._elementToRenderNode.values()) {
+            const paintServers = ((node as any)?.paintServers ?? []) as PaintServer[];
+
+            for (const paintServer of paintServers) {
+                paintServer.resolvePaint(renderer);
+            }
+        }
+    }
 
     /**
      * Creates a display object that implements the corresponding `embed*` method for the given node.
@@ -167,6 +185,8 @@ export class SVGScene extends Container
                 renderNode = null;
                 break;
         }
+
+        this._elementToRenderNode.set(element, renderNode);
 
         return renderNode;
     }
@@ -352,8 +372,8 @@ export class SVGScene extends Container
             fill,
             opacity,
             stroke,
-            strokeDashArray,
-            strokeDashOffset,
+            // strokeDashArray,
+            // strokeDashOffset,
             strokeLineCap,
             strokeLineJoin,
             strokeMiterLimit,
@@ -508,8 +528,9 @@ export class SVGScene extends Container
                 /* eslint-disable no-nested-ternary */
                 color: stroke === null ? 0 : (typeof stroke === 'number' ? stroke : 0xffffff),
                 cap: strokeLineCap === null ? 'square' : strokeLineCap as unknown as LineCap,
-                dashArray: strokeDashArray,
-                dashOffset: strokeDashOffset === null ? strokeDashOffset : 0,
+                // TODO: Support dashed strokes.
+                // dashArray: strokeDashArray,
+                // dashOffset: strokeDashOffset === null ? strokeDashOffset : 0,
                 join: strokeLineJoin === null ? 'miter' :  strokeLineJoin as unknown as LineJoin,
                 matrix: new Matrix(),
                 miterLimit: strokeMiterLimit === null ? 150 : strokeMiterLimit,

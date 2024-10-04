@@ -13,6 +13,7 @@ export function main(callback: (app: Application) => void, options?: Partial<App
         Object.assign(window, { app });
 
         await app.init({
+            antialias: true,
             autoStart: false,
             autoDensity: true,
             canvas: document.getElementById('view') as HTMLCanvasElement,
