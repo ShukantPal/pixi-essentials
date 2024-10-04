@@ -45,6 +45,6 @@
     "eslint": "~7.13.0",
     "@pixi-essentials/eslint-config": "~1.0.0",
     "@microsoft/api-extractor": "~7.16.1",
-    "pixi.js": "^8.2.0"
+    "pixi.js": "^8.4.0"
   }
 }

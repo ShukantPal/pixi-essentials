@@ -4418,8 +4418,8 @@ packages:
       parse-svg-path: 0.1.2
     dev: false
 
-  /pixi.js@8.2.1:
-    resolution: {integrity: sha512-aywwPFJe6+Q10+K+paXB/GBJB7QAXM2ICgEKVIONNLYJQ4byC/pETshfIucTIQr5L56VUZedBAj96D72Bxqskg==}
+  /pixi.js@8.4.1:
+    resolution: {integrity: sha512-3ZbEIkLYYi602UB5wuN7kPz3VsGHoJa6nxD8ustvMLRySxHAR9Z8tCAYY8ISgNplpPbaDw03B0yTD4/k9f6cAQ==}
     dependencies:
       '@pixi/colord': 2.9.6
       '@types/css-font-loading-module': 0.0.12
@@ -5858,7 +5858,7 @@ packages:
     dev: false
 
   file:projects/area-allocator.tgz:
-    resolution: {integrity: sha512-SGiaCZa2qUJn8yEWScjMj9lTMJ7Z65YEgvAYkTgti1bwNaRfNM+bBMJvTV7zMbXHvDyEzmP/CB0U5wwBEoEatA==, tarball: file:projects/area-allocator.tgz}
+    resolution: {integrity: sha512-H4SQJYfzmJStcYXuJbU/LyYN3fgE/ihQDVkzDIpbSklFYLhzYnMHjPeP1MD3dtF9yxjXxkV0t64UDamVI4Ko4w==, tarball: file:projects/area-allocator.tgz}
     name: '@rush-temp/area-allocator'
     version: 0.0.0
     dependencies:
@@ -5876,7 +5876,7 @@ packages:
     dev: false
 
   file:projects/bounds.tgz:
-    resolution: {integrity: sha512-h+utwz25ylUQHsQ4YDTPOLs3P3qx1Yt5e7DWJ0N/1s4wSmRLEdFafWdgw23Vi5l4uUldh0se2+DJ5mU9NgJ4dg==, tarball: file:projects/bounds.tgz}
+    resolution: {integrity: sha512-lTIrYbJR6TNel/WPRFHkUCZA0MllUqrWu1D8TdQFP7YtoCpBezOR+wMIMFKi7zuxQ/qJoj0T9Mws4k1izdjDcQ==, tarball: file:projects/bounds.tgz}
     name: '@rush-temp/bounds'
     version: 0.0.0
     dependencies:
@@ -5893,7 +5893,7 @@ packages:
     dev: false
 
   file:projects/bvh.tgz:
-    resolution: {integrity: sha512-bLkMtOzIlNRHXOK4G/lTi+If5lAUo69W2uAQYy0/TH4gIEX0s+SNdawj3DYcT7JgaX0xl/OANM2iG9l1C/IboQ==, tarball: file:projects/bvh.tgz}
+    resolution: {integrity: sha512-6k9ddjPERx2lVFQNSGVw5Ql9oeaD/40069v/u2v9nvbGHWaTeZrTHq4BsT9uM9Bf191fShZS1Ba55L3yeXU1PA==, tarball: file:projects/bvh.tgz}
     name: '@rush-temp/bvh'
     version: 0.0.0
     dependencies:
@@ -5910,7 +5910,7 @@ packages:
     dev: false
 
   file:projects/conic.tgz(@pixi/utils@5.3.12):
-    resolution: {integrity: sha512-K496tgBrRSEAXFbuPEuMvBXMV9LQsFiZsnNjyW9DmzQk99QrMHKBeAks5ioMqBMSWUKq+GcMsReZ3vCa5/N+3A==, tarball: file:projects/conic.tgz}
+    resolution: {integrity: sha512-lw063JObNc7vqgOgKAGbSsGWfc0p9k+EwugASJlSMzGRk2dQWDbjsBSnAtCpFmpk8Gk+Qp4Sd5QLu92ejl5EpQ==, tarball: file:projects/conic.tgz}
     id: file:projects/conic.tgz
     name: '@rush-temp/conic'
     version: 0.0.0
@@ -5936,7 +5936,7 @@ packages:
     dev: false
 
   file:projects/cull.tgz:
-    resolution: {integrity: sha512-wapp6l9m/s+pBd3YHmzYeEBkSsl03na+xNlfmTTXZ1PVnHIFYa4BVWTyk1AN2VJsQ3tjLxfY7LlVwpPZR24kfw==, tarball: file:projects/cull.tgz}
+    resolution: {integrity: sha512-YZAlbOwzQrO8IsBdNAG8DY4GyIpBbhUico/ikX/HOACbLA1UvEq2cBR4z5/QsMPuMchI0hGC1iBctGOqJA/X1w==, tarball: file:projects/cull.tgz}
     name: '@rush-temp/cull'
     version: 0.0.0
     dependencies:
@@ -5957,7 +5957,7 @@ packages:
     dev: false
 
   file:projects/data-half-edge-mesh.tgz:
-    resolution: {integrity: sha512-vwWbQP0tY+oNX4lr+x+M+DY8s3KU9k0X2QDfNKXrRf6JAdzdYLfRYJjr/LwjEaROxJn+QxNypOMCuF/UrYmtDw==, tarball: file:projects/data-half-edge-mesh.tgz}
+    resolution: {integrity: sha512-rlyec+Lc8TMNxAuuOZQ6OGruVoJYSI2qRQl4KzNkCVaW7skX1Pm3QPzT+gsIzkqKNGm7elIsodRsnes1MFstNQ==, tarball: file:projects/data-half-edge-mesh.tgz}
     name: '@rush-temp/data-half-edge-mesh'
     version: 0.0.0
     dependencies:
@@ -5972,7 +5972,7 @@ packages:
     dev: false
 
   file:projects/diagnostic-geometry.tgz(@pixi/constants@5.3.12)(@pixi/utils@5.3.12):
-    resolution: {integrity: sha512-HCz4oZsKc2gy7dcaXG0HdUO+bDyb3vlmD1WaX6fuXXCARVVlKt1Bn1NyJ4lHNX1Zppjofr+oESizNKgATHrRGQ==, tarball: file:projects/diagnostic-geometry.tgz}
+    resolution: {integrity: sha512-C4c1DUpqvqFzzUX2Snl0meAzA5vloKLeUnjT/gA0sQAvWTOkg5vS71VmkXYRxi6Jv9aoPrn9FfeOhF7IhqU3hg==, tarball: file:projects/diagnostic-geometry.tgz}
     id: file:projects/diagnostic-geometry.tgz
     name: '@rush-temp/diagnostic-geometry'
     version: 0.0.0
@@ -5991,7 +5991,7 @@ packages:
     dev: false
 
   file:projects/eslint-config.tgz:
-    resolution: {integrity: sha512-fkQrI6q0D93OwvOBKVqgM63Pp0tCgvaEgY9mHDukXBoHkRMCoAWdOK5x5lJJbQi9HXWTyqICjbbEDcz0aJ35Jw==, tarball: file:projects/eslint-config.tgz}
+    resolution: {integrity: sha512-GnTmodETTCzHTybUz8Mg4+xgAP8wBwWkNY2o47O8zFtkEYDkaRmIjjf2DmQ1WYIWtok0gM9ZkzVcwCorksGYAg==, tarball: file:projects/eslint-config.tgz}
     name: '@rush-temp/eslint-config'
     version: 0.0.0
     dependencies:
@@ -6006,7 +6006,7 @@ packages:
     dev: false
 
   file:projects/examples.tgz:
-    resolution: {integrity: sha512-v5evYXXnGFd5h8vm6VNiyRKXDzIK19R36vD09HL9DaSmyUyVXNIndr7ukSL0+N11EulIE5a1npy62AwNAY2WQQ==, tarball: file:projects/examples.tgz}
+    resolution: {integrity: sha512-nDyAi0ZebKMsm27FdJhHe4N1VEO+CtF0/79FrcwR4o2cdlbx9OBZg274KCxqz2Ze1ASKI0ieVouXxsrWAY2fHg==, tarball: file:projects/examples.tgz}
     name: '@rush-temp/examples'
     version: 0.0.0
     dependencies:
@@ -6020,7 +6020,7 @@ packages:
       '@xmldom/xmldom': 0.8.10
       eslint: 7.13.0
       ismobilejs: 1.1.1
-      pixi.js: 8.2.1
+      pixi.js: 8.4.1
       rollup: 2.79.1
       ts-loader: 9.5.1(typescript@4.9.5)(webpack@5.91.0)
       typescript: 4.9.5
@@ -6031,7 +6031,7 @@ packages:
     dev: false
 
   file:projects/filter-fft.tgz:
-    resolution: {integrity: sha512-zg58dMPaC18LH3qk4iHFLk53nayGOrK2E3Tp1zYlL1ab7dUVpdw2b8S7i0v8f21lPEqGm7GuD6+NADQP1Rm+4g==, tarball: file:projects/filter-fft.tgz}
+    resolution: {integrity: sha512-IY3WOPXKgYMQaG9/LbDIcs8bKK8pP6k/yX/gsRbo+ouDgvIvATGr66ZrH42gokbgOIQmqUwNf0+/ptvBYiMk7A==, tarball: file:projects/filter-fft.tgz}
     name: '@rush-temp/filter-fft'
     version: 0.0.0
     dependencies:
@@ -6047,7 +6047,7 @@ packages:
     dev: false
 
   file:projects/gradients.tgz:
-    resolution: {integrity: sha512-GkKIpA+g6MI4dB9gMGRK7tshp46eZ9FMo4fiH2ZHrbH1KABjgn0yWDodzhK7tcivOTp+jBgrPwVADh4JSCry1w==, tarball: file:projects/gradients.tgz}
+    resolution: {integrity: sha512-Ij0A3OfMl+mYDRodqvx2LKKQbRnb3NRsylkZgfSMe89c5RqnXW75/DC7XMhlNxjgxesHLbIgusJx7VMxnHooRw==, tarball: file:projects/gradients.tgz}
     name: '@rush-temp/gradients'
     version: 0.0.0
     dependencies:
@@ -6056,7 +6056,7 @@ packages:
       '@pixi/core': 7.1.4
       '@pixi/math': 7.1.4
       '@pixi/sprite': 7.1.4
-      pixi.js: 8.2.1
+      pixi.js: 8.4.1
       rollup: 2.79.1
       typescript: 4.9.5
     transitivePeerDependencies:
@@ -6064,7 +6064,7 @@ packages:
     dev: false
 
   file:projects/instanced-renderer.tgz:
-    resolution: {integrity: sha512-0I8uqpqunp0xiTXh5IIW3+khQrtGzPH0XthY1/sMTLDs6amxP6j7xYgLMPPLOSLp9iGFu7kGLJe7YoSpShemxw==, tarball: file:projects/instanced-renderer.tgz}
+    resolution: {integrity: sha512-IBqPMC+brvjLlroL0Hh9V/7vTNXE+cU0YExUz1RbEvEnFGDmN+NafrIpNOOCn9dAITJK2kLNRH1riaOqVS44ww==, tarball: file:projects/instanced-renderer.tgz}
     name: '@rush-temp/instanced-renderer'
     version: 0.0.0
     dependencies:
@@ -6082,7 +6082,7 @@ packages:
     dev: false
 
   file:projects/mixin-smart-mask.tgz:
-    resolution: {integrity: sha512-N3MQWGL93IpsWlmZkpGKJbDPpB2l+F/RwomviZpfEJbIqj1ZYNUwKZfTcGuOJFW6Q+6DGa2iVRci67zmcluo2A==, tarball: file:projects/mixin-smart-mask.tgz}
+    resolution: {integrity: sha512-1xDx3VWjwQaXj3sYKpAWpg7eAKJJfjcfS3rnImc/1Z0dWyLHXsySvOE9dAjGp3nw6sWZmS3cVUU9vk3VesUpKA==, tarball: file:projects/mixin-smart-mask.tgz}
     name: '@rush-temp/mixin-smart-mask'
     version: 0.0.0
     dependencies:
@@ -6101,7 +6101,7 @@ packages:
     dev: false
 
   file:projects/object-pool.tgz:
-    resolution: {integrity: sha512-Hw/ldNxrr6QTJZRf30PB/wkhQIjKW7D7YtDEnt+h4oYhUhyHBgZaAmcRylZALe915uW009SdDcCLGZYDimcM/g==, tarball: file:projects/object-pool.tgz}
+    resolution: {integrity: sha512-U7HrIoAhCfM60OysxbCppu7WebgAtwnnYWOjbiPcmY2GvlUQZYGlt31AmJW6h+k1UU2W43iJyC24DcVtLVmyIw==, tarball: file:projects/object-pool.tgz}
     name: '@rush-temp/object-pool'
     version: 0.0.0
     dependencies:
@@ -6121,7 +6121,7 @@ packages:
     dev: false
 
   file:projects/react-bindings.tgz(@pixi/constants@5.3.12)(@pixi/graphics@7.1.4)(@pixi/ticker@7.1.4):
-    resolution: {integrity: sha512-ZrhOnX2in2Hd2+HwjFtb5GpVRuQXblf9l6X7S4P+4Sc/4RR/BBvx2PAnDWGo8dnSvhTmi9+wmiiRj/mSO5LdQA==, tarball: file:projects/react-bindings.tgz}
+    resolution: {integrity: sha512-61WBZARG8+XIViLi438mKzoR8bF8d8GNSCH8u3uto6B0HHgjAjle05Ds5coP3MT5H+Jb8N6PgaFfEF7H8STH0w==, tarball: file:projects/react-bindings.tgz}
     id: file:projects/react-bindings.tgz
     name: '@rush-temp/react-bindings'
     version: 0.0.0
@@ -6158,7 +6158,7 @@ packages:
     dev: false
 
   file:projects/shader-preprocessor.tgz:
-    resolution: {integrity: sha512-tcDDhG9KcP+Jz4mIJvMe8uyx1QdfoH8LzsOcevH3E1bnj9rLKYqRp1uZu75A7GY5GKlBaD2W+QCubTVY9OGdDQ==, tarball: file:projects/shader-preprocessor.tgz}
+    resolution: {integrity: sha512-xvm0bKKrXdS6tpkKCAmnepiySNsOt/IoRhWag1qz+M9bm0ot7S02QN9SyxpeWVVCrDfIYe0pDYgQHHTBqUQDQQ==, tarball: file:projects/shader-preprocessor.tgz}
     name: '@rush-temp/shader-preprocessor'
     version: 0.0.0
     dependencies:
@@ -6177,7 +6177,7 @@ packages:
     dev: false
 
   file:projects/svg.tgz:
-    resolution: {integrity: sha512-MgMWbnFdnpKzENqw32LOEO0MJfJn/iMKgvQ/0o5YPeWKqLjKGzy8xg4WoSDkXPNXkoQHVSXpBgtR3V1LbquoQw==, tarball: file:projects/svg.tgz}
+    resolution: {integrity: sha512-qUOIRWGMmYkwyAFUufipBm6uucOSwzx/QeMQVWpRceimcZ8M8fY4b6OVm/u5MAUItuzoQi+Db0Z7+ydXU8NudA==, tarball: file:projects/svg.tgz}
     name: '@rush-temp/svg'
     version: 0.0.0
     dependencies:
@@ -6194,7 +6194,7 @@ packages:
       d-path-parser: 1.0.0
       eslint: 7.32.0
       libtess: 1.2.2
-      pixi.js: 8.2.1
+      pixi.js: 8.4.1
       rollup: 2.79.1
       tinycolor2: 1.6.0
       typescript: 4.9.5
@@ -6204,7 +6204,7 @@ packages:
     dev: false
 
   file:projects/system-g.tgz:
-    resolution: {integrity: sha512-9sNGVYJNvm5HQZors0XyzUG3NDk027HgLtnDoSDt6d3vj3H0tzottz29tZ/zMqOY0mJRrtjQHOyMe2As4Xl4qQ==, tarball: file:projects/system-g.tgz}
+    resolution: {integrity: sha512-3UTMrtupUOalo54W6aIL1ya+nrutnsu/h7Yx3UiaC1dhQQftnVUuL+bn/g8GdHIMf1s9GKuuipjuLAgBmhGGew==, tarball: file:projects/system-g.tgz}
     name: '@rush-temp/system-g'
     version: 0.0.0
     dependencies:
@@ -6223,7 +6223,7 @@ packages:
     dev: false
 
   file:projects/texture-allocator.tgz:
-    resolution: {integrity: sha512-td9TvhINb+j2LUPXWyam3krnLyAof+U8nm8WPrTuf3j661pL+pvOAHc4DrwN6NEwmd3o0rXgOXbV1pVaFRvjsg==, tarball: file:projects/texture-allocator.tgz}
+    resolution: {integrity: sha512-STCFdKWYuzacKSxF8MvZrTgbHy6tS32VV1eRAGH2ynJkNmYkpSk5f9hJvCZQ99418HjUb/R40dBGXR51FMDbbw==, tarball: file:projects/texture-allocator.tgz}
     name: '@rush-temp/texture-allocator'
     version: 0.0.0
     dependencies:
@@ -6233,7 +6233,7 @@ packages:
       '@pixi/core': 7.1.4
       '@pixi/math': 7.1.4
       eslint: 7.13.0
-      pixi.js: 8.2.1
+      pixi.js: 8.4.1
       rollup: 2.33.3
       tslib: 2.0.3
       typescript: 4.9.5
@@ -6243,7 +6243,7 @@ packages:
     dev: false
 
   file:projects/transformer.tgz:
-    resolution: {integrity: sha512-o+f/m7wemJunjJ8Rdk9X8eN4uWp6sDzp5GrJapSlmiF8QRoO2vdjJu4F52EATwI0X6BuBsr1sevS+3QxBla4xg==, tarball: file:projects/transformer.tgz}
+    resolution: {integrity: sha512-luJbAtM8wpiNmaYVpp6hJIeevzwcFmFSP2O5bzua3uIraliHUMwcKQM8qLKFCNeGmW/wUeRk+C10ku7FOsrUFA==, tarball: file:projects/transformer.tgz}
     name: '@rush-temp/transformer'
     version: 0.0.0
     dependencies:
@@ -6264,7 +6264,7 @@ packages:
     dev: false
 
   file:projects/types.tgz:
-    resolution: {integrity: sha512-f9ZMSwS9EJce9pg/QrhcWS6oKPfZsKyZ6T+0X1QcpXfIPgIcn0GWnzalwU5djSCaGpTfwVRhY42kkCqXhGjvKg==, tarball: file:projects/types.tgz}
+    resolution: {integrity: sha512-rbq20z5R5s9849c/smUG+vTgNKvn8MS+as2Ura4MUQO+qQSKFslOM4u4DnRGrExgnuLrohDB6efvGj7fKbrZQQ==, tarball: file:projects/types.tgz}
     name: '@rush-temp/types'
     version: 0.0.0
     dependencies:
@@ -6280,7 +6280,7 @@ packages:
     dev: false
 
   file:projects/unit-tests.tgz:
-    resolution: {integrity: sha512-hV3VpYi07XyfB7IoQHXsUhGsURVdZs0qpu9ABoncMfA6wdzKeMlFKCrN7Txf1km2Sfc9DwXV71334O7LPbsBBw==, tarball: file:projects/unit-tests.tgz}
+    resolution: {integrity: sha512-Sb0anZycCXik1+fghAgZx3gL/N8CeYEJiJJSmTsBFp75G7wRpfqXvW03hrWmPO4YWsm609FV/vrJQaNtniYysA==, tarball: file:projects/unit-tests.tgz}
     name: '@rush-temp/unit-tests'
     version: 0.0.0
     dependencies:
