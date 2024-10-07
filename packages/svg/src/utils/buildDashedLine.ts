@@ -455,7 +455,7 @@ export function buildDashedLine(graphicsData: GraphicsData, graphicsGeometry: Gr
     const firstPoint = new Point(points[0], points[1]);
     const lastPoint = new Point(points[points.length - 2], points[points.length - 1]);
 
-    const closedShape = shape.type !== SHAPES.POLY || shape.closeStroke;
+    const closedShape = shape.type !== 'polygon' || shape.closePath;
     const closedPath = Math.abs(firstPoint.x - lastPoint.x) < eps
         && Math.abs(firstPoint.y - lastPoint.y) < eps;
 
