@@ -18,6 +18,7 @@ import type { Paint } from './paint/Paint';
 import type { SVGSceneContext } from './SVGSceneContext';
 
 const tempMatrix = new Matrix();
+const tempRect = new Rectangle();
 const tempBounds = new Bounds();
 
 /**
@@ -651,10 +652,24 @@ export class SVGScene extends Container
                     instruction.data.style.matrix = new Matrix();
                 }
 
+                tempMatrix.copyFrom(instruction.data.style.matrix);
+                instruction.data.style.matrix.identity();
+
+                const texture = instruction.data.style.texture;
+
+                if (paintServers.find((server) => server.paintTexture === texture))
+                {
+                    const width = texture.width;
+                    const height = texture.height;
+
+                    instruction.data.style.matrix.scale(bwidth / width, bheight / height);
+                }
+
+                instruction.data.style.matrix.translate(x, y);
                 instruction.data.style.matrix
                     .invert()
-                    .translate(x, y)
-                    .invert();
+                    .translate(texture.frame.x, texture.frame.y)
+                    .scale(1 / texture.source.width, 1 / texture.source.height);
 
                 // eslint-disable-next-line dot-notation
                 node.context['onUpdate']();
