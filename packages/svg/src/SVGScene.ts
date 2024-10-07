@@ -6,7 +6,7 @@ import * as Loader from './loader';
 import { NODE_TRANSFORM_DIRTY, TRANSFORM_DIRTY } from './const';
 import { PaintProvider } from './paint/PaintProvider';
 import { PaintServer } from './paint/PaintServer';
-import { Bounds, Container, Matrix, Rectangle, Renderer, RenderTexture, Texture } from 'pixi.js';
+import {Bounds, Container, Matrix, Rectangle, Renderer, RenderTexture, Sprite, Texture} from 'pixi.js';
 import { SVGGraphicsNode } from './SVGGraphicsNode';
 import { SVGImageNode } from './SVGImageNode';
 import { SVGPathNode } from './SVGPathNode';
@@ -18,7 +18,6 @@ import type { Paint } from './paint/Paint';
 import type { SVGSceneContext } from './SVGSceneContext';
 
 const tempMatrix = new Matrix();
-const tempRect = new Rectangle();
 const tempBounds = new Bounds();
 
 /**
@@ -136,10 +135,12 @@ export class SVGScene extends Container
      * @param renderer
      */
     drawPaints(renderer: Renderer): void {
-        for (const node of this._elementToRenderNode.values()) {
+        for (const node of this._elementToRenderNode.values())
+        {
             const paintServers = ((node as any)?.paintServers ?? []) as PaintServer[];
 
-            for (const paintServer of paintServers) {
+            for (const paintServer of paintServers)
+            {
                 paintServer.resolvePaint(renderer);
             }
         }
@@ -635,56 +636,28 @@ export class SVGScene extends Container
                 paintServer.resolvePaintDimensions(bbox.rectangle);
             });
 
-            const geometry = node.geometry;
-            const graphicsData = (geometry as any)?.graphicsData;
-
             console.log(node.context.instructions)
 
-            if (graphicsData)
+            const instructions = node.context.instructions;
+
+            for (const instruction of instructions)
             {
-                graphicsData.forEach((data) =>
+                if (instruction.action !== 'fill' && instruction.action !== 'stroke')
                 {
-                    const fillStyle = data.fillStyle;
-                    const lineStyle = data.lineStyle;
+                    continue;
+                }
+                if (!instruction.data.style.matrix)
+                {
+                    instruction.data.style.matrix = new Matrix();
+                }
 
-                    if (fillStyle.texture && paintServers.find((server) => server.paintTexture === fillStyle.texture))
-                    {
-                        const width = fillStyle.texture.width;
-                        const height = fillStyle.texture.height;
+                instruction.data.style.matrix
+                    .invert()
+                    .translate(x, y)
+                    .invert();
 
-                        data.fillStyle.matrix
-                            .invert()
-                            .scale(bwidth / width, bheight / height)
-                            .invert();
-                    }
-                    if (fillStyle.matrix)
-                    {
-                        fillStyle.matrix
-                            .invert()
-                            .translate(x, y)
-                            .invert();
-                    }
-
-                    if (lineStyle.texture && paintServers.find((server) => server.paintTexture === lineStyle.texture))
-                    {
-                        const width = lineStyle.texture.width;
-                        const height = lineStyle.texture.height;
-
-                        data.lineStyle.matrix
-                            .invert()
-                            .scale(bwidth / width, bheight / height)
-                            .invert();
-                    }
-                    if (lineStyle.matrix)
-                    {
-                        lineStyle.matrix
-                            .invert()
-                            .translate(x, y)
-                            .invert();
-                    }
-                });
-
-                geometry.updateBatches();
+                // eslint-disable-next-line dot-notation
+                node.context['onUpdate']();
             }
         }
 

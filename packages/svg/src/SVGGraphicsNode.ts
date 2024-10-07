@@ -69,7 +69,7 @@ export class SVGGraphicsNode extends Graphics
         const sweepAngle = endAngle - startAngle;
 
         // Choose a number of segments such that the maximum absolute deviation from the circle is approximately 0.029
-        const n = Math.ceil(2.3 * Math.sqrt(rx + ry));
+        const n = devicePixelRatio * Math.ceil(2.3 * Math.sqrt(rx + ry));
         const delta = (anticlockwise ? -1 : 1) * Math.abs(sweepAngle) / (n - 1);
 
         tempMatrix.identity()

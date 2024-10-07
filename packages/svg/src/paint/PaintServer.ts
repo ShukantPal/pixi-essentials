@@ -11,10 +11,25 @@ import type { ColorStop } from '@pixi-essentials/gradients';
  */
 function convertLinearGradientAxis(linearGradient: SVGLinearGradientElement): void
 {
-    linearGradient.x1.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PERCENTAGE);
-    linearGradient.y1.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PERCENTAGE);
-    linearGradient.x2.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PERCENTAGE);
-    linearGradient.y2.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PERCENTAGE);
+    if (linearGradient.x1.baseVal.unitType !== SVGLength.SVG_LENGTHTYPE_PERCENTAGE)
+    {
+        linearGradient.x1.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PERCENTAGE);
+    }
+
+    if (linearGradient.y1.baseVal.unitType !== SVGLength.SVG_LENGTHTYPE_PERCENTAGE)
+    {
+        linearGradient.y1.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PERCENTAGE);
+    }
+
+    if (linearGradient.x2.baseVal.unitType !== SVGLength.SVG_LENGTHTYPE_PERCENTAGE)
+    {
+        linearGradient.x2.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PERCENTAGE);
+    }
+
+    if (linearGradient.y2.baseVal.unitType !== SVGLength.SVG_LENGTHTYPE_PERCENTAGE)
+    {
+        linearGradient.y2.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PERCENTAGE);
+    }
 }
 
 /**
@@ -116,13 +131,13 @@ export class PaintServer
                     }
                 }
 
-                paintTexture.resize(width, height, true);
+                paintTexture.resize(width, height);
 
                 return;
             }
         }
 
-        paintTexture.resize(bwidth, bheight, true);
+        paintTexture.resize(bwidth, bheight);
     }
 
     /**
