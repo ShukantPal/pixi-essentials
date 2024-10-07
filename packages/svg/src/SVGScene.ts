@@ -6,7 +6,7 @@ import * as Loader from './loader';
 import { NODE_TRANSFORM_DIRTY, TRANSFORM_DIRTY } from './const';
 import { PaintProvider } from './paint/PaintProvider';
 import { PaintServer } from './paint/PaintServer';
-import {Bounds, Container, Matrix, Rectangle, Renderer, RenderTexture, Sprite, Texture} from 'pixi.js';
+import { Bounds, Container, Matrix, Rectangle, Renderer, RenderTexture, Texture } from 'pixi.js';
 import { SVGGraphicsNode } from './SVGGraphicsNode';
 import { SVGImageNode } from './SVGImageNode';
 import { SVGPathNode } from './SVGPathNode';
@@ -18,7 +18,6 @@ import type { Paint } from './paint/Paint';
 import type { SVGSceneContext } from './SVGSceneContext';
 
 const tempMatrix = new Matrix();
-const tempRect = new Rectangle();
 const tempBounds = new Bounds();
 
 /**

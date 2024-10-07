@@ -4,9 +4,10 @@ import {
     Sprite,
     Texture,
     TextStyle,
+    fontStringFromTextStyle,
 } from 'pixi.js';
 
-import type { PointData, Matrix, Renderer } from 'pixi.js';
+import type { PointData, Matrix } from 'pixi.js';
 import type { SVGTextEngine } from './SVGTextEngine';
 
 /**
@@ -91,9 +92,7 @@ export class SVGTextEngineImpl extends Sprite implements SVGTextEngine
 
         const resolution = window.devicePixelRatio || 1;
 
-        this.canvas.width = w * resolution;
-        this.canvas.height = h * resolution;
-        this.texture.baseTexture.setRealSize(w, h, resolution);
+        this.texture.source.resize(w, h, resolution);
         this.texture.update();
 
         this.context.clearRect(0, 0, w * resolution, h * resolution);
@@ -108,7 +107,7 @@ export class SVGTextEngineImpl extends Sprite implements SVGTextEngine
             const textStyle = new TextStyle(style);
 
             this.context.fillStyle = typeof textStyle.fill === 'string' ? textStyle.fill : 'black';
-            this.context.font = textStyle.toFontString();
+            this.context.font = fontStringFromTextStyle(textStyle);
 
             this.context.fillText(content, position.x, position.y + textMetrics.height);
 
@@ -124,16 +123,13 @@ export class SVGTextEngineImpl extends Sprite implements SVGTextEngine
 
         // Ensure the SVG scene updates its bounds after the text is rendered.
         this.emit(NODE_TRANSFORM_DIRTY);
-     }
+    }
 
-    render(renderer: Renderer): void
+    override onRender = (): void =>
     {
         if (this.updateId !== this.dirtyId)
         {
             this.updateText();
-            this.updateTransform();
         }
-
-        super.render(renderer);
-    }
+    };
 }
