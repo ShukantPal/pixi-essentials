@@ -16,15 +16,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-
       - name: Setup PNPM
         uses: pnpm/action-setup@v4
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+
+      - name: Install Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          cache: 'pnpm'
+          node-version: ${{ matrix.node-version }}
+
       - run: pnpm i -g @microsoft/rush
 
       - run: rush install
