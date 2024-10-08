@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/texture-allocator
 
-This log was last generated on Sun, 16 Apr 2023 20:43:53 GMT and should not be manually modified.
+This log was last generated on Tue, 08 Oct 2024 00:58:26 GMT and should not be manually modified.
+
+## 3.0.0
+Tue, 08 Oct 2024 00:58:26 GMT
+
+### Breaking changes
+
+- Support PixiJS 8, renamed AtlasResource to AtlasSource.
 
 ## 2.0.1
 Sun, 16 Apr 2023 20:43:53 GMT

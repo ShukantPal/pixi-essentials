@@ -1,6 +1,13 @@
 # Change Log - @pixi-essentials/svg
 
-This log was last generated on Sun, 05 Mar 2023 04:30:27 GMT and should not be manually modified.
+This log was last generated on Tue, 08 Oct 2024 00:58:26 GMT and should not be manually modified.
+
+## 3.0.0
+Tue, 08 Oct 2024 00:58:26 GMT
+
+### Breaking changes
+
+- Support PixiJS 8. This version does not have compatbility with all the SVG features previously supported. CSS masks, dashed strokes, multi-contour paths have undefined behavior.
 
 ## 2.0.2
 Sun, 05 Mar 2023 04:30:27 GMT

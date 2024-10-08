@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@pixi-essentials/object-pool",
+      "comment": "",
+      "type": "none"
+    }
+  ],
+  "packageName": "@pixi-essentials/object-pool"
+}

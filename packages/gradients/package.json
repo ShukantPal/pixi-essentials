@@ -1,6 +1,6 @@
 {
   "name": "@pixi-essentials/gradients",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Generates textures with color gradients",
   "main": "lib/gradients.js",
   "module": "lib/gradients.es.js",

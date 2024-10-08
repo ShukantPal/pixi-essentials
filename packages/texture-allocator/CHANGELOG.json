@@ -2,6 +2,23 @@
   "name": "@pixi-essentials/texture-allocator",
   "entries": [
     {
+      "version": "3.0.0",
+      "tag": "@pixi-essentials/texture-allocator_v3.0.0",
+      "date": "Tue, 08 Oct 2024 00:58:26 GMT",
+      "comments": {
+        "major": [
+          {
+            "comment": "Support PixiJS 8, renamed AtlasResource to AtlasSource."
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@pixi-essentials/area-allocator\" from `~2.0.0` to `3.0.0`"
+          }
+        ]
+      }
+    },
+    {
       "version": "2.0.1",
       "tag": "@pixi-essentials/texture-allocator_v2.0.1",
       "date": "Sun, 16 Apr 2023 20:43:53 GMT",

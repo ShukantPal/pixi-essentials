@@ -26,9 +26,9 @@
   "dependencies": {
     "@rushstack/eslint-patch": "~1.0.3",
     "@pixi/eslint-config": "~5.1.0",
-    "@pixi-essentials/gradients": "1.0.1",
-    "@pixi-essentials/texture-allocator": "2.0.1",
-    "@pixi-essentials/svg": "2.0.2",
+    "@pixi-essentials/gradients": "2.0.0",
+    "@pixi-essentials/texture-allocator": "3.0.0",
+    "@pixi-essentials/svg": "3.0.0",
     "@typescript-eslint/parser": "~3.9.1",
     "@typescript-eslint/eslint-plugin": "~3.9.1",
     "pixi.js": "^8.4.0"

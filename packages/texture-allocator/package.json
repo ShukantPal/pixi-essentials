@@ -1,6 +1,6 @@
 {
   "name": "@pixi-essentials/texture-allocator",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "description": "Dynamic texture allocator based on @pixi-essentials/area-allocator",
   "main": "lib/texture-allocator.js",
   "module": "lib/texture-allocator.es.js",
@@ -33,7 +33,7 @@
   },
   "homepage": "https://github.com/SukantPal/pixi-essentials#readme",
   "dependencies": {
-    "@pixi-essentials/area-allocator": "~2.0.0"
+    "@pixi-essentials/area-allocator": "~3.0.0"
   },
   "peerDependencies": {
     "pixi.js": "^8.1.0"
