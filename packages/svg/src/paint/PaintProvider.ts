@@ -1,7 +1,7 @@
 import color from 'tinycolor2';
 
-import type { Paint } from './Paint';
 import type { LineCap, LineJoin } from 'pixi.js';
+import type { Paint } from './Paint';
 
 /**
  * Provides the `Paint` for an `SVGElement`. It will also respond to changes in the attributes of the element

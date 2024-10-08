@@ -1,17 +1,16 @@
-import { CanvasTextureAllocator } from '@pixi-essentials/texture-allocator';
-import { Cull } from '@pixi-essentials/cull';
-import { InheritedPaintProvider } from './paint/InheritedPaintProvider';
-import { MaskServer } from './mask/MaskServer';
-import * as Loader from './loader';
+import { Bounds, Container, Matrix, Rectangle, Renderer, RenderTexture, Texture } from 'pixi.js';
 import { NODE_TRANSFORM_DIRTY, TRANSFORM_DIRTY } from './const';
+import * as Loader from './loader';
+import { MaskServer } from './mask/MaskServer';
+import { InheritedPaintProvider } from './paint/InheritedPaintProvider';
 import { PaintProvider } from './paint/PaintProvider';
 import { PaintServer } from './paint/PaintServer';
-import { Bounds, Container, Matrix, Rectangle, Renderer, RenderTexture, Texture } from 'pixi.js';
 import { SVGGraphicsNode } from './SVGGraphicsNode';
 import { SVGImageNode } from './SVGImageNode';
 import { SVGPathNode } from './SVGPathNode';
 import { SVGTextNode } from './SVGTextNode';
 import { SVGUseNode } from './SVGUseNode';
+import { CanvasTextureAllocator } from '@pixi-essentials/texture-allocator';
 
 import type { LineCap, LineJoin } from 'pixi.js';
 import type { Paint } from './paint/Paint';
@@ -60,11 +59,6 @@ export class SVGScene extends Container
      * The height of the rendered scene in local space.
      */
     protected _height: number;
-
-    /**
-     * This is used to cull the SVG scene graph before rendering.
-     */
-    protected _cull: Cull;
 
     /**
      * Maps content elements to their paint. These paints do not inherit from their parent element. You must
@@ -134,7 +128,8 @@ export class SVGScene extends Container
      *
      * @param renderer
      */
-    drawPaints(renderer: Renderer): void {
+    drawPaints(renderer: Renderer): void
+    {
         for (const node of this._elementToRenderNode.values())
         {
             const paintServers = ((node as any)?.paintServers ?? []) as PaintServer[];
@@ -360,8 +355,8 @@ export class SVGScene extends Container
             basePaint?: Paint;
         } = {},
     ): {
-        paint: Paint;
-    }
+            paint: Paint;
+        }
     {
         const {
             basePaint,
@@ -441,7 +436,7 @@ export class SVGScene extends Container
                                 ...this._context,
                                 disableRootPopulation: true,
                             }),
-                            svgDocument.querySelector('#' + useTargetURL.split('#')[1])
+                            svgDocument.querySelector(`#${useTargetURL.split('#')[1]}`)
                         ] as [SVGScene, SVGElement])
                         .then(([shellScene, useTarget]) =>
                         {
@@ -459,7 +454,8 @@ export class SVGScene extends Container
 
                             this._transformDirty = true;
 
-                            shellScene.on(TRANSFORM_DIRTY, () => {
+                            shellScene.on(TRANSFORM_DIRTY, () =>
+                            {
                                 this._transformDirty = true;
                             });
                         });
@@ -532,7 +528,7 @@ export class SVGScene extends Container
                 // TODO: Support dashed strokes.
                 // dashArray: strokeDashArray,
                 // dashOffset: strokeDashOffset === null ? strokeDashOffset : 0,
-                join: strokeLineJoin === null ? 'miter' :  strokeLineJoin as unknown as LineJoin,
+                join: strokeLineJoin === null ? 'miter' : strokeLineJoin as unknown as LineJoin,
                 matrix: new Matrix(),
                 miterLimit: strokeMiterLimit === null ? 150 : strokeMiterLimit,
                 texture: strokeTexture || Texture.WHITE,
@@ -636,8 +632,6 @@ export class SVGScene extends Container
                 paintServer.resolvePaintDimensions(bbox.rectangle);
             });
 
-            console.log(node.context.instructions)
-
             const instructions = node.context.instructions;
 
             for (const instruction of instructions)
@@ -740,7 +734,8 @@ export class SVGScene extends Container
      * @param context
      * @returns
      */
-    static async from(url: string, context?: SVGSceneContext): Promise<SVGScene> {
+    static async from(url: string, context?: SVGSceneContext): Promise<SVGScene>
+    {
         return new SVGScene(await Loader._load(url), context);
     }
 }

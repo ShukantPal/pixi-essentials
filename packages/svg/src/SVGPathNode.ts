@@ -1,6 +1,6 @@
-import { SVGGraphicsNode } from './SVGGraphicsNode';
 import dPathParser from 'd-path-parser';
 import { GraphicsPath, Point } from 'pixi.js';
+import { SVGGraphicsNode } from './SVGGraphicsNode';
 
 const tempPoint = new Point();
 

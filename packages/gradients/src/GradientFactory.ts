@@ -1,4 +1,4 @@
-import {CanvasSource, Renderer, Texture} from 'pixi.js';
+import { Renderer, Texture } from 'pixi.js';
 
 import type { ColorStop } from './ColorStop';
 

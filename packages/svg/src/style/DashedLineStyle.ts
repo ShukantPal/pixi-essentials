@@ -1,6 +1,7 @@
 import { ConvertedStrokeStyle, StrokeStyle } from 'pixi.js';
 
-export interface DashedStrokeStyle extends StrokeStyle {
+export interface DashedStrokeStyle extends StrokeStyle
+{
     dashArray: number[];
     dashOffset: number;
 }

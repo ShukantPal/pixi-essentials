@@ -1,4 +1,4 @@
-import { Texture, Matrix, ImageSource } from 'pixi.js';
+import { ImageSource, Matrix, Texture } from 'pixi.js';
 import { SVGGraphicsNode } from './SVGGraphicsNode';
 
 const tempMatrix = new Matrix();

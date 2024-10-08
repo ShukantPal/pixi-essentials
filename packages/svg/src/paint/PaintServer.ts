@@ -1,5 +1,5 @@
-import { GradientFactory } from '@pixi-essentials/gradients';
 import { PaintProvider } from './PaintProvider';
+import { GradientFactory } from '@pixi-essentials/gradients';
 
 import type { Rectangle, Renderer, RenderTexture, Texture } from 'pixi.js';
 import type { ColorStop } from '@pixi-essentials/gradients';

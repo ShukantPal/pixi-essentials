@@ -1,5 +1,5 @@
-import type { Paint } from './Paint';
 import type { LineCap, LineJoin } from 'pixi.js';
+import type { Paint } from './Paint';
 
 /**
  * Inherited paint, used for &lt;use /&gt; elements. The properties used on the inherited paint do not

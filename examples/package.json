@@ -25,7 +25,7 @@
   "homepage": "https://github.com/SukantPal/pixi-essentials#readme",
   "dependencies": {
     "@rushstack/eslint-patch": "~1.0.3",
-    "@pixi/eslint-config": "~1.0.1",
+    "@pixi/eslint-config": "~5.1.0",
     "@pixi-essentials/gradients": "1.0.1",
     "@pixi-essentials/texture-allocator": "2.0.1",
     "@pixi-essentials/svg": "2.0.2",
@@ -40,6 +40,6 @@
     "@rollup/plugin-sucrase": "^5.0.2",
     "eslint": "~7.13.0",
     "rollup": "^2.28.1",
-    "typescript": "~4.9.5"
+    "typescript": "~5.3.3"
   }
 }

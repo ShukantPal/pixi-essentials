@@ -1,0 +1,34 @@
+name: Build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.x, 22.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Setup PNPM
+      uses: pnpm/action-setup@v4
+      with:
+        version: 8.15.6
+      env:
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+    - run: pnpm i -g @microsoft/rush
+
+    - run: rush install
+    - run: rush rebuild
+

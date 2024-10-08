@@ -1,9 +1,9 @@
-import { AtlasSource, optimizeAtlasUploads } from './AtlasSource';
 import { Texture } from 'pixi.js';
+import { AtlasSource, optimizeAtlasUploads } from './AtlasSource';
 import { TextureAllocator } from './TextureAllocator';
 
-import type { AtlasItemSource, AtlasItem } from './AtlasSource';
 import type { Renderer } from 'pixi.js';
+import type { AtlasItem, AtlasItemSource } from './AtlasSource';
 
 /**
  * This texture allocator auto-manages the base-texture with an {@link AtlasSource}. You can also
@@ -21,7 +21,8 @@ export class AtlasAllocator extends TextureAllocator<AtlasSource>
      * @param slabWidth
      * @param slabHeight
      */
-    constructor(renderer: Renderer | null, slabWidth = 2048, slabHeight = 2048) {
+    constructor(renderer: Renderer | null, slabWidth = 2048, slabHeight = 2048)
+    {
         super(slabWidth, slabHeight);
 
         if (renderer)

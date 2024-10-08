@@ -1,5 +1,5 @@
-import type { AreaAllocator } from '@pixi-essentials/area-allocator';
 import type { Rectangle, Texture, TextureSource } from 'pixi.js';
+import type { AreaAllocator } from '@pixi-essentials/area-allocator';
 
 /**
  * An entry of an issued texture from a {@link TextureSlab}.

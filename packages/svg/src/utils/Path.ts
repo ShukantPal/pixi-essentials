@@ -14,7 +14,8 @@ export type Contour = Array<number>;
  *
  * @public
  */
-export enum FILL_RULE {
+export enum FILL_RULE
+    {
     NONZERO = 'nonzero',
     EVENODD = 'evenodd',
 }
@@ -86,8 +87,8 @@ export class Path
 
         const bounds = this.bounds;
 
-        if (x < bounds.minX || y < bounds.minY ||
-            x > bounds.maxX || y > bounds.maxY)
+        if (x < bounds.minX || y < bounds.minY
+            || x > bounds.maxX || y > bounds.maxY)
         {
             return false;
         }
@@ -149,7 +150,7 @@ export class Path
      */
     private calculateBounds()
     {
-        const bounds = this.bounds
+        const bounds = this.bounds;
 
         let minX = Infinity;
         let minY = Infinity;
@@ -196,12 +197,12 @@ export class Path
                 const x1 = contour[i % contour.length];
                 const y1 = contour[(i + 1) % contour.length];
 
-                if ((y0 < y && y1 > y) ||  // Downward crossing
-                    (y0 > y && y1 < y))    // Upward crossing
+                if ((y0 < y && y1 > y) // Downward crossing
+                    || (y0 > y && y1 < y)) // Upward crossing
                 {
                     // Calculate the x-coordinate of the point of intersection.
                     const it = (y - y0) / (y1 - y0);
-                    const ix = x0 + it * (x1  - x0);
+                    const ix = x0 + (it * (x1 - x0));
 
                     if (x < ix)
                     {
@@ -236,23 +237,23 @@ export class Path
 
                 if (y0 <= y)
                 {
-                    if (y1 > y &&   // Cross downward
-                        calculateSide(
+                    if (y1 > y // Cross downward
+                        && calculateSide(
                             x, y,
                             x0, y0,
                             x1, y1
-                        ) > 0)      // (x, y) left of edge
+                        ) > 0) // (x, y) left of edge
                     {
                         ++windingNumber;
                     }
                 }
-                else if (y1 <= y)    // Cross upward
+                else if (y1 <= y) // Cross upward
                 {
                     if (calculateSide(
                         x, y,
                         x0, y0,
                         x1, y1
-                    ) < 0)           // (x, y) right of edge
+                    ) < 0) // (x, y) right of edge
                     {
                         --windingNumber;
                     }
@@ -276,5 +277,5 @@ function calculateSide(x: number, y: number, x0: number, y0: number, x1: number,
     // Basically calculate the area of the triangle (x0, y0), (x1, y1), (x, y), with vertices
     // in that order. If counterlockwise, then the area is positive - then (x, y) is on left;
 
-    return (x1 - x0) * (y - y0) -  (x - x0) * (y1 - y0);
+    return ((x1 - x0) * (y - y0)) - ((x - x0) * (y1 - y0));
 }

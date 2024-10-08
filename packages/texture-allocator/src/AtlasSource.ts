@@ -1,6 +1,6 @@
 import { GlTextureSystem, Renderer, TextureSource } from 'pixi.js';
 
-import type { GlTexture, GlRenderingContext, GLTextureUploader, GpuTextureUploader, GPU, Rectangle, Texture } from 'pixi.js';
+import type { GlRenderingContext, GlTexture, GLTextureUploader, GPU, GpuTextureUploader, Rectangle, Texture } from 'pixi.js';
 
 /**
  * Types of image sources supported by {@link AtlasSource}.
@@ -183,7 +183,8 @@ const gpuUploadAtlasResource = {
             }
 
             gpu.device.queue.copyExternalImageToTexture(
-                { source: item.source },
+                // TODO: Why does this need to be casted?
+                { source: item.source as any },
                 {
                     texture: gpuTexture, premultipliedAlpha,
                     origin: {

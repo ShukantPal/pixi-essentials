@@ -46,8 +46,8 @@
     "eslint": "~7.7.0",
     "rollup": "~2.27.0",
     "tslib": "~2.0.1",
-    "typescript": "~4.9.5",
+    "typescript": "~5.3.3",
     "chai": "~4.3.0",
-    "@microsoft/api-extractor": "~7.16.1"
+    "@microsoft/api-extractor": "~7.47.9"
   }
 }

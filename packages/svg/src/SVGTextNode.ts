@@ -41,7 +41,8 @@ export class SVGTextNode extends Container
 
         // Listen to nodetransformdirty on the engine so bounds are updated
         // when the text is rendered.
-        this.engine.on(NODE_TRANSFORM_DIRTY, () => {
+        this.engine.on(NODE_TRANSFORM_DIRTY, () =>
+        {
             this.emit(NODE_TRANSFORM_DIRTY);
         });
     }

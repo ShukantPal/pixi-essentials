@@ -1,12 +1,12 @@
 import {
-    Matrix,
     Graphics,
-    Point,
     GraphicsPath,
+    Matrix,
+    Point,
 } from 'pixi.js';
 
-import type { PaintServer } from './paint/PaintServer';
 import type { Renderer } from 'pixi.js';
+import type { PaintServer } from './paint/PaintServer';
 import type { SVGSceneContext } from './SVGSceneContext';
 
 const tempMatrix = new Matrix();

@@ -1,13 +1,13 @@
-import { NODE_TRANSFORM_DIRTY } from './const';
 import {
     CanvasTextMetrics,
-    Sprite,
-    Texture,
-    TextStyle,
     fontStringFromTextStyle,
+    Sprite,
+    TextStyle,
+    Texture,
 } from 'pixi.js';
+import { NODE_TRANSFORM_DIRTY } from './const';
 
-import type { PointData, Matrix } from 'pixi.js';
+import type { Matrix, PointData } from 'pixi.js';
 import type { SVGTextEngine } from './SVGTextEngine';
 
 /**
@@ -101,7 +101,7 @@ export class SVGTextEngineImpl extends Sprite implements SVGTextEngine
 
         let i = 0;
 
-        for (const [_, { position, content, style }] of this.contentList)
+        for (const [, { position, content, style }] of this.contentList)
         {
             const textMetrics = CanvasTextMetrics.measureText(content, new TextStyle(style), this.canvas, false);
             const textStyle = new TextStyle(style);

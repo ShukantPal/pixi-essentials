@@ -1,5 +1,5 @@
-import { FILL_RULE } from './Path';
 import * as libtess from 'libtess';
+import { FILL_RULE } from './Path';
 
 import type { Path } from './Path';
 
@@ -30,7 +30,8 @@ export const buildPath = {
             }
             function begincallback(type: number): void
             {
-                if (type !== libtess.primitiveType.GL_TRIANGLES) {
+                if (type !== libtess.primitiveType.GL_TRIANGLES)
+                {
                     console.warn(`expected TRIANGLES but got type: ${type}`);
                 }
             }
