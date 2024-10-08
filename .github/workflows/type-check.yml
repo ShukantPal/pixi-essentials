@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  type-check:
     runs-on: ubuntu-latest
     strategy:
       matrix:
