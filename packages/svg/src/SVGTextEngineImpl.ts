@@ -1,10 +1,13 @@
+import {
+    CanvasTextMetrics,
+    fontStringFromTextStyle,
+    Sprite,
+    TextStyle,
+    Texture,
+} from 'pixi.js';
 import { NODE_TRANSFORM_DIRTY } from './const';
-import { Sprite } from '@pixi/sprite';
-import { Texture } from '@pixi/core';
-import { TextMetrics, TextStyle } from '@pixi/text';
 
-import type { IPointData, Matrix } from '@pixi/math';
-import type { Renderer } from '@pixi/core';
+import type { Matrix, PointData } from 'pixi.js';
 import type { SVGTextEngine } from './SVGTextEngine';
 
 /**
@@ -19,7 +22,7 @@ export class SVGTextEngineImpl extends Sprite implements SVGTextEngine
     protected canvas: HTMLCanvasElement;
     protected context: CanvasRenderingContext2D;
     protected contentList: Map<any, {
-        position: IPointData;
+        position: PointData;
         content: string;
         style: Partial<TextStyle>;
         matrix?: Matrix;
@@ -51,11 +54,11 @@ export class SVGTextEngineImpl extends Sprite implements SVGTextEngine
 
     async put(
         id: any,
-        position: IPointData,
+        position: PointData,
         content: string,
         style: Partial<TextStyle>,
         matrix?: Matrix,
-    ): Promise<IPointData>
+    ): Promise<PointData>
     {
         this.contentList.set(id, {
             position,
@@ -64,7 +67,7 @@ export class SVGTextEngineImpl extends Sprite implements SVGTextEngine
             matrix,
         });
 
-        const textMetrics = TextMetrics.measureText(content, new TextStyle(style), false, this.canvas);
+        const textMetrics = CanvasTextMetrics.measureText(content, new TextStyle(style), this.canvas, false);
 
         this.dirtyId++;
 
@@ -81,7 +84,7 @@ export class SVGTextEngineImpl extends Sprite implements SVGTextEngine
 
         this.contentList.forEach(({ position, content, style }) =>
         {
-            const textMetrics = TextMetrics.measureText(content, new TextStyle(style), false, this.canvas);
+            const textMetrics = CanvasTextMetrics.measureText(content, new TextStyle(style), this.canvas, false);
 
             w = Math.max(w, position.x + textMetrics.width);
             h = Math.max(h, position.y + textMetrics.height + textMetrics.fontProperties.descent);
@@ -89,9 +92,7 @@ export class SVGTextEngineImpl extends Sprite implements SVGTextEngine
 
         const resolution = window.devicePixelRatio || 1;
 
-        this.canvas.width = w * resolution;
-        this.canvas.height = h * resolution;
-        this.texture.baseTexture.setRealSize(w, h, resolution);
+        this.texture.source.resize(w, h, resolution);
         this.texture.update();
 
         this.context.clearRect(0, 0, w * resolution, h * resolution);
@@ -100,13 +101,13 @@ export class SVGTextEngineImpl extends Sprite implements SVGTextEngine
 
         let i = 0;
 
-        for (const [_, { position, content, style }] of this.contentList)
+        for (const [, { position, content, style }] of this.contentList)
         {
-            const textMetrics = TextMetrics.measureText(content, new TextStyle(style), false, this.canvas);
+            const textMetrics = CanvasTextMetrics.measureText(content, new TextStyle(style), this.canvas, false);
             const textStyle = new TextStyle(style);
 
             this.context.fillStyle = typeof textStyle.fill === 'string' ? textStyle.fill : 'black';
-            this.context.font = textStyle.toFontString();
+            this.context.font = fontStringFromTextStyle(textStyle);
 
             this.context.fillText(content, position.x, position.y + textMetrics.height);
 
@@ -122,16 +123,13 @@ export class SVGTextEngineImpl extends Sprite implements SVGTextEngine
 
         // Ensure the SVG scene updates its bounds after the text is rendered.
         this.emit(NODE_TRANSFORM_DIRTY);
-     }
+    }
 
-    render(renderer: Renderer): void
+    override onRender = (): void =>
     {
         if (this.updateId !== this.dirtyId)
         {
             this.updateText();
-            this.updateTransform();
         }
-
-        super.render(renderer);
-    }
+    };
 }

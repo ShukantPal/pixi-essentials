@@ -1,11 +1,11 @@
-import { Rectangle } from '@pixi/math';
+import { Rectangle } from 'pixi.js';
 import { Area, AreaOrientation } from './Area';
 
-import type { AreaAllocator } from './AreaAllocator';
 import type { AreaField } from './Area';
+import type { AreaAllocator } from './AreaAllocator';
 
 /**
- * An allocator node is represented as a tuple. The zeroth element is the parent of the node. The first element 
+ * An allocator node is represented as a tuple. The zeroth element is the parent of the node. The first element
  * always exists and is the texture area it wholly represents. The second element is whether the rectangle
  * is allocated or free. The last element is optional and is the list
  * of its children.
@@ -17,17 +17,19 @@ export type AreaNode = [AreaNode, AreaField, boolean] | [AreaNode, AreaField, Ar
 
 /**
  * Pointer to guillotene node.
- * 
+ *
  * @public
  * @ignore
  */
+// eslint-disable-next-line camelcase
 export type AreaPtr = { __mem_area: AreaNode };
 
 /**
  * @public
  * @ignore
  */
-export enum SPLIT_ORIENTATION {
+export enum SPLIT_ORIENTATION
+    {
     HOR = 0,
     VERT = 1,
     NONE = 2
@@ -84,6 +86,7 @@ export class GuilloteneAllocator implements AreaAllocator<AreaPtr>
         const node = this.split(area, rect, hole);
 
         rect.copyFrom(hole);
+        // eslint-disable-next-line camelcase
         (rect as any).__mem_area = node;
 
         return rect as (Rectangle & AreaPtr);
@@ -93,7 +96,7 @@ export class GuilloteneAllocator implements AreaAllocator<AreaPtr>
      * Frees the area represented by the given area pointer. The original rectangle returned by
      * {@link GuilloteneAllocator#allocate} included this pointer (the `__mem_area` property).
      *
-     * @param areaPtr 
+     * @param areaPtr
      */
     free(areaPtr: AreaPtr): void
     {
@@ -116,7 +119,7 @@ export class GuilloteneAllocator implements AreaAllocator<AreaPtr>
     /**
      * Returns the [area]{@link Area} data for the node.
      *
-     * @param node 
+     * @param node
      * @returns The area data for the node.
      */
     protected getAreaField(node: AreaNode): AreaField
@@ -144,7 +147,8 @@ export class GuilloteneAllocator implements AreaAllocator<AreaPtr>
         const nodeOpen = Area.getOpenOffset(nodeArea);
         const nodeClose = Area.getCloseOffset(nodeArea);
         const parentOpen = nodeParent ? Area.getOpenOffset(nodeParent[1]) : 0;
-        const parentClose = nodeParent ? Area.getCloseOffset(nodeParent[1]) : this._width;// (because root node is horizontal)
+        const parentClose = nodeParent
+            ? Area.getCloseOffset(nodeParent[1]) : this._width;// (because root node is horizontal)
 
         if (nodeOrientation) // VERTICAL
         {
@@ -152,7 +156,7 @@ export class GuilloteneAllocator implements AreaAllocator<AreaPtr>
             rect.y = parentOpen;
             rect.width = nodeClose - rect.x;
             rect.height = parentClose - parentOpen;
-        } 
+        }
         else // HORIZONTAL
         {
             rect.x = parentOpen;
@@ -167,7 +171,7 @@ export class GuilloteneAllocator implements AreaAllocator<AreaPtr>
     /**
      * Returns the parent of the area node.
      *
-     * @param node 
+     * @param node
      * @return The parent of `node`
      */
     protected getParent(node: AreaNode): AreaNode
@@ -178,7 +182,7 @@ export class GuilloteneAllocator implements AreaAllocator<AreaPtr>
     /**
      * Returns whether the given node has any children.
      *
-     * @param node 
+     * @param node
      * @return Whether the given node has any children.
      */
     protected hasChildren(node: AreaNode): boolean
@@ -193,8 +197,9 @@ export class GuilloteneAllocator implements AreaAllocator<AreaPtr>
      */
     protected getChildren(node: AreaNode): AreaNode[]
     {
-        if (!Array.isArray(node[2])) {
-            throw new Error("Children don't exist")
+        if (!Array.isArray(node[2]))
+        {
+            throw new Error('Children don\'t exist');
         }
 
         return node[2];
@@ -202,15 +207,15 @@ export class GuilloteneAllocator implements AreaAllocator<AreaPtr>
 
     protected addChild(parent: AreaNode, ...nodes: AreaNode[]): void
     {
-        parent[2] = Array.isArray(parent[2]) ? parent[2] : []
-        parent[2].push(...nodes)
+        parent[2] = Array.isArray(parent[2]) ? parent[2] : [];
+        parent[2].push(...nodes);
     }
 
     /**
      * Finds an area node with minimum width `aw` and minimum height `ah`.
      *
-     * @param aw 
-     * @param ah 
+     * @param aw
+     * @param ah
      */
     protected findArea(aw: number, ah: number): AreaNode
     {
@@ -220,9 +225,9 @@ export class GuilloteneAllocator implements AreaAllocator<AreaPtr>
     /**
      * The recursive implementation for {@link AreaAllocator#findArea}.
      *
-     * @param rootArea 
-     * @param aw 
-     * @param ah 
+     * @param rootArea
+     * @param aw
+     * @param ah
      */
     protected findAreaRecursive(rootArea: AreaNode, aw: number, ah: number): AreaNode
     {
@@ -292,13 +297,16 @@ export class GuilloteneAllocator implements AreaAllocator<AreaPtr>
      */
     protected splitOrientation(host: Rectangle, hole: Rectangle): SPLIT_ORIENTATION
     {
-        if (hole.width === host.width && hole.height === host.height) {
+        if (hole.width === host.width && hole.height === host.height)
+        {
             return SPLIT_ORIENTATION.NONE;
         }
-        if (hole.width === host.width) {
+        if (hole.width === host.width)
+        {
             return SPLIT_ORIENTATION.VERT;
         }
-        if (hole.height === host.height) {
+        if (hole.height === host.height)
+        {
             return SPLIT_ORIENTATION.HOR;
         }
 
@@ -314,10 +322,10 @@ export class GuilloteneAllocator implements AreaAllocator<AreaPtr>
         // |________|_________|
         const horAreaDiff = Math.abs(
             // (Primary) Right
-            (host.width - hole.width) * host.height -
+            ((host.width - hole.width) * host.height)
             // (Secondary) Bottom
-            hole.width * (host.height - hole.height)
-        ) 
+            - (hole.width * (host.height - hole.height))
+        );
 
         // ____________________
         // |        |         |
@@ -330,39 +338,39 @@ export class GuilloteneAllocator implements AreaAllocator<AreaPtr>
         // |__________________|
         const verAreaDiff = Math.abs(
             // (Primary) Bottom
-            host.width * (host.height - hole.height) -
-            (host.width - hole.width) * hole.height
-        )
+            (host.width * (host.height - hole.height))
+            - ((host.width - hole.width) * hole.height)
+        );
 
         if (horAreaDiff > verAreaDiff)
         {
-            return SPLIT_ORIENTATION.HOR
-        } 
-        else
-        {
-            return SPLIT_ORIENTATION.VERT
+            return SPLIT_ORIENTATION.HOR;
         }
+
+        return SPLIT_ORIENTATION.VERT;
     }
 
     protected split(
         area: AreaNode,
         areaFrame: Rectangle,
         holeFrame: Rectangle,
-        orientation: SPLIT_ORIENTATION = this.getParent(area) ? this.splitOrientation(areaFrame, holeFrame) : SPLIT_ORIENTATION.HOR
+        orientation: SPLIT_ORIENTATION =
+        this.getParent(area) ? this.splitOrientation(areaFrame, holeFrame) : SPLIT_ORIENTATION.HOR
     ): AreaNode
     {
-        if (area[2] === true) 
+        if (area[2] === true)
         {
-            throw new Error('Cannot deallocate')
+            throw new Error('Cannot deallocate');
         }
         if (orientation === SPLIT_ORIENTATION.NONE)
         {
             area[2] = true;
+
             return area;
         }
 
-        return this[orientation === SPLIT_ORIENTATION.HOR 
-            ? 'splitPrimaryHorizontal' 
+        return this[orientation === SPLIT_ORIENTATION.HOR
+            ? 'splitPrimaryHorizontal'
             : 'splitPrimaryVertical'](area, areaFrame, holeFrame);
     }
 
@@ -374,7 +382,7 @@ export class GuilloteneAllocator implements AreaAllocator<AreaPtr>
 
         if (this.hasChildren(area))
         {
-            throw new Error("Can't split non-leaf node")
+            throw new Error('Can\'t split non-leaf node');
         }
 
         const firstChild: AreaNode = [
@@ -389,16 +397,19 @@ export class GuilloteneAllocator implements AreaAllocator<AreaPtr>
         const secondChild: AreaNode = [
             area,
             Area.makeArea(
-                areaFrame.x + holeFrame.width, 
-                areaFrame.right, 
+                areaFrame.x + holeFrame.width,
+                areaFrame.right,
                 AreaOrientation.VERTICAL
             ),
             false
         ];
 
-        if (axis === AreaOrientation.HORIZONTAL) {
-            this.addChild(area, firstChild, secondChild)
-        } else {
+        if (axis === AreaOrientation.HORIZONTAL)
+        {
+            this.addChild(area, firstChild, secondChild);
+        }
+        else
+        {
             const i = this.getChildren(parent).indexOf(area);
 
             firstChild[0] = parent;
@@ -432,10 +443,8 @@ export class GuilloteneAllocator implements AreaAllocator<AreaPtr>
 
             return secondaryFirstChild;
         }
-        else
-        {
-            (firstChild as AreaNode)[2] = true;
-        }
+
+        (firstChild as AreaNode)[2] = true;
 
         return firstChild;
     }
@@ -446,8 +455,9 @@ export class GuilloteneAllocator implements AreaAllocator<AreaPtr>
         const axis = Area.getOrientation(field);
         const parent = this.getParent(area);
 
-        if (this.hasChildren(area)) {
-            throw new Error("Can't split non-leaf node")
+        if (this.hasChildren(area))
+        {
+            throw new Error('Can\'t split non-leaf node');
         }
 
         const primaryFirstChild: AreaNode = [
@@ -469,13 +479,14 @@ export class GuilloteneAllocator implements AreaAllocator<AreaPtr>
             false
         ];
 
-        if (axis === AreaOrientation.VERTICAL) 
+        if (axis === AreaOrientation.VERTICAL)
         {
             this.addChild(area, primaryFirstChild, primarySecondChild);
         }
         else
         {
             const i = this.getChildren(parent).indexOf(area);
+
             primaryFirstChild[0] = parent;
             primarySecondChild[0] = parent;
             this.getChildren(parent).splice(i, 1, primaryFirstChild, primarySecondChild);
@@ -506,20 +517,19 @@ export class GuilloteneAllocator implements AreaAllocator<AreaPtr>
 
             return secondaryFirstChild;
         }
-        else
-        {
-            (primaryFirstChild as AreaNode)[2] = true;
-        }
+
+        (primaryFirstChild as AreaNode)[2] = true;
 
         return primaryFirstChild;
     }
 
     protected merge(
         area: AreaNode
-    ) {
+    )
+    {
         if (this.hasChildren(area))
         {
-            throw new Error("Cannot merge a non-leaf node");
+            throw new Error('Cannot merge a non-leaf node');
         }
 
         const parent = this.getParent(area);
@@ -548,18 +558,10 @@ export class GuilloteneAllocator implements AreaAllocator<AreaPtr>
             siblings.splice(i - 1, 1);
         }
 
-        if (siblings.length === 1) {
+        if (siblings.length === 1)
+        {
             parent[2] = false;
             this.merge(parent);
-        }
-    }
-
-    private printState(area: AreaNode): void
-    {
-        if (!this.hasChildren(area)) {
-            console.log({ ...this.getFrame(area) }, area[2])
-        } else {
-            this.getChildren(area).forEach(n => this.printState(n))
         }
     }
 }

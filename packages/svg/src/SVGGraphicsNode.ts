@@ -1,41 +1,16 @@
-import { DashedLineStyle } from './style/DashedLineStyle';
-import { EllipticArcUtils } from './utils/EllipticArcUtils';
-import { Matrix } from '@pixi/math';
-import { LINE_CAP, LINE_JOIN } from '@pixi/graphics';
-import { GRAPHICS_CURVES, Graphics } from '@pixi/graphics';
-import { SVGGraphicsGeometry } from './SVGGraphicsGeometry';
-import { Texture } from '@pixi/core';
+import {
+    Graphics,
+    GraphicsPath,
+    Matrix,
+    Point,
+} from 'pixi.js';
 
+import type { Renderer } from 'pixi.js';
 import type { PaintServer } from './paint/PaintServer';
-import type { Renderer } from '@pixi/core';
 import type { SVGSceneContext } from './SVGSceneContext';
 
-/**
- * @public
- * @ignore
- */
-export interface ILineStyleOptions {
-    color?: number;
-    alpha?: number;
-    texture?: Texture;
-    matrix?: Matrix;
-
-    width?: number;
-    alignment?: number;
-    native?: boolean;
-    cap?: LINE_CAP;
-    join?: LINE_JOIN;
-    miterLimit?: number;
-
-    // additions
-    dashArray?: number[];
-    dashOffset?: number;
-}
-
 const tempMatrix = new Matrix();
-
-const _segmentsCount: (length: number, defaultSegments?: number) => number 
-    = (GRAPHICS_CURVES as any)._segmentsCount.bind(GRAPHICS_CURVES);
+const tempPoint = new Point();
 
 /**
  * This node can be used to directly embed the following elements:
@@ -51,70 +26,21 @@ const _segmentsCount: (length: number, defaultSegments?: number) => number
  *
  * It also provides an implementation for dashed stroking, by adding the `dashArray` and `dashOffset` properties
  * to `LineStyle`.
- * 
+ *
  * @public
  */
 export class SVGGraphicsNode extends Graphics
 {
     paintServers: PaintServer[];
 
-    protected context: SVGSceneContext;
+    protected _sceneContext: SVGSceneContext;
 
     constructor(context: SVGSceneContext)
     {
         super();
 
-        this.context = context;
-
-        (this as any)._geometry = new SVGGraphicsGeometry();
-        (this as any)._geometry.refCount++;
-
-        this._lineStyle = new DashedLineStyle();
-
+        this._sceneContext = context;
         this.paintServers = [];
-    }
-
-    public lineTextureStyle(options: ILineStyleOptions): this
-    {
-        // Apply defaults
-        options = Object.assign({
-            width: 0,
-            texture: Texture.WHITE,
-            color: (options && options.texture) ? 0xFFFFFF : 0x0,
-            alpha: 1,
-            matrix: null,
-            alignment: 0.5,
-            native: false,
-            cap: LINE_CAP.BUTT,
-            join: LINE_JOIN.MITER,
-            miterLimit: 10,
-            dashArray: null,
-            dashOffset: 0,
-        }, options);
-
-        if (this.currentPath)
-        {
-            this.startPoly();
-        }
-
-        const visible = options.width > 0 && options.alpha > 0;
-
-        if (!visible)
-        {
-            this._lineStyle.reset();
-        }
-        else
-        {
-            if (options.matrix)
-            {
-                options.matrix = options.matrix.clone();
-                options.matrix.invert();
-            }
-
-            Object.assign(this._lineStyle, { visible }, options);
-        }
-
-        return this;
     }
 
     /**
@@ -141,9 +67,9 @@ export class SVGGraphicsNode extends Graphics
         anticlockwise = false): this
     {
         const sweepAngle = endAngle - startAngle;
-        const n = GRAPHICS_CURVES.adaptive
-            ? _segmentsCount(EllipticArcUtils.calculateArcLength(rx, ry, startAngle, endAngle - startAngle)) * 4
-            : 20;
+
+        // Choose a number of segments such that the maximum absolute deviation from the circle is approximately 0.029
+        const n = (window.devicePixelRatio || 1) * Math.ceil(2.3 * Math.sqrt(rx + ry));
         const delta = (anticlockwise ? -1 : 1) * Math.abs(sweepAngle) / (n - 1);
 
         tempMatrix.identity()
@@ -161,11 +87,11 @@ export class SVGGraphicsNode extends Graphics
 
             if (i === 0)
             {
-                this._initCurve(x, y);
+                this.moveTo(x, y);
                 continue;
             }
 
-            this.currentPath.points.push(x, y);
+            this.lineTo(x, y);
         }
 
         return this;
@@ -204,9 +130,15 @@ export class SVGGraphicsNode extends Graphics
         }
 
         // See https://www.w3.org/TR/SVG2/implnote.html#ArcImplementationNotes
-        const points = this.currentPath.points;
-        const startX = points[points.length - 2];
-        const startY = points[points.length - 1];
+        /* eslint-disable dot-notation */
+        const activePath = this.context['_activePath'] as GraphicsPath;
+
+        activePath.shapePath['_ensurePoly']();
+        activePath.getLastPoint(tempPoint);
+        /* eslint-enable dot-notation */
+
+        const startX = tempPoint.x;
+        const startY = tempPoint.y;
         const midX = (startX + endX) / 2;
         const midY = (startY + endY) / 2;
 
@@ -437,6 +369,6 @@ export class SVGGraphicsNode extends Graphics
             paintServers[i].resolvePaint(renderer);
         }
 
-        super.render(renderer);
+        // TODO: Fix rendering
     }
 }

@@ -1,12 +1,11 @@
-import { BaseImageResource, Texture } from '@pixi/core';
-import { Matrix } from '@pixi/math';
+import { ImageSource, Matrix, Texture } from 'pixi.js';
 import { SVGGraphicsNode } from './SVGGraphicsNode';
 
 const tempMatrix = new Matrix();
 
 /**
  * Draws SVG &lt;image /&gt; elements.
- * 
+ *
  * @public
  */
 export class SVGImageNode extends SVGGraphicsNode
@@ -20,7 +19,7 @@ export class SVGImageNode extends SVGGraphicsNode
     /**
      * The Canvas 2D context for `this._canvas`.
      */
-    protected _context: CanvasRenderingContext2D;
+    protected _canvasContext: CanvasRenderingContext2D;
 
     /**
      * A texture backed by `this._canvas`.
@@ -63,7 +62,7 @@ export class SVGImageNode extends SVGGraphicsNode
         /* eslint-disable-next-line no-undef */
         const baseURL = globalThis?.location.href;
         const imageURL = element.getAttribute('href') || element.getAttribute('xlink:href');
-        const imageOrigin = new URL(imageURL).origin;
+        const imageOrigin = new URL(imageURL, document.baseURI).origin;
         let imageElement: HTMLImageElement | SVGImageElement = element;
 
         if (imageOrigin && imageOrigin !== baseURL)
@@ -79,15 +78,12 @@ export class SVGImageNode extends SVGGraphicsNode
             this.drawTexture(imageElement);
         };
 
-        // Generate the quad geometry
-        this.beginTextureFill({
+        this.rect(x, y, width, height);
+        this.fill({
             texture: this._texture,
             alpha: opacity,
-            matrix: new Matrix()
-                .scale(1 / sx, 1 / sy),
+            matrix: new Matrix().scale(1 / sx, 1 / sy).translate(x, y),
         });
-        this.drawRect(x, y, width, height);
-        this.endFill();
     }
 
     /**
@@ -102,10 +98,10 @@ export class SVGImageNode extends SVGGraphicsNode
         // If the texture already exists, nothing much to do.
         if (this._texture)
         {
-            if (this._texture.width <= this.context.atlas.maxWidth
-                && this._texture.height <= this.context.atlas.maxHeight)
+            if (this._texture.width <= this._sceneContext.atlas.maxWidth
+                && this._texture.height <= this._sceneContext.atlas.maxHeight)
             {
-                this.context.atlas.free(this._texture);
+                this._sceneContext.atlas.free(this._texture);
             }
             else
             {
@@ -115,12 +111,12 @@ export class SVGImageNode extends SVGGraphicsNode
         }
 
         this._texture = null;
-        this._texture = this.context.atlas.allocate(width, height);
+        this._texture = this._sceneContext.atlas.allocate(width, height);
 
         if (this._texture)
         {
-            this._canvas = (this._texture.baseTexture.resource as BaseImageResource).source as HTMLCanvasElement;
-            this._context = this._canvas.getContext('2d');
+            this._canvas = (this._texture.source as ImageSource).resource as HTMLCanvasElement;
+            this._canvasContext = this._canvas.getContext('2d');
         }
         else // Allocation fails if the texture is too large. If so, create a standalone texture.
         {
@@ -129,7 +125,7 @@ export class SVGImageNode extends SVGGraphicsNode
             this._canvas.width = width;
             this._canvas.height = height;
 
-            this._context = this._canvas.getContext('2d');
+            this._canvasContext = this._canvas.getContext('2d');
             this._texture = Texture.from(this._canvas);
         }
     }
@@ -143,14 +139,14 @@ export class SVGImageNode extends SVGGraphicsNode
     {
         const destinationFrame = this._texture.frame;
 
-        this._context.clearRect(
+        this._canvasContext.clearRect(
             destinationFrame.x,
             destinationFrame.y,
             destinationFrame.width,
             destinationFrame.height,
         );
 
-        this._context.drawImage(
+        this._canvasContext.drawImage(
             image,
             destinationFrame.x,
             destinationFrame.y,
@@ -159,5 +155,6 @@ export class SVGImageNode extends SVGGraphicsNode
         );
 
         this._texture.update();
+        this._texture.source.update();
     }
 }

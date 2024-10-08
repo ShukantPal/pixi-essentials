@@ -1,27 +1,23 @@
-import { CanvasTextureAllocator } from '@pixi-essentials/texture-allocator';
-import { Cull } from '@pixi-essentials/cull';
-import { DisplayObject, Container } from '@pixi/display';
-import { InheritedPaintProvider } from './paint/InheritedPaintProvider';
-import { MaskServer } from './mask/MaskServer';
-import { LINE_CAP, LINE_JOIN, GraphicsData } from '@pixi/graphics';
-import * as Loader from './loader';
-import { Matrix, Rectangle } from '@pixi/math';
+import { Bounds, Container, Matrix, Rectangle, Renderer, RenderTexture, Texture } from 'pixi.js';
 import { NODE_TRANSFORM_DIRTY, TRANSFORM_DIRTY } from './const';
+import * as Loader from './loader';
+import { MaskServer } from './mask/MaskServer';
+import { InheritedPaintProvider } from './paint/InheritedPaintProvider';
 import { PaintProvider } from './paint/PaintProvider';
 import { PaintServer } from './paint/PaintServer';
-import { RenderTexture, Texture } from '@pixi/core';
 import { SVGGraphicsNode } from './SVGGraphicsNode';
 import { SVGImageNode } from './SVGImageNode';
 import { SVGPathNode } from './SVGPathNode';
 import { SVGTextNode } from './SVGTextNode';
 import { SVGUseNode } from './SVGUseNode';
+import { CanvasTextureAllocator } from '@pixi-essentials/texture-allocator';
 
+import type { LineCap, LineJoin } from 'pixi.js';
 import type { Paint } from './paint/Paint';
 import type { SVGSceneContext } from './SVGSceneContext';
-import type { Renderer } from '@pixi/core';
 
 const tempMatrix = new Matrix();
-const tempRect = new Rectangle();
+const tempBounds = new Bounds();
 
 /**
  * {@link SVGScene} can be used to build an interactive viewer for scalable vector graphics images. You must specify the size
@@ -36,17 +32,12 @@ const tempRect = new Rectangle();
  *
  * @public
  */
-export class SVGScene extends DisplayObject
+export class SVGScene extends Container
 {
     /**
      * The SVG image content being rendered by the scene.
      */
     public content: SVGSVGElement;
-
-    /**
-     * The root display object of the scene.
-     */
-    public root: Container;
 
     /**
      * Display objects that don't render to the screen, but are required to update before the rendering
@@ -70,11 +61,6 @@ export class SVGScene extends DisplayObject
     protected _height: number;
 
     /**
-     * This is used to cull the SVG scene graph before rendering.
-     */
-    protected _cull: Cull;
-
-    /**
      * Maps content elements to their paint. These paints do not inherit from their parent element. You must
      * compose an {@link InheritedPaintProvider} manually.
      */
@@ -85,6 +71,8 @@ export class SVGScene extends DisplayObject
      * only referenced as a `mask`.
      */
     private _elementToMask: Map<SVGElement, MaskServer>;
+
+    private _elementToRenderNode: Map<SVGElement, Container>;
 
     /**
      * Flags whether any transform is dirty in the SVG scene graph.
@@ -99,7 +87,9 @@ export class SVGScene extends DisplayObject
      */
     constructor(content: SVGSVGElement, context?: Partial<SVGSceneContext>)
     {
-        super();
+        super({
+            isRenderGroup: true,
+        });
 
         this.content = content;
 
@@ -107,15 +97,19 @@ export class SVGScene extends DisplayObject
         this._width = content.viewBox.baseVal.width;
         this._height = content.viewBox.baseVal.height;
 
-        this._cull = new Cull({ recursive: true, toggle: 'renderable' });
         this._elementToPaint = new Map();
         this._elementToMask = new Map();
+        this._elementToRenderNode = new Map();
         this._transformDirty = true;
 
         this.renderServers = new Container();
 
+        this.boundsArea = new Rectangle(0, 0, this.content.viewBox.baseVal.width, this.content.viewBox.baseVal.height);
+
         if (!context || !context.disableRootPopulation)
+        {
             this.populateScene();
+        }
     }
 
     initContext(context?: Partial<SVGSceneContext>): void
@@ -129,96 +123,22 @@ export class SVGScene extends DisplayObject
     }
 
     /**
-     * Calculates the bounds of this scene, which is defined by the set `width` and `height`. The contents
-     * of this scene are scaled to fit these bounds, and don't affect them whatsoever.
+     * Draw the paints required to render the elements in this SVG scene. If not called, gradients
+     * and special effects may not render.
      *
-     * @override
+     * @param renderer
      */
-    calculateBounds(): void
+    drawPaints(renderer: Renderer): void
     {
-        this._bounds.clear();
-        this._bounds.addFrameMatrix(
-            this.worldTransform,
-            0,
-            0,
-            this.content.viewBox.baseVal.width,
-            this.content.viewBox.baseVal.height,
-        );
-    }
-
-    removeChild()
-    {
-        // Just to implement DisplayObject
-    }
-
-    /**
-     * @override
-     */
-    destroy(): void {
-        this.root.destroy(true);
-
-        super.destroy();
-    }
-
-    /**
-     * @override
-     */
-    render(renderer: Renderer): void
-    {
-        if (!this.visible || !this.renderable)
+        for (const node of this._elementToRenderNode.values())
         {
-            return;
+            const paintServers = ((node as any)?.paintServers ?? []) as PaintServer[];
+
+            for (const paintServer of paintServers)
+            {
+                paintServer.resolvePaint(renderer);
+            }
         }
-
-        // Update render-server objects
-        this.renderServers.render(renderer);
-
-        // Cull the SVG scene graph
-        this._cull.cull(renderer.renderTexture.sourceFrame, true);
-
-        // Render the SVG scene graph
-        this.root.render(renderer);
-
-        // Uncull the SVG scene graph. This ensures the scene graph is fully 'renderable'
-        // outside of a render cycle.
-        this._cull.uncull();
-    }
-
-    /**
-     * @override
-     */
-    updateTransform(): void
-    {
-        super.updateTransform();
-
-        this.root.alpha = this.worldAlpha;
-
-        const worldTransform = this.worldTransform;
-        const rootTransform = this.root.transform.worldTransform;
-
-        // Don't update transforms if they didn't change across frames. This is because the SVG scene graph is static.
-        if (rootTransform.a === worldTransform.a
-            && rootTransform.b === worldTransform.b
-            && rootTransform.c === worldTransform.c
-            && rootTransform.d === worldTransform.d
-            && rootTransform.tx === worldTransform.tx
-            && rootTransform.ty === worldTransform.ty
-            && (rootTransform as any)._worldID !== 0
-            && !this._transformDirty)
-        {
-            return;
-        }
-
-        this.root.enableTempParent();
-        this.root.transform.setFromMatrix(this.worldTransform);
-        this.root.updateTransform();
-        this.root.disableTempParent(null);
-
-        // Calculate bounds in the SVG scene graph. This ensures they are updated whenever the transform changes.
-        this.root.calculateBounds();
-
-        // Prevent redundant recalculations.
-        this._transformDirty = false;
     }
 
     /**
@@ -228,7 +148,7 @@ export class SVGScene extends DisplayObject
      */
     protected createNode(element: SVGElement): Container
     {
-        let renderNode = null;
+        let renderNode: Container;
 
         switch (element.nodeName.toLowerCase())
         {
@@ -261,6 +181,8 @@ export class SVGScene extends DisplayObject
                 renderNode = null;
                 break;
         }
+
+        this._elementToRenderNode.set(element, renderNode);
 
         return renderNode;
     }
@@ -295,7 +217,7 @@ export class SVGScene extends DisplayObject
         const renderTexture = RenderTexture.create({
             width: 128,
             height: 128,
-        });
+        }) as RenderTexture;
 
         return new PaintServer(paintServer, renderTexture);
     }
@@ -321,7 +243,7 @@ export class SVGScene extends DisplayObject
         const maskTexture = RenderTexture.create({
             width: localBounds.width,
             height: localBounds.height,
-        });
+        }) as RenderTexture;
 
         const maskSprite = new MaskServer(maskTexture);
 
@@ -433,8 +355,8 @@ export class SVGScene extends DisplayObject
             basePaint?: Paint;
         } = {},
     ): {
-        paint: Paint;
-    }
+            paint: Paint;
+        }
     {
         const {
             basePaint,
@@ -446,8 +368,8 @@ export class SVGScene extends DisplayObject
             fill,
             opacity,
             stroke,
-            strokeDashArray,
-            strokeDashOffset,
+            // strokeDashArray,
+            // strokeDashOffset,
             strokeLineCap,
             strokeLineJoin,
             strokeMiterLimit,
@@ -457,71 +379,6 @@ export class SVGScene extends DisplayObject
         // Transform
         const transform = element instanceof SVGGraphicsElement ? element.transform.baseVal.consolidate() : null;
         const transformMatrix = transform ? transform.matrix : tempMatrix.identity();
-
-        if (node instanceof SVGGraphicsNode)
-        {
-            if (fill === 'none')
-            {
-                node.beginFill(0, 0);
-            }
-            else if (typeof fill === 'number')
-            {
-                node.beginFill(fill, opacity === null ? 1 : opacity);
-            }
-            else if (!fill)
-            {
-                node.beginFill(0);
-            }
-            else
-            {
-                const ref = this.parseReference(fill);
-                const paintElement = this.content.querySelector(ref);
-
-                if (paintElement && paintElement instanceof SVGGradientElement)
-                {
-                    const paintServer = this.createPaintServer(paintElement);
-                    const paintTexture = paintServer.paintTexture;
-
-                    node.paintServers.push(paintServer);
-                    node.beginTextureFill({
-                        texture: paintTexture,
-                        alpha: opacity === null ? 1 : opacity,
-                        matrix: new Matrix(),
-                    });
-                }
-            }
-
-            let strokeTexture: Texture;
-
-            if (typeof stroke === 'string' && stroke.startsWith('url'))
-            {
-                const ref = this.parseReference(stroke);
-                const paintElement = this.content.querySelector(ref);
-
-                if (paintElement && paintElement instanceof SVGGradientElement)
-                {
-                    const paintServer = this.createPaintServer(paintElement);
-                    const paintTexture = paintServer.paintTexture;
-
-                    node.paintServers.push(paintServer);
-                    strokeTexture = paintTexture;
-                }
-            }
-
-            node.lineTextureStyle({
-                /* eslint-disable no-nested-ternary */
-                color: stroke === null ? 0 : (typeof stroke === 'number' ? stroke : 0xffffff),
-                cap: strokeLineCap === null ? LINE_CAP.SQUARE : strokeLineCap as unknown as LINE_CAP,
-                dashArray: strokeDashArray,
-                dashOffset: strokeDashOffset === null ? strokeDashOffset : 0,
-                join: strokeLineJoin === null ? LINE_JOIN.MITER : strokeLineJoin as unknown as LINE_JOIN,
-                matrix: new Matrix(),
-                miterLimit: strokeMiterLimit === null ? 150 : strokeMiterLimit,
-                texture: strokeTexture || Texture.WHITE,
-                width: strokeWidth === null ? (typeof stroke === 'number' ? 1 : 0) : strokeWidth,
-                /* eslint-enable no-nested-ternary */
-            });
-        }
 
         switch (element.nodeName.toLowerCase())
         {
@@ -567,7 +424,7 @@ export class SVGScene extends DisplayObject
                     }) as SVGGraphicsNode;
 
                     (node as SVGUseNode).ref = contentNode;
-                    contentNode.transform.setFromMatrix(Matrix.IDENTITY);// clear transform
+                    contentNode.setFromMatrix(Matrix.IDENTITY);// clear transform
                 }
                 else if (!this._context.disableHrefSVGLoading)
                 {
@@ -579,7 +436,7 @@ export class SVGScene extends DisplayObject
                                 ...this._context,
                                 disableRootPopulation: true,
                             }),
-                            svgDocument.querySelector('#' + useTargetURL.split('#')[1])
+                            svgDocument.querySelector(`#${useTargetURL.split('#')[1]}`)
                         ] as [SVGScene, SVGElement])
                         .then(([shellScene, useTarget]) =>
                         {
@@ -593,11 +450,12 @@ export class SVGScene extends DisplayObject
                             }) as SVGGraphicsNode;
 
                             (node as SVGUseNode).ref = contentNode;
-                            contentNode.transform.setFromMatrix(Matrix.IDENTITY);// clear transform
+                            contentNode.setFromMatrix(Matrix.IDENTITY);// clear transform
 
                             this._transformDirty = true;
 
-                            shellScene.on(TRANSFORM_DIRTY, () => {
+                            shellScene.on(TRANSFORM_DIRTY, () =>
+                            {
                                 this._transformDirty = true;
                             });
                         });
@@ -605,7 +463,81 @@ export class SVGScene extends DisplayObject
             }
         }
 
-        node.transform.setFromMatrix(tempMatrix.set(
+        if (node instanceof SVGGraphicsNode && !(node instanceof SVGImageNode))
+        {
+            if (fill === 'none')
+            {
+                node.fill({
+                    color: 0,
+                    alpha: 0,
+                });
+            }
+            else if (typeof fill === 'number')
+            {
+                node.fill({
+                    color: fill,
+                    alpha: opacity === null ? 1 : opacity,
+                });
+            }
+            else if (!fill)
+            {
+                node.fill({
+                    color: 0,
+                });
+            }
+            else
+            {
+                const ref = this.parseReference(fill);
+                const paintElement = this.content.querySelector(ref);
+
+                if (paintElement && paintElement instanceof SVGGradientElement)
+                {
+                    const paintServer = this.createPaintServer(paintElement);
+                    const paintTexture = paintServer.paintTexture;
+
+                    node.paintServers.push(paintServer);
+                    node.fill({
+                        texture: paintTexture,
+                        alpha: opacity === null ? 1 : opacity,
+                        matrix: new Matrix(),
+                    });
+                }
+            }
+
+            let strokeTexture: Texture;
+
+            if (typeof stroke === 'string' && stroke.startsWith('url'))
+            {
+                const ref = this.parseReference(stroke);
+                const paintElement = this.content.querySelector(ref);
+
+                if (paintElement && paintElement instanceof SVGGradientElement)
+                {
+                    const paintServer = this.createPaintServer(paintElement);
+                    const paintTexture = paintServer.paintTexture;
+
+                    node.paintServers.push(paintServer);
+                    strokeTexture = paintTexture;
+                }
+            }
+
+            node.stroke({
+                /* eslint-disable no-nested-ternary */
+                color: stroke === null ? 0 : (typeof stroke === 'number' ? stroke : 0xffffff),
+                cap: strokeLineCap === null ? 'square' : strokeLineCap as unknown as LineCap,
+                // TODO: Support dashed strokes.
+                // dashArray: strokeDashArray,
+                // dashOffset: strokeDashOffset === null ? strokeDashOffset : 0,
+                join: strokeLineJoin === null ? 'miter' : strokeLineJoin as unknown as LineJoin,
+                matrix: new Matrix(),
+                miterLimit: strokeMiterLimit === null ? 150 : strokeMiterLimit,
+                texture: strokeTexture || Texture.WHITE,
+                width: strokeWidth === null ? (typeof stroke === 'number' ? 1 : 0) : strokeWidth,
+                /* eslint-enable no-nested-ternary */
+            });
+        }
+
+        node.setFromMatrix(tempMatrix.set(
             transformMatrix.a,
             transformMatrix.b,
             transformMatrix.c,
@@ -631,7 +563,7 @@ export class SVGScene extends DisplayObject
                 const maskSprite = maskServer.createMask(node);
 
                 this.renderServers.addChild(maskServer);
-                node.mask = maskSprite;
+                node.mask = maskSprite as Container;
                 node.addChild(maskSprite);
             }
         }
@@ -689,63 +621,51 @@ export class SVGScene extends DisplayObject
 
         if (node instanceof SVGGraphicsNode)
         {
-            const bbox = node.getLocalBounds(tempRect);
+            tempBounds.clear();
+
+            const bbox = node.getLocalBounds(tempBounds);
             const paintServers = node.paintServers;
             const { x, y, width: bwidth, height: bheight } = bbox;
 
             node.paintServers.forEach((paintServer) =>
             {
-                paintServer.resolvePaintDimensions(bbox);
+                paintServer.resolvePaintDimensions(bbox.rectangle);
             });
 
-            const geometry = node.geometry;
-            const graphicsData: GraphicsData[] = (geometry as any).graphicsData;
+            const instructions = node.context.instructions;
 
-            if (graphicsData)
+            for (const instruction of instructions)
             {
-                graphicsData.forEach((data) =>
+                if (instruction.action !== 'fill' && instruction.action !== 'stroke')
                 {
-                    const fillStyle = data.fillStyle;
-                    const lineStyle = data.lineStyle;
+                    continue;
+                }
+                if (!instruction.data.style.matrix)
+                {
+                    instruction.data.style.matrix = new Matrix();
+                }
 
-                    if (fillStyle.texture && paintServers.find((server) => server.paintTexture === fillStyle.texture))
-                    {
-                        const width = fillStyle.texture.width;
-                        const height = fillStyle.texture.height;
+                tempMatrix.copyFrom(instruction.data.style.matrix);
+                instruction.data.style.matrix.identity();
 
-                        data.fillStyle.matrix
-                            .invert()
-                            .scale(bwidth / width, bheight / height)
-                            .invert();
-                    }
-                    if (fillStyle.matrix)
-                    {
-                        fillStyle.matrix
-                            .invert()
-                            .translate(x, y)
-                            .invert();
-                    }
+                const texture = instruction.data.style.texture;
 
-                    if (lineStyle.texture && paintServers.find((server) => server.paintTexture === lineStyle.texture))
-                    {
-                        const width = lineStyle.texture.width;
-                        const height = lineStyle.texture.height;
+                if (paintServers.find((server) => server.paintTexture === texture))
+                {
+                    const width = texture.width;
+                    const height = texture.height;
 
-                        data.lineStyle.matrix
-                            .invert()
-                            .scale(bwidth / width, bheight / height)
-                            .invert();
-                    }
-                    if (lineStyle.matrix)
-                    {
-                        lineStyle.matrix
-                            .invert()
-                            .translate(x, y)
-                            .invert();
-                    }
-                });
+                    instruction.data.style.matrix.scale(bwidth / width, bheight / height);
+                }
 
-                geometry.updateBatches();
+                instruction.data.style.matrix.translate(x, y);
+                instruction.data.style.matrix
+                    .invert()
+                    .translate(texture.frame.x, texture.frame.y)
+                    .scale(1 / texture.source.width, 1 / texture.source.height);
+
+                // eslint-disable-next-line dot-notation
+                node.context['onUpdate']();
             }
         }
 
@@ -763,15 +683,7 @@ export class SVGScene extends DisplayObject
      */
     protected populateScene(): void
     {
-        if (this.root)
-        {
-            this._cull.remove(this.root);
-        }
-
-        const root = this.populateSceneRecursive(this.content);
-
-        this.root = root;
-        this._cull.add(this.root);
+        this.addChild(this.populateSceneRecursive(this.content));
     }
 
     /**
@@ -822,7 +734,8 @@ export class SVGScene extends DisplayObject
      * @param context
      * @returns
      */
-    static async from(url: string, context?: SVGSceneContext): Promise<SVGScene> {
+    static async from(url: string, context?: SVGSceneContext): Promise<SVGScene>
+    {
         return new SVGScene(await Loader._load(url), context);
     }
 }

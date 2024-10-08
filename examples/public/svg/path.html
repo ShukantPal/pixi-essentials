@@ -1,0 +1,87 @@
+<html>
+<head>
+    <script src="../bundles/svg/path/index.js" type="module"></script>
+</head>
+<body>
+<canvas id="view" style="position: absolute; top: 0; left: 0;"></canvas>
+<!-- grid overlay at 100px intervals -->
+<div style="position: absolute; top: 0; left: 0; width: 500px; height: 500px">
+    <svg width="100%" height="100%">
+        <defs>
+            <pattern id="smallGrid" width="100" height="100" patternUnits="userSpaceOnUse">
+                <path d="M 100 0 L 0 0 0 100" fill="none" stroke="gray" stroke-width="0.5"/>
+            </pattern>
+            <pattern id="grid" width="500" height="500" patternUnits="userSpaceOnUse">
+                <rect width="500" height="500" fill="url(#smallGrid)"/>
+                <path d="M 500 0 L 0 0 0 500" fill="none" stroke="gray" stroke-width="1"/>
+            </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#grid)"/>
+    </svg>
+</div>
+<div style="border: 1px solid black; border-left: 0; border-style: solid; position: absolute; top: 0; left: 500px; width: 500px; height: 500px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+        <defs>
+            <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="lightblue" />
+                <stop offset="100%" stop-color="purple" />
+            </linearGradient>
+        </defs>
+
+        <!-- Circle -->
+        <path d="M 100,100 m -50,0 a 50,50 0 1,0 100,0 a 50,50 0 1,0 -100,0" fill="#ef4444" stroke="black" />
+
+        <!-- Ellipse -->
+        <path d="M 250,100 a 100,50 0 1,0 200,0 a 100,50 0 1,0 -200,0" fill="#ea580c" stroke="black" />
+
+        <!-- Rectangle -->
+        <path d="M 100,200 h 200 v 50 h -200 v -50" fill="#ca8a04" stroke="black" />
+
+        <!-- Line -->
+        <path d="M 250,200 l 100,50" fill="#65a30d" stroke="black" />
+
+        <!-- Quadratic Bezier Curve -->
+        <path d="M 50,300 q 50,-50 100,0" fill="#0891b2" stroke="black" />
+
+        <!-- Cubic Bezier Curve -->
+        <path d="M 250,300 c 50,-50 100,50 150,0" fill="#4f46e5" stroke="black" />
+
+        <!-- Outer circle with hollow effect (fill-rule: evenodd) at (100, 400) -->
+        <path d="M 100 350
+           A 50 50 0 1 1 99.9 350 Z
+           M 100 380
+           A 30 30 0 1 0 100 379.9 Z"
+              fill="url(#bgGradient)" fill-rule="evenodd"/>
+
+        <!-- Outer circle without hollow effect (fill-rule: nonzero) at (300, 400) -->
+        <path d="M 300 350
+           A 50 50 0 1 1 299.9 350 Z
+           M 300 380
+           A 30 30 0 1 0 300 379.9 Z"
+              fill="red" fill-rule="nonzero"/>
+    </svg>
+</div>
+<div style="position: absolute; top: 0; left: 500px; width: 500px; height: 500px">
+    <svg width="100%" height="100%">
+        <defs>
+            <pattern id="smallGrid" width="100" height="100" patternUnits="userSpaceOnUse">
+                <path d="M 100 0 L 0 0 0 100" fill="none" stroke="gray" stroke-width="0.5"/>
+            </pattern>
+            <pattern id="grid" width="500" height="500" patternUnits="userSpaceOnUse">
+                <rect width="500" height="500" fill="url(#smallGrid)"/>
+                <path d="M 500 0 L 0 0 0 500" fill="none" stroke="gray" stroke-width="1"/>
+            </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#grid)"/>
+    </svg>
+</div>
+<div style="margin-top: 508px;">
+    500px grid divided into 100px squares, overlaid on canvas.
+</div>
+<style>
+    canvas {
+        border: 1px solid black;
+    }
+</style>
+</body>
+</html>

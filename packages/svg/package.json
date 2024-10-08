@@ -1,6 +1,6 @@
 {
   "name": "@pixi-essentials/svg",
-  "version": "2.0.2",
+  "version": "3.0.0",
   "description": "Native SVG Renderer on top of PixiJS",
   "main": "lib/svg.js",
   "module": "lib/svg.es.js",
@@ -8,7 +8,8 @@
   "types": "./index.d.ts",
   "scripts": {
     "build": "rollup -c rollup.config.js --silent",
-    "build:types": "rm -rf compile && rm ./index.d.ts; tsc && api-extractor run"
+    "build:types": "rm -rf compile index.d.ts && tsc && api-extractor run && rm -rf compile",
+    "lint": "eslint --ext .ts,.js src/ test/"
   },
   "repository": {
     "type": "git",
@@ -35,29 +36,22 @@
     "*.d.ts"
   ],
   "devDependencies": {
+    "pixi.js": "^8.4.0",
     "@pixi-essentials/eslint-config": "^1.0.0",
     "eslint": "^7.9.0",
     "rollup": "^2.28.1",
     "@pixi-build-tools/rollup-configurator": "^1.0.10",
-    "typescript": "~4.9.5",
-    "@microsoft/api-extractor": "~7.16.1"
+    "typescript": "~5.3.3",
+    "@microsoft/api-extractor": "~7.47.9"
   },
   "peerDependencies": {
-    "@pixi/core": "^7.0.0",
-    "@pixi/display": "^7.0.0",
-    "@pixi/filter-color-matrix": "^7.0.0",
-    "@pixi/math": "^7.0.0",
-    "@pixi/graphics": "^7.0.0",
-    "@pixi/sprite": "^7.0.0",
-    "@pixi/text": "^7.0.0",
-    "@pixi/events": "^7.0.0"
+    "pixi.js": "^8.4.0"
   },
   "dependencies": {
     "d-path-parser": "^1.0.0",
     "tinycolor2": "^1.4.1",
-    "@pixi-essentials/gradients": "^1.0.1",
-    "@pixi-essentials/cull": "^2.0.0",
-    "@pixi-essentials/texture-allocator": "~2.0.1",
+    "@pixi-essentials/gradients": "^2.0.0",
+    "@pixi-essentials/texture-allocator": "~3.0.0",
     "libtess": "~1.2.2"
   },
   "publishConfig": {

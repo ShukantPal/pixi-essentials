@@ -1,9 +1,8 @@
-import { GradientFactory } from '@pixi-essentials/gradients';
 import { PaintProvider } from './PaintProvider';
+import { GradientFactory } from '@pixi-essentials/gradients';
 
-import type { Renderer, RenderTexture } from '@pixi/core';
+import type { Rectangle, Renderer, RenderTexture, Texture } from 'pixi.js';
 import type { ColorStop } from '@pixi-essentials/gradients';
-import type { Rectangle } from '@pixi/math';
 
 /**
  * Converts the linear gradient's x1, x2, y1, y2 attributes into percentage units.
@@ -12,23 +11,38 @@ import type { Rectangle } from '@pixi/math';
  */
 function convertLinearGradientAxis(linearGradient: SVGLinearGradientElement): void
 {
-    linearGradient.x1.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PERCENTAGE);
-    linearGradient.y1.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PERCENTAGE);
-    linearGradient.x2.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PERCENTAGE);
-    linearGradient.y2.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PERCENTAGE);
+    if (linearGradient.x1.baseVal.unitType !== SVGLength.SVG_LENGTHTYPE_PERCENTAGE)
+    {
+        linearGradient.x1.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PERCENTAGE);
+    }
+
+    if (linearGradient.y1.baseVal.unitType !== SVGLength.SVG_LENGTHTYPE_PERCENTAGE)
+    {
+        linearGradient.y1.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PERCENTAGE);
+    }
+
+    if (linearGradient.x2.baseVal.unitType !== SVGLength.SVG_LENGTHTYPE_PERCENTAGE)
+    {
+        linearGradient.x2.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PERCENTAGE);
+    }
+
+    if (linearGradient.y2.baseVal.unitType !== SVGLength.SVG_LENGTHTYPE_PERCENTAGE)
+    {
+        linearGradient.y2.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_PERCENTAGE);
+    }
 }
 
 /**
  * [Paint Servers]{@link https://svgwg.org/svg-next/pservers.html} are implemented as textures. This class is a lazy
  * wrapper around paint textures, which can only be generated using the `renderer` drawing to the screen.
- * 
+ *
  * @public
  */
 export class PaintServer
 {
     public paintServer: SVGGradientElement | SVGPatternElement;
     public paintTexture: RenderTexture;
-    public paintContexts: { [id: number]: number };
+    public paintContexts: Map<Renderer, number>;
 
     public dirtyId: number;
 
@@ -42,7 +56,7 @@ export class PaintServer
     {
         this.paintServer = paintServer;
         this.paintTexture = paintTexture;
-        this.paintContexts = {};
+        this.paintContexts = new Map<Renderer, number>();
         this.dirtyId = 0;
     }
 
@@ -54,13 +68,13 @@ export class PaintServer
      */
     public resolvePaint(renderer: Renderer): void
     {
-        const contextDirtyId = this.paintContexts[renderer.CONTEXT_UID];
+        const contextDirtyId = this.paintContexts.get(renderer);
         const dirtyId = this.dirtyId;
 
         if (contextDirtyId === undefined || contextDirtyId < dirtyId)
         {
             this.updatePaint(renderer);
-            this.paintContexts[renderer.CONTEXT_UID] = dirtyId;
+            this.paintContexts.set(renderer, dirtyId);
         }
     }
 
@@ -117,13 +131,13 @@ export class PaintServer
                     }
                 }
 
-                paintTexture.resize(width, height, true);
+                paintTexture.resize(width, height);
 
                 return;
             }
         }
 
-        paintTexture.resize(bwidth, bheight, true);
+        paintTexture.resize(bwidth, bheight);
     }
 
     /**
@@ -148,7 +162,7 @@ export class PaintServer
      *
      * @param renderer - The renderer being used to render the paint texture.
      */
-    private linearGradient(renderer: Renderer): RenderTexture
+    private linearGradient(renderer: Renderer): Texture
     {
         const linearGradient = this.paintServer as SVGLinearGradientElement;
         const paintTexture = this.paintTexture;
@@ -173,7 +187,7 @@ export class PaintServer
      *
      * @param renderer - The renderer being used to render the paint texture.
      */
-    private radialGradient(renderer: Renderer): RenderTexture
+    private radialGradient(renderer: Renderer): Texture
     {
         const radialGradient = this.paintServer as SVGRadialGradientElement;
         const paintTexture = this.paintTexture;

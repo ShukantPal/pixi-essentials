@@ -1,16 +1,17 @@
 /**
  * The orientation of an area indicates the axis along which it is split. This is a 1-bit field.
- * 
+ *
  * @public
  */
-export enum AreaOrientation {
+export enum AreaOrientation
+    {
     HORIZONTAL = 0,
     VERTICAL = 1
-};
+}
 
 /**
  * Alias for the 31-bit field texture-area type.
- * 
+ *
  * @public
  */
 export type AreaField = number;
@@ -20,13 +21,13 @@ export type AreaField = number;
  * specified along its parent's orientation axis, i.e. if the parent is horizontal, the left and right edges are defined,
  * else if the parent is vertical, the top and bottom edges are defined. Similarly, the open/close edges of its
  * children will be along its own orientation axis.
- * 
+ *
  * The orientation axes flip-flop along the hierarchy, i.e. an area's parent's orientation is always opposite to
  * the area's own orientation. This is because if the orientation were to be same, the area's children could be
  * "pulled up" to the parent making itself redundant.
- * 
+ *
  * All four edges of an area can be retrieved from it and its parent.
- * 
+ *
  * <table>
  *  <thead>
  *    <tr>
@@ -62,7 +63,7 @@ export type AreaField = number;
  *    </tr>
  *  </tbody>
  * </table>
- * 
+ *
  * @public
  */
 export class Area

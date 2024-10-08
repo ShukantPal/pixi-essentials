@@ -9,7 +9,7 @@
   "types": "./index.d.ts",
   "scripts": {
     "build": "rollup -c node_modules/@pixi-build-tools/rollup-configurator/index.js --silent",
-    "build:types": "echo \"Error: no test specified\" && exit 1"
+    "build:types": ""
   },
   "repository": {
     "type": "git",

@@ -1,4 +1,4 @@
-import type { LINE_CAP, LINE_JOIN } from '@pixi/graphics';
+import type { LineCap, LineJoin } from 'pixi.js';
 
 /**
  * Internal, parsed form of painting attributes. If a paint attribute was not defined, it **must** be
@@ -37,12 +37,12 @@ export interface Paint
     /**
      * The line caps applied at the end of the stroke. This is not applied for closed shapes.
      */
-    readonly strokeLineCap: LINE_CAP;
+    readonly strokeLineCap: LineCap;
 
     /**
      * The line join applied at the joint to line segments.
      */
-    readonly strokeLineJoin: LINE_JOIN;
+    readonly strokeLineJoin: LineJoin;
 
     /**
      * The maximum miter distance.

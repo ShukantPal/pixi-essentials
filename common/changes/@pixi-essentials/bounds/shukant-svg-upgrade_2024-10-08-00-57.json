@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@pixi-essentials/bounds",
+      "comment": "",
+      "type": "none"
+    }
+  ],
+  "packageName": "@pixi-essentials/bounds"
+}

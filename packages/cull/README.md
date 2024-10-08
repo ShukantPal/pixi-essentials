@@ -1,3 +1,5 @@
+> This package has been deprecated. Use the built-in [Culler](https://pixijs.download/release/docs/scene.Culler.html) in PixiJS v8+.
+
 # @pixi-essentials/cull
 
 This package provides an optimized, highly configurable culling mechanism.

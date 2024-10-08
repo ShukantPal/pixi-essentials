@@ -1,79 +1,16 @@
-import { FILL_RULE, Path, PATH } from './utils/Path';
-import { SVGGraphicsNode } from './SVGGraphicsNode';
-import { buildPath } from './utils/buildPath';
-import { graphicsUtils } from '@pixi/graphics';
 import dPathParser from 'd-path-parser';
+import { GraphicsPath, Point } from 'pixi.js';
+import { SVGGraphicsNode } from './SVGGraphicsNode';
 
-graphicsUtils.FILL_COMMANDS[PATH] = buildPath;
+const tempPoint = new Point();
 
 /**
  * Draws SVG &lt;path /&gt; elements.
- * 
+ *
  * @public
  */
 export class SVGPathNode extends SVGGraphicsNode
 {
-    private currentPath2: Path;
-
-    private startPath(): void
-    {
-        if (this.currentPath2)
-        {
-            const pts = this.currentPath2.points;
-
-            if (pts.length > 0)
-            {
-                this.currentPath2.closeContour();
-            }
-        }
-        else
-        {
-            this.currentPath2 = new Path();
-        }
-    }
-
-    private finishPath(): void
-    {
-        if (this.currentPath2)
-        {
-            this.currentPath2.closeContour();
-        }
-    }
-
-    // @ts-expect-error
-    get currentPath(): any
-    {
-        return this.currentPath2;
-    }
-    set currentPath(nothing: any)
-    {
-        if (nothing)
-        {
-            throw new Error('currentPath cannot be set');
-        }
-        // readonly
-    }
-
-    closePath(): any
-    {
-        this.currentPath2.points.push(this.currentPath2.points[0], this.currentPath2.points[1])
-        this.finishPath();
-
-        return this;
-    }
-
-    checkPath(): void
-    {
-        if (this.currentPath2.points.find((e) => isNaN(e)) !== undefined)
-        {
-            throw new Error('NaN is bad');
-        }
-    }
-
-    // Redirect moveTo, lineTo, ... onto paths!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :P
-    startPoly = this.startPath;
-    finishPoly = this.finishPath;
-
     /**
      * Embeds the `SVGPathElement` into this node.
      *
@@ -137,8 +74,12 @@ export class SVGPathNode extends SVGGraphicsNode
                 }
                 case 'z':
                 case 'Z': {
-                    x = this.currentPath2?.points[0] || 0;
-                    y = this.currentPath2?.points[1] || 0;
+                    // eslint-disable-next-line dot-notation
+                    const activePath = this.context['_activePath'] as GraphicsPath;
+
+                    activePath.getLastPoint(tempPoint);
+                    x = tempPoint.x;
+                    y = tempPoint.y;
                     this.closePath();
                     break;
                 }
@@ -201,7 +142,7 @@ export class SVGPathNode extends SVGGraphicsNode
                         cp1.y = (2 * y) - lastCp2.y;
                     }
 
-                    const cp2 = { x: command.cp.x , y: command.cp.y };
+                    const cp2 = { x: command.cp.x, y: command.cp.y };
 
                     if (command.relative)
                     {
@@ -326,13 +267,6 @@ export class SVGPathNode extends SVGGraphicsNode
                     break;
                 }
             }
-        }
-
-        if (this.currentPath2)
-        {
-            this.currentPath2.fillRule = element.getAttribute('fill-rule') as FILL_RULE || this.currentPath2.fillRule;
-            this.drawShape(this.currentPath2 as any);
-            this.currentPath2 = null;
         }
 
         return this;

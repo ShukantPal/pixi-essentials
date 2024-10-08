@@ -1,4 +1,4 @@
-import type { Rectangle } from '@pixi/math'
+import type { Rectangle } from 'pixi.js';
 
 /**
  * @public

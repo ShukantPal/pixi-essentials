@@ -16,6 +16,16 @@
       "description": "@microsoft/api-extractor is used to bundle the compiler generated .d.ts files",
       "safeForSimultaneousRushProcesses": true,
       "enableParallelism": true,
+      "ignoreMissingScript": true,
+      "allowWarningsInSuccessfulBuild": true
+    },
+    {
+      "commandKind": "bulk",
+      "name": "lint",
+      "summary": "Lint all TypeScript files in the project",
+      "description": "Uses ESLint to lint all TypeScript files in the project",
+      "safeForSimultaneousRushProcesses": true,
+      "enableParallelism": true,
       "ignoreMissingScript": true
     }
   ]

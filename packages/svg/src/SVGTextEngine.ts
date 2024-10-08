@@ -1,5 +1,4 @@
-import type { IPointData, Matrix } from '@pixi/math';
-import type { TextStyle } from '@pixi/text';
+import type { Matrix, PointData, TextStyle } from 'pixi.js';
 
 /**
  * The `SVGTextEngine` interface is used to layout text content authored in SVG files. The @pixi-essentials/svg
@@ -30,5 +29,5 @@ export interface SVGTextEngine
      * @param style - The text styling applied.
      * @param matrix
      */
-    put(id: any, position: IPointData, content: string, style: Partial<TextStyle>, matrix?: Matrix): Promise<IPointData>;
+    put(id: any, position: PointData, content: string, style: Partial<TextStyle>, matrix?: Matrix): Promise<PointData>;
 }
