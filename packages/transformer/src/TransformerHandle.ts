@@ -1,10 +1,21 @@
-import { Graphics } from '@pixi/graphics';
-import { Point } from '@pixi/math';
-import { Renderer } from '@pixi/core';
+// import { Graphics } from '@pixi/graphics';
+// import { Point } from '@pixi/math';
+// import { Renderer } from '@pixi/core';
 
-import type {Container} from '@pixi/display';
+// import type {Container} from '@pixi/display';
 import type { Handle, Transformer } from './Transformer';
-import {FederatedEventTarget, FederatedPointerEvent, IFederatedDisplayObject} from "@pixi/events";
+// import {FederatedEventTarget, FederatedPointerEvent, IFederatedDisplayObject} from "@pixi/events";
+
+import {
+    Graphics,
+    Point,
+    Container,
+    FederatedEventTarget,
+    FederatedPointerEvent,
+    Ticker,
+  } from "pixi.js";
+
+  import { IFederatedDisplayObject } from ".";
 
 /** @see TransformerHandle#style */
 export interface ITransformerHandleStyle
@@ -105,6 +116,8 @@ export class TransformerHandle extends Graphics_
         this.onpointermove = this.onPointerMove;
         this.onpointerup = this.onPointerUp;
         this.onpointerupoutside = this.onPointerUp;
+
+        Ticker.shared.add(this.render, this); // V8
     }
 
     get handle(): Handle
@@ -130,7 +143,7 @@ export class TransformerHandle extends Graphics_
         this._dirty = true;
     }
 
-    render(renderer: Renderer): void
+    render(/* renderer: Renderer */): void
     {
         if (this._dirty)
         {
@@ -139,7 +152,7 @@ export class TransformerHandle extends Graphics_
             this._dirty = false;
         }
 
-        super.render(renderer);
+        // super.render(renderer);
     }
 
     /**
@@ -153,19 +166,19 @@ export class TransformerHandle extends Graphics_
         const radius = style.radius;
 
         this.clear()
-            .lineStyle(style.outlineThickness, style.outlineColor)
-            .beginFill(style.color);
+            // .lineStyle(style.outlineThickness, style.outlineColor)
+            // .beginFill(style.color);
 
         if (style.shape === 'square')
         {
-            this.drawRect(-radius / 2, -radius / 2, radius, radius);
+            this.rect(-radius / 2, -radius / 2, radius, radius);
         }
         else if (style.shape === 'tooth')
         {
             switch (handle)
             {
                 case 'middleLeft':
-                    this.drawPolygon([
+                    this.poly([
                         -radius / 2, -radius / 2,
                         -radius / 2, radius / 2,
                         radius / 2, radius / 2,
@@ -174,7 +187,7 @@ export class TransformerHandle extends Graphics_
                     ]);
                     break;
                 case 'topCenter':
-                    this.drawPolygon([
+                    this.poly([
                         -radius / 2, -radius / 2,
                         radius / 2, -radius / 2,
                         radius / 2, radius / 2,
@@ -183,7 +196,7 @@ export class TransformerHandle extends Graphics_
                     ]);
                     break;
                 case 'middleRight':
-                    this.drawPolygon([
+                    this.poly([
                         -radius / 2, radius / 2,
                         -radius * 1.1, 0,
                         -radius / 2, -radius / 2,
@@ -192,7 +205,7 @@ export class TransformerHandle extends Graphics_
                     ]);
                     break;
                 case 'bottomCenter':
-                    this.drawPolygon([
+                    this.poly([
                         0, -radius * 1.1,
                         radius / 2, -radius / 2,
                         radius / 2, radius / 2,
@@ -201,19 +214,23 @@ export class TransformerHandle extends Graphics_
                     ]);
                     break;
                 case 'rotator':
-                    this.drawCircle(0, 0, radius / Math.sqrt(2));
+                    this.circle(0, 0, radius / Math.sqrt(2));
                     break;
                 default:
-                    this.drawRect(-radius / 2, -radius / 2, radius, radius);
+                    this.rect(-radius / 2, -radius / 2, radius, radius);
                     break;
             }
         }
         else
         {
-            this.drawCircle(0, 0, radius);
+            this.circle(0, 0, radius);
         }
 
-        this.endFill();
+        this.stroke({
+            width: style.outlineThickness,
+            color: style.outlineColor,
+          }).fill(style.color);
+        // this.endFill();
     }
 
     /**
