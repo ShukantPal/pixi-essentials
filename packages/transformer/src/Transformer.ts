@@ -1,6 +1,6 @@
-import {Renderer, utils} from '@pixi/core';
-import { DisplayObject, Container } from '@pixi/display';
-import { Point, Matrix, Transform, Rectangle } from '@pixi/math';
+// import {Renderer, utils} from '@pixi/core';
+// import { DisplayObject, Container } from '@pixi/display';
+// import { Point, Matrix, Transform, Rectangle } from '@pixi/math';
 import { OrientedBounds } from '@pixi-essentials/bounds';
 import { ObjectPoolFactory } from '@pixi-essentials/object-pool';
 import { TransformerHandle } from './TransformerHandle';
@@ -10,12 +10,29 @@ import { decomposeTransform } from './utils/decomposeTransform';
 import { multiplyTransform } from './utils/multiplyTransform';
 
 import type { ITransformerHandleStyle } from './TransformerHandle';
+// import {
+//     Cursor,
+//     FederatedEventTarget,
+//     FederatedPointerEvent,
+//     IFederatedDisplayObject,
+// } from "@pixi/events";
+
 import {
-    Cursor,
-    FederatedEventTarget,
+    Renderer,
+    Container,
+    Point,
+    Matrix,
+    Transform,
+    Rectangle,
     FederatedPointerEvent,
-    IFederatedDisplayObject,
-} from "@pixi/events";
+    Cursor,
+    FederatedEventTarget
+  } from "pixi.js";
+
+  import {
+    DisplayObject,
+    IFederatedDisplayObject
+  } from ".";
 
 // Preallocated objects
 const tempTransform = new Transform();
@@ -320,7 +337,7 @@ const Container_ = Container as unknown as { new():
         Container
         & IFederatedDisplayObject
         & Omit<FederatedEventTarget, keyof IFederatedDisplayObject>
-        & utils.EventEmitter;
+        & EventEmitter;
 };
 
 /**
@@ -1112,14 +1129,14 @@ export class Transformer extends Container_
      * @override
      * @param renderer
      */
-    render(renderer: Renderer): void
+    render(/* renderer: Renderer */): void // V8
     {
         if (this.renderable && this.visible && (!this.lazyMode || this.lazyDirty))
         {
             this.draw();
         }
 
-        super.render(renderer);
+        // super.render(renderer);
     }
 
     /** Recalculates the transformer's geometry. This is called on each render. */
@@ -1133,12 +1150,12 @@ export class Transformer extends Container_
 
         if (this.boundingBoxes !== 'none')
         {
-            this.wireframe.lineStyle(thickness, color);
+            this.wireframe.stroke({ width: thickness, color: color });
         }
 
         if (this.translateEnabled)
         {
-            this.wireframe.beginFill(0xffffff, 1e-4);
+            this.wireframe.fill({ color: 0xffffff, alpha: 1e-4 });
         }
 
         for (let i = 0, j = targets.length; i < j && this.boundingBoxes === 'all'; i++)
@@ -1162,8 +1179,10 @@ export class Transformer extends Container_
         if (this.boxRotationEnabled)
         {
             this.wireframe.closePath()
-                .beginFill(0xffffff, 1e-4)
-                .lineStyle();
+                // .beginFill(0xffffff, 1e-4)
+                .fill({ color: 0xffffff, alpha: 1e-4 })
+                .stroke();
+                // .lineStyle();
             this.wireframe.drawBoxRotationTolerance();
         }
 
@@ -1171,8 +1190,10 @@ export class Transformer extends Container_
         {
             this.wireframe
                 .closePath()
-                .beginFill(0xfff0ff, 1e-4)
-                .lineStyle();
+                .fill({ color: 0xfff0ff, alpha: 1e-4 })
+                .stroke();
+                // .beginFill(0xfff0ff, 1e-4)
+                // .lineStyle();
             this.wireframe.drawBoxScalingTolerance(groupBounds);
         }
 
@@ -1271,9 +1292,11 @@ export class Transformer extends Container_
             center.set(cx, cy);
 
             this.wireframe
-                .beginFill(this.wireframeStyle.color)
-                .drawCircle(center.x, center.y, this.wireframeStyle.thickness * 2)
-                .endFill();
+                // .beginFill(this.wireframeStyle.color)
+                // .drawCircle(center.x, center.y, this.wireframeStyle.thickness * 2)
+                // .endFill();
+                .fill(this.wireframeStyle.color)
+                .circle(center.x, center.y, this.wireframeStyle.thickness * 2);
             this.wireframe
                 .moveTo(center.x, center.y)
                 .lineTo(handles.skewHorizontal.x, handles.skewHorizontal.y)
@@ -1616,15 +1639,28 @@ export class Transformer extends Container_
      */
     static calculateOrientedBounds(displayObject: DisplayObject, bounds?: OrientedBounds): OrientedBounds
     {
-        const parent = !displayObject.parent ? displayObject.enableTempParent() : displayObject.parent;
+        // const parent = !displayObject.parent ? displayObject.enableTempParent() : displayObject.parent; // V8
 
-        displayObject.updateTransform();
-        displayObject.disableTempParent(parent);
+        // displayObject.updateTransform();
+        displayObject.updateTransform({
+            x: displayObject.x,
+            y: displayObject.y,
+            pivotX: displayObject.pivot.x,
+            pivotY: displayObject.pivot.y,
+            scaleX: displayObject.scale.x,
+            scaleY: displayObject.scale.y,
+            skewX: displayObject.skew.x,
+            skewY: displayObject.skew.y,
+            rotation: displayObject.rotation,
+          });
+      
+
+        // displayObject.disableTempParent(parent);
 
         // Decompose displayObject.worldTransform to get its (world) rotation
         decomposeTransform(tempTransform, displayObject.worldTransform);
 
-        tempTransform.updateLocalTransform();
+        // tempTransform.updateLocalTransform(); // V8
 
         const angle = tempTransform.rotation;
         const corners = Transformer.calculateTransformedCorners(displayObject, displayObject.worldTransform, tempCorners);
@@ -1682,10 +1718,22 @@ export class Transformer extends Container_
             // Update worldTransform
             if (!skipUpdate)
             {
-                const parent = !displayObject.parent ? displayObject.enableTempParent() : displayObject.parent;
+                // const parent = !displayObject.parent ? displayObject.enableTempParent() : displayObject.parent; // V8
 
-                displayObject.updateTransform();
-                displayObject.disableTempParent(parent);
+                // displayObject.updateTransform();
+                // displayObject.disableTempParent(parent);
+
+                displayObject.updateTransform({
+                    x: displayObject.x,
+                    y: displayObject.y,
+                    pivotX: displayObject.pivot.x,
+                    pivotY: displayObject.pivot.y,
+                    scaleX: displayObject.scale.x,
+                    scaleY: displayObject.scale.y,
+                    skewX: displayObject.skew.x,
+                    skewY: displayObject.skew.y,
+                    rotation: displayObject.rotation,
+                  });
             }
 
             Transformer.calculateTransformedCorners(displayObject, displayObject.worldTransform, frames, i * 4);

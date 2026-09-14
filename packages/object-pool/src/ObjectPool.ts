@@ -1,4 +1,5 @@
-import { Ticker, UPDATE_PRIORITY } from '@pixi/ticker';
+// import { Ticker, UPDATE_PRIORITY } from '@pixi/ticker';
+import { Ticker, UPDATE_PRIORITY } from 'pixi.js';
 import { AverageProvider } from './AverageProvider';
 
 /**

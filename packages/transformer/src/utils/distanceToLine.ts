@@ -1,4 +1,5 @@
-import { Point } from '@pixi/math';
+// import { Point } from '@pixi/math';
+import { Point } from 'pixi.js';
 
 /**
  * Calculates the distance of (x,y) from the line through l0 and l1.

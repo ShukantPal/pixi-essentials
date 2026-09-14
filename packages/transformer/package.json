@@ -35,11 +35,7 @@
     "@pixi-essentials/object-pool": "~1.0.1"
   },
   "peerDependencies": {
-    "@pixi/core": "^7.0.0",
-    "@pixi/display": "^7.0.0",
-    "@pixi/events": "^7.0.0",
-    "@pixi/graphics": "^7.0.0",
-    "@pixi/math": "^7.0.0"
+    "pixi.js": "^8.0.5"
   },
   "devDependencies": {
     "@pixi-essentials/eslint-config": "~1.0.0",

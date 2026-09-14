@@ -1,4 +1,5 @@
-import { Matrix } from '@pixi/math';
+// import { Matrix } from '@pixi/math';
+import { Matrix } from 'pixi.js';
 
 const tempMatrix = new Matrix();
 

@@ -1,12 +1,14 @@
-import { Graphics } from '@pixi/graphics';
+// import { Graphics } from '@pixi/graphics';
 import { HANDLE_TO_CURSOR } from './Transformer';
 import { ObjectPoolFactory } from '@pixi-essentials/object-pool';
-import { Matrix, Point } from '@pixi/math';
+// import { Matrix, Point } from '@pixi/math';
 import { distanceToLine } from './utils/distanceToLine';
 
 import type { AxisAlignedBounds, OrientedBounds } from '@pixi-essentials/bounds';
 import type { Handle, Transformer } from './Transformer';
-import {FederatedEventTarget} from "@pixi/events";
+// import {FederatedEventTarget} from "@pixi/events";
+
+import { Graphics, Matrix, Point, FederatedEventTarget } from "pixi.js";
 
 const pointPool = ObjectPoolFactory.build(Point);
 const tempHull = [new Point(), new Point(), new Point(), new Point()];
@@ -223,7 +225,7 @@ export class TransformerWireframe extends Graphics_
         }
 
         // Fill polygon with ultra-low alpha to capture pointer events.
-        this.drawPolygon(hull);
+        this.poly(hull);
     }
 
     /**
@@ -272,9 +274,10 @@ export class TransformerWireframe extends Graphics_
             const boxScalingHandle = this.boxScalingHandles[i];
 
             boxScalingHandle.clear()
-                .beginFill(0xffffff, 1e-4)
-                .drawPolygon(innerStart, outerStart, outerEnd, innerEnd)
-                .endFill();
+                // .beginFill(0xffffff, 1e-4)
+                .fill({ color: 0xffffff, alpha: 1e-4 })
+                .poly(innerStart, outerStart, outerEnd, innerEnd)
+                // .endFill();
         }
     }
 
@@ -326,7 +329,7 @@ export class TransformerWireframe extends Graphics_
                 boxRotationTemp[j + 1] = tempPoint.y + position.y;
             }
 
-            this.drawPolygon(boxRotationTemp.slice());
+            this.poly(boxRotationTemp.slice());
         }
     }
 
