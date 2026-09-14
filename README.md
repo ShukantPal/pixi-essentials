@@ -2,7 +2,7 @@
 <img src="https://i.imgur.com/apQs3EL.png" alt="Frame-1-12x" width="600"></img>
 </p>
 
-[![Node.js CI](https://github.com/SukantPal/pixi-essentials/actions/workflows/node.js.yml/badge.svg)](https://github.com/SukantPal/pixi-essentials/actions/workflows/node.js.yml)
+[![Build](https://github.com/SukantPal/pixi-essentials/actions/workflows/build.yml/badge.svg)](https://github.com/SukantPal/pixi-essentials/actions/workflows/build.yml)
 
 # PixiJS Essentials Kit
 

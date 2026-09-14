@@ -1,0 +1,39 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directories:
+      - "/"
+      - "/examples"
+      - "/tools/eslint-config"
+      - "/tools/unit-tests"
+      - "/packages/area-allocator"
+      - "/packages/bounds"
+      - "/packages/bvh"
+      - "/packages/conic"
+      - "/packages/cull"
+      - "/packages/data-half-edge-mesh"
+      - "/packages/diagnostic-geometry"
+      - "/packages/filter-fft"
+      - "/packages/gradients"
+      - "/packages/instanced-renderer"
+      - "/packages/mixin-smart-mask"
+      - "/packages/object-pool"
+      - "/packages/react-bindings"
+      - "/packages/shader-preprocessor"
+      - "/packages/svg"
+      - "/packages/system-g"
+      - "/packages/texture-allocator"
+      - "/packages/transformer"
+      - "/packages/types"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    groups:
+      development-dependencies:
+        dependency-type: development
+      production-dependencies:
+        dependency-type: production
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
