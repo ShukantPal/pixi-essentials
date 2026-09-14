@@ -1,6 +1,6 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/rush/v5/rush.schema.json",
-  "rushVersion": "5.179.0",
+  "rushVersion": "5.122.0",
   "pnpmVersion": "8.15.6",
   "pnpmOptions": {
     "pnpmStore": "global",
