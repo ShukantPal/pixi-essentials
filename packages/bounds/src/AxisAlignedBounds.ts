@@ -1,4 +1,4 @@
-import { Point } from '@pixi/math';
+import { Point } from 'pixi.js';
 
 /**
  * Rectangle object is an area defined by its position, as indicated by its top-left corner

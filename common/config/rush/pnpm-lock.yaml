@@ -22,10 +22,7 @@ dependencies:
     version: 7.1.4
   '@pixi/react':
     specifier: ^7.0.0
-    version: 7.1.0(@pixi/constants@5.3.12)(@pixi/display@7.1.4)(@pixi/graphics@7.1.4)(@pixi/math@7.1.4)(@pixi/ticker@7.1.4)(react@18.2.0)
-  '@pixi/ticker':
-    specifier: ^7.0.0
-    version: 7.1.4
+    version: 7.1.0(@pixi/constants@5.3.12)(@pixi/display@7.1.4)(@pixi/graphics@7.1.4)(@pixi/math@7.1.4)(react@18.2.0)
   '@pixi/utils':
     specifier: ^5.1.0
     version: 5.3.12
@@ -82,7 +79,7 @@ dependencies:
     version: file:projects/object-pool.tgz
   '@rush-temp/react-bindings':
     specifier: file:./projects/react-bindings.tgz
-    version: file:projects/react-bindings.tgz(@pixi/constants@5.3.12)(@pixi/graphics@7.1.4)(@pixi/ticker@7.1.4)
+    version: file:projects/react-bindings.tgz(@pixi/constants@5.3.12)(@pixi/graphics@7.1.4)
   '@rush-temp/shader-preprocessor':
     specifier: file:./projects/shader-preprocessor.tgz
     version: file:projects/shader-preprocessor.tgz
@@ -715,7 +712,7 @@ packages:
     resolution: {integrity: sha512-E886CuBC3I8RPb9Mmm7ko+MLRQAb47ec6xpdL1c3t5w4D/iiYHV9Z/mKBluI6ElhSeZkkq3EbEiMSCB1ZTYXag==}
     dev: false
 
-  /@pixi/react@7.1.0(@pixi/constants@5.3.12)(@pixi/display@7.1.4)(@pixi/graphics@7.1.4)(@pixi/math@7.1.4)(@pixi/ticker@7.1.4)(react@18.2.0):
+  /@pixi/react@7.1.0(@pixi/constants@5.3.12)(@pixi/display@7.1.4)(@pixi/graphics@7.1.4)(@pixi/math@7.1.4)(react@18.2.0):
     resolution: {integrity: sha512-HnZSEyqIoIsgnilJ8U4N1SqSfCxl7y+drwzej5Vwi4Q2cPb420uPhPma1OXskxRo7HAWBjgdKBHlcEk40ZAKGg==}
     peerDependencies:
       '@babel/runtime': ^7.14.8
@@ -742,7 +739,6 @@ packages:
       '@pixi/display': 7.1.4
       '@pixi/graphics': 7.1.4
       '@pixi/math': 7.1.4
-      '@pixi/ticker': 7.1.4
       lodash.isnil: 4.0.0
       lodash.times: 4.3.2
       performance-now: 2.1.0
@@ -6770,7 +6766,7 @@ packages:
     dev: false
 
   file:projects/area-allocator.tgz:
-    resolution: {integrity: sha512-J7NaucaMqr5+0gCjh7n+oJGdS6ccw+jWz4x7hw0oootnC3xBgmJ5p30Sn2D744uD7uDr0uqqdmIIyR4RPyZykw==, tarball: file:projects/area-allocator.tgz}
+    resolution: {integrity: sha512-j38s5kU37TqANhLRC0E7c9mG8s0aa1vgTEOpJJdS7dAYG3oKRHglqOklk73lsCmRoLLCzGHK0TYgR20Hbb1J6w==, tarball: file:projects/area-allocator.tgz}
     name: '@rush-temp/area-allocator'
     version: 0.0.0
     dependencies:
@@ -6789,7 +6785,7 @@ packages:
     dev: false
 
   file:projects/bounds.tgz:
-    resolution: {integrity: sha512-ygg7upCs7U3bbSvYv/COoDvfI9PNGIRbEf6tznqcQFUQjr5KISPEr6nYgbQC7X5w2tPeS7fNOnX68zga7+lvQQ==, tarball: file:projects/bounds.tgz}
+    resolution: {integrity: sha512-uTi5u8wqNISGtAuD9l7dvf96CNbDmOpdix17DKHu26K3gbevaWG6vTimHwXjfJiA5JHg6GUaACTSwogNCXKYlQ==, tarball: file:projects/bounds.tgz}
     name: '@rush-temp/bounds'
     version: 0.0.0
     dependencies:
@@ -6797,6 +6793,7 @@ packages:
       '@pixi-build-tools/rollup-configurator': 1.0.14(rollup@2.27.1)
       '@pixi/math': 7.1.4
       eslint: 7.7.0
+      pixi.js: 8.4.1
       rollup: 2.27.1
       tslib: 2.0.3
       typescript: 5.3.3
@@ -6806,7 +6803,7 @@ packages:
     dev: false
 
   file:projects/bvh.tgz:
-    resolution: {integrity: sha512-7A7kBHU1UaFHv4aD8Vf6vyFqYy0UGRH9t7K+oWxPEVOm699aYUzPbfv11UTnjLFACUffuxg8yFV9M+N08xAc3w==, tarball: file:projects/bvh.tgz}
+    resolution: {integrity: sha512-tiibtw5g5h5cSP/ytbQG2Nt5OVARbi4OBpdTv98n6VBy27FeIey5FAiUmn1zETxeCLx0CSwXSys295DGBR43Sw==, tarball: file:projects/bvh.tgz}
     name: '@rush-temp/bvh'
     version: 0.0.0
     dependencies:
@@ -6823,7 +6820,7 @@ packages:
     dev: false
 
   file:projects/conic.tgz(@pixi/utils@5.3.12):
-    resolution: {integrity: sha512-uFqH8U2iK7n/6MWZdWi33jrFGKfI5TOyyt1YqxyxWL5oe5yWWqO2EBrKkBH3/85SofbbZkr3KVRw6YRPcZh6Qg==, tarball: file:projects/conic.tgz}
+    resolution: {integrity: sha512-xYjDI6fhiOcjT4lzxdtxLDx4QFJU0AfyHiYjPd7GP8SiZE4eInEBeq1MCSCoAkG+X5fREQmLxLN0/l78SS2V6g==, tarball: file:projects/conic.tgz}
     id: file:projects/conic.tgz
     name: '@rush-temp/conic'
     version: 0.0.0
@@ -6849,7 +6846,7 @@ packages:
     dev: false
 
   file:projects/cull.tgz:
-    resolution: {integrity: sha512-20sbXUiYDRNXwRKi28Gmk61VwA/XNGUdBT5o0aj2lHwfw/QrW0yK1U086yEZvs3Vvgrmyu4EtVo2TlceFIPZxw==, tarball: file:projects/cull.tgz}
+    resolution: {integrity: sha512-rHqpK6Ccrrkx/7BbRed1TSWcSyfyp2XVBMoWmHgh8L3KhVmnQExeGcLU8WrmiK+4TUa0p1Akg9J/36zQZgEtgA==, tarball: file:projects/cull.tgz}
     name: '@rush-temp/cull'
     version: 0.0.0
     dependencies:
@@ -6870,7 +6867,7 @@ packages:
     dev: false
 
   file:projects/data-half-edge-mesh.tgz:
-    resolution: {integrity: sha512-sqNQT8053lAv5nsRG6xTN26Ot2gzF9oBQJpbyLP/ldfQfBBOrhmfo2F9Q1cS1dvuRUCcB1qcdP5XOHyUOWx+Wg==, tarball: file:projects/data-half-edge-mesh.tgz}
+    resolution: {integrity: sha512-nUwz9H63qbB6utyOjdh+7ywXd8hQdjS03pKBFRVejt8mRRCQY/x5x1niXRytG9UoM1yZ3AhSoSeIQke9OknToQ==, tarball: file:projects/data-half-edge-mesh.tgz}
     name: '@rush-temp/data-half-edge-mesh'
     version: 0.0.0
     dependencies:
@@ -6885,7 +6882,7 @@ packages:
     dev: false
 
   file:projects/diagnostic-geometry.tgz(@pixi/constants@5.3.12)(@pixi/utils@5.3.12):
-    resolution: {integrity: sha512-C4c1DUpqvqFzzUX2Snl0meAzA5vloKLeUnjT/gA0sQAvWTOkg5vS71VmkXYRxi6Jv9aoPrn9FfeOhF7IhqU3hg==, tarball: file:projects/diagnostic-geometry.tgz}
+    resolution: {integrity: sha512-HCz4oZsKc2gy7dcaXG0HdUO+bDyb3vlmD1WaX6fuXXCARVVlKt1Bn1NyJ4lHNX1Zppjofr+oESizNKgATHrRGQ==, tarball: file:projects/diagnostic-geometry.tgz}
     id: file:projects/diagnostic-geometry.tgz
     name: '@rush-temp/diagnostic-geometry'
     version: 0.0.0
@@ -6904,7 +6901,7 @@ packages:
     dev: false
 
   file:projects/eslint-config.tgz(typescript@5.3.3):
-    resolution: {integrity: sha512-oWSa0EN9ACMXn3bzv92ME2nOHfCXgG97o01IUcC3oHYkck40S2VolzCk0O4NHrmmBHUjMwzJHBQXRiJNNgecjg==, tarball: file:projects/eslint-config.tgz}
+    resolution: {integrity: sha512-rLqucyOe5qwr+mPfRtz7Qsh7sSSU69u5ob14QJJz4T2g57N6xAr8uMDB9YoHNTPzBTl2IvhGbkGKqmoxlCM6Wg==, tarball: file:projects/eslint-config.tgz}
     id: file:projects/eslint-config.tgz
     name: '@rush-temp/eslint-config'
     version: 0.0.0
@@ -6920,7 +6917,7 @@ packages:
     dev: false
 
   file:projects/examples.tgz:
-    resolution: {integrity: sha512-sycezwCpKKjq10ReS5y5cUEJ+OzL3Umwuia9KO8e1l+VFJGRsdw5UDktLjC2CtGvp6TcChCFKA4KZP3FyKOT9A==, tarball: file:projects/examples.tgz}
+    resolution: {integrity: sha512-A5nuCeqJVlcQjlEnaOs/mQ4r57khPpTd3IQUScVe0Sd8nfsidapFvhwF1iQkVc/lwOdrUnATJa2X0Y15FnSB2A==, tarball: file:projects/examples.tgz}
     name: '@rush-temp/examples'
     version: 0.0.0
     dependencies:
@@ -6945,7 +6942,7 @@ packages:
     dev: false
 
   file:projects/filter-fft.tgz:
-    resolution: {integrity: sha512-xwnGtD6LI5TJCT5ntxI4Ku2dRI/44dFVPTQUlxijfF9K83riO93+fg3PzRBHO+jplY/s23npHPfsjxvMgpozQw==, tarball: file:projects/filter-fft.tgz}
+    resolution: {integrity: sha512-eFb8QlnrJpO3LAdbjypFYjlDvPDUM7dQUOiewv0r42orEu1hOMPIwE96Nxg6IqrQc8Cj1/BzyBcdAsG4IRFjfQ==, tarball: file:projects/filter-fft.tgz}
     name: '@rush-temp/filter-fft'
     version: 0.0.0
     dependencies:
@@ -6961,7 +6958,7 @@ packages:
     dev: false
 
   file:projects/gradients.tgz:
-    resolution: {integrity: sha512-JL311Uqb/iwI0sfVEbZWBGpmLgSz2Zgqx/c4mgVDIa42lQZeBil5hrbu6oZ8UMFIZyAKp7jchBnnmAZv+tNunw==, tarball: file:projects/gradients.tgz}
+    resolution: {integrity: sha512-sN0TJZUToOxlIGdfk9ZQoi/5W3/nMnmjaT7x7JgYLdFNoMqnivyISD/UivPwcct+/Sj4oXblehPTPh60OoQG0w==, tarball: file:projects/gradients.tgz}
     name: '@rush-temp/gradients'
     version: 0.0.0
     dependencies:
@@ -6978,7 +6975,7 @@ packages:
     dev: false
 
   file:projects/instanced-renderer.tgz:
-    resolution: {integrity: sha512-OAP29dOcAA0ZRYyOkHUcTLyvQ8E6UuDuyEhHCbnci7ORBm8Pf2Ry4shs7wbZ3h9bNNy8U6k6ZRpxMK18dFJN2A==, tarball: file:projects/instanced-renderer.tgz}
+    resolution: {integrity: sha512-3kj5qTpVlYpfBJZohRhbgaGg8owIXKyYy35pspoXbOQirpyMknn7/vgPpxIDNHKnHC6u3EgNePPZDF+rO4ovuw==, tarball: file:projects/instanced-renderer.tgz}
     name: '@rush-temp/instanced-renderer'
     version: 0.0.0
     dependencies:
@@ -6996,7 +6993,7 @@ packages:
     dev: false
 
   file:projects/mixin-smart-mask.tgz:
-    resolution: {integrity: sha512-/Ml7i2xYoSCKphAJG7DIGyNmRbsdCfRb6FCB4Wo0D0c6xxjvQdaf7mFl/c2YcilCVLqXwlqdxe+d9jpWSQ6LwQ==, tarball: file:projects/mixin-smart-mask.tgz}
+    resolution: {integrity: sha512-D3yCzjNT4R2NrY4zLeUiqFDi+lpkKdu34ALGjTRo+tsCiqC+hywsJlZ4d4MMd1bOyecjWYHCCsQivmeI2LfFLQ==, tarball: file:projects/mixin-smart-mask.tgz}
     name: '@rush-temp/mixin-smart-mask'
     version: 0.0.0
     dependencies:
@@ -7015,7 +7012,7 @@ packages:
     dev: false
 
   file:projects/object-pool.tgz:
-    resolution: {integrity: sha512-p4Q0LrhD6sjxg3EGd1raPmwl2mKcxYxkSJ9V2LYtYHr4p5ac9WldDIm8qGSpKzdbhxH5iuMTB1vRC/U3q12pQA==, tarball: file:projects/object-pool.tgz}
+    resolution: {integrity: sha512-njJV5tRxN2KkN941nAJux2VJL5uvuP1tDSGE9+C7qbvC/bx3lXTiMRIwzf0VVg/NAO98nTFj+nGAr/wEHA/zTg==, tarball: file:projects/object-pool.tgz}
     name: '@rush-temp/object-pool'
     version: 0.0.0
     dependencies:
@@ -7025,6 +7022,7 @@ packages:
       '@pixi/ticker': 7.1.4
       chai: 4.3.7
       eslint: 7.7.0
+      pixi.js: 8.4.1
       rollup: 2.27.1
       sinon: 9.2.4
       tslib: 2.0.3
@@ -7034,8 +7032,8 @@ packages:
       - supports-color
     dev: false
 
-  file:projects/react-bindings.tgz(@pixi/constants@5.3.12)(@pixi/graphics@7.1.4)(@pixi/ticker@7.1.4):
-    resolution: {integrity: sha512-t/QLdPo5yDnXb9KPVtTbaORQyTKpqsMFhLTWZ3GN6cf1Z94iyYlELCcrU3RZFeGzhSe51PEdB4w47ywmWe2pFQ==, tarball: file:projects/react-bindings.tgz}
+  file:projects/react-bindings.tgz(@pixi/constants@5.3.12)(@pixi/graphics@7.1.4):
+    resolution: {integrity: sha512-M+FNuei8quFaHF3LABs4qLBPSW5bbNrNgmXZF+5WYmuPd97LK8Alg8NurASXiPiHRc4GO7/etpUZHY5i7ToVMg==, tarball: file:projects/react-bindings.tgz}
     id: file:projects/react-bindings.tgz
     name: '@rush-temp/react-bindings'
     version: 0.0.0
@@ -7043,7 +7041,7 @@ packages:
       '@pixi-build-tools/rollup-configurator': 1.0.14(rollup@2.27.1)
       '@pixi/display': 7.1.4
       '@pixi/math': 7.1.4
-      '@pixi/react': 7.1.0(@pixi/constants@5.3.12)(@pixi/display@7.1.4)(@pixi/graphics@7.1.4)(@pixi/math@7.1.4)(@pixi/ticker@7.1.4)(react@18.2.0)
+      '@pixi/react': 7.1.0(@pixi/constants@5.3.12)(@pixi/display@7.1.4)(@pixi/graphics@7.1.4)(@pixi/math@7.1.4)(react@18.2.0)
       '@types/react': 16.14.35
       eslint: 7.7.0
       react: 18.2.0
@@ -7072,7 +7070,7 @@ packages:
     dev: false
 
   file:projects/shader-preprocessor.tgz:
-    resolution: {integrity: sha512-RHA8u6StVEOgBYUmIZwh2sxgGnVGOSRBGBQyU0ih4aKNm/3kZAlp6nOB4Yl/3+pRe0QVfOcJ2St0KhZVgixCIQ==, tarball: file:projects/shader-preprocessor.tgz}
+    resolution: {integrity: sha512-d3XZ4RmLxdkYvjrYmO6SzXRDg60zcdxyh3HAWMJMq/f2ENhqKQO4J/xBYVeyPlsxB8uBJVQNyRMJ2hyIXAXA4Q==, tarball: file:projects/shader-preprocessor.tgz}
     name: '@rush-temp/shader-preprocessor'
     version: 0.0.0
     dependencies:
@@ -7091,7 +7089,7 @@ packages:
     dev: false
 
   file:projects/svg.tgz:
-    resolution: {integrity: sha512-D9T3FhZLJcx5gbcV0c1Lrv75AGGzX8D2u+vRHJgqcB8xOB0mWs8Gf03DmF5PbIgHWyRVmim7tL0XRrm+lBH2LA==, tarball: file:projects/svg.tgz}
+    resolution: {integrity: sha512-4m0l8yXAK0+xySR3ewXH2k646wqHXU3LNoX/1MV8KiaMzUNVKynNZwlQuv1w/tgWyiiuFKxQQIjMOWNKGucCXw==, tarball: file:projects/svg.tgz}
     name: '@rush-temp/svg'
     version: 0.0.0
     dependencies:
@@ -7118,7 +7116,7 @@ packages:
     dev: false
 
   file:projects/system-g.tgz:
-    resolution: {integrity: sha512-DsA3E4VvlMgTonAFwico28/Pn5AULH3hmm/491+MrG67n7S1v5MxXSVn8+/6M/ad2dT0G+TTZ/8O6i6huvVAsA==, tarball: file:projects/system-g.tgz}
+    resolution: {integrity: sha512-zMNPZa4BLxAxAaEKppODvZgdyppDrXXCvxTf6xbxV8/r9PAuwgrBICgiVCJyCOsjcPciuW5q54GmdAphxCG+Rw==, tarball: file:projects/system-g.tgz}
     name: '@rush-temp/system-g'
     version: 0.0.0
     dependencies:
@@ -7137,7 +7135,7 @@ packages:
     dev: false
 
   file:projects/texture-allocator.tgz:
-    resolution: {integrity: sha512-/51erNeMNfBZd5RC7nz2dUofJUc89vccuBLBmppUlXqsRlH33i4wOKs1+rZyyAgzaaZkrJ7thMlXz+f42UIEQA==, tarball: file:projects/texture-allocator.tgz}
+    resolution: {integrity: sha512-L9Q/GiE6+khe+yAoiGDsv7XkJyY+K2ebIUqshQBeD1uIry27XXMOg73mvM8vx1VY7mXy8y1C96Fie1/El5g8LQ==, tarball: file:projects/texture-allocator.tgz}
     name: '@rush-temp/texture-allocator'
     version: 0.0.0
     dependencies:
@@ -7157,7 +7155,7 @@ packages:
     dev: false
 
   file:projects/transformer.tgz:
-    resolution: {integrity: sha512-l3YnTX1KXSArLr80N6jDYpCwItorqMprkLcOjzYeZw8choRJRL6xeH9BKW4cLjKYnHyg9Bjq1Q+Pm9ZrQyfN3A==, tarball: file:projects/transformer.tgz}
+    resolution: {integrity: sha512-OuM/VT70fNkHajuzXrB1tKzGVi0uDYW6fLpvpzNbSIt4AfhWmbNuP5unCDHfqpxh5eO7sR99nkO6Rrn5OfrugQ==, tarball: file:projects/transformer.tgz}
     name: '@rush-temp/transformer'
     version: 0.0.0
     dependencies:
@@ -7169,6 +7167,7 @@ packages:
       '@pixi/graphics': 7.1.4
       '@pixi/math': 7.1.4
       eslint: 7.7.0
+      pixi.js: 8.4.1
       rollup: 2.27.1
       tslib: 2.0.3
       typescript: 5.3.3
@@ -7178,7 +7177,7 @@ packages:
     dev: false
 
   file:projects/types.tgz:
-    resolution: {integrity: sha512-uWYEWl85uINDzZElLNIunAluQLpOc0ppXtdBcu7TdOUYMywlX/5X+zc8EIEOIhPWWSAYyN6chEYUIvm7vDoQzg==, tarball: file:projects/types.tgz}
+    resolution: {integrity: sha512-SF4DEfh4Y1nYlQaeOiEerumAANNzErtnoy6u+PmJ9yXiCoXVu1GPMXlN3a7wgE0scln+yHHNMMoJyYDY+PkWsQ==, tarball: file:projects/types.tgz}
     name: '@rush-temp/types'
     version: 0.0.0
     dependencies:
@@ -7195,7 +7194,7 @@ packages:
     dev: false
 
   file:projects/unit-tests.tgz(typescript@5.3.3):
-    resolution: {integrity: sha512-mcb6+v112nYX9gSJPgCA/m0wBtpTO0HiVLO5EwW0ovuqeF3jc0f/81GXAPEjLTnnU78koZSXMyMRj/oL1kx/nQ==, tarball: file:projects/unit-tests.tgz}
+    resolution: {integrity: sha512-yYc7dS1Ei8hNh9pczHdWFhiprK8vHnOTel7/wX3kLcL0okeR6KxPjnsvcbWx3MF6pPVT690qHF6YsK9Owb2rEw==, tarball: file:projects/unit-tests.tgz}
     id: file:projects/unit-tests.tgz
     name: '@rush-temp/unit-tests'
     version: 0.0.0

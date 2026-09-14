@@ -1,10 +1,23 @@
-import { Matrix } from '@pixi/math';
-import { decomposeTransform } from './decomposeTransform';
+import { Matrix } from 'pixi.js';
 
-import type { DisplayObject } from '@pixi/display';
+import type { Container } from 'pixi.js';
 
 const tempMatrix = new Matrix();
 const tempParentMatrix = new Matrix();
+const tempWorldMatrix = new Matrix();
+
+/** Calculates a current global transform without relying on render-time caches. */
+export function getGlobalTransform(displayObject: Container, out: Matrix = new Matrix()): Matrix
+{
+    out.copyFrom(displayObject.localTransform);
+
+    for (let parent = displayObject.parent; parent; parent = parent.parent)
+    {
+        out.prepend(parent.localTransform);
+    }
+
+    return out;
+}
 
 /**
  * Multiplies the transformation matrix {@code transform} to the display-object's transform.
@@ -14,24 +27,20 @@ const tempParentMatrix = new Matrix();
  * @param transform
  * @param skipUpdate
  */
-export function multiplyTransform(displayObject: DisplayObject, transform: Matrix, skipUpdate?: boolean): void
+export function multiplyTransform(
+    displayObject: Container,
+    transform: Matrix,
+    _skipUpdate?: boolean,
+): void
 {
-    if (!skipUpdate)
-    {
-        const parent = !displayObject.parent ? displayObject.enableTempParent() : displayObject.parent;
-
-        displayObject.updateTransform();
-        displayObject.disableTempParent(parent);
-    }
-
-    const worldTransform = displayObject.worldTransform;
+    const worldTransform = getGlobalTransform(displayObject, tempWorldMatrix);
     const parentTransform = displayObject.parent
-        ? tempParentMatrix.copyFrom(displayObject.parent.worldTransform)
+        ? getGlobalTransform(displayObject.parent, tempParentMatrix)
         : Matrix.IDENTITY;
 
     tempMatrix.copyFrom(worldTransform);
     tempMatrix.prepend(transform);
-    tempMatrix.prepend(parentTransform.invert());// gets new "local" transform
+    tempMatrix.prepend(parentTransform.invert()); // gets new "local" transform
 
-    decomposeTransform(displayObject.transform, tempMatrix);
+    displayObject.setFromMatrix(tempMatrix);
 }

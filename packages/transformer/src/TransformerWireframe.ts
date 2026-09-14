@@ -1,12 +1,11 @@
-import { Graphics } from '@pixi/graphics';
+import { Graphics, Matrix, Point } from 'pixi.js';
 import { HANDLE_TO_CURSOR } from './Transformer';
-import { ObjectPoolFactory } from '@pixi-essentials/object-pool';
-import { Matrix, Point } from '@pixi/math';
 import { distanceToLine } from './utils/distanceToLine';
+import { ObjectPoolFactory } from '@pixi-essentials/object-pool';
 
-import type { AxisAlignedBounds, OrientedBounds } from '@pixi-essentials/bounds';
+import type { FillStyle, StrokeStyle } from 'pixi.js';
 import type { Handle, Transformer } from './Transformer';
-import {FederatedEventTarget} from "@pixi/events";
+import type { AxisAlignedBounds, OrientedBounds } from '@pixi-essentials/bounds';
 
 const pointPool = ObjectPoolFactory.build(Point);
 const tempHull = [new Point(), new Point(), new Point(), new Point()];
@@ -98,9 +97,6 @@ const boxRotationRegions = [
     boxRotationRegionBottomRight,
 ];
 
-const Graphics_ = Graphics as unknown as { new(): Graphics & FederatedEventTarget };
-type GraphicsT_ = Graphics & FederatedEventTarget;
-
 /**
  * The transformer's wireframe is drawn using this class.
  *
@@ -108,7 +104,7 @@ type GraphicsT_ = Graphics & FederatedEventTarget;
  * @public
  * @extends PIXI.Graphics
  */
-export class TransformerWireframe extends Graphics_
+export class TransformerWireframe extends Graphics
 {
     protected transformer: Transformer;
 
@@ -118,7 +114,7 @@ export class TransformerWireframe extends Graphics_
      *
      * @type {PIXI.Graphics[]}
      */
-    protected boxScalingHandles: [GraphicsT_, GraphicsT_, GraphicsT_, GraphicsT_];
+    protected boxScalingHandles: [Graphics, Graphics, Graphics, Graphics];
 
     constructor(transformer: Transformer)
     {
@@ -131,8 +127,8 @@ export class TransformerWireframe extends Graphics_
             this.addChild(new Graphics()),
             this.addChild(new Graphics()),
             this.addChild(new Graphics()),
-        ] as unknown as [GraphicsT_, GraphicsT_, GraphicsT_, GraphicsT_];
-        this.boxScalingHandles.forEach((scalingHandle) => { scalingHandle.interactive = true; });
+        ];
+        this.boxScalingHandles.forEach((scalingHandle) => { scalingHandle.eventMode = 'static'; });
         this.boxScalingHandles[0].cursor = HANDLE_TO_CURSOR.topCenter;
         this.boxScalingHandles[1].cursor = HANDLE_TO_CURSOR.middleRight;
         this.boxScalingHandles[2].cursor = HANDLE_TO_CURSOR.bottomCenter;
@@ -212,7 +208,11 @@ export class TransformerWireframe extends Graphics_
      *
      * @param bounds
      */
-    public drawBounds(bounds: OrientedBounds | AxisAlignedBounds): void
+    public drawBounds(
+        bounds: OrientedBounds | AxisAlignedBounds,
+        fillStyle?: FillStyle,
+        strokeStyle?: StrokeStyle,
+    ): void
     {
         const hull = tempHull;
 
@@ -222,8 +222,17 @@ export class TransformerWireframe extends Graphics_
             this.transformer.projectToLocal(bounds.hull[i], hull[i]);
         }
 
-        // Fill polygon with ultra-low alpha to capture pointer events.
-        this.drawPolygon(hull);
+        this.poly(hull);
+
+        if (fillStyle)
+        {
+            this.fill(fillStyle);
+        }
+
+        if (strokeStyle)
+        {
+            this.stroke(strokeStyle);
+        }
     }
 
     /**
@@ -272,9 +281,8 @@ export class TransformerWireframe extends Graphics_
             const boxScalingHandle = this.boxScalingHandles[i];
 
             boxScalingHandle.clear()
-                .beginFill(0xffffff, 1e-4)
-                .drawPolygon(innerStart, outerStart, outerEnd, innerEnd)
-                .endFill();
+                .poly([innerStart, outerStart, outerEnd, innerEnd])
+                .fill({ color: 0xffffff, alpha: 1e-4 });
         }
     }
 
@@ -326,7 +334,7 @@ export class TransformerWireframe extends Graphics_
                 boxRotationTemp[j + 1] = tempPoint.y + position.y;
             }
 
-            this.drawPolygon(boxRotationTemp.slice());
+            this.poly(boxRotationTemp.slice());
         }
     }
 

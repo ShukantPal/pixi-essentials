@@ -1,10 +1,13 @@
-import { Graphics } from '@pixi/graphics';
-import { Point } from '@pixi/math';
-import { Renderer } from '@pixi/core';
+import {
+    Graphics,
+    Point,
+} from 'pixi.js';
 
-import type {Container} from '@pixi/display';
+import type {
+    Container,
+    FederatedPointerEvent,
+} from 'pixi.js';
 import type { Handle, Transformer } from './Transformer';
-import {FederatedEventTarget, FederatedPointerEvent, IFederatedDisplayObject} from "@pixi/events";
 
 /** @see TransformerHandle#style */
 export interface ITransformerHandleStyle
@@ -38,14 +41,12 @@ const DEFAULT_HANDLE_STYLE: ITransformerHandleStyle = {
     shape: 'tooth',
 };
 
-const Graphics_ = Graphics as unknown as { new(): Graphics & FederatedEventTarget };
-
 /**
  * The transfomer handle base implementation.
  *
  * @extends PIXI.Graphics
  */
-export class TransformerHandle extends Graphics_
+export class TransformerHandle extends Graphics
 {
     onHandleDelta: (pointerPosition: Point) => void;
     onHandleCommit: () => void;
@@ -57,7 +58,7 @@ export class TransformerHandle extends Graphics_
     private _pointerDown: boolean;
     private _pointerDragging: boolean;
     private _pointerPosition: Point;
-    private _pointerMoveTarget: (Container & IFederatedDisplayObject) | null;
+    private _pointerMoveTarget: Container | null;
 
     /**
      * @param {Transformer} transformer
@@ -90,7 +91,7 @@ export class TransformerHandle extends Graphics_
         this._dirty = true;
 
         // Pointer events
-        this.interactive = true;
+        this.eventMode = 'static';
         this.cursor = cursor || 'move';
         this._pointerDown = false;
         this._pointerDragging = false;
@@ -105,6 +106,8 @@ export class TransformerHandle extends Graphics_
         this.onpointermove = this.onPointerMove;
         this.onpointerup = this.onPointerUp;
         this.onpointerupoutside = this.onPointerUp;
+
+        this.onRender = this.render;
     }
 
     get handle(): Handle
@@ -130,7 +133,7 @@ export class TransformerHandle extends Graphics_
         this._dirty = true;
     }
 
-    render(renderer: Renderer): void
+    private render(): void
     {
         if (this._dirty)
         {
@@ -138,8 +141,6 @@ export class TransformerHandle extends Graphics_
 
             this._dirty = false;
         }
-
-        super.render(renderer);
     }
 
     /**
@@ -152,20 +153,18 @@ export class TransformerHandle extends Graphics_
 
         const radius = style.radius;
 
-        this.clear()
-            .lineStyle(style.outlineThickness, style.outlineColor)
-            .beginFill(style.color);
+        this.clear();
 
         if (style.shape === 'square')
         {
-            this.drawRect(-radius / 2, -radius / 2, radius, radius);
+            this.rect(-radius / 2, -radius / 2, radius, radius);
         }
         else if (style.shape === 'tooth')
         {
             switch (handle)
             {
                 case 'middleLeft':
-                    this.drawPolygon([
+                    this.poly([
                         -radius / 2, -radius / 2,
                         -radius / 2, radius / 2,
                         radius / 2, radius / 2,
@@ -174,7 +173,7 @@ export class TransformerHandle extends Graphics_
                     ]);
                     break;
                 case 'topCenter':
-                    this.drawPolygon([
+                    this.poly([
                         -radius / 2, -radius / 2,
                         radius / 2, -radius / 2,
                         radius / 2, radius / 2,
@@ -183,7 +182,7 @@ export class TransformerHandle extends Graphics_
                     ]);
                     break;
                 case 'middleRight':
-                    this.drawPolygon([
+                    this.poly([
                         -radius / 2, radius / 2,
                         -radius * 1.1, 0,
                         -radius / 2, -radius / 2,
@@ -192,7 +191,7 @@ export class TransformerHandle extends Graphics_
                     ]);
                     break;
                 case 'bottomCenter':
-                    this.drawPolygon([
+                    this.poly([
                         0, -radius * 1.1,
                         radius / 2, -radius / 2,
                         radius / 2, radius / 2,
@@ -201,19 +200,22 @@ export class TransformerHandle extends Graphics_
                     ]);
                     break;
                 case 'rotator':
-                    this.drawCircle(0, 0, radius / Math.sqrt(2));
+                    this.circle(0, 0, radius / Math.sqrt(2));
                     break;
                 default:
-                    this.drawRect(-radius / 2, -radius / 2, radius, radius);
+                    this.rect(-radius / 2, -radius / 2, radius, radius);
                     break;
             }
         }
         else
         {
-            this.drawCircle(0, 0, radius);
+            this.circle(0, 0, radius);
         }
 
-        this.endFill();
+        this.fill(style.color).stroke({
+            width: style.outlineThickness,
+            color: style.outlineColor,
+        });
     }
 
     /**
@@ -234,7 +236,7 @@ export class TransformerHandle extends Graphics_
             this._pointerMoveTarget = null;
         }
 
-        this._pointerMoveTarget = (this.transformer.stage || this) as unknown as Container & IFederatedDisplayObject;
+        this._pointerMoveTarget = this.transformer.stage || this;
         this._pointerMoveTarget.addEventListener('globalpointermove', this.onPointerMove);
     }
 

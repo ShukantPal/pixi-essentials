@@ -1,5 +1,5 @@
 import { AxisAlignedBounds } from './AxisAlignedBounds';
-import { Matrix, ObservablePoint, Point } from '@pixi/math';
+import { Matrix, ObservablePoint, Point } from 'pixi.js';
 
 const tempPoint = new Point();
 
@@ -57,7 +57,7 @@ export class OrientedBounds
         this.innerBounds = new AxisAlignedBounds(x, y, width, height);
 
         this._rotation = angle;
-        this._center = new ObservablePoint<OrientedBounds>(this.updateCenter, this);
+        this._center = new ObservablePoint({ _onUpdate: this.updateCenter.bind(this) });
         this._hull = [new Point(), new Point(), new Point(), new Point()];
         this._matrix = new Matrix();
 
