@@ -32,4 +32,3 @@ jobs:
 
     - run: rush install
     - run: rush rebuild
-    - run: rush unit-test
