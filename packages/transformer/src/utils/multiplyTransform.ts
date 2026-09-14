@@ -1,4 +1,3 @@
-// import { Matrix } from '@pixi/math';
 import { Matrix } from 'pixi.js';
 
 import type { Container } from 'pixi.js';

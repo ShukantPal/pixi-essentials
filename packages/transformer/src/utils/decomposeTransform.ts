@@ -1,4 +1,3 @@
-// import type {Transform, Matrix, Point} from '@pixi/math';
 import type { Matrix, ObservablePoint, Point } from 'pixi.js';
 
 export interface TransformLike
