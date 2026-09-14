@@ -7,7 +7,7 @@ import {
 import { TransformerHandle } from './TransformerHandle';
 import { TransformerWireframe } from './TransformerWireframe';
 import { decomposeTransform } from './utils/decomposeTransform';
-import { multiplyTransform } from './utils/multiplyTransform';
+import { getGlobalTransform, multiplyTransform } from './utils/multiplyTransform';
 import { createHorizontalSkew, createVerticalSkew } from './utils/skewTransform';
 import { OrientedBounds } from '@pixi-essentials/bounds';
 import { ObjectPoolFactory } from '@pixi-essentials/object-pool';
@@ -24,6 +24,7 @@ type DisplayObject = Container;
 const tempTransform = new Transform();
 const tempCorners: [Point, Point, Point, Point] = [new Point(), new Point(), new Point(), new Point()];
 const tempMatrix = new Matrix();
+const tempWorldTransform = new Matrix();
 const tempPoint = new Point();
 const tempBounds = new OrientedBounds();
 const tempHull = [new Point(), new Point(), new Point(), new Point()];
@@ -1120,13 +1121,19 @@ export class Transformer extends Container
     {
         const targets = this.group;
         const { color, thickness } = this._wireframeStyle;
+        const fillStyle = this.translateEnabled ? { color: 0xffffff, alpha: 1e-4 } : undefined;
+        const strokeStyle = this.boundingBoxes !== 'none' ? { width: thickness, color } : undefined;
 
         // Updates occur right here!
         this.wireframe.clear();
 
         for (let i = 0, j = targets.length; i < j && this.boundingBoxes === 'all'; i++)
         {
-            this.wireframe.drawBounds(Transformer.calculateOrientedBounds(targets[i], tempBounds));
+            this.wireframe.drawBounds(
+                Transformer.calculateOrientedBounds(targets[i], tempBounds),
+                fillStyle,
+                strokeStyle,
+            );
         }
 
         // groupBounds may change on each render-loop b/c of any ongoing animation
@@ -1135,7 +1142,7 @@ export class Transformer extends Container
             : Transformer.calculateOrientedBounds(targets[0], tempBounds);// Auto-detect rotation
 
         // Redraw skeleton and position handles
-        this.wireframe.drawBounds(groupBounds);
+        this.wireframe.drawBounds(groupBounds, fillStyle, strokeStyle);
 
         this.drawHandles(groupBounds);
 
@@ -1144,27 +1151,12 @@ export class Transformer extends Container
 
         if (this.boxRotationEnabled)
         {
-            this.wireframe.closePath()
-                .fill({ color: 0xffffff, alpha: 1e-4 });
             this.wireframe.drawBoxRotationTolerance();
         }
 
         if (this.boxScalingEnabled)
         {
-            this.wireframe
-                .closePath()
-                .fill({ color: 0xfff0ff, alpha: 1e-4 });
             this.wireframe.drawBoxScalingTolerance(groupBounds);
-        }
-
-        if (this.boundingBoxes !== 'none')
-        {
-            this.wireframe.stroke({ width: thickness, color });
-        }
-
-        if (this.translateEnabled)
-        {
-            this.wireframe.fill({ color: 0xffffff, alpha: 1e-4 });
         }
 
         this.lazyDirty = false;
@@ -1605,13 +1597,13 @@ export class Transformer extends Container
      */
     static calculateOrientedBounds(displayObject: DisplayObject, bounds?: OrientedBounds): OrientedBounds
     {
-        displayObject.getBounds();
+        const worldTransform = getGlobalTransform(displayObject, tempWorldTransform);
 
         // Decompose displayObject.worldTransform to get its (world) rotation
-        decomposeTransform(tempTransform, displayObject.worldTransform);
+        decomposeTransform(tempTransform, worldTransform);
 
         const angle = tempTransform.rotation;
-        const corners = Transformer.calculateTransformedCorners(displayObject, displayObject.worldTransform, tempCorners);
+        const corners = Transformer.calculateTransformedCorners(displayObject, worldTransform, tempCorners);
 
         // Calculate centroid, which is our center of rotation
         const cx = (corners[0].x + corners[1].x + corners[2].x + corners[3].x) / 4;
@@ -1652,7 +1644,7 @@ export class Transformer extends Container
         group: DisplayObject[],
         rotation: number,
         bounds?: OrientedBounds,
-        skipUpdate = false,
+        _skipUpdate = false,
     ): OrientedBounds
     {
         const groupLength = group.length;
@@ -1663,13 +1655,8 @@ export class Transformer extends Container
         {
             const displayObject = group[i];
 
-            // Update worldTransform
-            if (!skipUpdate)
-            {
-                displayObject.getBounds();
-            }
-
-            Transformer.calculateTransformedCorners(displayObject, displayObject.worldTransform, frames, i * 4);
+            getGlobalTransform(displayObject, tempWorldTransform);
+            Transformer.calculateTransformedCorners(displayObject, tempWorldTransform, frames, i * 4);
         }
 
         // Unrotation matrix

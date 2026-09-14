@@ -195,10 +195,10 @@ export class PaintServer
         const radialGradient = this.paintServer as SVGRadialGradientElement;
         const paintTexture = this.paintTexture;
         const transform = radialGradient.gradientTransform.baseVal.consolidate()?.matrix;
-        const fx = radialGradient.fx.baseVal.valueInSpecifiedUnits;
-        const fy = radialGradient.fy.baseVal.valueInSpecifiedUnits;
-        const cx = radialGradient.cx.baseVal.valueInSpecifiedUnits;
-        const cy = radialGradient.cy.baseVal.valueInSpecifiedUnits;
+        const fx = this.gradientLengthValue(radialGradient.fx.baseVal);
+        const fy = this.gradientLengthValue(radialGradient.fy.baseVal);
+        const cx = this.gradientLengthValue(radialGradient.cx.baseVal);
+        const cy = this.gradientLengthValue(radialGradient.cy.baseVal);
         const focalPoint = transform
             ? {
                 x: (transform.a * fx) + (transform.c * fy) + transform.e,
@@ -221,10 +221,10 @@ export class PaintServer
             {
                 x0: this.resolveGradientCoordinate(focalPoint.x, 'x'),
                 y0: this.resolveGradientCoordinate(focalPoint.y, 'y'),
-                r0: this.resolveGradientRadius(radialGradient.fr.baseVal.valueInSpecifiedUnits * radiusScale),
+                r0: this.resolveGradientRadius(this.gradientLengthValue(radialGradient.fr.baseVal) * radiusScale),
                 x1: this.resolveGradientCoordinate(centerPoint.x, 'x'),
                 y1: this.resolveGradientCoordinate(centerPoint.y, 'y'),
-                r1: this.resolveGradientRadius(radialGradient.r.baseVal.valueInSpecifiedUnits * radiusScale),
+                r1: this.resolveGradientRadius(this.gradientLengthValue(radialGradient.r.baseVal) * radiusScale),
                 colorStops: this.createColorStops(radialGradient.children),
             },
         );
@@ -245,6 +245,17 @@ export class PaintServer
         const size = axis === 'x' ? bbox?.width || textureSize : bbox?.height || textureSize;
 
         return (value - offset) * textureSize / size;
+    }
+
+    /** Normalizes percentage coordinates for the default object-bounding-box coordinate space. */
+    private gradientLengthValue(length: SVGLength): number
+    {
+        const value = length.valueInSpecifiedUnits;
+
+        return this.paintServer.getAttribute('gradientUnits') !== 'userSpaceOnUse'
+            && length.unitType === SVGLength.SVG_LENGTHTYPE_PERCENTAGE
+            ? value / 100
+            : value;
     }
 
     /** Converts a gradient radius into the paint texture's coordinate space. */

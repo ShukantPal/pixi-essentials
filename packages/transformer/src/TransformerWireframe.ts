@@ -3,6 +3,7 @@ import { HANDLE_TO_CURSOR } from './Transformer';
 import { distanceToLine } from './utils/distanceToLine';
 import { ObjectPoolFactory } from '@pixi-essentials/object-pool';
 
+import type { FillStyle, StrokeStyle } from 'pixi.js';
 import type { Handle, Transformer } from './Transformer';
 import type { AxisAlignedBounds, OrientedBounds } from '@pixi-essentials/bounds';
 
@@ -207,7 +208,11 @@ export class TransformerWireframe extends Graphics
      *
      * @param bounds
      */
-    public drawBounds(bounds: OrientedBounds | AxisAlignedBounds): void
+    public drawBounds(
+        bounds: OrientedBounds | AxisAlignedBounds,
+        fillStyle?: FillStyle,
+        strokeStyle?: StrokeStyle,
+    ): void
     {
         const hull = tempHull;
 
@@ -217,8 +222,17 @@ export class TransformerWireframe extends Graphics
             this.transformer.projectToLocal(bounds.hull[i], hull[i]);
         }
 
-        // Fill polygon with ultra-low alpha to capture pointer events.
         this.poly(hull);
+
+        if (fillStyle)
+        {
+            this.fill(fillStyle);
+        }
+
+        if (strokeStyle)
+        {
+            this.stroke(strokeStyle);
+        }
     }
 
     /**
