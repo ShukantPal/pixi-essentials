@@ -1,21 +1,13 @@
-// import { Graphics } from '@pixi/graphics';
-// import { Point } from '@pixi/math';
-// import { Renderer } from '@pixi/core';
-
-// import type {Container} from '@pixi/display';
-import type { Handle, Transformer } from './Transformer';
-// import {FederatedEventTarget, FederatedPointerEvent, IFederatedDisplayObject} from "@pixi/events";
-
 import {
     Graphics,
     Point,
-    Container,
-    FederatedEventTarget,
-    FederatedPointerEvent,
-    Ticker,
-  } from "pixi.js";
+} from 'pixi.js';
 
-  import { IFederatedDisplayObject } from ".";
+import type {
+    Container,
+    FederatedPointerEvent,
+} from 'pixi.js';
+import type { Handle, Transformer } from './Transformer';
 
 /** @see TransformerHandle#style */
 export interface ITransformerHandleStyle
@@ -49,14 +41,12 @@ const DEFAULT_HANDLE_STYLE: ITransformerHandleStyle = {
     shape: 'tooth',
 };
 
-const Graphics_ = Graphics as unknown as { new(): Graphics & FederatedEventTarget };
-
 /**
  * The transfomer handle base implementation.
  *
  * @extends PIXI.Graphics
  */
-export class TransformerHandle extends Graphics_
+export class TransformerHandle extends Graphics
 {
     onHandleDelta: (pointerPosition: Point) => void;
     onHandleCommit: () => void;
@@ -68,7 +58,7 @@ export class TransformerHandle extends Graphics_
     private _pointerDown: boolean;
     private _pointerDragging: boolean;
     private _pointerPosition: Point;
-    private _pointerMoveTarget: (Container & IFederatedDisplayObject) | null;
+    private _pointerMoveTarget: Container | null;
 
     /**
      * @param {Transformer} transformer
@@ -101,7 +91,7 @@ export class TransformerHandle extends Graphics_
         this._dirty = true;
 
         // Pointer events
-        this.interactive = true;
+        this.eventMode = 'static';
         this.cursor = cursor || 'move';
         this._pointerDown = false;
         this._pointerDragging = false;
@@ -117,7 +107,7 @@ export class TransformerHandle extends Graphics_
         this.onpointerup = this.onPointerUp;
         this.onpointerupoutside = this.onPointerUp;
 
-        Ticker.shared.add(this.render, this); // V8
+        this.onRender = this.render;
     }
 
     get handle(): Handle
@@ -143,7 +133,7 @@ export class TransformerHandle extends Graphics_
         this._dirty = true;
     }
 
-    render(/* renderer: Renderer */): void
+    private render(): void
     {
         if (this._dirty)
         {
@@ -151,8 +141,6 @@ export class TransformerHandle extends Graphics_
 
             this._dirty = false;
         }
-
-        // super.render(renderer);
     }
 
     /**
@@ -165,9 +153,7 @@ export class TransformerHandle extends Graphics_
 
         const radius = style.radius;
 
-        this.clear()
-            // .lineStyle(style.outlineThickness, style.outlineColor)
-            // .beginFill(style.color);
+        this.clear();
 
         if (style.shape === 'square')
         {
@@ -226,11 +212,10 @@ export class TransformerHandle extends Graphics_
             this.circle(0, 0, radius);
         }
 
-        this.stroke({
+        this.fill(style.color).stroke({
             width: style.outlineThickness,
             color: style.outlineColor,
-          }).fill(style.color);
-        // this.endFill();
+        });
     }
 
     /**
@@ -251,7 +236,7 @@ export class TransformerHandle extends Graphics_
             this._pointerMoveTarget = null;
         }
 
-        this._pointerMoveTarget = (this.transformer.stage || this) as unknown as Container & IFederatedDisplayObject;
+        this._pointerMoveTarget = this.transformer.stage || this;
         this._pointerMoveTarget.addEventListener('globalpointermove', this.onPointerMove);
     }
 

@@ -45,6 +45,7 @@ export class PaintServer
     public paintContexts: Map<Renderer, number>;
 
     public dirtyId: number;
+    private boundingBox: Rectangle | null;
 
     /**
      * Creates a `PaintServer` wrapper.
@@ -58,6 +59,7 @@ export class PaintServer
         this.paintTexture = paintTexture;
         this.paintContexts = new Map<Renderer, number>();
         this.dirtyId = 0;
+        this.boundingBox = null;
     }
 
     /**
@@ -89,6 +91,7 @@ export class PaintServer
      */
     public resolvePaintDimensions(bbox: Rectangle): void
     {
+        this.boundingBox = bbox;
         const bwidth = Math.ceil(bbox.width);
         const bheight = Math.ceil(bbox.height);
         const baspectRatio = bwidth / bheight;
@@ -191,25 +194,70 @@ export class PaintServer
     {
         const radialGradient = this.paintServer as SVGRadialGradientElement;
         const paintTexture = this.paintTexture;
-
-        radialGradient.fx.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_NUMBER);
-        radialGradient.fy.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_NUMBER);
-        radialGradient.cx.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_NUMBER);
-        radialGradient.cy.baseVal.convertToSpecifiedUnits(SVGLength.SVG_LENGTHTYPE_NUMBER);
+        const transform = radialGradient.gradientTransform.baseVal.consolidate()?.matrix;
+        const fx = radialGradient.fx.baseVal.valueInSpecifiedUnits;
+        const fy = radialGradient.fy.baseVal.valueInSpecifiedUnits;
+        const cx = radialGradient.cx.baseVal.valueInSpecifiedUnits;
+        const cy = radialGradient.cy.baseVal.valueInSpecifiedUnits;
+        const focalPoint = transform
+            ? {
+                x: (transform.a * fx) + (transform.c * fy) + transform.e,
+                y: (transform.b * fx) + (transform.d * fy) + transform.f,
+            }
+            : { x: fx, y: fy };
+        const centerPoint = transform
+            ? {
+                x: (transform.a * cx) + (transform.c * cy) + transform.e,
+                y: (transform.b * cx) + (transform.d * cy) + transform.f,
+            }
+            : { x: cx, y: cy };
+        const radiusScale = transform
+            ? Math.max(Math.hypot(transform.a, transform.b), Math.hypot(transform.c, transform.d))
+            : 1;
 
         return GradientFactory.createRadialGradient(
             renderer,
             paintTexture,
             {
-                x0: radialGradient.fx.baseVal.valueInSpecifiedUnits * paintTexture.width / 100,
-                y0: radialGradient.fy.baseVal.valueInSpecifiedUnits * paintTexture.height / 100,
-                r0: radialGradient.fr.baseVal.valueInSpecifiedUnits * paintTexture.width / 100,
-                x1: radialGradient.cx.baseVal.valueInSpecifiedUnits * paintTexture.width / 100,
-                y1: radialGradient.cy.baseVal.valueInSpecifiedUnits * paintTexture.height / 100,
-                r1: radialGradient.r.baseVal.valueInSpecifiedUnits * paintTexture.width / 100,
+                x0: this.resolveGradientCoordinate(focalPoint.x, 'x'),
+                y0: this.resolveGradientCoordinate(focalPoint.y, 'y'),
+                r0: this.resolveGradientRadius(radialGradient.fr.baseVal.valueInSpecifiedUnits * radiusScale),
+                x1: this.resolveGradientCoordinate(centerPoint.x, 'x'),
+                y1: this.resolveGradientCoordinate(centerPoint.y, 'y'),
+                r1: this.resolveGradientRadius(radialGradient.r.baseVal.valueInSpecifiedUnits * radiusScale),
                 colorStops: this.createColorStops(radialGradient.children),
             },
         );
+    }
+
+    /** Converts gradient coordinates into the paint texture's coordinate space. */
+    private resolveGradientCoordinate(value: number, axis: 'x' | 'y'): number
+    {
+        const textureSize = axis === 'x' ? this.paintTexture.width : this.paintTexture.height;
+
+        if (this.paintServer.getAttribute('gradientUnits') !== 'userSpaceOnUse')
+        {
+            return value * textureSize;
+        }
+
+        const bbox = this.boundingBox;
+        const offset = axis === 'x' ? bbox?.x || 0 : bbox?.y || 0;
+        const size = axis === 'x' ? bbox?.width || textureSize : bbox?.height || textureSize;
+
+        return (value - offset) * textureSize / size;
+    }
+
+    /** Converts a gradient radius into the paint texture's coordinate space. */
+    private resolveGradientRadius(value: number): number
+    {
+        if (this.paintServer.getAttribute('gradientUnits') !== 'userSpaceOnUse')
+        {
+            return value * this.paintTexture.width;
+        }
+
+        const width = this.boundingBox?.width || this.paintTexture.width;
+
+        return value * this.paintTexture.width / width;
     }
 
     /**

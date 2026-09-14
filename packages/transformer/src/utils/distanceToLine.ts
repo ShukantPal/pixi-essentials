@@ -1,4 +1,3 @@
-// import { Point } from '@pixi/math';
 import { Point } from 'pixi.js';
 
 /**

@@ -1,5 +1,14 @@
 // import type {Transform, Matrix, Point} from '@pixi/math';
-import type {Transform, Matrix, Point} from 'pixi.js';
+import type { Matrix, ObservablePoint, Point } from 'pixi.js';
+
+export interface TransformLike
+{
+    position: ObservablePoint;
+    scale: ObservablePoint;
+    pivot: ObservablePoint;
+    skew: ObservablePoint;
+    rotation: number;
+}
 
 /**
  * Decomposes the matrix into transform, while preserving rotation & the pivot.
@@ -11,11 +20,11 @@ import type {Transform, Matrix, Point} from 'pixi.js';
  * @param pivot
  */
 export function decomposeTransform(
-    transform: Transform,
+    transform: TransformLike,
     matrix: Matrix,
     rotation?: number,
     pivot: Point = transform.pivot,
-): Transform
+): TransformLike
 {
     const a = matrix.a;
     const b = matrix.b;
